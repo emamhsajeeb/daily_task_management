@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Laravel Projects\\dbedc_erp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|d:\\laravel projects\\dbedc_erp\\resources\\views\\layouts\\app.blade.php||{3D2461EC-8045-4AA9-ABFB-812292AE795D}",
+      "RelativeMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|solutionrelative:resources\\views\\layouts\\app.blade.php||{3D2461EC-8045-4AA9-ABFB-812292AE795D}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|d:\\laravel projects\\dbedc_erp\\resources\\views\\layouts\\main.blade.php||{3D2461EC-8045-4AA9-ABFB-812292AE795D}",
+      "RelativeMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|solutionrelative:resources\\views\\layouts\\main.blade.php||{3D2461EC-8045-4AA9-ABFB-812292AE795D}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|d:\\laravel projects\\dbedc_erp\\public\\assets\\libs\\list.js\\list.min.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A653A6B7-0EDE-44F9-8955-9E9F364D0BB7}|dbedc_erp.phpproj|solutionrelative:public\\assets\\libs\\list.js\\list.min.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "list.min.js",
+              "DocumentMoniker": "D:\\Laravel Projects\\dbedc_erp\\public\\assets\\libs\\list.js\\list.min.js",
+              "RelativeDocumentMoniker": "public\\assets\\libs\\list.js\\list.min.js",
+              "ToolTip": "D:\\Laravel Projects\\dbedc_erp\\public\\assets\\libs\\list.js\\list.min.js",
+              "RelativeToolTip": "public\\assets\\libs\\list.js\\list.min.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAA2AQAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-02T11:13:33.352Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "app.blade.php",
+              "DocumentMoniker": "D:\\Laravel Projects\\dbedc_erp\\resources\\views\\layouts\\app.blade.php",
+              "RelativeDocumentMoniker": "resources\\views\\layouts\\app.blade.php",
+              "ToolTip": "D:\\Laravel Projects\\dbedc_erp\\resources\\views\\layouts\\app.blade.php",
+              "RelativeToolTip": "resources\\views\\layouts\\app.blade.php",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "89320d42-7831-4f47-839a-c227d3a60919.000001|",
+              "WhenOpened": "2024-03-02T11:12:28.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.blade.php",
+              "DocumentMoniker": "D:\\Laravel Projects\\dbedc_erp\\resources\\views\\layouts\\main.blade.php",
+              "RelativeDocumentMoniker": "resources\\views\\layouts\\main.blade.php",
+              "ToolTip": "D:\\Laravel Projects\\dbedc_erp\\resources\\views\\layouts\\main.blade.php",
+              "RelativeToolTip": "resources\\views\\layouts\\main.blade.php",
+              "ViewState": "AQIAAMkAAAAAAAAAAAAAAKgAAABSAAAA",
+              "Icon": "89320d42-7831-4f47-839a-c227d3a60919.000001|",
+              "WhenOpened": "2024-03-02T10:47:20.27Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

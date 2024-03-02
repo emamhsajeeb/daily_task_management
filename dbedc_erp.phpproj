@@ -1,0 +1,5 @@
+<Project Sdk="Devsense.Php.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>a653a6b7-0ede-44f9-8955-9e9f364d0bb7</ProjectGuid>
+  </PropertyGroup>
+</Project>
