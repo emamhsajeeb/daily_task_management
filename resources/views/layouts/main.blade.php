@@ -116,7 +116,7 @@
                                         <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
                                         <div class="flex-shrink-0">
                                             <div class="d-flex flex-wrap gap-2">
-                                                <button class="btn btn-secondary add-btn" data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Create Task</button>
+                                                <button class="btn btn-secondary add-btn" data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add Tasks</button>
                                                 <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
                                             </div>
                                         </div>

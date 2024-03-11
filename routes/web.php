@@ -24,4 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::post('/import-tasks', [])->name('import_tasks');
+
 require __DIR__.'/auth.php';
