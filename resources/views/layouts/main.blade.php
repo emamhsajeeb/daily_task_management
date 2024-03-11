@@ -174,15 +174,17 @@
                                                         </div>
                                                     </th>
                                                     <th class="sort" data-sort="id">Date</th>
-                                                    <th class="sort" data-sort="id">RFINO</th>
+                                                    <th class="sort" data-sort="id">RFI NO</th>
                                                     <th class="sort" data-sort="id">Type</th>
                                                     <th class="sort" data-sort="id">Description</th>
                                                     <th class="sort" data-sort="id">Location</th>
                                                     <th class="sort" data-sort="id">Side</th>
-                                                    <th class="sort" data-sort="project_name">Quantity/Layer</th>
-                                                    <th class="sort" data-sort="tasks_name">Time</th>
+                                                    <th class="sort" data-sort="project_name">Quantity/Layer No.</th>
+                                                    <th class="sort" data-sort="tasks_name">Planed Time</th>
+                                                    <th class="sort" data-sort="assignedto">In-charge</th>
                                                     <th class="sort" data-sort="assignedto">Assigned To</th>
                                                     <th class="sort" data-sort="status">Status</th>
+                                                    <th class="sort" data-sort="tasks_name">Completion Date/Time</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
@@ -197,22 +199,34 @@
                                                     <td class="client_name">RFI Type</td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <div class="flex-grow-1 tasks_name">Profile Page Structure</div>
+                                                            <div class="flex-grow-1 tasks_name">RFI Descriptions</div>
                                                         </div>
                                                     </td>
                                                     <td class="client_name">RFI Location</td>
                                                     <td class="client_name">RFI Side</td>
                                                     <td class="client_name">RFI Quantity/Layer</td>
                                                     <td class="client_name">Tentative Inspection Time</td>
+                                                    <td class="incharge">
+                                                        <div class="avatar-group">
+                                                            <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
+                                                                <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle avatar-xxs" />
+                                                                <span>Prodip Kumar</span>
+                                                            </a>
+
+                                                        </div>
+
+                                                    </td>
                                                     <td class="assignedto">
                                                         <div class="avatar-group">
                                                             <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
                                                                 <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xxs" />
+                                                                <span>Fahim Al Hasan</span>
                                                             </a>
                                                         </div>
                                                     </td>
-                                                    
+
                                                     <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase">Inprogress</span></td>
+                                                    <td class="client_name">Completion Date/Time</td>
                                                 </tr>
                                             </tbody>
                                         </table>
