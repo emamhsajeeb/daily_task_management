@@ -19,9 +19,7 @@ Route::get('/', function () {
     return view('layouts/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/tasks', function () {
-    return view('layouts/tasks');
-})->middleware(['auth', 'verified'])->name('tasks');
+Route::get('/tasks', [TaskController::class, 'show'])->middleware(['auth', 'verified'])->name('tasks');
 
 Route::get('/add-tasks', function () {
     return view('task/add');

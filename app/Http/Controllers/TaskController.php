@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Imports\TaskImport;
+use App\Models\Tasks;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use Maatwebsite\Excel\Excel;
-
-
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class TaskController extends Controller
 {
+    public function show()
+    {
+        $tasks = Tasks::all();
+        return view('layouts/tasks', ['tasks' => Tasks::all(),]);
+    }
     public function import(Request $request)
     {
         $request->validate([

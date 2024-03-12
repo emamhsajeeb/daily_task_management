@@ -186,52 +186,42 @@
                                             <th class="sort" data-sort="project_name">Quantity/Layer No.</th>
                                             <th class="sort" data-sort="tasks_name">Planed Time</th>
                                             <th class="sort" data-sort="assignedto">In-charge</th>
-                                            <th class="sort" data-sort="assignedto">Assigned To</th>
                                             <th class="sort" data-sort="status">Status</th>
                                             <th class="sort" data-sort="tasks_name">Completion Date/Time</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
+                                    @foreach($tasks as $task)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />
                                                 </div>
                                             </th>
-                                            <td class="due_date">25 Jan, 2022</td>
-                                            <td class="id">#VLZ501</td>
-                                            <td class="client_name">RFI Type</td>
+                                            <td class="due_date">{{ $task->date }}</td>
+                                            <td class="id">{{ $task->number }}</td>
+                                            <td class="client_name">{{ $task->type }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <div class="flex-grow-1 tasks_name">RFI Descriptions</div>
+                                                    <div class="flex-grow-1 tasks_name">{{ $task->description }}</div>
                                                 </div>
                                             </td>
-                                            <td class="client_name">RFI Location</td>
-                                            <td class="client_name">RFI Side</td>
-                                            <td class="client_name">RFI Quantity/Layer</td>
-                                            <td class="client_name">Tentative Inspection Time</td>
+                                            <td class="client_name">{{ $task->location }}</td>
+                                            <td class="client_name">{{ $task->side }}</td>
+                                            <td class="client_name">{{ $task->qty_layer }}</td>
+                                            <td class="client_name">{{ $task->planned_time }}</td>
                                             <td class="incharge">
                                                 <div class="avatar-group">
                                                     <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
                                                         <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle avatar-xxs" />
-                                                        <span>Prodip Kumar</span>
-                                                    </a>
-
-                                                </div>
-
-                                            </td>
-                                            <td class="assignedto">
-                                                <div class="avatar-group">
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xxs" />
-                                                        <span>Fahim Al Hasan</span>
+                                                        <span>{{ $task->incharge }}</span>
                                                     </a>
                                                 </div>
                                             </td>
-
                                             <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase">Inprogress</span></td>
-                                            <td class="client_name">Completion Date/Time</td>
+                                            <td class="client_name">{{ $task->completion_time }}</td>
                                         </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                                 <!--end table-->

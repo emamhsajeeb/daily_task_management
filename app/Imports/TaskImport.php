@@ -3,24 +3,27 @@
 namespace App\Imports;
 
 use App\Models\Tasks;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class TaskImport implements ToModel
 {
     public function model(array $row)
     {
+        dump($row);
         return new Tasks([
-            'number' => $row[0],
-            'type' => $row[1],
-            'description' => $row[2],
-            'location' => $row[3],
-            'side' => $row[4],
-            'qty_layer' => $row[5],
-            'planned_time' => $row[6],
-            'incharge' => $row[7],
-            'assigned_to' => $row[8],
-            'status' => $row[9],
-            'completion_time' => $row[10],
+            'date' => $row[0],
+            'number' => $row[1],
+            'type' => $row[2],
+            'description' => $row[3],
+            'location' => $row[4],
+            'side' => $row[5],
+            'qty_layer' => $row[6],
+            'planned_time' => $row[7],
+            'incharge' => $row[8],
+            'status' => $row[9]
+
         ]);
     }
 }

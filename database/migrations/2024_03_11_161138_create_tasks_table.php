@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->nullable();;
+            $table->string('date')->nullable();
+            $table->string('number')->nullable();
             $table->string('type');
             $table->text('description');
             $table->string('location');
             $table->string('side')->nullable();;
             $table->string('qty_layer')->nullable();;
-            $table->time('planned_time');
+            $table->string('planned_time');
             $table->string('incharge')->nullable();
-            $table->string('assigned_to')->nullable();
             $table->string('status')->nullable();
-            $table->dateTime('completion_time')->nullable();
+            $table->string('completion_time')->nullable();
             $table->timestamps();
 
         });
