@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('side')->nullable();;
             $table->string('qty_layer')->nullable();;
             $table->time('planned_time');
-            $table->string('incharge');
-            $table->string('assigned_to')->nullable();;
+            $table->string('incharge')->nullable();
+            $table->string('assigned_to')->nullable();
             $table->string('status')->nullable();
             $table->dateTime('completion_time')->nullable();
             $table->timestamps();

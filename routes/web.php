@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts/app');
+    return view('layouts/dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/tasks', function () {
+    return view('layouts/tasks');
+})->middleware(['auth', 'verified'])->name('tasks');
+
+Route::get('/add-tasks', function () {
+    return view('task/add');
+})->middleware(['auth', 'verified'])->name('add-tasks');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,6 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('/import-tasks', [])->name('import_tasks');
+Route::post('task/import', [TaskController::class, 'import'])->name('task.import');
 
 require __DIR__.'/auth.php';

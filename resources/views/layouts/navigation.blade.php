@@ -31,17 +31,22 @@
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-dashboard-2-line"></i><span data-key="t-dashboards">Dashboards</span>
+                            <a class="nav-link menu-link" href="{{ route('dashboard') }}" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                                <i class="ri-dashboard-2-line"></i><span data-key="t-dashboard">Dashboards</span>
                             </a>
-                            <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="#sidebarTasks" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                                <i class="ri-dashboard-2-line"></i><span data-key="t-tasks">Tasks</span>
+                            </a>
+                            <div class="collapse menu-dropdown" id="sidebarTasks">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Analytics </a>
+                                        <a href="{{ route('tasks') }}" class="nav-link" data-key="t-all-tasks"> All Tasks </a>
                                     </li>
                                 </ul>
                             </div>
-                        </li><!-- end Dashboard Menu -->
+                        </li>
 
                     </ul>
                 </div>
