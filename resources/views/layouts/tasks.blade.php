@@ -81,7 +81,7 @@
                         </div>
                         <!--end card-body-->
                         <div class="card-body">
-                            <div class="table-responsive table-card mb-4">
+                            <div class="table-responsive table-card mb-4" style="height: 500px;">
                                 <table class="table align-middle table-nowrap mb-0" id="tasksTable">
                                     <thead class="table-light text-muted">
                                         <tr>
@@ -132,9 +132,9 @@
                                                         @endif
                                                         @if($user->role == 'admin')
                                                             @php
-                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->get();
+                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->first();
                                                             @endphp
-                                                        <span>{{ $incharge }}</span>
+                                                        <span>{{ $incharge->first_name }}</span>
 
                                                         @endif
                                                     </a>

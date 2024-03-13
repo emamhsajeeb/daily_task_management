@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::get('/tasks', [TaskController::class, 'index'])->middleware(['auth', 'verified'])->name('tasks');
 
 Route::get('/add-tasks', function () {
-    return view('task/add');
+    return view('task/add',['user' => Auth::user()]);
 })->middleware(['auth', 'verified'])->name('add-tasks');
 
 Route::middleware('auth')->group(function () {
