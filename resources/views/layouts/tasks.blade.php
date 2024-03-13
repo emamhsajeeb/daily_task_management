@@ -140,7 +140,18 @@
                                                     </a>
                                                 </div>
                                             </td>
-                                            <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase">Inprogress</span></td>
+                                            <td class="status">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary btn-sm dropdown-toggle" style="text-transform: uppercase" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        {{ $task->status }}
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item update-status" data-status="pending" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'pending']) }}">Pending</a>
+                                                        <a class="dropdown-item update-status" data-status="completed" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'completed']) }}">Completed</a>
+                                                        <a class="dropdown-item update-status" data-status="cancelled" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'cancelled']) }}">Cancelled</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td class="client_name">{{ $task->completion_time }}</td>
                                         </tr>
                                     @endforeach

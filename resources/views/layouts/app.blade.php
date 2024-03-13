@@ -884,10 +884,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <script>                                document.write(new Date().getFullYear())</script> © Velzon.
+                <script>                                document.write(new Date().getFullYear())</script> © Emam Hosen.
             </div>
             <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block"> Design & Develop by Themesbrand
+                <div class="text-sm-end d-none d-sm-block"> Design & Develop by Emam Hosen
                 </div>
             </div>
         </div>
@@ -915,6 +915,7 @@
 
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
 </body>
 
 </html>

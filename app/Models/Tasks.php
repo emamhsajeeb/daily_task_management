@@ -18,6 +18,7 @@ class Tasks extends Model
         'side',
         'qty_layer',
         'planned_time',
+        'status',
         'incharge',
     ];
 }
