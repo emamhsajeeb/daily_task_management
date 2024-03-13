@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app',['user' => $user])
 
-@section('tasks')
+@section('tasks',)
 <div class="main-content">
 
     <div class="page-content">
@@ -23,93 +23,6 @@
             </div>
             <!-- end page title -->
 
-            <div class="row">
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Total Tasks</p>
-                                    <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="234">0</span>k</h4>
-                                    <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-info-subtle text-info rounded-circle fs-4">
-                                            <i class="ri-ticket-2-line"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div><!-- end card-->
-                </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Pending Tasks</p>
-                                    <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="64.5">0</span>k</h4>
-                                    <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-warning-subtle text-warning rounded-circle fs-4">
-                                            <i class="mdi mdi-timer-sand"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Completed Tasks</p>
-                                    <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="116.21">0</span>K</h4>
-                                    <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-success-subtle text-success rounded-circle fs-4">
-                                            <i class="ri-checkbox-circle-line"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Deleted Tasks</p>
-                                    <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="14.84">0</span>%</h4>
-                                    <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 0.63 % </span> vs. previous month</p>
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-4">
-                                            <i class="ri-delete-bin-line"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
 
             <div class="row">
                 <div class="col-lg-12">
@@ -214,7 +127,16 @@
                                                 <div class="avatar-group">
                                                     <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
                                                         <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle avatar-xxs" />
-                                                        <span>{{ $task->incharge }}</span>
+                                                        @if ($user->role == 'staff')
+                                                        <span>{{ $user->first_name }}</span>
+                                                        @endif
+                                                        @if($user->role == 'admin')
+                                                            @php
+                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->get();
+                                                            @endphp
+                                                        <span>{{ $incharge }}</span>
+
+                                                        @endif
                                                     </a>
                                                 </div>
                                             </td>

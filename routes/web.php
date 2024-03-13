@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts/dashboard');
+    return view('layouts/dashboard',['user' => Auth::user()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/tasks', [TaskController::class, 'show'])->middleware(['auth', 'verified'])->name('tasks');
+Route::get('/tasks', [TaskController::class, 'index'])->middleware(['auth', 'verified'])->name('tasks');
 
 Route::get('/add-tasks', function () {
     return view('task/add');
