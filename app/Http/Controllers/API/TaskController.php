@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $user = Auth::guard('api')->user();
+        $user = Auth::guard('sanctum')->user();
 
         if ($user->role === 'staff') {
             $tasks = DB::table('tasks')
@@ -27,7 +27,7 @@ class TaskController extends Controller
             return response()->json(['error' => 'Unauthorized role'], 403); // Handle unauthorized roles gracefully
         }
 
-        return response()->json(compact('tasks'), 200);
+        return response()->json([compact('tasks')], 200);
     }
 
     /**

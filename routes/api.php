@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/tasks', [TaskController::class, 'index'])->name('api.tasks')->middleware('auth:api')->middleware('verified');;
+Route::get('/tasks', [TaskController::class, 'index'])->middleware(['auth:sanctum', 'verified'])->name('api.tasks');
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 
