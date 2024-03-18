@@ -98,7 +98,7 @@ class Builder implements BuilderContract
     /**
      * The table which the query is targeting.
      *
-     * @var string
+     * @var \Illuminate\Database\Query\Expression|string
      */
     public $from;
 
@@ -150,6 +150,13 @@ class Builder implements BuilderContract
      * @var int
      */
     public $limit;
+
+    /**
+     * The maximum number of records to return per group.
+     *
+     * @var array
+     */
+    public $groupLimit;
 
     /**
      * The number of records to skip.
@@ -510,7 +517,7 @@ class Builder implements BuilderContract
      * Add a join clause to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @param  string  $type
@@ -550,7 +557,7 @@ class Builder implements BuilderContract
      * Add a "join where" clause to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $second
      * @param  string  $type
@@ -566,7 +573,7 @@ class Builder implements BuilderContract
      *
      * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @param  string  $type
@@ -623,7 +630,7 @@ class Builder implements BuilderContract
      * Add a left join to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @return $this
@@ -637,7 +644,7 @@ class Builder implements BuilderContract
      * Add a "join where" clause to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @return $this
@@ -652,7 +659,7 @@ class Builder implements BuilderContract
      *
      * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @return $this
@@ -680,7 +687,7 @@ class Builder implements BuilderContract
      * Add a "right join where" clause to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $second
      * @return $this
@@ -695,7 +702,7 @@ class Builder implements BuilderContract
      *
      * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|string  $query
      * @param  string  $as
-     * @param  \Closure|string  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @return $this
@@ -709,7 +716,7 @@ class Builder implements BuilderContract
      * Add a "cross join" clause to the query.
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
-     * @param  \Closure|string|null  $first
+     * @param  \Closure|\Illuminate\Contracts\Database\Query\Expression|string|null  $first
      * @param  string|null  $operator
      * @param  \Illuminate\Contracts\Database\Query\Expression|string|null  $second
      * @return $this
@@ -1029,7 +1036,7 @@ class Builder implements BuilderContract
     /**
      * Add a "where" clause comparing two columns to the query.
      *
-     * @param  string|array  $first
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string|array  $first
      * @param  string|null  $operator
      * @param  string|null  $second
      * @param  string|null  $boolean
@@ -1066,7 +1073,7 @@ class Builder implements BuilderContract
     /**
      * Add an "or where" clause comparing two columns to the query.
      *
-     * @param  string|array  $first
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string|array  $first
      * @param  string|null  $operator
      * @param  string|null  $second
      * @return $this
@@ -2564,6 +2571,22 @@ class Builder implements BuilderContract
     }
 
     /**
+     * Add a "group limit" clause to the query.
+     *
+     * @param  int  $value
+     * @param  string  $column
+     * @return $this
+     */
+    public function groupLimit($value, $column)
+    {
+        if ($value >= 0) {
+            $this->groupLimit = compact('value', 'column');
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the limit and offset for a given page.
      *
      * @param  int  $page
@@ -2856,9 +2879,13 @@ class Builder implements BuilderContract
      */
     public function get($columns = ['*'])
     {
-        return collect($this->onceWithColumns(Arr::wrap($columns), function () {
+        $items = collect($this->onceWithColumns(Arr::wrap($columns), function () {
             return $this->processor->processSelect($this, $this->runSelect());
         }));
+
+        return isset($this->groupLimit)
+            ? $this->withoutGroupLimitKeys($items)
+            : $items;
     }
 
     /**
@@ -2874,6 +2901,32 @@ class Builder implements BuilderContract
     }
 
     /**
+     * Remove the group limit keys from the results in the collection.
+     *
+     * @param  \Illuminate\Support\Collection  $items
+     * @return \Illuminate\Support\Collection
+     */
+    protected function withoutGroupLimitKeys($items)
+    {
+        $keysToRemove = ['laravel_row'];
+
+        if (is_string($this->groupLimit['column'])) {
+            $column = last(explode('.', $this->groupLimit['column']));
+
+            $keysToRemove[] = '@laravel_group := '.$this->grammar->wrap($column);
+            $keysToRemove[] = '@laravel_group := '.$this->grammar->wrap('pivot_'.$column);
+        }
+
+        $items->each(function ($item) use ($keysToRemove) {
+            foreach ($keysToRemove as $key) {
+                unset($item->$key);
+            }
+        });
+
+        return $items;
+    }
+
+    /**
      * Paginate the given query into a simple paginator.
      *
      * @param  int|\Closure  $perPage
@@ -2883,11 +2936,11 @@ class Builder implements BuilderContract
      * @param  \Closure|int|null  $total
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null)
+    public function paginate($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null, $total = null)
     {
         $page = $page ?: Paginator::resolveCurrentPage($pageName);
 
-        $total = func_num_args() === 5 ? value(func_get_arg(4)) : $this->getCountForPagination();
+        $total = value($total) ?? $this->getCountForPagination();
 
         $perPage = $perPage instanceof Closure ? $perPage($total) : $perPage;
 
@@ -3555,10 +3608,20 @@ class Builder implements BuilderContract
     {
         $this->applyBeforeQueryCallbacks();
 
-        $sql = $this->grammar->compileUpdate($this, $values);
+        $values = collect($values)->map(function ($value) {
+            if (! $value instanceof Builder) {
+                return ['value' => $value, 'bindings' => $value];
+            }
+
+            [$query, $bindings] = $this->parseSub($value);
+
+            return ['value' => new Expression("({$query})"), 'bindings' => fn () => $bindings];
+        });
+
+        $sql = $this->grammar->compileUpdate($this, $values->map(fn ($value) => $value['value'])->all());
 
         return $this->connection->update($sql, $this->cleanBindings(
-            $this->grammar->prepareBindingsForUpdate($this->bindings, $values)
+            $this->grammar->prepareBindingsForUpdate($this->bindings, $values->map(fn ($value) => $value['bindings'])->all())
         ));
     }
 
@@ -4043,11 +4106,16 @@ class Builder implements BuilderContract
     /**
      * Dump the current SQL and bindings.
      *
+     * @param  mixed  ...$args
      * @return $this
      */
-    public function dump()
+    public function dump(...$args)
     {
-        dump($this->toSql(), $this->getBindings());
+        dump(
+            $this->toSql(),
+            $this->getBindings(),
+            ...$args,
+        );
 
         return $this;
     }

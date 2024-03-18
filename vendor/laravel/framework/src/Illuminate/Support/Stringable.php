@@ -6,14 +6,15 @@ use ArrayAccess;
 use Closure;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Dumpable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\Tappable;
 use JsonSerializable;
-use Symfony\Component\VarDumper\VarDumper;
+use Stringable as BaseStringable;
 
-class Stringable implements JsonSerializable, ArrayAccess
+class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
 {
-    use Conditionable, Macroable, Tappable;
+    use Conditionable, Dumpable, Macroable, Tappable;
 
     /**
      * The underlying string value.
@@ -508,6 +509,16 @@ class Stringable implements JsonSerializable, ArrayAccess
     }
 
     /**
+     * Remove all non-numeric characters from a string.
+     *
+     * @return static
+     */
+    public function numbers()
+    {
+        return new static(Str::numbers($this->value));
+    }
+
+    /**
      * Pad both sides of the string with another.
      *
      * @param  int  $length
@@ -769,7 +780,7 @@ class Stringable implements JsonSerializable, ArrayAccess
     /**
      * Strip HTML and PHP tags from the given string.
      *
-     * @param  string  $allowedTags
+     * @param  string[]|string|null  $allowedTags
      * @return static
      */
     public function stripTags($allowedTags = null)
@@ -1270,25 +1281,14 @@ class Stringable implements JsonSerializable, ArrayAccess
     /**
      * Dump the string.
      *
+     * @param  mixed  ...$args
      * @return $this
      */
-    public function dump()
+    public function dump(...$args)
     {
-        VarDumper::dump($this->value);
+        dump($this->value, ...$args);
 
         return $this;
-    }
-
-    /**
-     * Dump the string and end the script.
-     *
-     * @return never
-     */
-    public function dd()
-    {
-        $this->dump();
-
-        exit(1);
     }
 
     /**

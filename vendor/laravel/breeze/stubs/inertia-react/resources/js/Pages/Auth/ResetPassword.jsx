@@ -37,6 +37,7 @@ export default function ResetPassword({ token, email }) {
                     <TextInput
                         id="email"
                         type="email"
+                        id="email"
                         name="email"
                         value={data.email}
                         className="mt-1 block w-full"
@@ -69,6 +70,7 @@ export default function ResetPassword({ token, email }) {
 
                     <TextInput
                         type="password"
+                        id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
                         className="mt-1 block w-full"

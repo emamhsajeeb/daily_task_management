@@ -25,8 +25,6 @@ class TaskController extends Controller
             $tasks = DB::table('tasks')->get();
             return view('layouts/tasks', ['tasks' => $tasks,'user' => $user]);
         }
-
-
     }
     public function import(Request $request)
     {
