@@ -27,7 +27,7 @@ class TaskController extends Controller
             return response()->json(['error' => 'Unauthorized role'], 403); // Handle unauthorized roles gracefully
         }
 
-        return response()->json([compact('tasks')], 200);
+        return response()->json(compact('tasks'), 200);
     }
 
     /**
