@@ -873,9 +873,6 @@
             <div class="col-6">
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>
-            <div class="col-6">
-                <a href="https://1.envato.market/velzon-admin" target="_blank" class="btn btn-primary w-100">Buy Now</a>
-            </div>
         </div>
     </div>
 </div>
@@ -887,7 +884,7 @@
                 <script>                                document.write(new Date().getFullYear())</script> © Emam Hosen.
             </div>
             <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block"> Design & Develop by Emam Hosen
+                <div class="text-sm-end d-none d-sm-block"> Designed & Developed by Emam Hosen
                 </div>
             </div>
         </div>
@@ -895,26 +892,7 @@
 </footer>
 
 <!-- JAVASCRIPT -->
-<script src="{{ asset('assets/libs/dropzone/dropzone-min.js') }}"></script>
-<script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
-<script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
-<script src="{{ asset('assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-<script src="{{ asset('assets/js/plugins.js') }}"></script>
-
-<!-- list.js min js -->
-<script src="{{ asset('assets/libs/list.js/list.min.js') }}"></script>
-
-<!--list pagination js-->
-<script src="{{ asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
-
-
-
-<!-- Sweet Alerts js -->
-<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-
-<!-- App js -->
-<script src="{{ asset('assets/js/app.js') }}"></script>
+@include('layouts.script')
 
 </body>
 
