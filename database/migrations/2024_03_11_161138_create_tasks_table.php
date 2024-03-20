@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('incharge')->nullable();
             $table->string('status')->nullable();
             $table->string('completion_time')->nullable();
+            $table->text('inspection_details')->nullable();
             $table->timestamps();
 
         });

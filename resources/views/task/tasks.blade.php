@@ -154,7 +154,7 @@
                                                 </div>
                                             </td>
                                             <td class="client_name">{{ $task->completion_time }}</td>
-                                            <td class="client_name">Inspection Details</td>
+                                            <td class="client_name">{{ $task->inspection_details }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
