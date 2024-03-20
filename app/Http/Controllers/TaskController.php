@@ -23,7 +23,7 @@ class TaskController extends Controller
             return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
         } elseif ($user->role == 'admin') {
             $tasks = DB::table('tasks')->get();
-            return view('layouts/tasks', ['tasks' => $tasks,'user' => $user]);
+            return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
         }
     }
     public function import(Request $request)
