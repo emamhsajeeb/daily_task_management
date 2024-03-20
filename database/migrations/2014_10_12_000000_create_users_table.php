@@ -17,11 +17,15 @@ return new class extends Migration
             $table->string('user_name');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->date('dob')->nullable();
+            $table->string('phone')->unique();
             $table->string('email')->unique();
+            $table->date('joining_date')->nullable();
+            $table->date('dob')->nullable();
+            $table->text('address')->nullable();
             $table->string('password');
             $table->string('role')->nullable();
             $table->string('position')->nullable();
+            $table->string('passport')->nullable();
             $table->string('nid')->nullable();
             $table->string('photo')->nullable();
             $table->timestamp('email_verified_at')->nullable();

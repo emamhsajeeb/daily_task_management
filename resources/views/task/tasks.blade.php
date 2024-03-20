@@ -90,17 +90,18 @@
                                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
                                                 </div>
                                             </th>
-                                            <th class="sort" data-sort="id">Date</th>
-                                            <th class="sort" data-sort="id">RFI NO</th>
-                                            <th class="sort" data-sort="id">Type</th>
-                                            <th class="sort" data-sort="id">Description</th>
-                                            <th class="sort" data-sort="id">Location</th>
-                                            <th class="sort" data-sort="id">Side</th>
-                                            <th class="sort" data-sort="project_name">Quantity/Layer No.</th>
-                                            <th class="sort" data-sort="tasks_name">Planed Time</th>
-                                            <th class="sort" data-sort="assignedto">In-charge</th>
+                                            <th class="sort" data-sort="date">Date</th>
+                                            <th class="sort" data-sort="number">RFI NO</th>
+                                            <th class="sort" data-sort="type">Type</th>
+                                            <th class="sort" data-sort="description">Description</th>
+                                            <th class="sort" data-sort="location">Location</th>
+                                            <th class="sort" data-sort="side">Side</th>
+                                            <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
+                                            <th class="sort" data-sort="planned_time">Planed Time</th>
+                                            <th class="sort" data-sort="incharge">In-charge</th>
                                             <th class="sort" data-sort="status">Status</th>
-                                            <th class="sort" data-sort="tasks_name">Completion Date/Time</th>
+                                            <th class="sort" data-sort="completion_time">Completion Date/Time</th>
+                                            <th class="sort" data-sort="tasks_name">Inspection Details</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
@@ -153,6 +154,7 @@
                                                 </div>
                                             </td>
                                             <td class="client_name">{{ $task->completion_time }}</td>
+                                            <td class="client_name">Inspection Details</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

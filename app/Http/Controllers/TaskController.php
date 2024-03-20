@@ -20,7 +20,7 @@ class TaskController extends Controller
 
         if ($user->role == 'staff') {
             $tasks = DB::table('tasks')->where('incharge',$user->user_name)->get();
-            return view('layouts/tasks', ['tasks' => $tasks,'user' => $user]);
+            return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
         } elseif ($user->role == 'admin') {
             $tasks = DB::table('tasks')->get();
             return view('layouts/tasks', ['tasks' => $tasks,'user' => $user]);

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d4fe66d9-c5a5-4e2a-9533-580fe711d84b" name="server320.web-hosting.com" url="https://www.dhakabypass.com">
+        <fileTransfer rootFolder="/home/dhakabypass/public_html" accessType="SFTP" host="server320.web-hosting.com" port="21098" sshConfigId="27843354-71b7-4aca-9602-656fc4db795f" sshConfig="dhakabypass@server320.web-hosting.com:21098 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
