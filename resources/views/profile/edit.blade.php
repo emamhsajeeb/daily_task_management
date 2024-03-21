@@ -69,7 +69,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="usernameInput" class="form-label">Username</label>
-                                                        <input type="text" class="form-control" id="usernameInput" placeholder="Enter username" value="{{ $user->username }}">
+                                                        <input type="text" class="form-control" id="usernameInput" placeholder="Enter username" value="{{ $user->user_name }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
