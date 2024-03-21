@@ -205,7 +205,7 @@
                         <div class="dropdown ms-sm-3 header-item topbar-user">
                             <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="d-flex align-items-center">
-                                    <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/user/' . $user->user_name . '.jpg') }}" alt="Header Avatar" />
+                                    <img class="rounded-circle header-profile-user" src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="Header Avatar" />
                                     <span class="text-start ms-xl-2">
                                         <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $user->first_name }} {{ $user->last_name }}</span>
                                         <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ $user->position }}</span>
