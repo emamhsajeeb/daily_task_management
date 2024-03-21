@@ -127,7 +127,7 @@
                                             <td class="incharge">
                                                 <div class="avatar-group">
                                                     <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle avatar-xxs" />
+                                                        <img src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />
                                                         @if ($user->role == 'staff')
                                                         <span>{{ $user->first_name }}</span>
                                                         @endif
