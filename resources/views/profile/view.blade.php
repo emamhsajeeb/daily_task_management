@@ -51,7 +51,7 @@
                                 </ul>
                                 @if($user->role == 'admin')
                                     <div class="flex-shrink-0">
-                                        <a href="{{route('profile.edit', ['id' => $userId] )}}" class="btn btn-secondary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                                        <a href="{{route('profile.edit', ['id' => $user->id] )}}" class="btn btn-secondary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
                                     </div>
                                 @endif
 

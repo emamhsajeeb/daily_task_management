@@ -62,7 +62,7 @@
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                        <form method="POST" action="{{ route('profile.update') }}">
+                                        <form method="POST" action="{{ route('profile.update', ['id' => $user->id]) }}">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-lg-6">
