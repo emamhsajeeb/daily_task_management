@@ -12566,9 +12566,9 @@ span.flatpickr-weekday {
   background-size: cover;
 }
 .auth-one-bg .bg-overlay {
-  background: -webkit-gradient(linear, left top, right top, from(#4a62fe), to(#687cfe));
-  background: linear-gradient(to right, #4a62fe, #687cfe);
-  opacity: 0.9;
+  background: -webkit-gradient(linear, left top, right top, from(#144e9a), to(#f58220));
+  background: linear-gradient(to right, #144e9a, #f58220);
+  opacity: 0.5;
 }
 
 .shape {

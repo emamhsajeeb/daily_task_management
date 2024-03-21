@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('joining_date')->nullable();
             $table->date('dob')->nullable();
             $table->text('address')->nullable();
+            $table->text('about')->nullable();
             $table->string('password');
             $table->string('role')->nullable();
             $table->string('position')->nullable();

@@ -1,6 +1,6 @@
 @extends('layouts.app',['user' => $user])
 
-@section('tasks')
+@section('profile')
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
@@ -19,7 +19,7 @@
                         <!--end col-->
                         <div class="col">
                             <div class="p-2">
-                                <h3 class="text-white mb-1">{{ $user->first_name }}{{ $user->first_name }}</h3>
+                                <h3 class="text-white mb-1">{{ $user->first_name }} {{ $user->last_name }}</h3>
                                 <p class="text-white text-opacity-75">{{ $user->position }}</p>
                                 <div class="hstack text-white-50 gap-1">
                                     <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>{{ $user->address }}</div>
@@ -51,7 +51,7 @@
                                 </ul>
                                 @if($user->role == 'admin')
                                     <div class="flex-shrink-0">
-                                        <a href="{{route('profile.edit')}}" class="btn btn-secondary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                                        <a href="{{route('profile.edit', $user->id )}}" class="btn btn-secondary"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
                                     </div>
                                 @endif
 
