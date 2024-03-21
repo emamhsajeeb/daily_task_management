@@ -22,13 +22,13 @@ class ProfileUpdateRequest extends FormRequest
             'first_name'=> ['required', 'string', 'max:20'],
             'last_name'=> ['required', 'string', 'max:20'],
             'phone'=> ['required', 'string', 'max:20'],
-            'joining_date'=> ['required', 'date'],
-            'dob'=> ['required', 'date'],
+            'joining_date'=> ['required', 'string'],
+            'dob'=> ['required', 'string'],
             'address'=> ['required', 'string', 'max:255'],
             'about'=> ['required', 'string', 'max:500'],
             'position'=> ['required', 'string', 'max:20'],
             'passport'=> ['required', 'string', 'max:20'],
-            'nid'=> ['required', 'integer', 'max:20'],
+            'nid'=> ['required', 'string', 'max:20'],
         ];
     }
 }
