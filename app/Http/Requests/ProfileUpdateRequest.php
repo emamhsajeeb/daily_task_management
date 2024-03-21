@@ -18,6 +18,18 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'employee_id' => ['required', 'integer', 'max:10'],
+            'user_name'=> ['required', 'string', 'max:20'],
+            'first_name'=> ['required', 'string', 'max:20'],
+            'last_name'=> ['required', 'string', 'max:20'],
+            'phone'=> ['required', 'string', 'max:20'],
+            'joining_date'=> ['required', 'date'],
+            'dob'=> ['required', 'date'],
+            'address'=> ['required', 'text', 'max:255'],
+            'about'=> ['required', 'text', 'max:500'],
+            'position'=> ['required', 'string', 'max:20'],
+            'passport'=> ['required', 'string', 'max:20'],
+            'nid'=> ['required', 'integer', 'max:20'],
         ];
     }
 }

@@ -65,7 +65,12 @@
                                         <form method="POST" action="{{ route('profile.update', ['id' => $user->id]) }}">
                                             @csrf
                                             <div class="row">
-
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="employeeIdInput" class="form-label">Employee ID</label>
+                                                        <input type="number" name="employee_id" class="form-control" id="employeeIdInput" placeholder="Enter Employee ID" value="{{ $user->employee_id }}" required autocomplete="employee_id">
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="usernameInput" class="form-label">Username</label>
