@@ -64,6 +64,7 @@
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                         <form method="POST" action="{{ route('profile.update', ['id' => $user->id]) }}">
                                             @csrf
+                                            @method('patch')
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">

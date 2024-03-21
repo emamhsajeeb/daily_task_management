@@ -84,7 +84,7 @@
                                                                 <td class="text-muted">{{ $user->address }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th class="ps-0" scope="row">Date of Birth</th>
+                                                                <th class="ps-0" scope="row">Date of Birth :</th>
                                                                 <td class="text-muted">{{ $user->dob }}</td>
                                                             </tr>
                                                             <tr>
