@@ -13,7 +13,7 @@
                     <div class="row g-4">
                         <div class="col-auto">
                             <div class="avatar-lg">
-                                <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-img" class="img-thumbnail rounded-circle" />
+                                <img src="{{ asset('assets/images/user/' . $user->user_name . '.jpg') }}" alt="user-img" class="img-thumbnail rounded-circle" />
                             </div>
                         </div>
                         <!--end col-->
