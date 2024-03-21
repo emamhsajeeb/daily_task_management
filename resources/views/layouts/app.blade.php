@@ -52,8 +52,10 @@
     <!-- ============================================================== -->
     @yield('dashboard')
     @yield('profile')
+    @yield('edit_profile')
     @yield('tasks')
     @yield('add-task')
+
 
 
     <!-- end main content-->
