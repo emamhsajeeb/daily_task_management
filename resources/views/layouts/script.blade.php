@@ -19,3 +19,6 @@
 <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
+<!-- profile-setting init js -->
+<script src="{{ asset('assets/js/pages/profile-setting.init.js') }}"></script>
