@@ -68,8 +68,8 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="firstnameInput" class="form-label">First Name</label>
-                                                        <input type="text" class="form-control" id="usernameInput" placeholder="Enter firstname" value="{{ $user->username }}">
+                                                        <label for="usernameInput" class="form-label">Username</label>
+                                                        <input type="text" class="form-control" id="usernameInput" placeholder="Enter username" value="{{ $user->username }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
@@ -110,15 +110,15 @@
                                                 <!--end col-->
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
-                                                        <label for="JoiningdatInput" class="form-label">Joining Date</label>
-                                                        <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdatInput" data-date-format="d M, Y" data-deafult-date="{{ $user->dob }}" placeholder="Select date" />
+                                                        <label for="JoiningdateInput" class="form-label">Joining Date</label>
+                                                        <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdateInput" data-date-format="Y-M-d" data-deafult-date="{{ $user->dob }}" placeholder="Select date" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
-                                                        <label for="JoiningdatInput" class="form-label">Date of Birth</label>
-                                                        <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdatInput" data-date-format="d M, Y" data-deafult-date="{{ $user->joining_date }}" placeholder="Select date" />
+                                                        <label for="dobInput" class="form-label">Date of Birth</label>
+                                                        <input type="date" class="form-control" data-provider="flatpickr" id="dobInput" data-date-format="d M, Y" data-deafult-date="{{ $user->joining_date }}" placeholder="Select date" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
