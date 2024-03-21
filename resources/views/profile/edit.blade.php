@@ -65,86 +65,87 @@
                                         <form method="POST" action="{{ route('profile.update', ['id' => $user->id]) }}">
                                             @csrf
                                             <div class="row">
+
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="usernameInput" class="form-label">Username</label>
-                                                        <input type="text" class="form-control" id="usernameInput" placeholder="Enter username" value="{{ $user->user_name }}">
+                                                        <input type="text" name="user_name" class="form-control" id="usernameInput" placeholder="Enter username" value="{{ $user->user_name }}" required autocomplete="user_name">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="firstnameInput" class="form-label">First Name</label>
-                                                        <input type="text" class="form-control" id="firstnameInput" placeholder="Enter firstname" value="{{ $user->first_name }}">
+                                                        <input name="first_name" required autocomplete="first_name" type="text" class="form-control" id="firstnameInput" placeholder="Enter firstname" value="{{ $user->first_name }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="lastnameInput" class="form-label">Last Name</label>
-                                                        <input type="text" class="form-control" id="lastnameInput" placeholder="Enter lastname" value="{{ $user->last_name }}">
+                                                        <input name="last_name" required autocomplete="last_name" type="text" class="form-control" id="lastnameInput" placeholder="Enter lastname" value="{{ $user->last_name }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="designationInput" class="form-label">Designation</label>
-                                                        <input type="text" class="form-control" id="designationInput" placeholder="Designation" value="{{ $user->position }}">
+                                                        <input name="position" required autocomplete="position" type="text" class="form-control" id="designationInput" placeholder="Designation" value="{{ $user->position }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="phonenumberInput" class="form-label">Phone Number</label>
-                                                        <input type="number" class="form-control" id="phonenumberInput" placeholder="Enter phone number" value="{{ $user->phone }}">
+                                                        <input name="phone" required autocomplete="phone" type="number" class="form-control" id="phonenumberInput" placeholder="Enter phone number" value="{{ $user->phone }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="emailInput" class="form-label">Email Address</label>
-                                                        <input type="email" class="form-control" id="emailInput" placeholder="Enter your email" value="{{ $user->email }}">
+                                                        <input name="email" required autocomplete="email" type="email" class="form-control" id="emailInput" placeholder="Enter your email" value="{{ $user->email }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <label for="JoiningdateInput" class="form-label">Joining Date</label>
-                                                        <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdateInput" data-date-format="Y-M-d" data-deafult-date="{{ $user->dob }}" placeholder="Select date" />
+                                                        <input name="dob" required type="date" class="form-control" data-provider="flatpickr" id="JoiningdateInput" data-date-format="Y-M-d" data-deafult-date="{{ $user->dob }}" placeholder="Select date" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <label for="dobInput" class="form-label">Date of Birth</label>
-                                                        <input type="date" class="form-control" data-provider="flatpickr" id="dobInput" data-date-format="d M, Y" data-deafult-date="{{ $user->joining_date }}" placeholder="Select date" />
+                                                        <input name="joining_date" required type="date" class="form-control" data-provider="flatpickr" id="dobInput" data-date-format="d M, Y" data-deafult-date="{{ $user->joining_date }}" placeholder="Select date" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="nidInput" class="form-label">NID</label>
-                                                        <input type="number" class="form-control" id="nidInput" placeholder="NID" value="{{ $user->nid }}">
+                                                        <input name="nid" required autocomplete="nid" type="number" class="form-control" id="nidInput" placeholder="NID" value="{{ $user->nid }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="passportInput" class="form-label">Passport</label>
-                                                        <input type="text" class="form-control" id="passportInput" placeholder="Passport" value="{{ $user->passport }}">
+                                                        <input name="passport" autocomplete="passport" type="text" class="form-control" id="passportInput" placeholder="Passport" value="{{ $user->passport }}">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
                                                         <label for="addressInput" class="form-label">Address</label>
-                                                        <input type="text" class="form-control" id="addressInput" placeholder="Address" value="{{ $user->address }}" />
+                                                        <input name="address" required type="text" class="form-control" id="addressInput" placeholder="Address" value="{{ $user->address }}" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-12">
                                                     <div class="mb-3 pb-2">
                                                         <label for="exampleFormControlTextarea" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea" placeholder="Enter description" rows="3">{{ $user->about }}</textarea>
+                                                        <textarea name="about" class="form-control" id="exampleFormControlTextarea" placeholder="Enter description" rows="3">{{ $user->about }}</textarea>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
