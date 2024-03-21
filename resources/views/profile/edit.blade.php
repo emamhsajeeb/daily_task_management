@@ -19,7 +19,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-xxl-3">
                         <div class="card mt-n5">
@@ -63,7 +62,8 @@
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                        <form action="javascript:void(0);">
+                                        <form method="POST" action="{{ route('profile.update') }}">
+                                            @csrf
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
@@ -107,14 +107,14 @@
                                                     </div>
                                                 </div>
                                                 <!--end col-->
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <label for="JoiningdatInput" class="form-label">Joining Date</label>
                                                         <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdatInput" data-date-format="d M, Y" data-deafult-date="{{ $user->dob }}" placeholder="Select date" />
                                                     </div>
                                                 </div>
                                                 <!--end col-->
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <label for="JoiningdatInput" class="form-label">Date of Birth</label>
                                                         <input type="date" class="form-control" data-provider="flatpickr" id="JoiningdatInput" data-date-format="d M, Y" data-deafult-date="{{ $user->joining_date }}" placeholder="Select date" />
@@ -124,7 +124,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="nidInput" class="form-label">NID</label>
-                                                        <input type="text" class="form-control" id="nidInput" placeholder="NID" value="{{ $user->nid }}">
+                                                        <input type="number" class="form-control" id="nidInput" placeholder="NID" value="{{ $user->nid }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -134,7 +134,7 @@
                                                     </div>
                                                 </div>
                                                 <!--end col-->
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-12">
                                                     <div class="mb-3">
                                                         <label for="addressInput" class="form-label">Address</label>
                                                         <input type="text" class="form-control" id="addressInput" placeholder="Address" value="{{ $user->address }}" />
@@ -270,7 +270,6 @@
                     <!--end col-->
                 </div>
                 <!--end row-->
-
             </div>
             <!-- container-fluid -->
         </div><!-- End Page-content -->
