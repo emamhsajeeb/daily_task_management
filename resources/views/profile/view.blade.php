@@ -6,14 +6,14 @@
             <div class="container-fluid">
                 <div class="profile-foreground position-relative mx-n4 mt-n4">
                     <div class="profile-wid-bg">
-                        <img src="assets/images/profile-bg.jpg" alt="" class="profile-wid-img" />
+                        <img src="{{ asset('assets/images/profile-bg.jpg') }}" alt="" class="profile-wid-img" />
                     </div>
                 </div>
                 <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
                     <div class="row g-4">
                         <div class="col-auto">
                             <div class="avatar-lg">
-                                <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-thumbnail rounded-circle" />
+                                <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="user-img" class="img-thumbnail rounded-circle" />
                             </div>
                         </div>
                         <!--end col-->
