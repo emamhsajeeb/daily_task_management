@@ -20,11 +20,14 @@ class TaskController extends Controller
 
         if ($user->role == 'staff') {
             $tasks = DB::table('tasks')->where('incharge',$user->user_name)->get();
-            return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
+
         } elseif ($user->role == 'admin') {
             $tasks = DB::table('tasks')->get();
-            return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
+        } else {
+            // Handle other roles if needed
+            $tasks = [];
         }
+        return view('task/tasks', ['tasks' => $tasks,'user' => $user]);
     }
     public function import(Request $request)
     {
@@ -39,23 +42,12 @@ class TaskController extends Controller
         return redirect()->route('tasks')->with('success', 'Data imported successfully.');
     }
 
-    public function updateTaskStatus($taskNumber, $status)
+    public function updateTaskStatus(Request $request): \Illuminate\Http\JsonResponse
     {
-        try {
-            $task = Tasks::find($taskNumber);
-            $task->update(['status' => $status]);
-            return redirect()->back()->with(['message' => 'Task status updated successfully!']);
-        } catch (ModelNotFoundException $e) {
-            return redirect()->back()->withErrors([
-                'message' => 'Task not found with number ' . $taskNumber,
-            ], 404);
-        } catch (\Exception $e) {
-            report($e); // Report unexpected errors
-
-            return redirect()->back()->withErrors([
-                'message' => 'Error updating task status',
-            ], 500);
-        }
+        $task = Tasks::find($request->id);
+        $task->status = $request->status;
+        $task->save();
+        return response()->json(['message' => 'Status updated successfully']);
     }
 
 }

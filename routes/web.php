@@ -26,7 +26,7 @@ Route::get('/add-tasks', function () {
     return view('task/add',['user' => Auth::user()]);
 })->middleware(['auth', 'verified'])->name('add-tasks');
 
-Route::get('/update-task-status/{taskNumber}/{status}', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
+Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.view');

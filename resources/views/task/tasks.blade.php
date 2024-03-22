@@ -1,6 +1,9 @@
 @extends('layouts.app',['user' => $user])
 
-@section('tasks',)
+@section('tasks')
+    @php
+        $incharges = \DB::table('users')->get();
+    @endphp
 <div class="main-content">
 
     <div class="page-content">
@@ -87,95 +90,95 @@
                                 <table class="table align-middle table-nowrap mb-0" id="tasksTable">
                                     <thead class="table-light text-muted">
                                         <tr>
-@if($user->role == 'admin')
+                                            @if($user->role == 'admin')
                                             <th scope="col" style="width: 40px;">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
                                                 </div>
                                             </th>
-@endif
+                                            @endif
                                             <th class="sort" data-sort="date">Date</th>
                                             <th class="sort" data-sort="number">RFI NO</th>
+                                            <th class="sort" data-sort="status">Status</th>
                                             <th class="sort" data-sort="type">Type</th>
                                             <th class="sort" data-sort="description">Description</th>
                                             <th class="sort" data-sort="location">Location</th>
                                             <th class="sort" data-sort="side">Side</th>
                                             <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
                                             <th class="sort" data-sort="planned_time">Planed Time</th>
-@if($user->role == 'admin')
+                                            @if($user->role == 'admin')
                                             <th class="sort" data-sort="incharge">In-charge</th>
-@endif
-                                            <th class="sort" data-sort="status">Status</th>
+                                            @endif
                                             <th class="sort" data-sort="completion_time">Completion Date/Time</th>
                                             <th class="sort" data-sort="tasks_name">Inspection Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="list form-check-all">
-                                    @foreach($tasks as $task)
+                                    <tbody id="task-list" class="list form-check-all">
+{{--                                    @foreach($tasks as $task)--}}
 
-                                        <tr>
-@if($user->role == 'admin')
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />
-                                                </div>
-                                            </th>
-@endif
-                                            <td class="due_date">{{ $task->date }}</td>
-                                            <td class="id">{{ $task->number }}</td>
-                                            <td class="client_name">{{ $task->type }}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <div class="flex-grow-1 tasks_name">{{ $task->description }}</div>
-                                                </div>
-                                            </td>
-                                            <td class="client_name">{{ $task->location }}</td>
-                                            <td class="client_name">{{ $task->side }}</td>
-                                            <td class="client_name">{{ $task->qty_layer }}</td>
-                                            <td class="client_name">{{ $task->planned_time }}</td>
-@if($user->role == 'admin')
-                                            <td class="incharge">
-                                                <div class="avatar-group">
- @if ($user->role == 'staff')
-                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                        <img src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />
-                                                       
-                                                        <span>{{ $user->first_name }}</span>
-                                                       
-                                        
+{{--                                        <tr>--}}
+{{--@if($user->role == 'admin')--}}
+{{--                                            <th scope="row">--}}
+{{--                                                <div class="form-check">--}}
+{{--                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />--}}
+{{--                                                </div>--}}
+{{--                                            </th>--}}
+{{--@endif--}}
+{{--                                            <td class="due_date">{{ $task->date }}</td>--}}
+{{--                                            <td class="id">{{ $task->number }}</td>--}}
+{{--                                            <td class="client_name">{{ $task->type }}</td>--}}
+{{--                                            <td>--}}
+{{--                                                <div class="d-flex">--}}
+{{--                                                    <div class="flex-grow-1 tasks_name">{{ $task->description }}</div>--}}
+{{--                                                </div>--}}
+{{--                                            </td>--}}
+{{--                                            <td class="client_name">{{ $task->location }}</td>--}}
+{{--                                            <td class="client_name">{{ $task->side }}</td>--}}
+{{--                                            <td class="client_name">{{ $task->qty_layer }}</td>--}}
+{{--                                            <td class="client_name">{{ $task->planned_time }}</td>--}}
+{{--@if($user->role == 'admin')--}}
+{{--                                            <td class="incharge">--}}
+{{--                                                <div class="avatar-group">--}}
+{{-- @if ($user->role == 'staff')--}}
+{{--                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">--}}
+{{--                                                        <img src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />--}}
+
+{{--                                                        <span>{{ $user->first_name }}</span>--}}
 
 
-                                           </a>
- @endif 
-          @if($user->role == 'admin')
-                                                            @php
-                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->first();
-                                                            @endphp
-                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                        <img src="{{ asset('assets/images/users/' . $incharge->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />
-                                                       
-                                                        <span>{{ $incharge->first_name }}</span>
 
-                                                        @endif 
-                                     </div>
-                                            </td>
-@endif
-                                            <td class="status">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-primary btn-sm dropdown-toggle" style="text-transform: uppercase" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        {{ $task->status }}
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item update-status" data-status="pending" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'pending']) }}">Pending</a>
-                                                        <a class="dropdown-item update-status" data-status="completed" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'completed']) }}">Completed</a>
-                                                        <a class="dropdown-item update-status" data-status="cancelled" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'cancelled']) }}">Cancelled</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="client_name">{{ $task->completion_time }}</td>
-                                            <td class="client_name">{{ $task->inspection_details }}</td>
-                                        </tr>
-                                    @endforeach
+
+{{--                                           </a>--}}
+{{-- @endif--}}
+{{--          @if($user->role == 'admin')--}}
+{{--                                                            @php--}}
+{{--                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->first();--}}
+{{--                                                            @endphp--}}
+{{--                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">--}}
+{{--                                                        <img src="{{ asset('assets/images/users/' . $incharge->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />--}}
+
+{{--                                                        <span>{{ $incharge->first_name }}</span>--}}
+
+{{--                                                        @endif--}}
+{{--                                     </div>--}}
+{{--                                            </td>--}}
+{{--@endif--}}
+{{--                                            <td class="status">--}}
+{{--                                                <div class="btn-group">--}}
+{{--                                                    <button class="btn btn-primary btn-sm dropdown-toggle" style="text-transform: uppercase" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+{{--                                                        {{ $task->status }}--}}
+{{--                                                    </button>--}}
+{{--                                                    <div class="dropdown-menu">--}}
+{{--                                                        <a class="dropdown-item update-status" data-status="pending" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'pending']) }}">Pending</a>--}}
+{{--                                                        <a class="dropdown-item update-status" data-status="completed" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'completed']) }}">Completed</a>--}}
+{{--                                                        <a class="dropdown-item update-status" data-status="cancelled" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'cancelled']) }}">Cancelled</a>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </td>--}}
+{{--                                            <td class="client_name">{{ $task->completion_time }}</td>--}}
+{{--                                            <td class="client_name">{{ $task->inspection_details }}</td>--}}
+{{--                                        </tr>--}}
+{{--                                    @endforeach--}}
                                     </tbody>
                                 </table>
                                 <!--end table-->
@@ -210,5 +213,104 @@
     </div>
     <!-- End Page-content -->
 </div>
+<script>
+
+// Function to get the tasks dynamically
+function updateTaskList() {
+    var tasks = {!! json_encode($tasks->toArray()) !!};
+    var user = {!! json_encode($user->toArray()) !!};
+    var incharges = {!! json_encode($incharges->toArray()) !!};
+    var taskList = document.getElementById('task-list');
+    // Clear existing table rows
+    taskList.innerHTML = '';
+    // Loop through tasks and create table rows
+    tasks.forEach(function (task) {
+        var row = document.createElement('tr');
+        if(user.role === "admin") {
+            row.innerHTML = `
+            <th scope="row">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />
+                </div>
+            </th>
+            `;
+        }
+        row.innerHTML += `
+        <td class="due_date">${task.date}</td>
+        <td class="id">${task.number}</td>
+        <td class="status">
+            <select class="form-select-sm mb-3 status-dropdown" data-task-id="${ task.id }">
+                <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
+                <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
+                <option value="cancelled" ${task.status === "cancelled" ? 'selected' : ''}>Cancelled</option>
+            </select>
+        </td>
+        <td class="client_name">${task.type}</td>
+        <td>
+            <div class="d-flex">
+                <div class="flex-grow-1 tasks_name">${task.description}</div>
+            </div>
+        </td>
+        <td class="client_name">${task.location}</td>
+        <td class="client_name">${task.side}</td>
+        <td class="client_name">${task.qty_layer}</td>
+        <td class="client_name">${task.planned_time}</td>
+        `;
+
+        if(user.role === "admin") {
+            // Find the incharge object that matches the task's incharge property
+            var matchingIncharge = incharges.find(function(incharges) {
+                return incharges.user_name === task.incharge;
+            });
+            var imagePath = "{{ asset("assets/images/users") }}" +"/"+ matchingIncharge.user_name + ".jpg";
+            row.innerHTML += `
+            <td class="incharge">
+                <div class="avatar-group">
+                    <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" id="inchargeTooltip" title="${matchingIncharge.first_name}">
+                    <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
+                    <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
+                    </a>
+                </div>
+            </td>
+                `;
+        }
+        row.innerHTML += `
+        <td class="client_name">${task.completion_time}</td>
+        <td class="client_name">${task.inspection_details}</td>
+        `;
+        taskList.appendChild(row);
+    });
+}
+
+// Function to handle status update
+function updateStatus(taskId, status) {
+
+    axios.post('/task/update-status', {
+        id: taskId,
+        status: status
+    })
+        .then(function (response) {
+            console.log(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+// Event listener for dropdown change
+document.querySelectorAll('.status-dropdown').forEach(function(dropdown) {
+    dropdown.addEventListener('change', function() {
+        var taskId = this.getAttribute('data-task-id');
+        var status = this.value;
+        console.log(taskId, status);
+        updateStatus(taskId, status);
+    });
+});
+
+// Call the function when the page loads
+window.onload = function () {
+updateTaskList();
+};
+</script>
 @endsection
 
