@@ -85,11 +85,13 @@
                                 <table class="table align-middle table-nowrap mb-0" id="tasksTable">
                                     <thead class="table-light text-muted">
                                         <tr>
+@if($user->role == 'admin')
                                             <th scope="col" style="width: 40px;">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
                                                 </div>
                                             </th>
+@endif
                                             <th class="sort" data-sort="date">Date</th>
                                             <th class="sort" data-sort="number">RFI NO</th>
                                             <th class="sort" data-sort="type">Type</th>
@@ -106,12 +108,15 @@
                                     </thead>
                                     <tbody class="list form-check-all">
                                     @foreach($tasks as $task)
+
                                         <tr>
+@if($user->role == 'admin')
                                             <th scope="row">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />
                                                 </div>
                                             </th>
+@endif
                                             <td class="due_date">{{ $task->date }}</td>
                                             <td class="id">{{ $task->number }}</td>
                                             <td class="client_name">{{ $task->type }}</td>
