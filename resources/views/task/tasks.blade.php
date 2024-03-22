@@ -126,20 +126,28 @@
                                             <td class="client_name">{{ $task->planned_time }}</td>
                                             <td class="incharge">
                                                 <div class="avatar-group">
+ @if ($user->role == 'staff')
                                                     <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
                                                         <img src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />
-                                                        @if ($user->role == 'staff')
+                                                       
                                                         <span>{{ $user->first_name }}</span>
-                                                        @endif
-                                                        @if($user->role == 'admin')
+                                                       
+                                        
+
+
+                                           </a>
+ @endif 
+          @if($user->role == 'admin')
                                                             @php
                                                                 $incharge = \DB::table('users')->where('user_name',$task->incharge)->first();
                                                             @endphp
+                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
+                                                        <img src="{{ asset('assets/images/users/' . $incharge->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />
+                                                       
                                                         <span>{{ $incharge->first_name }}</span>
 
-                                                        @endif
-                                                    </a>
-                                                </div>
+                                                        @endif 
+                                     </div>
                                             </td>
                                             <td class="status">
                                                 <div class="btn-group">
