@@ -102,7 +102,9 @@
                                             <th class="sort" data-sort="side">Side</th>
                                             <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
                                             <th class="sort" data-sort="planned_time">Planed Time</th>
+@if($user->role == 'admin')
                                             <th class="sort" data-sort="incharge">In-charge</th>
+@endif
                                             <th class="sort" data-sort="status">Status</th>
                                             <th class="sort" data-sort="completion_time">Completion Date/Time</th>
                                             <th class="sort" data-sort="tasks_name">Inspection Details</th>
