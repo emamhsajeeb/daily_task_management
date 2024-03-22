@@ -131,6 +131,7 @@
                                             <td class="client_name">{{ $task->side }}</td>
                                             <td class="client_name">{{ $task->qty_layer }}</td>
                                             <td class="client_name">{{ $task->planned_time }}</td>
+@if($user->role == 'admin')
                                             <td class="incharge">
                                                 <div class="avatar-group">
  @if ($user->role == 'staff')
@@ -156,6 +157,7 @@
                                                         @endif 
                                      </div>
                                             </td>
+@endif
                                             <td class="status">
                                                 <div class="btn-group">
                                                     <button class="btn btn-primary btn-sm dropdown-toggle" style="text-transform: uppercase" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
