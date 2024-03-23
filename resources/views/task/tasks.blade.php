@@ -111,6 +111,7 @@
                                             @endif
                                             <th class="sort" data-sort="completion_time">Completion Date/Time</th>
                                             <th class="sort" data-sort="tasks_name">Inspection Details</th>
+                                            <th class="sort" data-sort="tasks_name">Resubmitted</th>
                                         </tr>
                                     </thead>
                                     <tbody id="task-list" class="list form-check-all">
@@ -218,6 +219,10 @@
 // Function to get the tasks dynamically
 function updateTaskList() {
     var tasks = {!! json_encode($tasks->toArray()) !!};
+    // Sort tasks by date descending order
+    tasks.sort(function(a, b) {
+        return new Date(b.date) - new Date(a.date);
+    });
     var user = {!! json_encode($user->toArray()) !!};
     var incharges = {!! json_encode($incharges->toArray()) !!};
     var taskList = document.getElementById('task-list');
@@ -239,7 +244,7 @@ function updateTaskList() {
         <td class="due_date">${task.date}</td>
         <td class="id">${task.number}</td>
         <td class="status">
-            <select class="form-select-sm mb-3 status-dropdown" data-task-id="${ task.id }">
+            <select id="status-dropdown" style="margin-bottom: 0rem !important;" data-task-id="${ task.id }">
                 <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
                 <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
                 <option value="cancelled" ${task.status === "cancelled" ? 'selected' : ''}>Cancelled</option>
@@ -275,8 +280,9 @@ function updateTaskList() {
                 `;
         }
         row.innerHTML += `
-        <td class="client_name">${task.completion_time}</td>
+        <td class="client_name"><input type="datetime-local" id="birthdaytime" name="completion_time"></td>
         <td class="client_name">${task.inspection_details}</td>
+        <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count}</td>
         `;
         taskList.appendChild(row);
     });
@@ -284,33 +290,43 @@ function updateTaskList() {
 
 // Function to handle status update
 function updateStatus(taskId, status) {
-
-    axios.post('/task/update-status', {
-        id: taskId,
-        status: status
-    })
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    $.post("/task/update-status",
+        {
+            id: taskId,
+            status: status,
+        }
+    ).then(function (response) {
+        console.log(response.data);
+    }).catch(function (error) {
+        console.log(error);
+    });
 }
 
 // Event listener for dropdown change
-document.querySelectorAll('.status-dropdown').forEach(function(dropdown) {
-    dropdown.addEventListener('change', function() {
-        var taskId = this.getAttribute('data-task-id');
-        var status = this.value;
-        console.log(taskId, status);
-        updateStatus(taskId, status);
-    });
-});
+// $('#status-dropdown').change(function() {
+//     var taskId = this.getAttribute('data-task-id');
+//     var status = this.value;
+//     console.log(taskId, status);
+//     updateStatus(taskId, status);
+// });
+// var dropdowns = document.querySelectorAll('.status-dropdown');
+// console.log(dropdowns);
+//     dropdowns.forEach(function(dropdown) {
+//     dropdown.addEventListener('change', function() {
+//         var taskId = this.getAttribute('data-task-id');
+//         var status = this.value;
+//         console.log(taskId, status);
+//         updateStatus(taskId, status);
+//     });
+// });
+
 
 // Call the function when the page loads
 window.onload = function () {
 updateTaskList();
 };
+
 </script>
+
 @endsection
 

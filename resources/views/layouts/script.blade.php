@@ -22,9 +22,12 @@
 
 <!-- profile-setting init js -->
 <script src="{{ asset('assets/js/pages/profile-setting.init.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <!-- my custom js -->
 <script src="{{ asset('assets/js/mycustom.js') }}"></script>
 
 <!-- prismjs plugin -->
 <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
+<!-- init js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+

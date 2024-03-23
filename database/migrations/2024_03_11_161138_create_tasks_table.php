@@ -23,8 +23,10 @@ return new class extends Migration
             $table->string('planned_time');
             $table->string('incharge')->nullable();
             $table->string('status')->nullable();
-            $table->string('completion_time')->nullable();
+            $table->dateTime('completion_time')->nullable();
             $table->text('inspection_details')->nullable();
+            $table->string('resubmission_count')->nullable();
+            $table->text('resubmission_date')->nullable();
             $table->timestamps();
 
         });
