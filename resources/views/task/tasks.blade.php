@@ -104,24 +104,8 @@
                             <div class="table-responsive" style="height: 500px;">
                                 <div id="buttons-datatables_wrapper" class="dataTables_wrapper dt-bootstrap5">
 
-                                    <table id="taskTable" class="table-bordered align-middle table-nowrap mb-0" style="width:100%" aria-describedby="buttons-datatables_info">
-                                        <colgroup>
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 70%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                            <col span="1" style="width: 15%;">
-                                        </colgroup>
+                                    <table id="taskTable" class="table-bordered align-middle table-nowrap mb-0" style="width:100%">
+
                                         <thead>
                                         <tr>
                                             @if($user->role == 'admin')
@@ -137,14 +121,14 @@
                                             <th class="sort" data-sort="type">Type</th>
                                             <th class="sort" data-sort="description">Description</th>
                                             <th class="sort" data-sort="location">Location</th>
-                                            <th class="sort" data-sort="side">Side</th>
+                                            <th class="sort" data-sort="side">Road Type</th>
                                             <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
-                                            <th class="sort" data-sort="planned_time">Planed Time</th>
+                                            <th class="sort" data-sort="planned_time">Planned Time</th>
                                             @if($user->role == 'admin')
                                                 <th class="sort" data-sort="incharge">In-charge</th>
                                             @endif
                                             <th class="sort" data-sort="completion_time">Completion Date/Time</th>
-                                            <th class="sort" data-sort="tasks_name">Inspection Details</th>
+                                            <th class="sort" data-sort="tasks_name">Comments</th>
                                             <th class="sort" data-sort="tasks_name">Resubmitted</th>
                                             <th class="sort" data-sort="tasks_name">RFI Submission Date</th>
                                         </tr>
@@ -217,9 +201,9 @@ function updateTaskList() {
         }
 
         row.innerHTML += `
-        <td class="due_date">${task.date}</td>
-        <td class="id">${task.number}</td>
-        <td class="status" >
+        <td style="text-align: center" class="due_date">${task.date}</td>
+        <td style="text-align: center" class="id">${task.number}</td>
+        <td style="text-align: center" class="status" >
             <span icon-task-id="${ task.id }">
             <i  style="${ task.status === 'pending' ? 'color: blue' :
                         task.status === 'completed' ? 'color: green' :
@@ -227,22 +211,22 @@ function updateTaskList() {
                         task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
                             task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
             </span>
-            <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;" data-task-id="${ task.id }">
+            <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${ task.id }">
                 <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
                 <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
                 <option value="cancelled" ${task.status === "cancelled" ? 'selected' : ''}>Cancelled</option>
             </select>
         </td>
-        <td class="client_name">${task.type}</td>
+        <td style="text-align: center" class="client_name">${task.type}</td>
         <td>
             <div class="d-flex">
-                <div class="flex-grow-1 tasks_name">${task.description}</div>
+                <div style="cursor: pointer; width: 200px; ${ user.role === 'staff' ? 'overflow: auto;' : 'overflow: hidden; text-overflow: ellipsis'}" } title="${task.description}" class="flex-grow-1 tasks_name">${task.description}</div>
             </div>
         </td>
-        <td class="client_name">${task.location}</td>
-        <td class="client_name">${task.side}</td>
-        <td class="client_name">${task.qty_layer}</td>
-        <td class="client_name">${task.planned_time}</td>
+        <td style="text-align: center" class="client_name">${task.location}</td>
+        <td style="text-align: center" class="client_name">${task.side}</td>
+        <td style="text-align: center" class="client_name">${task.qty_layer ? task.qty_layer : ''}</td>
+        <td style="text-align: center" class="client_name">${task.planned_time}</td>
         `;
 
         if(user.role === "admin") {
@@ -252,7 +236,7 @@ function updateTaskList() {
             });
             var imagePath = "{{ asset("assets/images/users") }}" +"/"+ matchingIncharge.user_name + ".jpg";
             row.innerHTML += `
-            <td class="incharge">
+            <td style="text-align: center" class="incharge">
                 <div class="avatar-group">
                     <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" id="inchargeTooltip" title="${matchingIncharge.first_name}">
                     <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
@@ -264,18 +248,18 @@ function updateTaskList() {
         }
 
         row.innerHTML += `
-        <td class="client_name">
+        <td style="text-align: center" class="client_name">
             <input data-task-id="${ task.id }" value="${task.completion_time}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
         </td>
-        <td class="client_name">
-            <div class="inspection-details" data-task-id="${task.id}">
-                <span class="inspection-text" onclick="editInspectionDetails(this)">${task.inspection_details}</span>
+        <td ${task.inspection_details ? `title="${task.inspection_details}"` : ''} class="client_name">
+            <div style="cursor: pointer; width: 200px; ${task.inspection_details ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" onclick="editInspectionDetails(this)" data-task-id="${task.id}">
+                <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${task.inspection_details ? task.inspection_details : 'N/A'}</span>
                 <textarea class="inspection-input" style="display: none;"></textarea>
-                <button class="save-btn" style="display: none;" onclick="saveInspectionDetails(this)">Save</button>
+                <button class="save-btn" style="display: none;">Save</button>
             </div>
         </td>
-        <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count}</td>
-        <td class="client_name">
+        <td style="text-align: center" class="client_name" title="${task.resubmission_date}">${task.resubmission_count ? (task.resubmission_count > 1 ? task.resubmission_count + " times" : task.resubmission_count + " time") : ''}</td>
+        <td style="text-align: center" class="client_name">
             <input value="${task.rfi_submission_date}" data-task-id="${ task.id }" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
         </td>
         `;
@@ -351,6 +335,7 @@ $(document).on('input', '#completionDateTime', function(e) {
     console.log(taskId, dateTime);
     updateCompletionDateTime(taskId, dateTime)
 });
+
 function updateCompletionDateTime(taskId, dateTime) {
     $.ajax({
         url:"{{ route('updateCompletionDateTime') }}",
@@ -365,7 +350,46 @@ function updateCompletionDateTime(taskId, dateTime) {
     })
 }
 
+function editInspectionDetails(element) {
+    element.removeAttribute('onclick');
+    var taskId = element.getAttribute('data-task-id');
+    var inspectionText = element.querySelector('.inspection-text');
+    var inspectionInput = element.querySelector('.inspection-input');
+    var saveBtn = element.querySelector('.save-btn');
 
+    inspectionText.style.display = 'none';
+    inspectionInput.value = inspectionText.textContent === 'N/A' ? '' : inspectionText.textContent;
+    inspectionInput.style.display = 'block';
+    saveBtn.style.display = 'block';
+    $(saveBtn).on('click', function () {
+        updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn);
+    })
+}
+
+function updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn) {
+    console.log('selcted: ',taskId);
+    console.log('selcted: ',inspectionText);
+    console.log('selcted: ',inspectionInput.value);
+    console.log('selcted: ',saveBtn);
+
+    $.ajax({
+        url:"{{ route('updateInspectionDetails') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            inspection_details: inspectionInput.value
+        },
+        success:function (data) {
+            element.setAttribute('onclick', 'editInspectionDetails(this)');
+            inspectionText.textContent = inspectionInput.value;
+            inspectionText.style.display = 'block';
+            inspectionText.style.textOverflow = 'ellipsis';
+            inspectionInput.style.display = 'none';
+            saveBtn.style.display = 'none';
+            toastr.success(data.message);
+        }
+    })
+}
 
 toastr.options = {
     "closeButton": true,
@@ -380,48 +404,21 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 };
-function editInspectionDetails(element) {
-    var inspectionText = element;
-    var inspectionInput = element.parentElement.querySelector('.inspection-input');
-    var saveBtn = element.parentElement.querySelector('.save-btn');
-
-    inspectionText.style.display = 'none';
-    inspectionInput.value = inspectionText.textContent;
-    inspectionInput.style.display = 'block';
-    saveBtn.style.display = 'block';
-}
-
-function saveInspectionDetails(element) {
-    var taskId = element.parentElement.getAttribute('data-task-id');
-    var inspectionText = element.parentElement.querySelector('.inspection-text');
-    var inspectionInput = element.parentElement.querySelector('.inspection-input');
-    var saveBtn = element;
-    $.ajax({
-        url:"{{ route('updateInspectionDetails') }}",
-        type:"POST",
-        data: {
-            id: taskId,
-            inspection_details: inspectionInput.value
-        },
-        success:function (data) {
-            inspectionText.textContent = inspectionInput.value;
-            inspectionText.style.display = 'inline';
-            inspectionInput.style.display = 'none';
-            saveBtn.style.display = 'none';
-            toastr.success(data.message);
-        }
-    })
-}
-
 
 </script>
 
 <style>
     #taskTable {
+
         overflow-x: auto;
     }
+    #taskTable td:nth-of-type(6) {
+        table-layout:fixed;
+        width:60px;
+        overflow: hidden;
+    }
     #taskTable thead th {
-        top: 0;
+        overflow: hidden;
         text-align: center;
     }
 </style>

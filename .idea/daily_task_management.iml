@@ -126,6 +126,16 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpexcel" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/app/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/52" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/70" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/84" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/ac" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/be" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/c0" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/e1" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/ec" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/laravel-excel" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

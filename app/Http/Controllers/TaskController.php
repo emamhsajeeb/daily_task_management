@@ -150,7 +150,7 @@ class TaskController extends Controller
         return response()->json(['message' => 'Status updated to ']);
     }
 
-    public function updateInspectionDetails(Request $request)
+    public function updateInspectionDetails(Request $request): \Illuminate\Http\JsonResponse
     {
         $task = Tasks::findOrFail($request->id);
         $task->inspection_details = $request->inspection_details;
@@ -159,7 +159,7 @@ class TaskController extends Controller
         return response()->json(['message' => 'Inspection details updated successfully']);
     }
 
-    public function updateRfiSubmissionDate(Request $request)
+    public function updateRfiSubmissionDate(Request $request): \Illuminate\Http\JsonResponse
     {
         $task = Tasks::findOrFail($request->id);
         $task->rfi_submission_date = $request->date;
@@ -168,7 +168,7 @@ class TaskController extends Controller
         return response()->json(['message' => 'RFI Submission date updated to ']);
     }
 
-    public function updateCompletionDateTime(Request $request)
+    public function updateCompletionDateTime(Request $request): \Illuminate\Http\JsonResponse
     {
         $task = Tasks::findOrFail($request->id);
         $task->completion_time = $request->dateTime;
@@ -176,7 +176,7 @@ class TaskController extends Controller
         return response()->json(['message' => 'Completion date-time updated to ']);
     }
 
-    public function getOrdinalNumber($number)
+    public function getOrdinalNumber($number): string
     {
         $number = (int) $number; // Ensure integer type
         $suffix = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
