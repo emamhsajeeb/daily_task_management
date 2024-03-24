@@ -83,19 +83,53 @@
                                 </div>
                                 <!--end row-->
                             </form>
+                            <div class="dt-buttons" style="padding-top: 15px">
+                                <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
+                                    <span>Copy</span>
+                                </button>
+                                <button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
+                                    <span>CSV</span>
+                                </button>
+                                <button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
+                                    <span>Excel</span>
+                                </button> <button class="dt-button buttons-print" tabindex="0" aria-controls="buttons-datatables" type="button">
+                                    <span>Print</span>
+                                </button> <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
+                                    <span>PDF</span>
+                                </button>
+                            </div>
                         </div>
                         <!--end card-body-->
                         <div class="card-body">
-                            <div class="table-responsive table-card mb-4" style="height: 500px;">
-                                <table class="table-bordered table-hover align-middle table-nowrap mb-0" id="tasksTable">
-                                    <thead class="table-light text-muted">
+                            <div class="table-responsive" style="height: 500px;">
+                                <div id="buttons-datatables_wrapper" class="dataTables_wrapper dt-bootstrap5">
+
+                                    <table id="taskTable" class="table-bordered align-middle table-nowrap mb-0" style="width:100%" aria-describedby="buttons-datatables_info">
+                                        <colgroup>
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 70%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                            <col span="1" style="width: 15%;">
+                                        </colgroup>
+                                        <thead>
                                         <tr>
                                             @if($user->role == 'admin')
-                                            <th scope="col" style="width: 40px;">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
-                                                </div>
-                                            </th>
+                                                <th scope="col" style="width: 40px;">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
+                                                    </div>
+                                                </th>
                                             @endif
                                             <th class="sort" data-sort="date">Date</th>
                                             <th class="sort" data-sort="number">RFI NO</th>
@@ -107,32 +141,35 @@
                                             <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
                                             <th class="sort" data-sort="planned_time">Planed Time</th>
                                             @if($user->role == 'admin')
-                                            <th class="sort" data-sort="incharge">In-charge</th>
+                                                <th class="sort" data-sort="incharge">In-charge</th>
                                             @endif
                                             <th class="sort" data-sort="completion_time">Completion Date/Time</th>
                                             <th class="sort" data-sort="tasks_name">Inspection Details</th>
                                             <th class="sort" data-sort="tasks_name">Resubmitted</th>
+                                            <th class="sort" data-sort="tasks_name">RFI Submission Date</th>
                                         </tr>
-                                    </thead>
-                                    <tbody id="task-list" class="list form-check-all">
-                                    </tbody>
-                                </table>
-                                <!--end table-->
-                                <div class="noresult" style="display: none">
-                                    <div class="text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                        <p class="text-muted mb-0">We've searched more than 200k+ tasks We did not find any tasks for you search.</p>
+                                        </thead>
+                                        <tbody id="task-list" class="list form-check-all">
+                                        </tbody>
+                                    </table>
+                                    <div class="dataTables_info" id="buttons-datatables_info" role="status" aria-live="polite">Showing 1 to 10 of 27 entries</div>
+                                    <div class="dataTables_paginate paging_simple_numbers" id="buttons-datatables_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button page-item previous disabled" id="buttons-datatables_previous">
+                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                            </li>
+                                            <li class="paginate_button page-item active">
+                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                                            </li>
+                                            <li class="paginate_button page-item "><a href="#" aria-controls="buttons-datatables" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                                            </li>
+                                            <li class="paginate_button page-item "><a href="#" aria-controls="buttons-datatables" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                                            </li>
+                                            <li class="paginate_button page-item next" id="buttons-datatables_next">
+                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="4" tabindex="0" class="page-link">Next</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-end mt-2">
-                                <div class="pagination-wrap hstack gap-2">
-                                    <a class="page-item pagination-prev disabled" href="#"> Previous
-                                    </a>
-                                    <ul class="pagination listjs-pagination mb-0"></ul>
-                                    <a class="page-item pagination-next" href="#"> Next
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +194,6 @@ function updateTaskList() {
     var user = {!! json_encode($user->toArray()) !!};
     var incharges = {!! json_encode($incharges->toArray()) !!};
     var taskList = document.getElementById('task-list');
-
 
     // Sort tasks by date descending order
     tasks.sort(function(a, b) {
@@ -184,9 +220,13 @@ function updateTaskList() {
         <td class="due_date">${task.date}</td>
         <td class="id">${task.number}</td>
         <td class="status" >
-            <i icon-task-id="${ task.id }" class="${ task.status === 'pending' ? 'ri-refresh-line fs-17 align-middle' :
-            task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
+            <span icon-task-id="${ task.id }">
+            <i  style="${ task.status === 'pending' ? 'color: blue' :
+                        task.status === 'completed' ? 'color: green' :
+                            task.status === 'cancelled' ? 'color: red' : ''}" class="${ task.status === 'pending' ? 'ri-refresh-line fs-17 align-middle' :
+                        task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                            task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
+            </span>
             <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;" data-task-id="${ task.id }">
                 <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
                 <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
@@ -224,9 +264,20 @@ function updateTaskList() {
         }
 
         row.innerHTML += `
-        <td class="client_name"><input style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="birthdaytime" name="completion_time"></td>
-        <td class="client_name">${task.inspection_details}</td>
+        <td class="client_name">
+            <input data-task-id="${ task.id }" value="${task.completion_time}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
+        </td>
+        <td class="client_name">
+            <div class="inspection-details" data-task-id="${task.id}">
+                <span class="inspection-text" onclick="editInspectionDetails(this)">${task.inspection_details}</span>
+                <textarea class="inspection-input" style="display: none;"></textarea>
+                <button class="save-btn" style="display: none;" onclick="saveInspectionDetails(this)">Save</button>
+            </div>
+        </td>
         <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count}</td>
+        <td class="client_name">
+            <input value="${task.rfi_submission_date}" data-task-id="${ task.id }" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
+        </td>
         `;
 
         taskList.appendChild(row);
@@ -237,9 +288,20 @@ function updateTaskList() {
 window.onload = function () {
     updateTaskList();
 };
-
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+// Event listener for dropdown change
+$(document).on('input', '#status-dropdown', function(e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var status = e.target.value;
+    console.log(taskId, status);
+    updateTaskStatus(taskId, status);
+});
 // Function to handle status update
-function updateStatus(taskId, status) {
+function updateTaskStatus(taskId, status) {
     $.ajax({
         url:"{{ route('updateTaskStatus') }}",
         type:"POST",
@@ -249,29 +311,62 @@ function updateStatus(taskId, status) {
         },
         success:function (data) {
             var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
-            var iconClass = (status) => {
-                return (status === 'pending') ? 'ri-refresh-line fs-17 align-middle' :
-                    (status === 'completed') ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                        (status === 'cancelled') ? 'ri-close-circle-line fs-17 align-middle' : '';
+            console.log(icon);
+            icon.innerHTML = '';
+            var newIcon = (status) => {
+                return status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-refresh-line fs-17 align-middle"></i>' :
+                    status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
+                        status === 'cancelled' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-close-circle-line fs-17 align-middle"></i>' : ''
             };
             toastr.success(data.message+status);
-            icon.className = iconClass(status);
+            icon.innerHTML = newIcon(status);
         }
     })
 }
 
-// Event listener for dropdown change
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-$(document).on('input', '#status-dropdown', function(e) {
+$(document).on('input', '#rfiSubmissionDate', function(e) {
     var taskId = e.target.getAttribute('data-task-id');
-    var status = e.target.value;
-    console.log(taskId, status);
-    updateStatus(taskId, status)
+    var date = e.target.value;
+    console.log(taskId, date);
+    updateRfiSubmissionDate(taskId, date)
 });
+// Function to handle status update
+function updateRfiSubmissionDate(taskId, date) {
+    $.ajax({
+        url:"{{ route('updateRfiSubmissionDate') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            date: date
+        },
+        success:function (data) {
+            toastr.success(data.message+date);
+        }
+    })
+}
+
+$(document).on('input', '#completionDateTime', function(e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var dateTime = e.target.value;
+    console.log(taskId, dateTime);
+    updateCompletionDateTime(taskId, dateTime)
+});
+function updateCompletionDateTime(taskId, dateTime) {
+    $.ajax({
+        url:"{{ route('updateCompletionDateTime') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            dateTime: dateTime
+        },
+        success:function (data) {
+            toastr.success(data.message+dateTime);
+        }
+    })
+}
+
+
+
 toastr.options = {
     "closeButton": true,
     "progressBar": true,
@@ -285,6 +380,51 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 };
+function editInspectionDetails(element) {
+    var inspectionText = element;
+    var inspectionInput = element.parentElement.querySelector('.inspection-input');
+    var saveBtn = element.parentElement.querySelector('.save-btn');
+
+    inspectionText.style.display = 'none';
+    inspectionInput.value = inspectionText.textContent;
+    inspectionInput.style.display = 'block';
+    saveBtn.style.display = 'block';
+}
+
+function saveInspectionDetails(element) {
+    var taskId = element.parentElement.getAttribute('data-task-id');
+    var inspectionText = element.parentElement.querySelector('.inspection-text');
+    var inspectionInput = element.parentElement.querySelector('.inspection-input');
+    var saveBtn = element;
+    $.ajax({
+        url:"{{ route('updateInspectionDetails') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            inspection_details: inspectionInput.value
+        },
+        success:function (data) {
+            inspectionText.textContent = inspectionInput.value;
+            inspectionText.style.display = 'inline';
+            inspectionInput.style.display = 'none';
+            saveBtn.style.display = 'none';
+            toastr.success(data.message);
+        }
+    })
+}
+
+
 </script>
+
+<style>
+    #taskTable {
+        overflow-x: auto;
+    }
+    #taskTable thead th {
+        top: 0;
+        text-align: center;
+    }
+</style>
 @endsection
+
 

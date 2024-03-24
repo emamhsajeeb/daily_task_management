@@ -24,6 +24,7 @@ class Tasks extends Model
         'inspection_details',
         'resubmission_count',
         'resubmission_date',
+        'rfi_submission_date'
 
     ];
 }

@@ -20,13 +20,15 @@ Route::get('/', function () {
     return view('layouts/dashboard',['user' => Auth::user()]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/tasks', [TaskController::class, 'index'])->middleware(['auth', 'verified'])->name('tasks');
-
-Route::get('/add-tasks', function () {
-    return view('task/add',['user' => Auth::user()]);
-})->middleware(['auth', 'verified'])->name('add-tasks');
-
-Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
+Route::middleware('auth')->group(function () {
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
+    Route::get('/add-tasks', function () {return view('task/add',['user' => Auth::user()]);})->name('add-tasks');
+    Route::post('/task/import', [TaskController::class, 'import'])->name('taskImport');
+    Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
+    Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
+    Route::post('/task/update-rfi-submission-date', [TaskController::class, 'updateRfiSubmissionDate'])->name('updateRfiSubmissionDate');
+    Route::post('/task/update-completion-date-time', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTime');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.view');
@@ -35,6 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('task/import', [TaskController::class, 'import'])->name('task.import');
+
 
 require __DIR__.'/auth.php';

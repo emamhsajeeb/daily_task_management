@@ -13,20 +13,21 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->date('date')->nullable();
-            $table->string('number')->nullable();
+            $table->date('date');
+            $table->string('number');
+            $table->string('status');
             $table->string('type');
             $table->text('description');
             $table->string('location');
-            $table->string('side')->nullable();;
-            $table->string('qty_layer')->nullable();;
-            $table->string('planned_time');
-            $table->string('incharge')->nullable();
-            $table->string('status')->nullable();
+            $table->string('side')->nullable();
+            $table->string('qty_layer')->nullable();
+            $table->string('planned_time')->nullable();
+            $table->string('incharge');
             $table->dateTime('completion_time')->nullable();
             $table->text('inspection_details')->nullable();
-            $table->string('resubmission_count')->nullable();
+            $table->integer('resubmission_count')->nullable();
             $table->text('resubmission_date')->nullable();
+            $table->date('rfi_submission_date')->nullable();
             $table->timestamps();
 
         });
