@@ -35,6 +35,7 @@
                         <div class="card-header border-0">
                             <div class="d-flex align-items-center">
                                 <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
+@if($user->role == 'admin')
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
                                         <a href="{{ route('add-tasks') }}" class="btn btn-secondary add-btn"><i class="ri-add-line align-bottom me-1"></i> Add Tasks</a>
@@ -42,6 +43,7 @@
                                         <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
                                     </div>
                                 </div>
+@endif
                             </div>
                         </div>
                         <div class="card-body border border-dashed border-end-0 border-start-0">
@@ -83,6 +85,7 @@
                                 </div>
                                 <!--end row-->
                             </form>
+@if($user->role == 'admin')
                             <div class="dt-buttons" style="padding-top: 15px">
                                 <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
                                     <span>Copy</span>
@@ -98,6 +101,7 @@
                                     <span>PDF</span>
                                 </button>
                             </div>
+@endif
                         </div>
                         <!--end card-body-->
                         <div class="card-body">
