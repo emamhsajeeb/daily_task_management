@@ -274,7 +274,7 @@ function updateTaskList() {
                 <button class="save-btn" style="display: none;" onclick="saveInspectionDetails(this)">Save</button>
             </div>
         </td>
-        <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count}</td>
+        <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count? ''}</td>
         <td class="client_name">
             <input value="${task.rfi_submission_date}" data-task-id="${ task.id }" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
         </td>
