@@ -20,5 +20,10 @@ class Tasks extends Model
         'planned_time',
         'status',
         'incharge',
+        'completion_time',
+        'inspection_details',
+        'resubmission_count',
+        'resubmission_date',
+
     ];
 }

@@ -87,7 +87,7 @@
                         <!--end card-body-->
                         <div class="card-body">
                             <div class="table-responsive table-card mb-4" style="height: 500px;">
-                                <table class="table align-middle table-nowrap mb-0" id="tasksTable">
+                                <table class="table-bordered table-hover align-middle table-nowrap mb-0" id="tasksTable">
                                     <thead class="table-light text-muted">
                                         <tr>
                                             @if($user->role == 'admin')
@@ -115,71 +115,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="task-list" class="list form-check-all">
-{{--                                    @foreach($tasks as $task)--}}
-
-{{--                                        <tr>--}}
-{{--@if($user->role == 'admin')--}}
-{{--                                            <th scope="row">--}}
-{{--                                                <div class="form-check">--}}
-{{--                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />--}}
-{{--                                                </div>--}}
-{{--                                            </th>--}}
-{{--@endif--}}
-{{--                                            <td class="due_date">{{ $task->date }}</td>--}}
-{{--                                            <td class="id">{{ $task->number }}</td>--}}
-{{--                                            <td class="client_name">{{ $task->type }}</td>--}}
-{{--                                            <td>--}}
-{{--                                                <div class="d-flex">--}}
-{{--                                                    <div class="flex-grow-1 tasks_name">{{ $task->description }}</div>--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="client_name">{{ $task->location }}</td>--}}
-{{--                                            <td class="client_name">{{ $task->side }}</td>--}}
-{{--                                            <td class="client_name">{{ $task->qty_layer }}</td>--}}
-{{--                                            <td class="client_name">{{ $task->planned_time }}</td>--}}
-{{--@if($user->role == 'admin')--}}
-{{--                                            <td class="incharge">--}}
-{{--                                                <div class="avatar-group">--}}
-{{-- @if ($user->role == 'staff')--}}
-{{--                                                    <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">--}}
-{{--                                                        <img src="{{ asset('assets/images/users/' . $user->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />--}}
-
-{{--                                                        <span>{{ $user->first_name }}</span>--}}
-
-
-
-
-{{--                                           </a>--}}
-{{-- @endif--}}
-{{--          @if($user->role == 'admin')--}}
-{{--                                                            @php--}}
-{{--                                                                $incharge = \DB::table('users')->where('user_name',$task->incharge)->first();--}}
-{{--                                                            @endphp--}}
-{{--                                                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">--}}
-{{--                                                        <img src="{{ asset('assets/images/users/' . $incharge->user_name . '.jpg') }}" alt="" class="rounded-circle avatar-xxs" />--}}
-
-{{--                                                        <span>{{ $incharge->first_name }}</span>--}}
-
-{{--                                                        @endif--}}
-{{--                                     </div>--}}
-{{--                                            </td>--}}
-{{--@endif--}}
-{{--                                            <td class="status">--}}
-{{--                                                <div class="btn-group">--}}
-{{--                                                    <button class="btn btn-primary btn-sm dropdown-toggle" style="text-transform: uppercase" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                                                        {{ $task->status }}--}}
-{{--                                                    </button>--}}
-{{--                                                    <div class="dropdown-menu">--}}
-{{--                                                        <a class="dropdown-item update-status" data-status="pending" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'pending']) }}">Pending</a>--}}
-{{--                                                        <a class="dropdown-item update-status" data-status="completed" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'completed']) }}">Completed</a>--}}
-{{--                                                        <a class="dropdown-item update-status" data-status="cancelled" href="{{ route('updateTaskStatus',['taskNumber' => $task->id,'status' => 'cancelled']) }}">Cancelled</a>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="client_name">{{ $task->completion_time }}</td>--}}
-{{--                                            <td class="client_name">{{ $task->inspection_details }}</td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
                                     </tbody>
                                 </table>
                                 <!--end table-->
@@ -219,18 +154,22 @@
 // Function to get the tasks dynamically
 function updateTaskList() {
     var tasks = {!! json_encode($tasks->toArray()) !!};
+    var user = {!! json_encode($user->toArray()) !!};
+    var incharges = {!! json_encode($incharges->toArray()) !!};
+    var taskList = document.getElementById('task-list');
+
+
     // Sort tasks by date descending order
     tasks.sort(function(a, b) {
         return new Date(b.date) - new Date(a.date);
     });
-    var user = {!! json_encode($user->toArray()) !!};
-    var incharges = {!! json_encode($incharges->toArray()) !!};
-    var taskList = document.getElementById('task-list');
+
     // Clear existing table rows
     taskList.innerHTML = '';
     // Loop through tasks and create table rows
     tasks.forEach(function (task) {
         var row = document.createElement('tr');
+
         if(user.role === "admin") {
             row.innerHTML = `
             <th scope="row">
@@ -240,11 +179,15 @@ function updateTaskList() {
             </th>
             `;
         }
+
         row.innerHTML += `
         <td class="due_date">${task.date}</td>
         <td class="id">${task.number}</td>
-        <td class="status">
-            <select id="status-dropdown" style="margin-bottom: 0rem !important;" data-task-id="${ task.id }">
+        <td class="status" >
+            <i icon-task-id="${ task.id }" class="${ task.status === 'pending' ? 'ri-refresh-line fs-17 align-middle' :
+            task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
+            <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;" data-task-id="${ task.id }">
                 <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
                 <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
                 <option value="cancelled" ${task.status === "cancelled" ? 'selected' : ''}>Cancelled</option>
@@ -279,54 +222,69 @@ function updateTaskList() {
             </td>
                 `;
         }
+
         row.innerHTML += `
-        <td class="client_name"><input type="datetime-local" id="birthdaytime" name="completion_time"></td>
+        <td class="client_name"><input style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="birthdaytime" name="completion_time"></td>
         <td class="client_name">${task.inspection_details}</td>
         <td class="client_name" title="${task.resubmission_date}">${task.resubmission_count}</td>
         `;
+
         taskList.appendChild(row);
     });
 }
 
+// Call the function when the page loads
+window.onload = function () {
+    updateTaskList();
+};
+
 // Function to handle status update
 function updateStatus(taskId, status) {
-    $.post("/task/update-status",
-        {
+    $.ajax({
+        url:"{{ route('updateTaskStatus') }}",
+        type:"POST",
+        data: {
             id: taskId,
-            status: status,
+            status: status
+        },
+        success:function (data) {
+            var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
+            var iconClass = (status) => {
+                return (status === 'pending') ? 'ri-refresh-line fs-17 align-middle' :
+                    (status === 'completed') ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                        (status === 'cancelled') ? 'ri-close-circle-line fs-17 align-middle' : '';
+            };
+            toastr.success(data.message+status);
+            icon.className = iconClass(status);
         }
-    ).then(function (response) {
-        console.log(response.data);
-    }).catch(function (error) {
-        console.log(error);
-    });
+    })
 }
 
 // Event listener for dropdown change
-// $('#status-dropdown').change(function() {
-//     var taskId = this.getAttribute('data-task-id');
-//     var status = this.value;
-//     console.log(taskId, status);
-//     updateStatus(taskId, status);
-// });
-// var dropdowns = document.querySelectorAll('.status-dropdown');
-// console.log(dropdowns);
-//     dropdowns.forEach(function(dropdown) {
-//     dropdown.addEventListener('change', function() {
-//         var taskId = this.getAttribute('data-task-id');
-//         var status = this.value;
-//         console.log(taskId, status);
-//         updateStatus(taskId, status);
-//     });
-// });
-
-
-// Call the function when the page loads
-window.onload = function () {
-updateTaskList();
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$(document).on('input', '#status-dropdown', function(e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var status = e.target.value;
+    console.log(taskId, status);
+    updateStatus(taskId, status)
+});
+toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-center",
+    "showDuration": "300",
+    "hideDuration": "300",
+    "timeOut": "300",
+    "extendedTimeOut": "300",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
 };
-
 </script>
-
 @endsection
 
