@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app',['user' => $user, 'title' => $title])
 
 @section('dashboard')
     <div class="main-content">
@@ -9,12 +9,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Tasks List</h4>
+                            <h4 class="mb-sm-0">{{ $title }}</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks</a></li>
-                                    <li class="breadcrumb-item active">Tasks List</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+                                    <li class="breadcrumb-item active"><a href="{{ route('dashboard') }}">{{ $title }}</a></li>
                                 </ol>
                             </div>
 
@@ -30,7 +30,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="fw-medium text-muted mb-0">Total Tasks</p>
-                                        <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="234">0</span>k</h4>
+                                        <h4 class="mt-4 ff-secondary fw-semibold"><span>{{ $total }}</span></h4>
                                         <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 17.32 %</span> vs. previous month</p>
                                     </div>
                                     <div>
@@ -51,7 +51,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="fw-medium text-muted mb-0">Pending Tasks</p>
-                                        <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="64.5">0</span>k</h4>
+                                        <h4 class="mt-4 ff-secondary fw-semibold"><span>{{ $pending }}</span></h4>
                                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 0.87 %</span> vs. previous month</p>
                                     </div>
                                     <div>
@@ -72,7 +72,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="fw-medium text-muted mb-0">Completed Tasks</p>
-                                        <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="116.21">0</span>K</h4>
+                                        <h4 class="mt-4 ff-secondary fw-semibold"><span>{{ $completed }}</span></h4>
                                         <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 2.52 % </span> vs. previous month</p>
                                     </div>
                                     <div>
@@ -93,7 +93,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="fw-medium text-muted mb-0">Deleted Tasks</p>
-                                        <h4 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="14.84">0</span>%</h4>
+                                        <h4 class="mt-4 ff-secondary fw-semibold"><span >{{ $cancelled }}</span>%</h4>
                                         <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 0.63 % </span> vs. previous month</p>
                                     </div>
                                     <div>

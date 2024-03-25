@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Models\Tasks;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts/dashboard',['user' => Auth::user()]);
+    $total = Tasks::count();
+    $pending = Tasks::where('status', 'pending')->count();
+    $completed = Tasks::where('status', 'completed')->count();
+    $cancelled = Tasks::where('status', 'cancelled')->count();
+    return view('layouts/dashboard',['user' => Auth::user(), 'title' => 'Dashboard', 'total' => $total,'pending' => $pending,'completed' => $completed,'cancelled' => $cancelled]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
