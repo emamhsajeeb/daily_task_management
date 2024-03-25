@@ -9,7 +9,7 @@
     <div class="page-content">
         <div class="container-fluid" style="max-width: 100% !important;">
             <!-- start page title -->
-@if($user->role == 'admin')
+            @if($user->role == 'admin')
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -25,10 +25,8 @@
                     </div>
                 </div>
             </div>
-@endif
+            @endif
             <!-- end page title -->
-
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card" id="tasksList">
@@ -38,8 +36,6 @@
                                 @if($user->role == 'admin')
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
-{{--                                        <button type="button" class=""><i class="ri-mail-send-line"></i></button>--}}
-{{--                                        <button type="button" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-menu-2-line"></i></button>--}}
                                         <a title="Export Tasks" href="{{ route('exportTasks') }}" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
                                         <a title="Import Tasks" href="{{ route('addTasks') }}" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-upload-2-line align-bottom me-1"></i></a>
                                     </div>
@@ -47,6 +43,7 @@
                                 @endif
                             </div>
                         </div>
+                        @if($user->role == 'admin')
                         <div class="card-body border border-dashed border-end-0 border-start-0">
                             <form>
                                 <div class="row g-3">
@@ -86,79 +83,18 @@
                                 </div>
                                 <!--end row-->
                             </form>
-@if($user->role == 'admin')
-                            <div class="dt-buttons" style="padding-top: 15px">
-                                <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
-                                    <span>Copy</span>
-                                </button>
-                                <button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
-                                    <span>CSV</span>
-                                </button>
-                                <button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
-                                    <span>Excel</span>
-                                </button> <button class="dt-button buttons-print" tabindex="0" aria-controls="buttons-datatables" type="button">
-                                    <span>Print</span>
-                                </button> <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="buttons-datatables" type="button">
-                                    <span>PDF</span>
-                                </button>
-                            </div>
-@endif
                         </div>
+                        @endif
                         <!--end card-body-->
                         <div class="card-body">
-                            <div class="table-responsive" style="height: 500px;">
-                                <div id="buttons-datatables_wrapper" class="dataTables_wrapper dt-bootstrap5">
-
-                                    <table id="taskTable" class="table-bordered align-middle table-nowrap mb-0" style="width:100%">
-
-                                        <thead>
-                                        <tr>
-                                            @if($user->role == 'admin')
-                                                <th scope="col" style="width: 40px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
-                                                    </div>
-                                                </th>
-                                            @endif
-                                            <th class="sort" data-sort="date">Date</th>
-                                            <th class="sort" data-sort="number">RFI NO</th>
-                                            <th class="sort" data-sort="status">Status</th>
-                                            <th class="sort" data-sort="type">Type</th>
-                                            <th class="sort" data-sort="description">Description</th>
-                                            <th class="sort" data-sort="location">Location</th>
-                                            <th class="sort" data-sort="side">Road Type</th>
-                                            <th class="sort" data-sort="qty_layer">Quantity/Layer No.</th>
-                                            <th class="sort" data-sort="planned_time">Planned Time</th>
-                                            @if($user->role == 'admin')
-                                                <th class="sort" data-sort="incharge">In-charge</th>
-                                            @endif
-                                            <th class="sort" data-sort="completion_time">Completion Date/Time</th>
-                                            <th class="sort" data-sort="tasks_name">Comments</th>
-                                            <th class="sort" data-sort="tasks_name">Resubmitted</th>
-                                            <th class="sort" data-sort="tasks_name">RFI Submission Date</th>
-                                        </tr>
+                            <div class="table-responsive">
+                                <div>
+                                    <table id="taskTable" class="table-nowrap table-bordered compact hover order-column align-middle mb-0" style="display: none;">
+                                        <thead id="taskListHead">
                                         </thead>
-                                        <tbody id="task-list" class="list form-check-all">
+                                        <tbody id="taskListBody">
                                         </tbody>
                                     </table>
-                                    <div class="dataTables_info" id="buttons-datatables_info" role="status" aria-live="polite">Showing 1 to 10 of 27 entries</div>
-                                    <div class="dataTables_paginate paging_simple_numbers" id="buttons-datatables_paginate">
-                                        <ul class="pagination">
-                                            <li class="paginate_button page-item previous disabled" id="buttons-datatables_previous">
-                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                                            </li>
-                                            <li class="paginate_button page-item active">
-                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                                            </li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="buttons-datatables" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-                                            </li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="buttons-datatables" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-                                            </li>
-                                            <li class="paginate_button page-item next" id="buttons-datatables_next">
-                                                <a href="#" aria-controls="buttons-datatables" data-dt-idx="4" tabindex="0" class="page-link">Next</a>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,21 +118,47 @@ function updateTaskList() {
     var tasks = {!! json_encode($tasks->toArray()) !!};
     var user = {!! json_encode($user->toArray()) !!};
     var incharges = {!! json_encode($incharges->toArray()) !!};
-    var taskList = document.getElementById('task-list');
+    var taskListHead = document.getElementById('taskListHead');
+    var taskListBody = document.getElementById('taskListBody');
 
     // Sort tasks by date descending order
     tasks.sort(function(a, b) {
         return new Date(b.date) - new Date(a.date);
     });
 
-    // Clear existing table rows
-    taskList.innerHTML = '';
+    var header = document.createElement('tr');
+    header.innerHTML = `
+    ${user.role === 'admin' ? `
+        <th>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
+            </div>
+        </th>
+    ` : ''}
+    <th>Date</th>
+    <th>RFI NO</th>
+    <th>Status</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Location</th>
+    <th>Road Type</th>
+    <th>Quantity/Layer No.</th>
+    <th>Planned Time</th>
+    ${user.role === 'admin' ? `
+    <th>In-charge</th>
+    ` : ''}
+    <th>Completion Date/Time</th>
+    <th>Comments</th>
+    <th>Resubmitted</th>
+    <th>RFI Submission Date</th>
+    `;
+
     // Loop through tasks and create table rows
     tasks.forEach(function (task) {
-        var row = document.createElement('tr');
+        var taskRow = document.createElement('tr');
 
         if(user.role === "admin") {
-            row.innerHTML = `
+            taskRow.innerHTML = `
             <th scope="row">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="chk_child" value="option1" />
@@ -205,7 +167,7 @@ function updateTaskList() {
             `;
         }
 
-        row.innerHTML += `
+        taskRow.innerHTML += `
         <td style="text-align: center" class="due_date">${task.date}</td>
         <td style="text-align: center" class="id">${task.number}</td>
         <td style="text-align: center" class="status" >
@@ -240,10 +202,17 @@ function updateTaskList() {
                 return incharges.user_name === task.incharge;
             });
             var imagePath = "{{ asset("assets/images/users") }}" +"/"+ matchingIncharge.user_name + ".jpg";
-            row.innerHTML += `
+            taskRow.innerHTML += `
             <td style="text-align: center" class="incharge">
                 <div class="avatar-group">
-                    <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" id="inchargeTooltip" title="${matchingIncharge.first_name}">
+                    <a
+                        href="#"
+                        class="avatar-group-item"
+                        style="border: 2px solid #fff0; border-radius: 50%;"
+                        data-bs-trigger="hover"
+                        data-bs-placement="top"
+                        id="inchargeTooltip"
+                        title="${matchingIncharge.first_name}">
                     <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
                     <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
                     </a>
@@ -252,15 +221,15 @@ function updateTaskList() {
                 `;
         }
 
-        row.innerHTML += `
+        taskRow.innerHTML += `
         <td style="text-align: center" class="client_name">
             <input data-task-id="${ task.id }" value="${task.completion_time}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
         </td>
         <td ${task.inspection_details ? `title="${task.inspection_details}"` : ''} class="client_name">
             <div style="cursor: pointer; width: 200px; ${task.inspection_details ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" onclick="editInspectionDetails(this)" data-task-id="${task.id}">
                 <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${task.inspection_details ? task.inspection_details : 'N/A'}</span>
-                <textarea class="inspection-input" style="display: none;"></textarea>
-                <button class="save-btn" style="display: none;">Save</button>
+                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
             </div>
         </td>
         <td style="text-align: center" class="client_name" title="${task.resubmission_date}">${task.resubmission_count ? (task.resubmission_count > 1 ? task.resubmission_count + " times" : task.resubmission_count + " time") : ''}</td>
@@ -269,14 +238,20 @@ function updateTaskList() {
         </td>
         `;
 
-        taskList.appendChild(row);
+        taskListHead.appendChild(header);
+        taskListBody.appendChild(taskRow);
     });
 }
 
 // Call the function when the page loads
 window.onload = function () {
     updateTaskList();
+    $(document).ready(function() {
+        $('#taskTable').css('display', '').DataTable({
+        });
+    });
 };
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -400,10 +375,10 @@ toastr.options = {
     "closeButton": true,
     "progressBar": true,
     "positionClass": "toast-bottom-center",
-    "showDuration": "300",
-    "hideDuration": "300",
-    "timeOut": "300",
-    "extendedTimeOut": "300",
+    "showDuration": "1000",
+    "hideDuration": "1000",
+    "timeOut": "1000",
+    "extendedTimeOut": "1000",
     "showEasing": "swing",
     "hideEasing": "linear",
     "showMethod": "fadeIn",
@@ -414,8 +389,6 @@ toastr.options = {
 
 <style>
     #taskTable {
-
-        overflow-x: auto;
     }
     #taskTable td:nth-of-type(6) {
         table-layout:fixed;
@@ -423,6 +396,7 @@ toastr.options = {
         overflow: hidden;
     }
     #taskTable thead th {
+        cursor: pointer;
         overflow: hidden;
         text-align: center;
     }
