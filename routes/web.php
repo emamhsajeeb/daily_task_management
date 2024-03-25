@@ -21,9 +21,10 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
-    Route::get('/add-tasks', function () {return view('task/add',['user' => Auth::user()]);})->name('add-tasks');
-    Route::post('/task/import', [TaskController::class, 'import'])->name('taskImport');
+    Route::get('/tasks', [TaskController::class, 'showTasks'])->name('showTasks');
+    Route::get('/add-tasks', [TaskController::class, 'addTasks'])->name('addTasks');
+    Route::get('/export-tasks', [TaskController::class, 'exportTasks'])->name('exportTasks');
+    Route::post('/task/import', [TaskController::class, 'importTasks'])->name('importTasks');
     Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
     Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
     Route::post('/task/update-rfi-submission-date', [TaskController::class, 'updateRfiSubmissionDate'])->name('updateRfiSubmissionDate');

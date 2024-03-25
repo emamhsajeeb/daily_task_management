@@ -42,7 +42,10 @@
                             <div class="collapse menu-dropdown" id="sidebarTasks">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="{{ route('tasks') }}" class="nav-link" data-key="t-all-tasks"> All Tasks </a>
+                                        <a href="{{ route('showTasks') }}" class="nav-link" data-key="t-all-tasks"> All Tasks </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('addTasks') }}" class="nav-link" data-key="t-add-tasks"> Add Tasks </a>
                                     </li>
                                 </ul>
                             </div>

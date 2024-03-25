@@ -18,25 +18,30 @@ class TaskController extends Controller
     /**
      * Display a listing of the tasks.
      *
-     * @return \Illuminate\Http\Response
+     * @return
      */
-    public function index() : View
+    public function showTasks()
     {
+        $settings = [
+            'title' => 'All Tasks',
+        ];
         $user = Auth::user();
+        $tasks = $user ? (
+        $user->role === 'staff'
+            ? DB::table('tasks')->where('incharge', $user->user_name)->get()
+            : (Auth::user()->role === 'admin' ? DB::table('tasks')->get() : [])
+        ) : [];
 
-        if ($user->role == 'staff') {
-            // Fetch tasks assigned to the logged-in staff user
-            $tasks = DB::table('tasks')->where('incharge', $user->user_name)->get();
-        } elseif ($user->role == 'admin') {
-            // Fetch all tasks for admins
-            $tasks = DB::table('tasks')->get();
-        } else {
-            // Handle other roles if needed
-            $tasks = [];
-        }
+        return view('task/tasks', compact('tasks', 'user', 'settings'));
+    }
 
-        // Return the task listing view with tasks and user data
-        return view('task/tasks', ['tasks' => $tasks, 'user' => $user]);
+    public function addTasks()
+    {
+        $settings = [
+            'title' => 'All Tasks',
+        ];
+        $user = Auth::user();
+        return view('task/add',compact('user', 'settings'));
     }
 
     /**
@@ -45,7 +50,7 @@ class TaskController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function import(Request $request)
+    public function importTasks(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx,csv,ods',
@@ -53,11 +58,9 @@ class TaskController extends Controller
 
         $path = $request->file('file')->store('temp'); // Store uploaded file temporarily
 
-        $importedTasks = Excel::toArray(new TaskImport, $path); // Import data using TaskImport
-        $dataTasks = $importedTasks[0];
+        $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
 
-
-        foreach ($dataTasks as $importedTask) {
+        foreach ($importedTasks as $importedTask) {
 
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
@@ -92,7 +95,7 @@ class TaskController extends Controller
      * @param array $importedTask
      * @return void
      */
-    private function handleDuplicateTask(Tasks $existingTask, array $importedTask)
+    private function handleDuplicateTask(Tasks $existingTask, array $importedTask): void
     {
         // Get resubmission count (handling potential null value)
         $resubmissionCount = $existingTask->resubmission_count ?? 0;
@@ -123,9 +126,16 @@ class TaskController extends Controller
             'incharge' => $importedTask[9],
             'resubmission_count' => $resubmissionCount,
             'resubmission_date' => $resubmissionDate,
-
-
         ]);
+    }
+
+    public function exportTasks()
+    {
+//        $settings = [
+//            'title' => 'All Tasks',
+//        ];
+//        $user = Auth::user();
+//        return view('task/add',compact('user', 'settings'));
     }
 
     /**

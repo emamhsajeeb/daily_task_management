@@ -7,7 +7,7 @@
 <div class="main-content">
 
     <div class="page-content">
-        <div class="container-fluid">
+        <div class="container-fluid" style="max-width: 100% !important;">
             <!-- start page title -->
 @if($user->role == 'admin')
             <div class="row">
@@ -35,15 +35,16 @@
                         <div class="card-header border-0">
                             <div class="d-flex align-items-center">
                                 <h5 class="card-title mb-0 flex-grow-1">All Tasks</h5>
-@if($user->role == 'admin')
+                                @if($user->role == 'admin')
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
-                                        <a href="{{ route('add-tasks') }}" class="btn btn-secondary add-btn"><i class="ri-add-line align-bottom me-1"></i> Add Tasks</a>
-                                        <!-- Default Modals -->
-                                        <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+{{--                                        <button type="button" class=""><i class="ri-mail-send-line"></i></button>--}}
+{{--                                        <button type="button" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-menu-2-line"></i></button>--}}
+                                        <a title="Export Tasks" href="{{ route('exportTasks') }}" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
+                                        <a title="Import Tasks" href="{{ route('addTasks') }}" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-upload-2-line align-bottom me-1"></i></a>
                                     </div>
                                 </div>
-@endif
+                                @endif
                             </div>
                         </div>
                         <div class="card-body border border-dashed border-end-0 border-start-0">
