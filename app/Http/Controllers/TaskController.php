@@ -85,7 +85,7 @@ class TaskController extends Controller
         }
 
         // Redirect to tasks route with success message
-        return redirect()->route('tasks')->with('success', 'Data imported successfully.');
+        return redirect()->route('showTasks')->with('success', 'Data imported successfully.');
     }
 
     /**
