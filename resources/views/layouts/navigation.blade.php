@@ -37,16 +37,18 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarTasks" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-dashboard-2-line"></i><span data-key="t-tasks">Tasks</span>
+                                <i class="ri-todo-line"></i><span data-key="t-tasks">Tasks</span>
                             </a>
                             <div class="collapse menu-dropdown" id="sidebarTasks">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a href="{{ route('showTasks') }}" class="nav-link" data-key="t-all-tasks"> All Tasks </a>
                                     </li>
+                                    @if($user->role == 'admin')
                                     <li class="nav-item">
                                         <a href="{{ route('addTasks') }}" class="nav-link" data-key="t-add-tasks"> Add Tasks </a>
                                     </li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
