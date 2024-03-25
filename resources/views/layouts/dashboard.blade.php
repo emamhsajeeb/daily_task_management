@@ -1,4 +1,4 @@
-@extends('layouts.app',['user' => $user, 'title' => $title])
+@extends('layouts.app')
 
 @section('dashboard')
     <div class="main-content">

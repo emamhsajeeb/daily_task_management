@@ -174,7 +174,7 @@ function updateTaskList() {
             <span icon-task-id="${ task.id }">
             <i  style="${ task.status === 'pending' ? 'color: blue' :
                         task.status === 'completed' ? 'color: green' :
-                            task.status === 'cancelled' ? 'color: red' : ''}" class="${ task.status === 'pending' ? 'ri-refresh-line fs-17 align-middle' :
+                            task.status === 'cancelled' ? 'color: red' : ''}" class="${ task.status === 'pending' ? 'mdi mdi-timer-sand fs-17 align-middle' :
                         task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
                             task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
             </span>
