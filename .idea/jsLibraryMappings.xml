@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{buttons.dataTables, buttons.html5, buttons.print, dataTables.bootstrap5, dataTables.buttons, dataTables.responsive, jquery.dataTables, jszip, pdfmake, responsive.bootstrap, toastr.js}" />
+    <file url="PROJECT" libraries="{buttons.dataTables, dataTables.bootstrap5, dataTables.dataTables, laravel-echo, pusher, responsive.bootstrap, toastr.js}" />
   </component>
 </project>

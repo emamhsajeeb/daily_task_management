@@ -1,10 +1,12 @@
 <?php
 
+use App\Events\TasksImported;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Models\Tasks;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PushNotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     $total = Tasks::count();
     $pending = Tasks::where('status', 'pending')->count();
@@ -25,7 +28,11 @@ Route::get('/', function () {
     return view('layouts/dashboard',['user' => Auth::user(), 'title' => 'Dashboard', 'total' => $total,'pending' => $pending,'completed' => $completed,'cancelled' => $cancelled]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
+
+
 Route::middleware('auth')->group(function () {
+
     Route::get('/tasks', [TaskController::class, 'showTasks'])->name('showTasks');
     Route::get('/add-tasks', [TaskController::class, 'addTasks'])->name('addTasks');
     Route::get('/export-tasks', [TaskController::class, 'exportTasks'])->name('exportTasks');

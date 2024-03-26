@@ -29,6 +29,7 @@ class ProfileUpdateRequest extends FormRequest
             'position'=> ['required', 'string', 'max:20'],
             'passport'=> ['required', 'string', 'max:20'],
             'nid'=> ['required', 'string', 'max:20'],
+            'device_token' => ['required', 'string', 'max:1000'],
         ];
     }
 }

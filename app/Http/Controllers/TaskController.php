@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TasksImported;
 use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming user authentication)
@@ -61,13 +62,18 @@ class TaskController extends Controller
         $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
 
         foreach ($importedTasks as $importedTask) {
+            $newSubmissionCount = 0;
+            $resubmissionCount = 0;
+            $date = $importedTask[0];
 
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
             if ($existingTask) {
+                $resubmissionCount++;
                 // Handle duplicate tasks (handled in separate method)
                 $this->handleDuplicateTask($existingTask, $importedTask);
             } else {
+                $newSubmissionCount++;
                 // Create a new task for non-duplicates
                 Tasks::create([
                     'date' => $importedTask[0],
@@ -82,6 +88,7 @@ class TaskController extends Controller
                     'incharge' => $importedTask[9],
                 ]);
             }
+//            event(new TasksImported($newSubmissionCount, $resubmissionCount, $date));
         }
 
         // Redirect to tasks route with success message

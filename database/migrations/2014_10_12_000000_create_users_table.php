@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('employee_id')->nullable();
             $table->string('user_name');
+            $table->text('device_token')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone')->unique();

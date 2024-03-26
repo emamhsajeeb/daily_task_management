@@ -136,21 +136,52 @@
       <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/e1" />
       <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/data/ec" />
       <excludeFolder url="file://$MODULE_DIR$/storage/framework/cache/laravel-excel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/fig/http-message-util" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/auth" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/cloud-core" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/cloud-storage" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/common-protos" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/gax" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/grpc-gcp" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/longrunning" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/google/protobuf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/grpc/grpc" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/firebase-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/firebase-tokens" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mtdowling/jmespath.php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/sodium_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pusher/pusher-php-server" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/riverline/multipart-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rize/uri-template" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stella-maris/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php81" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="toastr.js" level="application" />
-    <orderEntry type="library" name="toastr.js" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="jquery.dataTables" level="application" />
-    <orderEntry type="library" name="dataTables.buttons" level="application" />
-    <orderEntry type="library" name="jszip" level="application" />
-    <orderEntry type="library" name="dataTables.bootstrap5" level="application" />
-    <orderEntry type="library" name="dataTables.responsive" level="application" />
-    <orderEntry type="library" name="buttons.print" level="application" />
-    <orderEntry type="library" name="buttons.html5" level="application" />
-    <orderEntry type="library" name="pdfmake" level="application" />
-    <orderEntry type="library" name="responsive.bootstrap" level="application" />
+    <orderEntry type="library" name="pusher" level="application" />
     <orderEntry type="library" name="buttons.dataTables" level="application" />
+    <orderEntry type="library" name="responsive.bootstrap" level="application" />
+    <orderEntry type="library" name="dataTables.responsive" level="application" />
+    <orderEntry type="library" name="pdfmake" level="application" />
+    <orderEntry type="library" name="dataTables.buttons" level="application" />
+    <orderEntry type="library" name="dataTables.bootstrap5" level="application" />
+    <orderEntry type="library" name="jszip" level="application" />
+    <orderEntry type="library" name="buttons.html5" level="application" />
+    <orderEntry type="library" name="jquery.dataTables" level="application" />
+    <orderEntry type="library" name="toastr.js" level="application" />
+    <orderEntry type="library" name="buttons.print" level="application" />
+    <orderEntry type="library" name="toastr.js" level="application" />
+    <orderEntry type="library" name="dataTables.bootstrap5" level="application" />
+    <orderEntry type="library" name="responsive.bootstrap" level="application" />
+    <orderEntry type="library" name="dataTables.dataTables" level="application" />
+    <orderEntry type="library" name="buttons.dataTables" level="application" />
+    <orderEntry type="library" name="laravel-echo" level="application" />
   </component>
 </module>
