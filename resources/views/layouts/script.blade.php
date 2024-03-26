@@ -1,3 +1,7 @@
+
+
+
+
 <script src="{{ asset('assets/libs/dropzone/dropzone-min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
@@ -64,44 +68,46 @@
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
-    getToken(messaging, { vapidKey: 'BLcVF1Gg7a0lG4VZkHPWI7cXPCaCFO70YS_odQ3PMqvedqmg7bH0-jMZzqK7DkU7dF2fFzfq5wc9IrzyJ6C4weM' }).then((currentToken) => {
-        if (currentToken) {
-            console.log(currentToken);
-            $.ajax({
-                url: '{{ route("updateDeviceToken") }}',
-
-                type: 'POST',
-                data: {
-                    token: currentToken
-                },
-                success: function (data) {
-                    console.log(data.message)
-                    alert(data.message);
-                },
-                // error: function (error) {
-                //     console.log(error);
-                //     alert('Error occurred while updating device token.');
-                // },
-            });
-        } else {
-            // Show permission request UI
-            console.log('No registration token available. Request permission to generate one.');
-            function requestPermission() {
-                console.log('Requesting permission...');
-                Notification.requestPermission().then((permission) => {
-                    if (permission === 'granted') {
-                        console.log('Notification permission granted.');
-                        // Perform necessary actions if permission is granted
-                    } else {
-                        console.log('Notification permission denied.');
-                        // Handle case where permission is denied
-                    }
-                });
+    function requestPermission() {
+        console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                // Perform necessary actions if permission is granted
+                $('#subscribeModals').modal('hide');
+            } else {
+                console.log('Notification permission denied.');
+                // Handle case where permission is denied
             }
-        }
+        });
+    }
+
+    // Add event listener to show modal when it is about to be shown
+    $('#subscribeModals').on('show.bs.modal', function (e) {
+        $('#enableNotification').on('click', requestPermission); // Attach click event to the button
+    });
+
+    getToken(messaging, { vapidKey: 'BLcVF1Gg7a0lG4VZkHPWI7cXPCaCFO70YS_odQ3PMqvedqmg7bH0-jMZzqK7DkU7dF2fFzfq5wc9IrzyJ6C4weM' }).then((currentToken) => {
+        console.log(currentToken);
+        $.ajax({
+            url: '{{ route("updateDeviceToken") }}',
+            type: 'POST',
+            data: {
+                token: currentToken
+            },
+            success: function (data) {
+                console.log(data.message)
+                alert(data.message);
+            },
+            error: function (error) {
+                console.log(error);
+                // alert('Error occurred while updating device token.');
+            },
+        });
     }).catch((err) => {
         console.log('An error occurred while retrieving token. ', err);
-        alert('An error occurred while retrieving token.');
+        console.log('No registration token available. Request permission to generate one.');
+        $('#subscribeModals').modal('show'); // Show the modal
     });
 </script>
 
