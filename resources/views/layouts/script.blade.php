@@ -1,4 +1,25 @@
-
+<div id="subscribeModals" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-lg-7">
+                    <div class="modal-body p-5">
+                        <h2 class="lh-base">Subscribe now today to get <span class="text-danger">20% off</span> experiences!</h2>
+                        <p class="text-muted mb-4">A free bet is a bet which is provided by a betting site for a customer to place and then benefit from the winnings. Free bets are commonly used as welcome offers.</p>
+                        <div class="input-group mb-3">
+                            <button class="btn btn-primary" type="button" id="enableNotification">Subscript Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="subscribe-modals-cover h-100">
+                        <img src="assets/images/auth-one-bg.jpg" alt="" class="h-100 w-100 object-fit-cover" style="clip-path: polygon(100% 0%, 100% 100%, 100% 100%, 0% 100%, 25% 50%, 0% 0%);">
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
@@ -38,7 +59,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
 <script type="module">
     $.ajaxSetup({
@@ -74,7 +94,6 @@
             if (permission === 'granted') {
                 console.log('Notification permission granted.');
                 // Perform necessary actions if permission is granted
-                $('#subscribeModals').modal('hide');
             } else {
                 console.log('Notification permission denied.');
                 // Handle case where permission is denied
