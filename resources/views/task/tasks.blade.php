@@ -172,13 +172,17 @@ function updateTaskList() {
         <td style="text-align: center" class="id">${task.number}</td>
         <td style="text-align: center" class="status" >
             <span icon-task-id="${ task.id }">
-            <i  style="${ task.status === 'pending' ? 'color: blue' :
+            <i  style="${ task.status === 'new' ? 'color: blue' :
+                        task.status === 'pending' ? 'color: orange' :
                         task.status === 'completed' ? 'color: green' :
-                            task.status === 'cancelled' ? 'color: red' : ''}" class="${ task.status === 'pending' ? 'mdi mdi-timer-sand fs-17 align-middle' :
+                        task.status === 'cancelled' ? 'color: red' : ''}"
+                class="${ task.status === 'new' ? ' ri-add-circle-line fs-17 align-middle' :
+                        task.status === 'pending' ? 'ri-timer-2-line fs-17 align-middle' :
                         task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                            task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
+                        task.status === 'cancelled' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
             </span>
             <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${ task.id }">
+                <option value="new" ${task.status === "new" ? 'selected' : ''}>New</option>
                 <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
                 <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
                 <option value="cancelled" ${task.status === "cancelled" ? 'selected' : ''}>Cancelled</option>
