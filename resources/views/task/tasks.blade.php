@@ -37,7 +37,7 @@
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
                                         <a title="Export Tasks" href="{{ route('exportTasks') }}" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
-                                        <a title="Import Tasks" href="{{ route('addTasks') }}" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-upload-2-line align-bottom me-1"></i></a>
+                                        <a title="Import Tasks" href="{{ route('importTasks') }}" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-upload-2-line align-bottom me-1"></i></a>
                                     </div>
                                 </div>
                                 @endif

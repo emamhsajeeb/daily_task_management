@@ -42,17 +42,33 @@
                             <div class="collapse menu-dropdown" id="sidebarTasks">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="{{ route('showTasks') }}" class="nav-link" data-key="t-all-tasks"> All Tasks </a>
+                                        <a href="{{ route('showTasks') }}" class="nav-link" data-key="t-all-tasks"><i class="ri-order-play-line"></i> All Tasks </a>
                                     </li>
                                     @if($user->role == 'admin')
                                     <li class="nav-item">
-                                        <a href="{{ route('addTasks') }}" class="nav-link" data-key="t-add-tasks"> Add Tasks </a>
+                                        <a href="{{ route('importTasks') }}" class="nav-link" data-key="t-add-tasks"><i class="ri-play-list-add-line"></i> Add Tasks </a>
                                     </li>
                                     @endif
                                 </ul>
                             </div>
                         </li>
-
+                        @if($user->role == 'admin')
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                                    <i class="ri-group-2-line"></i><span data-key="t-tasks">Users</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarUsers">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Users </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link" data-key="t-add-user"><i class="ri-user-add-line"></i> Add User </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <!-- Sidebar -->

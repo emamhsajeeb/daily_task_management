@@ -28,7 +28,7 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <form action="{{ route('importTasks') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('importCSV') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="dropzone">
                                         <div class="fallback">

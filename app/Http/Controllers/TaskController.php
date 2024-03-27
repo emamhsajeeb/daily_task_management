@@ -36,13 +36,13 @@ class TaskController extends Controller
         return view('task/tasks', compact('tasks', 'user', 'settings'));
     }
 
-    public function addTasks()
+    public function importTasks()
     {
         $settings = [
-            'title' => 'All Tasks',
+            'title' => 'Import Tasks',
         ];
         $user = Auth::user();
-        return view('task/add',compact('user', 'settings'));
+        return view('task/import',compact('user', 'settings'));
     }
 
     /**
@@ -51,7 +51,7 @@ class TaskController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function importTasks(Request $request): \Illuminate\Http\RedirectResponse
+    public function importCSV(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx,csv,ods',

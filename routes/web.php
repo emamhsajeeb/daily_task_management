@@ -22,10 +22,10 @@ use App\Http\Controllers\PushNotificationController;
 
 Route::get('/', function () {
     $total = Tasks::count();
-    $pending = Tasks::where('status', 'pending')->count();
     $completed = Tasks::where('status', 'completed')->count();
-    $cancelled = Tasks::where('status', 'cancelled')->count();
-    return view('layouts/dashboard',['user' => Auth::user(), 'title' => 'Dashboard', 'total' => $total,'pending' => $pending,'completed' => $completed,'cancelled' => $cancelled]);
+    $pending = $total - $completed;
+    $rfi_submission_date = Tasks::whereNotNull('rfi_submission_date')->count();
+    return view('layouts/dashboard',['user' => Auth::user(), 'title' => 'Dashboard', 'total' => $total,'pending' => $pending,'completed' => $completed,'rfi_submission' => $rfi_submission_date]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
@@ -34,9 +34,9 @@ Route::post('/update-device-token', [PushNotificationController::class, 'updateD
 Route::middleware('auth')->group(function () {
 
     Route::get('/tasks', [TaskController::class, 'showTasks'])->name('showTasks');
-    Route::get('/add-tasks', [TaskController::class, 'addTasks'])->name('addTasks');
+    Route::get('/task/import', [TaskController::class, 'importTasks'])->name('importTasks');
     Route::get('/export-tasks', [TaskController::class, 'exportTasks'])->name('exportTasks');
-    Route::post('/task/import', [TaskController::class, 'importTasks'])->name('importTasks');
+    Route::post('/task/import', [TaskController::class, 'importCSV'])->name('importCSV');
     Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
     Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
     Route::post('/task/update-rfi-submission-date', [TaskController::class, 'updateRfiSubmissionDate'])->name('updateRfiSubmissionDate');
