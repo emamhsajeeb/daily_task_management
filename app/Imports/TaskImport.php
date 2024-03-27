@@ -20,8 +20,7 @@ class TaskImport implements ToModel
             'location' => $row[5],
             'side' => $row[6],
             'qty_layer' => $row[7],
-            'planned_time' => $row[8],
-            'incharge' => $row[9],
+            'planned_time' => $row[8]
         ]);
     }
 }

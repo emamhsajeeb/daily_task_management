@@ -107,7 +107,6 @@
     });
 
     getToken(messaging, { vapidKey: 'BLcVF1Gg7a0lG4VZkHPWI7cXPCaCFO70YS_odQ3PMqvedqmg7bH0-jMZzqK7DkU7dF2fFzfq5wc9IrzyJ6C4weM' }).then((currentToken) => {
-        console.log(currentToken);
         $.ajax({
             url: '{{ route("updateDeviceToken") }}',
             type: 'POST',
@@ -120,7 +119,6 @@
             },
             error: function (error) {
                 console.log(error);
-                // alert('Error occurred while updating device token.');
             },
         });
     }).catch((err) => {

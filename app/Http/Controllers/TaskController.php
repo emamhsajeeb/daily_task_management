@@ -67,13 +67,30 @@ class TaskController extends Controller
 
         foreach ($importedTasks as $importedTask) {
 
+            $inchargeName = '';
+            $k = intval(substr($importedTask[5], 1)); // Extracting the numeric part after 'K'
+
+            switch (true) {
+                case ($k > -1 && $k <= 12):
+                    $inchargeName = 'habibur';
+                    break;
+                case ($k >= 13 && $k <= 21):
+                    $inchargeName = 'prodip';
+                    break;
+                case ($k >= 22 && $k <= 33):
+                    $inchargeName = 'debashis';
+                    break;
+                case ($k >= 34 && $k <= 48):
+                    $inchargeName = 'rabbi';
+                    break;
+            }
 
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
             if ($existingTask) {
                 $resubmissionCount++;
                 // Handle duplicate tasks (handled in separate method)
-                $this->handleDuplicateTask($existingTask, $importedTask);
+                $this->handleDuplicateTask($existingTask, $importedTask, $inchargeName);
             } else {
                 $newSubmissionCount++;
                 // Create a new task for non-duplicates
@@ -87,7 +104,7 @@ class TaskController extends Controller
                     'side' => $importedTask[6],
                     'qty_layer' => $importedTask[7],
                     'planned_time' => $importedTask[8],
-                    'incharge' => $importedTask[9],
+                    'incharge' => $inchargeName,
                 ]);
             }
         }
@@ -106,19 +123,14 @@ class TaskController extends Controller
      * @param array $importedTask
      * @return void
      */
-    private function handleDuplicateTask(Tasks $existingTask, array $importedTask): void
+    private function handleDuplicateTask(Tasks $existingTask, array $importedTask, string $inchargeName): void
     {
         // Get resubmission count (handling potential null value)
         $resubmissionCount = $existingTask->resubmission_count ?? 0;
 
         // Update imported task data with incremented resubmission
-        if ($resubmissionCount) {
-            $resubmissionCount = $resubmissionCount + 1;
-            $resubmissionDate = $existingTask->resubmission_date."\n".$this->getOrdinalNumber($resubmissionCount)." Submission date: ".$existingTask->date;
-        } else {
-            $resubmissionCount = $resubmissionCount + 1;
-            $resubmissionDate = $this->getOrdinalNumber($resubmissionCount) ." Submission date: ".$existingTask->date;
-        }
+        $resubmissionCount = $resubmissionCount + 1;
+        $resubmissionDate = ($existingTask->resubmission_date ? $existingTask->resubmission_date . "\n" : '') . $this->getOrdinalNumber($resubmissionCount) . " Submission date: " . $existingTask->date;
 
         // Delete the existing task
         $existingTask->delete();
@@ -134,7 +146,7 @@ class TaskController extends Controller
             'side' => $importedTask[6],
             'qty_layer' => $importedTask[7],
             'planned_time' => $importedTask[8],
-            'incharge' => $importedTask[9],
+            'incharge' => $inchargeName,
             'resubmission_count' => $resubmissionCount,
             'resubmission_date' => $resubmissionDate,
         ]);

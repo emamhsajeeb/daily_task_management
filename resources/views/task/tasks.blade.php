@@ -156,7 +156,6 @@ function updateTaskList() {
     // Loop through tasks and create table rows
     tasks.forEach(function (task) {
         var taskRow = document.createElement('tr');
-
         if(user.role === "admin") {
             taskRow.innerHTML = `
             <th scope="row">
@@ -261,13 +260,7 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-// Event listener for dropdown change
-$(document).on('input', '#status-dropdown', function(e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var status = e.target.value;
-    console.log(taskId, status);
-    updateTaskStatus(taskId, status);
-});
+
 // Function to handle status update
 function updateTaskStatus(taskId, status) {
     $.ajax({
@@ -279,7 +272,6 @@ function updateTaskStatus(taskId, status) {
         },
         success:function (data) {
             var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
-            console.log(icon);
             icon.innerHTML = '';
             var newIcon = (status) => {
                 return status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-refresh-line fs-17 align-middle"></i>' :
@@ -292,12 +284,13 @@ function updateTaskStatus(taskId, status) {
     })
 }
 
-$(document).on('input', '#rfiSubmissionDate', function(e) {
+// Event listener for dropdown change
+$(document).on('input', '#status-dropdown', function(e) {
     var taskId = e.target.getAttribute('data-task-id');
-    var date = e.target.value;
-    console.log(taskId, date);
-    updateRfiSubmissionDate(taskId, date)
+    var status = e.target.value;
+    updateTaskStatus(taskId, status);
 });
+
 // Function to handle status update
 function updateRfiSubmissionDate(taskId, date) {
     $.ajax({
@@ -313,10 +306,16 @@ function updateRfiSubmissionDate(taskId, date) {
     })
 }
 
+$(document).on('input', '#rfiSubmissionDate', function(e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var date = e.target.value;
+    updateRfiSubmissionDate(taskId, date)
+});
+
+
 $(document).on('input', '#completionDateTime', function(e) {
     var taskId = e.target.getAttribute('data-task-id');
     var dateTime = e.target.value;
-    console.log(taskId, dateTime);
     updateCompletionDateTime(taskId, dateTime)
 });
 
