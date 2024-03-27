@@ -139,7 +139,7 @@ class TaskController extends Controller
         Tasks::create([
             'date' => $importedTask[0],
             'number' => $importedTask[1],
-            'status' => 'pending',
+            'status' => ($importedTask[2] === 'completed' ? 'completed' : 'pending'),
             'type' => $importedTask[3],
             'description' => $importedTask[4],
             'location' => $importedTask[5],

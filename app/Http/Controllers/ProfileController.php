@@ -12,10 +12,18 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request): View
+    public function viewProfile(Request $request): View
     {
         return view('profile.view', [
             'user' => $request->user(),
+        ]);
+    }
+    public function allUsers(Request $request): View
+    {
+        $users = User::all();
+        return view('user.users', [
+            'users' => $users,
+            'user' => $request->user()
         ]);
     }
     /**

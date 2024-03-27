@@ -60,7 +60,7 @@
                                 <div class="collapse menu-dropdown" id="sidebarUsers">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Users </a>
+                                            <a href="{{ route('allUsers') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Users </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#" class="nav-link" data-key="t-add-user"><i class="ri-user-add-line"></i> Add User </a>

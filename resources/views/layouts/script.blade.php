@@ -102,8 +102,8 @@
     }
 
     // Add event listener to show modal when it is about to be shown
-    $('#subscribeModals').on('show.bs.modal', function (e) {
-        $('#enableNotification').on('click', requestPermission); // Attach click event to the button
+    jQuery('#subscribeModals').on('show.bs.modal', function (e) {
+        jQuery('#enableNotification').on('click', requestPermission); // Attach click event to the button
     });
 
     getToken(messaging, { vapidKey: 'BLcVF1Gg7a0lG4VZkHPWI7cXPCaCFO70YS_odQ3PMqvedqmg7bH0-jMZzqK7DkU7dF2fFzfq5wc9IrzyJ6C4weM' }).then((currentToken) => {
@@ -124,7 +124,7 @@
     }).catch((err) => {
         console.log('An error occurred while retrieving token. ', err);
         console.log('No registration token available. Request permission to generate one.');
-        $('#subscribeModals').modal('show'); // Show the modal
+        jQuery('#subscribeModals').modal('show'); // Show the modal
     });
 </script>
 
