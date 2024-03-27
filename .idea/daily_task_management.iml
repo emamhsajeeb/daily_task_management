@@ -164,7 +164,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="dataTables.responsive" level="application" />
     <orderEntry type="library" name="pdfmake" level="application" />
     <orderEntry type="library" name="dataTables.buttons" level="application" />

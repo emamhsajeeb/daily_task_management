@@ -274,7 +274,8 @@ function updateTaskStatus(taskId, status) {
             var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
             icon.innerHTML = '';
             var newIcon = (status) => {
-                return status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-refresh-line fs-17 align-middle"></i>' :
+                return status === 'new' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-add-circle-line fs-17 align-middle"></i>' :
+                    status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
                     status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
                         status === 'cancelled' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-close-circle-line fs-17 align-middle"></i>' : ''
             };

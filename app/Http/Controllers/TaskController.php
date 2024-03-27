@@ -87,6 +87,7 @@ class TaskController extends Controller
 
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
+
             if ($existingTask) {
                 $resubmissionCount++;
                 // Handle duplicate tasks (handled in separate method)
@@ -132,14 +133,11 @@ class TaskController extends Controller
         $resubmissionCount = $resubmissionCount + 1;
         $resubmissionDate = ($existingTask->resubmission_date ? $existingTask->resubmission_date . "\n" : '') . $this->getOrdinalNumber($resubmissionCount) . " Submission date: " . $existingTask->date;
 
-        // Delete the existing task
-        $existingTask->delete();
-
         // Create a new task record with updated data
         Tasks::create([
             'date' => $importedTask[0],
             'number' => $importedTask[1],
-            'status' => ($importedTask[2] === 'completed' ? 'completed' : 'pending'),
+            'status' => ($existingTask->status === 'completed' ? 'completed' : 'pending'),
             'type' => $importedTask[3],
             'description' => $importedTask[4],
             'location' => $importedTask[5],
@@ -150,6 +148,10 @@ class TaskController extends Controller
             'resubmission_count' => $resubmissionCount,
             'resubmission_date' => $resubmissionDate,
         ]);
+
+
+        // Delete the existing task
+        $existingTask->delete();
     }
 
     public function exportTasks()
