@@ -60,72 +60,61 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
-<script type="module">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('f190593a4dbf29f3775a', {
+        cluster: 'ap2'
+    });
+
+    var channel = pusher.subscribe('tasks-channel');
+    channel.bind('pusher:subscription_succeeded', function() {
+        console.log('Successfully subscribed to tasks-channel.');
+    });
+
+    channel.bind('tasks-event', function(data) {
+        console.log('Received data:', data);
+        // Display a browser notification with the received data
+        if (Notification.permission === "granted") {
+            var notification = new Notification(data.title, {
+                body: data.message
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    var notification = new Notification(data.title, {
+                        body: data.message
+                    });
+                }
+            });
         }
     });
-    // Import the functions you need from the SDKs you need
-    import {initializeApp}  from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import {getMessaging, getToken} from "https://cdnjs.cloudflare.com/ajax/libs/firebase/10.9.0/firebase-messaging.min.js";
-
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyCma6YB2JiSX7QvsS6J1d0RwuGM8URvK-U",
-        authDomain: "dbedc-task-management.firebaseapp.com",
-        databaseURL: "https://dbedc-task-management-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "dbedc-task-management",
-        storageBucket: "dbedc-task-management.appspot.com",
-        messagingSenderId: "351976405927",
-        appId: "1:351976405927:web:46ff930e027712fca41482"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    function requestPermission() {
-        console.log('Requesting permission...');
-        Notification.requestPermission().then((permission) => {
-            if (permission === 'granted') {
-                console.log('Notification permission granted.');
-                // Perform necessary actions if permission is granted
-            } else {
-                console.log('Notification permission denied.');
-                // Handle case where permission is denied
-            }
-        });
-    }
-
-    // Add event listener to show modal when it is about to be shown
-    jQuery('#subscribeModals').on('show.bs.modal', function (e) {
-        jQuery('#enableNotification').on('click', requestPermission); // Attach click event to the button
-    });
-
-    getToken(messaging, { vapidKey: 'BLcVF1Gg7a0lG4VZkHPWI7cXPCaCFO70YS_odQ3PMqvedqmg7bH0-jMZzqK7DkU7dF2fFzfq5wc9IrzyJ6C4weM' }).then((currentToken) => {
-        $.ajax({
-            url: '{{ route("updateDeviceToken") }}',
-            type: 'POST',
-            data: {
-                token: currentToken
-            },
-            success: function (data) {
-                console.log(data.message)
-                alert(data.message);
-            },
-            error: function (error) {
-                console.log(error);
-            },
-        });
-    }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        console.log('No registration token available. Request permission to generate one.');
-        jQuery('#subscribeModals').modal('show'); // Show the modal
-    });
 </script>
+
+{{--<script type="module">--}}
+{{--    function requestPermission() {--}}
+{{--        console.log('Requesting permission...');--}}
+{{--        Notification.requestPermission().then((permission) => {--}}
+{{--            if (permission === 'granted') {--}}
+{{--                console.log('Notification permission granted.');--}}
+{{--                // Perform necessary actions if permission is granted--}}
+{{--            } else {--}}
+{{--                console.log('Notification permission denied.');--}}
+{{--                // Handle case where permission is denied--}}
+{{--            }--}}
+{{--        });--}}
+{{--    }--}}
+
+{{--    // Add event listener to show modal when it is about to be shown--}}
+{{--    jQuery('#subscribeModals').on('show.bs.modal', function () {--}}
+{{--        jQuery('#enableNotification').on('click', requestPermission); // Attach click event to the button--}}
+{{--    });--}}
+
+{{--    jQuery('#subscribeModals').modal('show'); // Show the modal--}}
+{{--</script>--}}
 
 

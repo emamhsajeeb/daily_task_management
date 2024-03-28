@@ -15,27 +15,22 @@ class TasksImported implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     */
+    public $title;
+    public $message;
 
-    public $new, $resubmission, $date, $message;
-
-    public function __construct($new, $resubmission, $date)
+    public function __construct(string $title, string $message)
     {
-        $this->date = $date;
-        $this->new = $new;
-        $this->resubmission = $resubmission;
-        $this->message = "Daily tasks updated for ".$date.". With ".$new.($new > 1 ? " new submissions" : " new submission")." and ".$resubmission. " resubmissions.";
+        $this->title = $title;
+        $this->message = $message;
     }
 
     public function broadcastOn()
     {
-        return ['tasks-imported'];
+        return ['tasks-channel'];
     }
 
-    public function broadcastAs()
+    public function broadcastAs(): string
     {
-        return 'tasks-imported';
+        return 'tasks-event';
     }
 }

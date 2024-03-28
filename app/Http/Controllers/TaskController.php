@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TasksImported;
 use App\Http\Controllers\PushNotificationController;
 use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Tasks; // Model representing the tasks table
@@ -111,7 +112,7 @@ class TaskController extends Controller
         }
         $title = "Daily tasks updated for {$date}";
         $message = "$newSubmissionCount " . ($newSubmissionCount > 1 ? "new submissions" : "new submission") . " and $resubmissionCount resubmissions.";
-        PushNotificationController::sendNotification($title,$message);
+        event(new TasksImported($title, $message));
 
         // Redirect to tasks route with success message
         return redirect()->route('showTasks')->with('success', 'Data imported successfully.');
