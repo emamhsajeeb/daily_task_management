@@ -210,10 +210,13 @@
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 
-function updateTaskList() {
+function updateTaskList(firstdate = null, lastdate = null) {
+    console.log(firstdate,lastdate);
     var preloader = document.getElementById('preloader');
     var incharges = {!! json_encode($incharges) !!};
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
+
+    $('#taskListBody').empty();
 
     $.ajax({
         url: url,
@@ -221,6 +224,12 @@ function updateTaskList() {
         dataType: 'json',
         success: function(response) {
             var tasks = response;
+            let filteredTasks = tasks;
+            if (firstdate !== null && lastdate !== null) {
+                filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
+                var taskRow = '';
+            }
+            console.log('Filtered tasks: ',filteredTasks);
             const dates = tasks.map(task => new Date(task.date));
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
@@ -251,9 +260,11 @@ function updateTaskList() {
 
             $('#taskListHead').html(header);
 
+
+
             // Loop through tasks and create table rows
             var taskRow = '';
-            $.each(tasks, function(index, task, ) {
+            $.each(filteredTasks ? filteredTasks : tasks, function(index, task) {
                 taskRow += `
                     <tr>
                         <td style="text-align: center" class="due_date">${task.date}</td>
@@ -351,18 +362,28 @@ function updateTaskList() {
                     header: true,
                     footer: true
                 }
-            });
-            flatpickr("#dateRangePicker", {
+            });$("#dateRangePicker").daterangepicker({
                 minDate: firstDate,
                 maxDate: lastDate,
-                mode: 'range',
-                onChange: function(selectedDates, dateStr, instance) {
-                    console.log(firstDate, lastDate);
-                    const startDate = selectedDates[0];
-                    const endDate = selectedDates[1];
-                    updateTaskList();
-                }
+                applyButtonClasses : "btn-success",
+                "showDropdowns": true,
+                autoUpdateInput: false,
+            }, function(start, end, label) {
+                start = start.format('YYYY-MM-DD');
+                end = end.format('YYYY-MM-DD');
+                console.log(start, end);
+                updateTaskList(start,end);
             });
+            // flatpickr("#dateRangePicker", {
+            //
+            //     mode: 'range',
+            //     onChange: function(selectedDates, dateStr, instance) {
+            //         const startDate = selectedDates[0];
+            //         const endDate = selectedDates[1];
+            //         console.log('Selected start date: ',startDate,'Selected end date: ', endDate);
+            //         updateTaskList(startDate,endDate);
+            //     }
+            // });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
