@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="44818b18-6106-4742-a337-ea8e0309af9f" name="Changes" comment="ok">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/daily_task_management.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/daily_task_management.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/hot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/head.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/task/daily.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/task/daily.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/task/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/task/tasks.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -217,7 +214,7 @@
       <option name="presentableId" value="Default" />
       <updated>1711991802307</updated>
       <workItem from="1711991805180" duration="2019000" />
-      <workItem from="1711994207484" duration="4340000" />
+      <workItem from="1711994207484" duration="4818000" />
     </task>
     <task id="LOCAL-00001" summary="ok">
       <option name="closed" value="true" />

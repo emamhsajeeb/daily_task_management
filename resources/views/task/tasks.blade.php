@@ -233,6 +233,18 @@ function updateTaskList(firstdate = null, lastdate = null) {
             const dates = tasks.map(task => new Date(task.date));
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
+            $("#dateRangePicker").daterangepicker({
+                minDate: firstDate,
+                maxDate: lastDate,
+                applyButtonClasses : "btn-success",
+                "showDropdowns": true,
+                autoUpdateInput: false,
+            }, function(start, end, label) {
+                start = start.format('YYYY-MM-DD');
+                end = end.format('YYYY-MM-DD');
+                console.log(start, end);
+                updateTaskList(start,end);
+            });
             var header = `
                 <tr>
                 <th>Date</th>
@@ -362,18 +374,8 @@ function updateTaskList(firstdate = null, lastdate = null) {
                     header: true,
                     footer: true
                 }
-            });$("#dateRangePicker").daterangepicker({
-                minDate: firstDate,
-                maxDate: lastDate,
-                applyButtonClasses : "btn-success",
-                "showDropdowns": true,
-                autoUpdateInput: false,
-            }, function(start, end, label) {
-                start = start.format('YYYY-MM-DD');
-                end = end.format('YYYY-MM-DD');
-                console.log(start, end);
-                updateTaskList(start,end);
             });
+
             // flatpickr("#dateRangePicker", {
             //
             //     mode: 'range',

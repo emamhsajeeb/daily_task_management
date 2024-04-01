@@ -107,7 +107,7 @@
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
         var user = {!! json_encode($user) !!};
 
-        function updateDailySummary() {
+        function updateDailySummary(firstdate = null, lastdate = null) {
             var preloader = document.getElementById('preloader');
             var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
@@ -117,27 +117,34 @@
                 dataType: 'json',
                 success: function(response) {
                     var tasks = response;
+                    let filteredTasks = tasks;
+                    if (firstdate !== null && lastdate !== null) {
+                        filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
+                        var dailyRow = '';
+                    }
+                    console.log('Filtered tasks: ',filteredTasks);
                     const dates = tasks.map(task => new Date(task.date));
                     const firstDate = new Date(Math.min(...dates));
                     const lastDate = new Date(Math.max(...dates));
-                    flatpickr("#dailyRangePicker", {
+                    $("#dailyRangePicker").daterangepicker({
                         minDate: firstDate,
                         maxDate: lastDate,
-                        mode: 'range',
-                        onChange: function(selectedDates, dateStr, instance) {
-                            console.log(firstDate, lastDate);
-                            startDate = selectedDates[0];
-                            endDate = selectedDates[1];
-                            console.log('Start Date:', startDate);
-                            console.log('End Date:', endDate);
-                        }
+                        applyButtonClasses : "btn-success",
+                        "showDropdowns": true,
+                        autoUpdateInput: false,
+                    }, function(start, end, label) {
+                        start = start.format('YYYY-MM-DD');
+                        end = end.format('YYYY-MM-DD');
+                        console.log(start, end);
+                        updateDailySummary(start,end);
                     });
+
 
                     // Initialize an object to store counts and statuses for each date
                     var dailySummary = {};
 
                     // Iterate over tasks to count occurrences of each date and calculate metrics
-                    $.each(tasks, function(index, task) {
+                    $.each(filteredTasks ? filteredTasks : tasks, function(index, task) {
                         // Extract date from the task
                         var taskDate = task.date;
 
