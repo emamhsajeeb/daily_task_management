@@ -358,10 +358,9 @@ function updateTaskList() {
                 mode: 'range',
                 onChange: function(selectedDates, dateStr, instance) {
                     console.log(firstDate, lastDate);
-                    startDate = selectedDates[0];
-                    endDate = selectedDates[1];
-                    console.log('Start Date:', startDate);
-                    console.log('End Date:', endDate);
+                    const startDate = selectedDates[0];
+                    const endDate = selectedDates[1];
+                    updateTaskList();
                 }
             });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible

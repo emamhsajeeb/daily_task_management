@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44818b18-6106-4742-a337-ea8e0309af9f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/daily_task_management.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/daily_task_management.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/task/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/task/tasks.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +215,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1711991802307</updated>
-      <workItem from="1711991805180" duration="874000" />
+      <workItem from="1711991805180" duration="1166000" />
     </task>
     <servers />
   </component>
