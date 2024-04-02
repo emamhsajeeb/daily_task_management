@@ -244,7 +244,7 @@
                         maxDate: new Date(lastDate),
                         mode: 'range', // Specify 'range' mode as a string
                         // This onChange event handler will be triggered whenever the date range changes
-                        onChange: function(selectedDates, dateStr, instance) {
+                        onClose: function(selectedDates, dateStr, instance) {
                             // Assuming you want to get the first and last dates from the selected date range
                             var start = selectedDates[0];
                             var end = selectedDates[selectedDates.length - 1];
