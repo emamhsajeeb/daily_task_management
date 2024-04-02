@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not fo
 use Illuminate\Http\Request; // Represents the incoming HTTP request
 use Illuminate\Support\Facades\Auth; // Facade for user authentication
 use Illuminate\Support\Facades\DB; // Facade for interacting with the database
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel; // Facade for working with Excel files
@@ -196,6 +197,36 @@ class TaskController extends Controller
             // Other exceptions occurred, return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function filterTasks(Request $request)
+    {
+        // Retrieve start and end date from the request
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        // Retrieve status from the request
+        $status = $request->input('status');
+
+        // Query tasks based on date range
+        $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
+
+        // If status is not 'all', further filter tasks by status
+        if ($status !== 'all') {
+            $tasksQuery->where('status', $status);
+        }
+
+        // Retrieve filtered tasks
+        $filteredTasks = $tasksQuery->get();
+
+
+
+        Log::info($filteredTasks);
+        // Return JSON response with filtered tasks
+        return response()->json([
+            'tasks' => $filteredTasks,
+            'message' => 'Tasks filtered successfully'
+        ]);
     }
 
     public function importTasks()

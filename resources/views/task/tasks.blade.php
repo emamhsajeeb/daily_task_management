@@ -52,29 +52,29 @@
                         </div>
                         @role('admin')
                         <div class="card-body border border-dashed border-end-0 border-start-0">
-                            <form>
+                            <form id="filterTaskForm">
+                                @csrf
                                 <div class="row g-3">
 
                                     <div class="col-xxl-3 col-sm-4">
-                                        <input type="text" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
+                                        <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
                                     </div>
                                     <!--end col-->
 
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="">Status</option>
+                                            <select class="form-control" data-choices data-choices-search-false name="status" id="tastStatus">
                                                 <option value="all" selected>All</option>
-                                                <option value="New">New</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Inprogress">Inprogress</option>
-                                                <option value="Completed">Completed</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="new">New</option>
+                                                <option value="pending">Pending</option>
+                                                <option value="emergency">Emergency</option>
                                             </select>
                                         </div>
                                     </div>
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
-                                        <button type="button" class="btn btn-primary w-100" onclick="SearchData();">
+                                        <button type="submit" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filters
                                         </button>
@@ -120,6 +120,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
             <form class="tablelist-form" autocomplete="off" id="addTaskForm">
+                @csrf
                 <div class="modal-body">
                     <input type="hidden" id="tasksId" />
                     <div class="row g-3">
@@ -319,7 +320,6 @@ function updateTaskListBody(tasks) {
     });
 }
 
-
 function updateTaskList() {
     var header = `
         <tr>
@@ -371,15 +371,6 @@ function updateTaskList() {
                 minDate: new Date(firstDate),
                 maxDate: new Date(lastDate),
                 mode: 'range', // Specify 'range' mode as a string
-                // This onChange event handler will be triggered whenever the date range changes
-                onClose: function(selectedDates, dateStr, instance) {
-                    // Assuming you want to get the first and last dates from the selected date range
-                    var start = selectedDates[0];
-                    var end = selectedDates[selectedDates.length - 1];
-
-                    // Call the updateTaskList function with the updated dates
-                    updateTaskList(start, end);
-                }
             });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -392,28 +383,38 @@ function updateTaskList() {
 }
 
 function filterTaskList() {
+    // Get start and end dates from the date range picker
+    var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
+    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+
+    // Get form data
+    var formData = new FormData(document.getElementById('filterTaskForm'));
+
+    // Append start and end dates to form data
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
+
+    console.log(formData);
     $.ajax({
-        url : "{{ route('filterTaskList') }}",
+        url : "{{ route('filterTasks') }}",
         type:"POST",
-        data: {
-            starDate: taskId,
-            status: status
-        },
-        success:function (data) {
-            var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
-            icon.innerHTML = '';
-            var newIcon = (status) => {
-                return status === 'new' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-add-circle-line fs-17 align-middle"></i>' :
-                    status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
-                        status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
-                            status === 'emergency' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-information-line fs-17 align-middle"></i>' : ''
-            };
-            toastr.success(data.message+status);
-            icon.innerHTML = newIcon(status);
-            status ? $('#completionDateTime').click() : '';
+        data: formData,
+        processData: false,
+        contentType: false,
+        success:function (response) {
+            var preloader = document.getElementById('preloader');
+            toastr.success(response.message);
+            $('#taskTable').DataTable().clear().destroy();
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            const tasks = response.tasks;
+            console.log(tasks);
+
+            updateTaskListBody(tasks);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
         error: function(xhr, status, error) {
-            // Handle error
             console.error(xhr.responseText);
         }
     })
@@ -514,9 +515,15 @@ $( document ).ready(function() {
     $("#showAddModalBtn").click(function(){
         $("#showAddModal").modal('show');
     });
+
     $('#addTask').click(function() {
         event.preventDefault();
         addTask();
+    });
+
+    $('#filterTasks').click(function() {
+        event.preventDefault();
+        filterTaskList();
     });
 });
 
@@ -540,7 +547,7 @@ function updateTaskStatus(taskId, status) {
             };
             toastr.success(data.message+status);
             icon.innerHTML = newIcon(status);
-            status ? $('#completionDateTime').click() : '';
+            status === 'completed' ? $('#completionDateTime').click() : '';
         },
         error: function(xhr, status, error) {
             // Handle error

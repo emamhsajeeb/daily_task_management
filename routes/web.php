@@ -42,6 +42,7 @@ Route::post('/update-device-token', [PushNotificationController::class, 'updateD
 Route::middleware([CheckRole::class . ':admin'])->group(function () {
     // Routes accessible only to users with the 'admin' role
     Route::get('/tasks-all', [TaskController::class, 'allTasks'])->name('allTasks');
+    Route::post('/tasks-filtered', [TaskController::class, 'filterTasks'])->name('filterTasks');
     Route::get('/tasks', [TaskController::class, 'showTasks','title' => 'Task List'])->name('showTasks');
     Route::post('/task/add', [TaskController::class, 'addTask'])->name('addTask');
     Route::get('/task/import', [TaskController::class, 'importTasks'])->name('importTasks');
