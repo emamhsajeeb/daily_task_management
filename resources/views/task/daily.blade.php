@@ -107,7 +107,7 @@
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
         var user = {!! json_encode($user) !!};
 
-        function updateDailySummary(firstdate = null, lastdate = null) {
+        function updateDailySummary(month = null) {
             var preloader = document.getElementById('preloader');
             var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
@@ -117,37 +117,30 @@
                 dataType: 'json',
                 success: function(response) {
                     var tasks = response;
-                    // Extract year and month from the selected date
-                    var year = new Date(month).getFullYear();
-                    var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
 
-                    // Create the first and last date of the selected month
-                    var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
-                    var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
-                    // Filter tasks by the selected month
-                    var filteredTasks = tasks.filter(function(task) {
-                        var taskDate = new Date(task.date);
-                        return taskDate >= firstDate && taskDate <= lastDate;
-                    });
+                    if(month != null) {
+                        // Extract year and month from the selected date
+                        var year = new Date(month).getFullYear();
+                        var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
+
+                        // Create the first and last date of the selected month
+                        var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
+                        var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
+                        // Filter tasks by the selected month
+                        var filteredTasks = tasks.filter(function(task) {
+                            var taskDate = new Date(task.date);
+                            return taskDate >= firstDate && taskDate <= lastDate;
+                        });
+                    }
 
                     // Do something with the filtered tasks
                     console.log('Filtered tasks for ' + month + ':', filteredTasks);
-                    
-                    // Event listener for dropdown change
-                    $(document).on('input', '#dailyMonthPicker', function(e) {
-                        var month = e.target.value;
-                        console.log(month);
-                        updateDailySummary(month);
-                    });
-
-
-
 
                     // Initialize an object to store counts and statuses for each date
                     var dailySummary = {};
 
                     // Iterate over tasks to count occurrences of each date and calculate metrics
-                    $.each(tasks, function(index, task) {
+                    $.each(filteredTasks ? filteredTasks : tasks, function(index, task) {
                         // Extract date from the task
                         var taskDate = task.date;
 
@@ -235,9 +228,6 @@
                         }
                     });
 
-
-
-
                     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                     preloader.style.visibility = 'hidden'; // Set visibility to visible
                 },
@@ -257,6 +247,12 @@
                 }
             });
             updateDailySummary();
+            // Event listener for dropdown change
+            $(document).on('input', '#dailyMonthPicker', function(e) {
+                var month = e.target.value;
+                console.log(month);
+                updateDailySummary(month);
+            });
 
         });
 
