@@ -172,7 +172,7 @@
                             <!--end col-->
                             <div class="col-lg-6">
                                 <label for="qty_layer" class="form-label">Quantity/Layer No.</label>
-                                <input type="text" name="qty_layer" id="qty_layer" class="form-control" placeholder="Enter quantity/layer number..." required />
+                                <input type="text" name="qty_layer" id="qty_layer" class="form-control" placeholder="Enter quantity/layer number..." />
                             </div>
                             <!--end col-->
                             <div class="col-lg-6">
