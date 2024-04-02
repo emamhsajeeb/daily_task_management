@@ -126,17 +126,19 @@
                     const dates = tasks.map(task => new Date(task.date));
                     const firstDate = new Date(Math.min(...dates));
                     const lastDate = new Date(Math.max(...dates));
-                    $("#dailyRangePicker").daterangepicker({
-                        minDate: firstDate,
-                        maxDate: lastDate,
-                        applyButtonClasses : "btn-success",
-                        "showDropdowns": true,
-                        autoUpdateInput: false,
-                    }, function(start, end, label) {
-                        start = start.format('YYYY-MM-DD');
-                        end = end.format('YYYY-MM-DD');
-                        console.log(start, end);
-                        updateDailySummary(start,end);
+                    flatpickr("#dateRangePicker", {
+                        minDate: new Date(firstDate),
+                        maxDate: new Date(lastDate),
+                        mode: 'range', // Specify 'range' mode as a string
+                        // This onChange event handler will be triggered whenever the date range changes
+                        onChange: function(selectedDates, dateStr, instance) {
+                            // Assuming you want to get the first and last dates from the selected date range
+                            var start = selectedDates[0];
+                            var end = selectedDates[selectedDates.length - 1];
+
+                            // Call the updateTaskList function with the updated dates
+                            updateDailySummary(start, end);
+                        }
                     });
 
 
