@@ -210,7 +210,7 @@
     </div>
     <!--end modal-->
     <script type="module">
-        import flatpickr from "flatpickr";
+        import flatpickr from 'flatpickr/dist/flatpickr.js';
 
         // Function to get the tasks dynamically
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
