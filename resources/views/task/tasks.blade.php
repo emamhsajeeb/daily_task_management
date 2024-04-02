@@ -63,7 +63,7 @@
 
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="status" id="tastStatus">
+                                            <select name="status" class="form-control" id="taskStatus">
                                                 <option value="all" selected>All</option>
                                                 <option value="completed">Completed</option>
                                                 <option value="new">New</option>
@@ -386,27 +386,23 @@ function filterTaskList() {
     // Get start and end dates from the date range picker
     var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
     var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+    var taskStatus = document.getElementById('taskStatus').value;
 
-    // Get form data
-    var formData = new FormData(document.getElementById('filterTaskForm'));
-
-    // Append start and end dates to form data
-    formData.append('startDate', startDate);
-    formData.append('endDate', endDate);
-
-    console.log(formData);
     $.ajax({
         url : "{{ route('filterTasks') }}",
         type:"POST",
-        data: formData,
-        processData: false,
-        contentType: false,
+        data: {
+            start: startDate,
+            end: endDate,
+            status: taskStatus,
+        },
         success:function (response) {
             var preloader = document.getElementById('preloader');
-            toastr.success(response.message);
-            $('#taskTable').DataTable().clear().destroy();
             preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'visible'; // Set visibility to visible
+            toastr.success(response.message);
+            $('#taskTable').DataTable().clear().destroy();
+
             const tasks = response.tasks;
             console.log(tasks);
 

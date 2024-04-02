@@ -8,6 +8,7 @@ use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Author;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming user authentication)
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not found models
 use Illuminate\Http\Request; // Represents the incoming HTTP request
@@ -201,32 +202,38 @@ class TaskController extends Controller
 
     public function filterTasks(Request $request)
     {
-        // Retrieve start and end date from the request
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
+        try {
+            // Retrieve start and end date from the request
+            $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
+            $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
 
-        // Retrieve status from the request
-        $status = $request->input('status');
+            // Retrieve status from the request
+            $status = $request->status;
 
-        // Query tasks based on date range
-        $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
+            // Query tasks based on date range
+            $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
 
-        // If status is not 'all', further filter tasks by status
-        if ($status !== 'all') {
-            $tasksQuery->where('status', $status);
+            // If status is not 'all', further filter tasks by status
+            if ($status !== 'all') {
+                $tasksQuery->where('status', $status);
+            }
+
+            // Retrieve filtered tasks
+            $filteredTasks = $tasksQuery->get();
+
+
+
+            // Return JSON response with filtered tasks
+            return response()->json([
+                'tasks' => $filteredTasks,
+                'message' => 'Tasks filtered successfully'
+            ]);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during filtering
+            return response()->json([
+                'error' => 'An error occurred while filtering tasks: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Retrieve filtered tasks
-        $filteredTasks = $tasksQuery->get();
-
-
-
-        Log::info($filteredTasks);
-        // Return JSON response with filtered tasks
-        return response()->json([
-            'tasks' => $filteredTasks,
-            'message' => 'Tasks filtered successfully'
-        ]);
     }
 
     public function importTasks()
