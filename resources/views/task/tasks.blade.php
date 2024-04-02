@@ -209,7 +209,7 @@
         </div>
     </div>
     <!--end modal-->
-    <script>
+    <script type="module">
         import flatpickr from "flatpickr";
 
         // Function to get the tasks dynamically
