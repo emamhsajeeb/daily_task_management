@@ -139,7 +139,7 @@ class TaskController extends Controller
                 'description.required' => 'Description is required.',
                 'location.required' => 'Location is required.',
                 'side.required' => 'Road Type is required.',
-                'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : ''),
+                'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : '',
                 'completion_time.required' => 'Completion time is required.',
                 'qty_layer.string' => 'Quantity/Layer No. is not string'
             ]);
