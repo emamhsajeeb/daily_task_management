@@ -239,7 +239,7 @@
                         filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
                     }
 
-                    $("#dateRangePicker").flatpickr({
+                    flatpickr("#dateRangePicker", {
                         minDate: firstDate,
                         maxDate: lastDate,
                         // This onChange event handler will be triggered whenever the date range changes
