@@ -239,19 +239,19 @@
                         filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
                     }
 
-                    flatpickr("#dateRangePicker", {
-                        minDate: firstDate,
-                        maxDate: lastDate,
-                        // This onChange event handler will be triggered whenever the date range changes
-                        onChange: function(selectedDates, dateStr, instance) {
-                            // Assuming you want to get the first and last dates from the selected date range
-                            var start = selectedDates[0];
-                            var end = selectedDates[selectedDates.length - 1];
-
-                            // Call the updateDailySummary function with the updated dates
-                            updateTaskList(start, end);
-                        }
-                    });
+                    // flatpickr("#dateRangePicker", {
+                    //     minDate: firstDate,
+                    //     maxDate: lastDate,
+                    //     // This onChange event handler will be triggered whenever the date range changes
+                    //     onChange: function(selectedDates, dateStr, instance) {
+                    //         // Assuming you want to get the first and last dates from the selected date range
+                    //         var start = selectedDates[0];
+                    //         var end = selectedDates[selectedDates.length - 1];
+                    //
+                    //         // Call the updateDailySummary function with the updated dates
+                    //         updateTaskList(start, end);
+                    //     }
+                    // });
 
                     var header = `
                 <tr>
