@@ -236,6 +236,32 @@ class TaskController extends Controller
         }
     }
 
+    public function filterSummary(Request $request)
+    {
+        try {
+            // Retrieve month from the request
+            $selectedMonth = $request->month;
+
+            // Calculate start and end dates for the selected month
+            $startDate = date('Y-m-01', strtotime($selectedMonth));
+            $endDate = date('Y-m-t', strtotime($selectedMonth));
+
+            // Query tasks based on date range
+            $filteredTasks = Tasks::whereBetween('date', [$startDate, $endDate])->get();
+
+            // Return JSON response with filtered tasks
+            return response()->json([
+                'tasks' => $filteredTasks,
+                'message' => 'Tasks filtered successfully'
+            ]);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during filtering
+            return response()->json([
+                'error' => 'An error occurred while filtering tasks: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function importTasks()
     {
         $settings = [

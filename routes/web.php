@@ -51,6 +51,7 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
     Route::post('/task/update-rfi-submission-date', [TaskController::class, 'updateRfiSubmissionDate'])->name('updateRfiSubmissionDate');
     Route::post('/task/update-completion-date-time', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTime');
     Route::get('/tasks/daily-summary', [TaskController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummary');
+    Route::post('/tasks/daily-summary-filtered', [TaskController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [TaskController::class, 'exportDailySummary'])->name('exportDailySummary');
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');

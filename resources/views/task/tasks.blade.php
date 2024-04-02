@@ -74,7 +74,7 @@
                                     </div>
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
-                                        <button type="submit" class="btn btn-primary w-100" id="filterTasks">
+                                        <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filters
                                         </button>
@@ -200,7 +200,7 @@
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="addTask">Add Task</button>
+                        <button type="button" class="btn btn-success" id="addTask">Add Task</button>
                         <!-- <button type="button" class="btn btn-success" id="edit-btn">Update Task</button> -->
                     </div>
                 </div>
@@ -363,7 +363,6 @@ function updateTaskList() {
             // Finding the first and last dates
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
-            let filteredTasks = tasks;
 
             updateTaskListBody(tasks);
 
@@ -404,7 +403,6 @@ function filterTaskList() {
             $('#taskTable').DataTable().clear().destroy();
 
             const tasks = response.tasks;
-            console.log(tasks);
 
             updateTaskListBody(tasks);
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
@@ -500,7 +498,6 @@ function addTask() {
 
 // Call the function when the page loads
 $( document ).ready(function() {
-    var preloader = document.getElementById('preloader');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
