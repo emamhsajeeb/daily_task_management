@@ -35,5 +35,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/toastr.css') }}">
     <script type="text/javascript" src="{{ asset('assets/js/toastr.js') }}"></script>
+    <!-- Add this to the head section of your layout file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>

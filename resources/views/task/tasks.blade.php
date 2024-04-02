@@ -209,8 +209,7 @@
         </div>
     </div>
     <!--end modal-->
-    <script type="module">
-        import flatpickr from 'flatpickr/dist/flatpickr.js';
+    <script>
 
         // Function to get the tasks dynamically
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
@@ -243,6 +242,7 @@
                     flatpickr("#dateRangePicker", {
                         minDate: firstDate,
                         maxDate: lastDate,
+                        mode: range,
                         // This onChange event handler will be triggered whenever the date range changes
                         onChange: function(selectedDates, dateStr, instance) {
                             // Assuming you want to get the first and last dates from the selected date range
