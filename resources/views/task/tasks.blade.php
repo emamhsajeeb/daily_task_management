@@ -415,6 +415,7 @@
 
                 },
                 error: function(xhr, status) {
+                    console.log(xhr.responseText)
                     // Handle error
                     var errorData = JSON.parse(xhr.responseText).error;
                     var delay = 300;
