@@ -113,6 +113,7 @@ class TaskController extends Controller
     public function addTask(Request $request)
     {
         $user = Auth::user();
+
         $inchargeName = '';
 
         try {
@@ -180,8 +181,14 @@ class TaskController extends Controller
             $userId = Auth::user()->id;
             $task->authors()->attach($userId);
 
+            $tasks = $user ? (
+            $user->hasRole('se')
+                ? DB::table('tasks')->where('incharge', $user->user_name)->get()
+                : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
+            ) : [];
+
             // Return a response
-            return response()->json(['message' => 'Task added successfully', 'task' => $task]);
+            return response()->json(['message' => 'Task added successfully', 'tasks' => $tasks]);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);
