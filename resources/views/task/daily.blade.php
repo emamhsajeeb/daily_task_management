@@ -110,13 +110,6 @@
         function updateDailySummary(firstdate = null, lastdate = null) {
             var preloader = document.getElementById('preloader');
             var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
-            // Extract year and month from the selected date
-            var year = new Date(month).getFullYear();
-            var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
-
-            // Create the first and last date of the selected month
-            var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
-            var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
 
             $.ajax({
                 url: url,
@@ -124,6 +117,13 @@
                 dataType: 'json',
                 success: function(response) {
                     var tasks = response;
+                    // Extract year and month from the selected date
+                    var year = new Date(month).getFullYear();
+                    var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
+
+                    // Create the first and last date of the selected month
+                    var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
+                    var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
                     // Filter tasks by the selected month
                     var filteredTasks = tasks.filter(function(task) {
                         var taskDate = new Date(task.date);
@@ -132,10 +132,7 @@
 
                     // Do something with the filtered tasks
                     console.log('Filtered tasks for ' + month + ':', filteredTasks);
-                    console.log('Filtered tasks: ',filteredTasks);
-                    const dates = tasks.map(task => new Date(task.date));
-                    const firstDate = new Date(Math.min(...dates));
-                    const lastDate = new Date(Math.max(...dates));
+                    
                     // Event listener for dropdown change
                     $(document).on('input', '#dailyMonthPicker', function(e) {
                         var month = e.target.value;
@@ -143,7 +140,7 @@
                         updateDailySummary(month);
                     });
 
-                    console.log(daily_range);
+
 
 
                     // Initialize an object to store counts and statuses for each date
