@@ -126,7 +126,7 @@ class TaskController extends Controller
                 'description' => 'required|string',
                 'location' => 'required|string|custom_location',
                 'side' => 'required|string',
-                'qty_layer' => $request->input('type') === 'Embankment'||'Structure' ? 'required|string' : '',
+                'qty_layer' => $request->input('type') === 'Embankment' ? 'required|string' : '',
                 'completion_time' => $request->input('status') === 'completed' ? 'required|string' : '',
                 'inspection_details' => 'nullable|string',
             ],[
@@ -139,7 +139,7 @@ class TaskController extends Controller
                 'description.required' => 'Description is required.',
                 'location.required' => 'Location is required.',
                 'side.required' => 'Road Type is required.',
-                'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : ($request->input('type') === 'Structure' ? 'Quantity is required when the type is Structure.' : ''),
+                'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : ''),
                 'completion_time.required' => 'Completion time is required.',
                 'qty_layer.string' => 'Quantity/Layer No. is not string'
             ]);
