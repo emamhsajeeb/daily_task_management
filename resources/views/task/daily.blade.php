@@ -126,7 +126,7 @@
                     const dates = tasks.map(task => new Date(task.date));
                     const firstDate = new Date(Math.min(...dates));
                     const lastDate = new Date(Math.max(...dates));
-                    flatpickr("#dailyRangePicker", {
+                    var daily_range = flatpickr("#dailyRangePicker", {
                         minDate: new Date(firstDate),
                         maxDate: new Date(lastDate),
                         mode: 'range', // Specify 'range' mode as a string
@@ -140,6 +140,8 @@
                             updateDailySummary(start, end);
                         }
                     });
+
+                    console.log(daily_range);
 
 
                     // Initialize an object to store counts and statuses for each date
