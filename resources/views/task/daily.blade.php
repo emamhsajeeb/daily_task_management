@@ -126,7 +126,7 @@
                     const dates = tasks.map(task => new Date(task.date));
                     const firstDate = new Date(Math.min(...dates));
                     const lastDate = new Date(Math.max(...dates));
-                    flatpickr("#dateRangePicker", {
+                    flatpickr("#dailyRangePicker", {
                         minDate: new Date(firstDate),
                         maxDate: new Date(lastDate),
                         mode: 'range', // Specify 'range' mode as a string
