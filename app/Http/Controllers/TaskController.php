@@ -141,6 +141,7 @@ class TaskController extends Controller
                 'side.required' => 'Road Type is required.',
                 'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : ($request->input('type') === 'Structure' ? 'Quantity is required when the type is Structure.' : ''),
                 'completion_time.required' => 'Completion time is required.',
+                'qty_layer.string' => 'Quantity/Layer No. is not string'
             ]);
 
             $k = intval(substr($validatedData['location'], 1)); // Extracting the numeric part after 'K'
