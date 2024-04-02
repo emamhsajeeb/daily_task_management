@@ -238,6 +238,7 @@
 
         }
 
+
         // Call the function when the page loads
         $( document ).ready(function() {
             var preloader = document.getElementById('preloader');
@@ -247,13 +248,14 @@
                 }
             });
             updateDailySummary();
-            // Event listener for dropdown change
-            $(document).on('input', '#dailyMonthPicker', function(e) {
-                var month = e.target.value;
-                console.log(month);
-                updateDailySummary(month);
-            });
 
+        });
+
+        // Event listener for dropdown change
+        $(document).on('input', '#dailyMonthPicker', function(e) {
+            var month = e.target.value;
+            console.log(month);
+            updateDailySummary(month);
         });
 
         toastr.options = {
