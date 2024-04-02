@@ -131,6 +131,7 @@
                             var taskDate = new Date(task.date);
                             return taskDate >= firstDate && taskDate <= lastDate;
                         });
+                        var dailyRow = '';
                     }
 
                     // Do something with the filtered tasks
@@ -194,7 +195,6 @@
                     $('#dailySummaryHead').html(header);
 
                     // Loop through tasks and create table rows
-                    var dailyRow = '';
                     for (var date in dailySummary) {
                         if (dailySummary.hasOwnProperty(date)) {
                             var daily = dailySummary[date];
