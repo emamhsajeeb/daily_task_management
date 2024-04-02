@@ -47,7 +47,7 @@
                                     <div class="row g-3">
 
                                         <div class="col-xxl-3 col-sm-8">
-                                            <input type="text" class="form-control bg-light border-light" id=dailyRangePicker" placeholder="Select date range" />
+                                            <input type="month" class="form-control bg-light border-light" id=dailyMonthPicker" placeholder="Select month..." />
                                         </div>
                                         <!--end col-->
                                         <div class="col-xxl-1 col-sm-4">
@@ -110,6 +110,13 @@
         function updateDailySummary(firstdate = null, lastdate = null) {
             var preloader = document.getElementById('preloader');
             var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
+            // Extract year and month from the selected date
+            var year = new Date(month).getFullYear();
+            var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
+
+            // Create the first and last date of the selected month
+            var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
+            var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
 
             $.ajax({
                 url: url,
@@ -117,28 +124,23 @@
                 dataType: 'json',
                 success: function(response) {
                     var tasks = response;
-                    let filteredTasks = tasks;
-                    if (firstdate !== null && lastdate !== null) {
-                        filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
-                        var dailyRow = '';
-                    }
+                    // Filter tasks by the selected month
+                    var filteredTasks = tasks.filter(function(task) {
+                        var taskDate = new Date(task.date);
+                        return taskDate >= firstDate && taskDate <= lastDate;
+                    });
+
+                    // Do something with the filtered tasks
+                    console.log('Filtered tasks for ' + month + ':', filteredTasks);
                     console.log('Filtered tasks: ',filteredTasks);
                     const dates = tasks.map(task => new Date(task.date));
                     const firstDate = new Date(Math.min(...dates));
                     const lastDate = new Date(Math.max(...dates));
-                    var daily_range = flatpickr("#dailyRangePicker", {
-                        minDate: new Date(firstDate),
-                        maxDate: new Date(lastDate),
-                        mode: 'range', // Specify 'range' mode as a string
-                        // This onChange event handler will be triggered whenever the date range changes
-                        onChange: function(selectedDates, dateStr, instance) {
-                            // Assuming you want to get the first and last dates from the selected date range
-                            var start = selectedDates[0];
-                            var end = selectedDates[selectedDates.length - 1];
-
-                            // Call the updateTaskList function with the updated dates
-                            updateDailySummary(start, end);
-                        }
+                    // Event listener for dropdown change
+                    $(document).on('input', '#dailyMonthPicker', function(e) {
+                        var month = e.target.value;
+                        console.log(month);
+                        updateDailySummary(month);
                     });
 
                     console.log(daily_range);
@@ -148,7 +150,7 @@
                     var dailySummary = {};
 
                     // Iterate over tasks to count occurrences of each date and calculate metrics
-                    $.each(filteredTasks ? filteredTasks : tasks, function(index, task) {
+                    $.each(tasks, function(index, task) {
                         // Extract date from the task
                         var taskDate = task.date;
 

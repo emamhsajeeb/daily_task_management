@@ -500,6 +500,7 @@
             updateTaskStatus(taskId, status);
         });
 
+
         // Function to handle status update
         function updateRfiSubmissionDate(taskId, date) {
             $.ajax({
