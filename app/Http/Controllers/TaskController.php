@@ -120,6 +120,7 @@ class TaskController extends Controller
             $validatedData = $request->validate([
                 'date' => 'required|date',
                 'number' => 'required|string',
+                'time' => 'required|date_format:H:i:s',
                 'status' => 'required|string',
                 'type' => 'required|string',
                 'description' => 'required|string',
@@ -131,6 +132,7 @@ class TaskController extends Controller
             ],[
                 'date.required' => 'RFI Date is required.',
                 'number.required' => 'RFI Number is required.',
+                'time.required' => 'RFI TIme is required.',
                 'status.required' => 'Status is required.',
                 'type.required' => 'Type is required.',
                 'description.required' => 'Description is required.',
@@ -160,6 +162,7 @@ class TaskController extends Controller
             $task = new Tasks();
             $task->date = $validatedData['date'];
             $task->number = $validatedData['number'];
+            $task->planned_time = $validatedData['time'];
             $task->status = $validatedData['status'];
             $task->type = $validatedData['type'];
             $task->description = $validatedData['description'];
