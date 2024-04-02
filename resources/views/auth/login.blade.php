@@ -6,6 +6,14 @@
 @include('layouts.head')
 
 <body>
+<!--preloader-->
+<div id="preloader" style="opacity: 1; visibility: visible;">
+    <div id="status">
+        <div class="spinner-border text-primary avatar-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
 
 <div class="auth-page-wrapper pt-5">
     <!-- auth page bg -->
@@ -120,5 +128,14 @@
 <!-- JAVASCRIPT -->
 @include('layouts.script')
 </body>
+
+<script>
+    $( document ).ready(function() {
+        var preloader = document.getElementById('preloader');
+        preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+        preloader.style.visibility = 'hidden'; // Set visibility to visible
+    });
+
+</script>
 
 </html>
