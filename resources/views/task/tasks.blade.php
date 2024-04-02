@@ -57,7 +57,7 @@
                                     <div class="row g-3">
 
                                         <div class="col-xxl-3 col-sm-4">
-                                            <input type="text" class="form-control bg-light border-light" id="demo-datepicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
+                                            <input type="text" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
                                         </div>
                                         <!--end col-->
 
@@ -215,7 +215,7 @@
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
         var user = {!! json_encode($user) !!};
 
-        function updateTaskList() {
+        function updateTaskList(firstdate = null, lastdate = null) {
             var preloader = document.getElementById('preloader');
             var incharges = {!! json_encode($incharges) !!};
             var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
@@ -226,6 +226,33 @@
                 dataType: 'json',
                 success: function(response) {
                     var tasks = response;
+                    // Extracting dates from tasks
+                    const dates = tasks.map(task => new Date(task.date));
+
+// Finding the first and last dates
+                    const firstDate = new Date(Math.min(...dates));
+                    const lastDate = new Date(Math.max(...dates));
+                    let filteredTasks = tasks;
+
+                    // If filtering is applied, filter tasks and update filteredTasks
+                    if (firstdate !== null && lastdate !== null) {
+                        filteredTasks = tasks.filter(task => task.date >= firstdate && task.date <= lastdate);
+                    }
+
+                    $("#dateRangePicker").flatpickr({
+                        minDate: firstDate,
+                        maxDate: lastDate,
+                        // This onChange event handler will be triggered whenever the date range changes
+                        onChange: function(selectedDates, dateStr, instance) {
+                            // Assuming you want to get the first and last dates from the selected date range
+                            var start = selectedDates[0];
+                            var end = selectedDates[selectedDates.length - 1];
+
+                            // Call the updateDailySummary function with the updated dates
+                            updateTaskList(start, end);
+                        }
+                    });
+
                     var header = `
                 <tr>
                 <th>Date</th>
@@ -255,7 +282,7 @@
 
                     // Loop through tasks and create table rows
                     var taskRow = '';
-                    $.each(tasks, function(index, task, ) {
+                    $.each(filteredTasks ? filteredTasks : tasks, function(index, task) {
                         taskRow += `
                     <tr>
                         <td style="text-align: center" class="due_date">${task.date}</td>
@@ -455,7 +482,7 @@
                     };
                     toastr.success(data.message+status);
                     icon.innerHTML = newIcon(status);
-                    $('#completionDateTime').click();
+                    status ? $('#completionDateTime').click() : '';
                 },
                 error: function(xhr, status, error) {
                     // Handle error
