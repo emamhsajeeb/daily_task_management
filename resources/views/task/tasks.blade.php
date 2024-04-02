@@ -412,7 +412,7 @@
                     $("#showAddModal").modal('hide');
                     toastr.success(response.message);
                     updateTaskList();
-                    event.preventDefault();
+
                 },
                 error: function(xhr, status) {
                     // Handle error
@@ -460,6 +460,7 @@
                 $("#showAddModal").modal('show');
             });
             $('#addTask').click(function() {
+                event.preventDefault();
                 addTask();
             });
         });
