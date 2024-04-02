@@ -17,6 +17,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
-const flatpickr = require("flatpickr");
+import flatpickr from 'flatpickr';
+window.flatpickr = flatpickr;
 
 
