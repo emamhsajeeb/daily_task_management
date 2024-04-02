@@ -412,6 +412,7 @@
                     $("#showAddModal").modal('hide');
                     toastr.success(response.message);
                     updateTaskList();
+                    event.preventDefault();
                 },
                 error: function(xhr, status) {
                     // Handle error
@@ -460,7 +461,6 @@
             });
             $('#addTask').click(function() {
                 addTask();
-
             });
         });
 
