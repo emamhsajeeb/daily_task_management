@@ -53,6 +53,7 @@
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
                                             <select name="incharge" class="form-control" id="taskIncharge">
+                                                <option value="" disabled selected>Select Incharge</option>
                                                 @foreach($incharges as $incharge)
                                                     <option value="{{$incharge->user_name}}">{{$incharge->first_name.' '.$incharge->last_name}}</option>
                                                 @endforeach

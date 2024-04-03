@@ -63,7 +63,8 @@
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
                                             <select name="status" class="form-control" id="taskStatus">
-                                                <option value="all" selected>All</option>
+                                                <option value="" disabled selected>Select Status</option>
+                                                <option value="all">All</option>
                                                 <option value="completed">Completed</option>
                                                 <option value="new">New</option>
                                                 <option value="pending">Pending</option>

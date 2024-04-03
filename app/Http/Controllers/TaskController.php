@@ -217,7 +217,7 @@ class TaskController extends Controller
             }
 
             // Further filter tasks by status
-            if ($request->status !== 'all') {
+            if ($request->status !== 'all' && $request->status !== null) {
                 $status = $request->status;
                 $tasksQuery->where('status', $status);
             }
