@@ -434,7 +434,7 @@ function filterTaskList() {
             }
         });
         // Once filtering is done, restore the button
-        $('#filterTasks').html('Add Task');
+        $('#filterTasks').html('Filter');
         $('#filterTasks').prop('disabled', false);
     }, 2000);
 }
