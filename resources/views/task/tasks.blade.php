@@ -290,7 +290,7 @@ function updateTaskListBody(tasks) {
 
         taskRow += `
             <td style="text-align: center" class="client_name">
-                <input data-task-id="${task.id}" value="${task.completion_time}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
+                <input data-task-id="${task.id}" value="${task.completion_time ? task.completion_time : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
             </td>
             <td ${task.inspection_details ? `title="${task.inspection_details}"` : ''} class="client_name">
                 <div style="cursor: pointer; width: 200px; ${task.inspection_details ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${task.id}">
@@ -303,7 +303,7 @@ function updateTaskListBody(tasks) {
         if(admin) {
             taskRow += `
                     <td style="text-align: center" class="client_name">
-                        <input ${admin ? '' : 'disabled'} value="${task.rfi_submission_date}" data-task-id="${task.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
+                        <input ${admin ? '' : 'disabled'} value="${task.rfi_submission_date ? task.rfi_submission_date : ''}" data-task-id="${task.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
                     </td>
                 `;
         }
