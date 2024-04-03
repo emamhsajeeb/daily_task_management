@@ -319,6 +319,7 @@ function updateTaskListBody(tasks) {
     });
     $('#taskListBody').html(taskRow);
     $('#taskTable').DataTable({
+        processing: true,
         destroy: true,
         order: [[0,'desc']],
         scrollCollapse: true,

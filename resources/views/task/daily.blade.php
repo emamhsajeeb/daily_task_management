@@ -171,6 +171,7 @@ function updateDailySummaryBody(tasks) {
     $('#dailySummaryBody').html(dailyRow);
 
     $('#dailySummaryTable').DataTable({
+        processing: true,
         destroy: true,
         order: [[0,'desc']],
         scrollCollapse: true,
