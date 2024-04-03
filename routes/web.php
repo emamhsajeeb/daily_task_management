@@ -67,6 +67,7 @@ Route::middleware([CheckRole::class . ':se'])->group(function () {
     Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
     Route::post('/task/update-completion-date-time-se', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTimeSE');
     Route::get('/tasks/daily-summary-se', [TaskController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummarySE');
+    Route::post('/tasks/daily-summary-filtered-se', [TaskController::class, 'filterSummary'])->name('filterSummarySE');
 
 });
 

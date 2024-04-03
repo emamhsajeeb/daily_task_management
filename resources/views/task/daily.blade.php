@@ -50,6 +50,7 @@
                                         <input  type="month" id="monthPicker" name="monthPicker" class="form-control bg-light border-light" placeholder="Select month..." />
                                     </div>
                                     <!--end col-->
+                                    @role('admin')
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
                                             <select name="incharge" class="form-control" id="taskIncharge">
@@ -62,11 +63,12 @@
                                         </div>
                                     </div>
                                     <!--end col-->
+                                    @endrole
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
                                         <button type="button" class="btn btn-primary w-100" id="filterSummary">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                            Filters
+                                            Filter
                                         </button>
                                     </div>
                                     <!--end col-->
@@ -196,11 +198,11 @@ async function filterDailySummary() {
     setTimeout(function() {
         // Get selected month from month picker
         var selectedMonth = document.getElementById('monthPicker').value;
-        var taskIncharge = document.getElementById('taskIncharge').value;
+        var taskIncharge = admin ? document.getElementById('taskIncharge').value : null;
 
         // Send selected month to Laravel controller
         $.ajax({
-            url: "{{ route('filterSummary') }}",
+            url: admin ? "{{ route('filterSummary') }}" : "{{ route('filterSummarySE') }}" ,
             type: "POST",
             data: {
                 month: selectedMonth,
