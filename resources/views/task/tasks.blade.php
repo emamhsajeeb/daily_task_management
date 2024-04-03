@@ -55,7 +55,6 @@
                             <form id="filterTaskForm">
                                 @csrf
                                 <div class="row g-3">
-
                                     <div class="col-xxl-3 col-sm-4">
                                         <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
                                     </div>
@@ -88,7 +87,7 @@
                                     <div class="col-xxl-1 col-sm-4">
                                         <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                            Filters
+                                            Filter
                                         </button>
                                     </div>
                                     <!--end col-->
@@ -228,7 +227,7 @@ const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 const incharges = {!! json_encode($incharges) !!};
 
-function updateTaskListBody(tasks) {
+async function updateTaskListBody(tasks) {
     // Loop through tasks and create table rows
     var taskRow = '';
     $.each(tasks, function(index, task) {
@@ -336,7 +335,7 @@ function updateTaskListBody(tasks) {
     });
 }
 
-function updateTaskList() {
+async function updateTaskList() {
     var header = `
         <tr>
         <th>Date</th>
@@ -371,7 +370,7 @@ function updateTaskList() {
         url: url,
         method: 'GET',
         dataType: 'json',
-        success: function(response) {
+        success: async function (response) {
             var tasks = response;
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
@@ -380,7 +379,7 @@ function updateTaskList() {
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
 
-            updateTaskListBody(tasks);
+            await updateTaskListBody(tasks);
 
             flatpickr("#dateRangePicker", {
                 minDate: new Date(firstDate),
@@ -397,7 +396,7 @@ function updateTaskList() {
 
 }
 
-function filterTaskList() {
+async function filterTaskList() {
     // Simulating a delay with setTimeout
     setTimeout(function() {
         // Your filter logic goes here
@@ -416,7 +415,7 @@ function filterTaskList() {
                 status: taskStatus,
                 incharge: taskIncharge,
             },
-            success:function (response) {
+            success:async function (response) {
                 var preloader = document.getElementById('preloader');
                 preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'visible'; // Set visibility to visible
@@ -425,7 +424,7 @@ function filterTaskList() {
 
                 const tasks = response.tasks;
 
-                updateTaskListBody(tasks);
+                await updateTaskListBody(tasks);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'hidden'; // Set visibility to visible
             },
@@ -434,121 +433,128 @@ function filterTaskList() {
             }
         });
         // Once filtering is done, restore the button
-        $('#filterTasks').html('Filter');
+        $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
         $('#filterTasks').prop('disabled', false);
     }, 2000);
 }
 
 // Function to handle form submission via AJAX
-function addTask() {
+async function addTask() {
+    setTimeout(function() {
 
-    // Get form data
-    var formData = new FormData(document.getElementById('addTaskForm'));
+        // Get form data
+        var formData = new FormData(document.getElementById('addTaskForm'));
 
-    // AJAX request
-    $.ajax({
-        url: admin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            var preloader = document.getElementById('preloader');
-            toastr.success(response.message);
-            $("#showAddModal").modal('hide');
-            $('#taskTable').DataTable().clear().destroy();
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            console.log(response.tasks);
-            const tasks = response.tasks;
+        // AJAX request
+        $.ajax({
+            url: admin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: async function (response) {
+                var preloader = document.getElementById('preloader');
+                toastr.success(response.message);
+                $("#showAddModal").modal('hide');
+                $('#taskTable').DataTable().clear().destroy();
+                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'visible'; // Set visibility to visible
+                console.log(response.tasks);
+                const tasks = response.tasks;
 
-            // Extracting dates from tasks
-            const dates = tasks.map(task => new Date(task.date));
+                // Extracting dates from tasks
+                const dates = tasks.map(task => new Date(task.date));
 
-            // Finding the first and last dates
-            const firstDate = new Date(Math.min(...dates));
-            const lastDate = new Date(Math.max(...dates));
+                // Finding the first and last dates
+                const firstDate = new Date(Math.min(...dates));
+                const lastDate = new Date(Math.max(...dates));
 
-            flatpickr("#dateRangePicker", {
-                minDate: new Date(firstDate),
-                maxDate: new Date(lastDate),
-                mode: 'range', // Specify 'range' mode as a string
-                // This onChange event handler will be triggered whenever the date range changes
-                onClose: function(selectedDates, dateStr, instance) {
-                    // Assuming you want to get the first and last dates from the selected date range
-                    var start = selectedDates[0];
-                    var end = selectedDates[selectedDates.length - 1];
+                flatpickr("#dateRangePicker", {
+                    minDate: new Date(firstDate),
+                    maxDate: new Date(lastDate),
+                    mode: 'range', // Specify 'range' mode as a string
+                    // This onChange event handler will be triggered whenever the date range changes
+                    onClose: async function (selectedDates, dateStr, instance) {
+                        // Assuming you want to get the first and last dates from the selected date range
+                        var start = selectedDates[0];
+                        var end = selectedDates[selectedDates.length - 1];
 
-                    // Call the updateTaskList function with the updated dates
-                    updateTaskList(start, end);
+                        // Call the updateTaskList function with the updated dates
+                        await updateTaskList(start, end);
+                    }
+                });
+                await updateTaskListBody(tasks);
+                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'hidden'; // Set visibility to visible
+
+            },
+            error: function(xhr, status) {
+                console.log(xhr.responseText)
+                // Handle error
+                var errorData = JSON.parse(xhr.responseText).error;
+                var delay = 300;
+                for (var error in errorData) {
+                    (function(error) { // Closure to capture the current value of 'error'
+                        setTimeout(function() {
+                            toastr.error(errorData[error], {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            });
+                        }, delay);
+                    })(error); // Pass the current value of 'error' to the closure
+                    delay += 300;
                 }
-            });
-            updateTaskListBody(tasks);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-
-        },
-        error: function(xhr, status) {
-            console.log(xhr.responseText)
-            // Handle error
-            var errorData = JSON.parse(xhr.responseText).error;
-            var delay = 300;
-            for (var error in errorData) {
-                (function(error) { // Closure to capture the current value of 'error'
-                    setTimeout(function() {
-                        toastr.error(errorData[error], {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": false,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        });
-                    }, delay);
-                })(error); // Pass the current value of 'error' to the closure
-                delay += 300;
             }
-        }
-    });
+        });
+        // Once filtering is done, restore the button
+        $('#addTask').html('Add Task');
+        $('#addTask').prop('disabled', false);
+    }, 2000);
 }
 
 // Call the function when the page loads
-$( document ).ready(function() {
+$( document ).ready(async function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    updateTaskList();
+    await updateTaskList();
 
-    $("#showAddModalBtn").click(function(){
+    $("#showAddModalBtn").click(function () {
         $("#showAddModal").modal('show');
     });
 
-    $('#addTask').click(function() {
-        event.preventDefault();
-        addTask();
+    $('#addTask').click(async function (e) {
+        e.preventDefault();
+        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
+        $(this).prop('disabled', true);
+        await addTask();
     });
 
-    $('#filterTasks').click(function(e) {
+    $('#filterTasks').click(async function (e) {
         e.preventDefault();
         $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $(this).prop('disabled', true);
-        filterTaskList();
+        await filterTaskList();
     });
 });
 
 // Function to handle status update
-function updateTaskStatus(taskId, status) {
+async function updateTaskStatus(taskId, status) {
     $.ajax({
         url : "{{ route('updateTaskStatus') }}",
         type:"POST",
@@ -577,15 +583,15 @@ function updateTaskStatus(taskId, status) {
 }
 
 // Event listener for dropdown change
-$(document).on('input', '#status-dropdown', function(e) {
+$(document).on('input', '#status-dropdown', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
     var status = e.target.value;
-    updateTaskStatus(taskId, status);
+    await updateTaskStatus(taskId, status);
 });
 
 
 // Function to handle status update
-function updateRfiSubmissionDate(taskId, date) {
+async function updateRfiSubmissionDate(taskId, date) {
     $.ajax({
         url:"{{ route('updateRfiSubmissionDate') }}",
         type:"POST",
@@ -593,23 +599,23 @@ function updateRfiSubmissionDate(taskId, date) {
             id: taskId,
             date: date
         },
-        success:function (data) {
+        success:async function (data) {
             var status = 'complete';
-            updateTaskStatus(taskId, status);
+            await updateTaskStatus(taskId, status);
             $('#status-dropdown').val('completed');
             $('#completionDateTime').click();
-            toastr.success(data.message+date);
+            toastr.success(data.message + date);
         }
     })
 }
 
-$(document).on('input', '#rfiSubmissionDate', function(e) {
+$(document).on('input', '#rfiSubmissionDate', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
     var date = e.target.value;
-    updateRfiSubmissionDate(taskId, date)
+    await updateRfiSubmissionDate(taskId, date)
 });
 
-function updateCompletionDateTime(taskId, dateTime) {
+async function updateCompletionDateTime(taskId, dateTime) {
     $.ajax({
         url:admin ? "{{ route('updateCompletionDateTime') }}" : "{{ route('updateCompletionDateTimeSE') }}",
         type:"POST",
@@ -623,13 +629,13 @@ function updateCompletionDateTime(taskId, dateTime) {
     })
 }
 
-$(document).on('input', '#completionDateTime', function(e) {
+$(document).on('input', '#completionDateTime', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
     var dateTime = e.target.value;
-    updateCompletionDateTime(taskId, dateTime)
+    await updateCompletionDateTime(taskId, dateTime)
 });
 
-function editInspectionDetails(element) {
+async function editInspectionDetails(element) {
     element.removeAttribute('onclick');
     var taskId = element.getAttribute('data-task-id');
     var inspectionText = element.querySelector('.inspection-text');
@@ -640,12 +646,12 @@ function editInspectionDetails(element) {
     inspectionInput.value = inspectionText.textContent === 'N/A' ? '' : inspectionText.textContent;
     inspectionInput.style.display = 'block';
     saveBtn.style.display = 'block';
-    $(saveBtn).on('click', function () {
-        updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn);
+    $(saveBtn).on('click', async function () {
+        await updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn);
     })
 }
 
-function updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn) {
+async function updateInspectionDetails(element, taskId, inspectionText, inspectionInput, saveBtn) {
     $.ajax({
         url:"{{ route('updateInspectionDetails') }}",
         type:"POST",

@@ -191,7 +191,7 @@ function updateDailySummaryBody(tasks) {
 
 
 
-function filterDailySummary() {
+async function filterDailySummary() {
     // Simulating a delay with setTimeout
     setTimeout(function() {
         // Get selected month from month picker
@@ -206,7 +206,7 @@ function filterDailySummary() {
                 month: selectedMonth,
                 incharge: taskIncharge,
             },
-            success: function(response) {
+            success: async function (response) {
                 var preloader = document.getElementById('preloader');
                 preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'visible'; // Set visibility to visible
@@ -215,7 +215,7 @@ function filterDailySummary() {
 
                 const tasks = response.tasks;
 
-                updateDailySummaryBody(tasks);
+                await updateDailySummaryBody(tasks);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'hidden'; // Set visibility to visible
             },
@@ -225,7 +225,7 @@ function filterDailySummary() {
         });
 
         // Once filtering is done, restore the button
-        $('#filterSummary').html('Filter');
+        $('#filterSummary').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
         $('#filterSummary').prop('disabled', false);
     }, 2000); // Change 2000 to actual time it takes to execute filterDailySummary()
 
@@ -233,7 +233,7 @@ function filterDailySummary() {
 }
 
 
-function updateDailySummary(month = null) {
+async function updateDailySummary(month = null) {
     var preloader = document.getElementById('preloader');
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
     var header = `
@@ -257,10 +257,10 @@ function updateDailySummary(month = null) {
         url: url,
         method: 'GET',
         dataType: 'json',
-        success: function(response) {
+        success: async function (response) {
             var tasks = response;
 
-            updateDailySummaryBody(tasks);
+            await updateDailySummaryBody(tasks);
 
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -274,20 +274,20 @@ function updateDailySummary(month = null) {
 
 
 // Call the function when the page loads
-$( document ).ready(function() {
+$( document ).ready(async function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    updateDailySummary();
+    await updateDailySummary();
 
     // Event listener for dropdown change
-    $('#filterSummary').click(function(e) {
+    $('#filterSummary').click(async function (e) {
         e.preventDefault();
         $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $(this).prop('disabled', true);
-        filterDailySummary();
+        await filterDailySummary();
     });
 });
 
