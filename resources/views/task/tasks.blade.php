@@ -320,6 +320,9 @@ function updateTaskListBody(tasks) {
     $('#taskListBody').html(taskRow);
     $('#taskTable').DataTable({
         processing: true,
+        language: {
+            processing: "<i class='fa fa-refresh fa-spin'></i>",
+        },
         destroy: true,
         order: [[0,'desc']],
         scrollCollapse: true,
