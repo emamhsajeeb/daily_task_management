@@ -456,6 +456,7 @@ class TaskController extends Controller
     {
         $task = Tasks::findOrFail($request->id);
         $task->rfi_submission_date = $request->date;
+        $task->status = ($task->status != 'completed') ? 'completed' : $task->status;
         $task->save();
 
         return response()->json(['message' => 'RFI Submission date updated to ']);
