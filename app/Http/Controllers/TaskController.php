@@ -205,21 +205,27 @@ class TaskController extends Controller
     public function filterTasks(Request $request)
     {
         try {
-            // Retrieve start and end date from the request
-            $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
-            $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
-
             // Retrieve status from the request
             $status = $request->status;
             $incharge = $request->incharge;
 
             // Query tasks based on date range
-            $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
+            $tasksQuery = Tasks::query();
 
-            // If status is not 'all', further filter tasks by status
+            // Query tasks based on date range
+            if ($request->start !== null && $request->end !== null) {
+                // Retrieve start and end date from the request
+                $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
+                $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
+                $tasksQuery->whereBetween('date', [$startDate, $endDate]);
+            }
+
+            // Further filter tasks by status
             if ($status !== 'all') {
                 $tasksQuery->where('status', $status);
             }
+
+            // Filter tasks by incharge
             if ($incharge !== null) {
                 $tasksQuery->where('incharge', $incharge);
             }
@@ -252,6 +258,8 @@ class TaskController extends Controller
             $startDate = date('Y-m-01', strtotime($selectedMonth));
             $endDate = date('Y-m-t', strtotime($selectedMonth));
             $incharge = $request->incharge;
+
+
 
             $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
             if ($incharge !== null) {
