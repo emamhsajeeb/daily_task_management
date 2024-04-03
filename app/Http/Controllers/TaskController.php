@@ -29,15 +29,17 @@ class TaskController extends Controller
     public function showTasks()
     {
         $user = Auth::user();
+        $incharges = User::role('se')->get();
         $title = "Task List";
-        return view('task/tasks', compact('user','title'));
+        return view('task/tasks', compact('user','incharges','title'));
     }
 
     public function showDailySummary()
     {
         $user = Auth::user();
+        $incharges = User::role('se')->get();
         $title = "Daily Summary";
-        return view('task/daily', compact('user','title'));
+        return view('task/daily', compact('user','incharges','title'));
     }
 
     public function dailySummary()
@@ -209,6 +211,7 @@ class TaskController extends Controller
 
             // Retrieve status from the request
             $status = $request->status;
+            $incharge = $request->incharge;
 
             // Query tasks based on date range
             $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
@@ -216,6 +219,9 @@ class TaskController extends Controller
             // If status is not 'all', further filter tasks by status
             if ($status !== 'all') {
                 $tasksQuery->where('status', $status);
+            }
+            if ($incharge !== null) {
+                $tasksQuery->where('incharge', $incharge);
             }
 
             // Retrieve filtered tasks
@@ -245,9 +251,15 @@ class TaskController extends Controller
             // Calculate start and end dates for the selected month
             $startDate = date('Y-m-01', strtotime($selectedMonth));
             $endDate = date('Y-m-t', strtotime($selectedMonth));
+            $incharge = $request->incharge;
+
+            $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
+            if ($incharge !== null) {
+                $tasksQuery->where('incharge', $incharge);
+            }
 
             // Query tasks based on date range
-            $filteredTasks = Tasks::whereBetween('date', [$startDate, $endDate])->get();
+            $filteredTasks = $tasksQuery->get();
 
             // Return JSON response with filtered tasks
             return response()->json([

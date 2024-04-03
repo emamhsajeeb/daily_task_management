@@ -41,7 +41,6 @@
 
                             </div>
                         </div>
-                        @role('admin')
                         <div class="card-body border border-dashed border-end-0 border-start-0">
                             <form id="filterTaskForm">
                                 @csrf
@@ -50,6 +49,17 @@
                                     <div class="col-xxl-3 col-sm-8">
                                         <input  type="month" id="monthPicker" name="monthPicker" class="form-control bg-light border-light" placeholder="Select month..." />
                                     </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-3 col-sm-4">
+                                        <div class="input-light">
+                                            <select name="incharge" class="form-control" id="taskIncharge">
+                                                @foreach($incharges as $incharge)
+                                                    <option value="{{$incharge->user_name}}" selected>{{$incharge->first_name.' '.$incharge->last_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
                                         <button type="button" class="btn btn-primary w-100" id="filterSummary">
@@ -62,25 +72,12 @@
                                 <!--end row-->
                             </form>
                         </div>
-                        @endrole
                         <!--end card-body-->
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
                                 <div>
                                     <table id="dailySummaryTable" class="dt[-head]-center table-bordered column-order table-nowrap display compact align-middle">
                                         <thead id="dailySummaryHead">
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Total Tasks</th>
-                                            <th>Structure</th>
-                                            <th>Embankment</th>
-                                            <th>Pavement</th>
-                                            <th>Completed</th>
-                                            <th>% Completed</th>
-                                            <th>Pending</th>
-                                            <th>RFI Submission</th>
-                                            <th>% RFI Submission</th>
-                                        </tr>
                                         </thead>
                                         <tbody id="dailySummaryBody">
                                         </tbody>
@@ -245,28 +242,7 @@ function updateDailySummary(month = null) {
         success: function(response) {
             var tasks = response;
 
-            // if(month != null) {
-            //     // Extract year and month from the selected date
-            //     var year = new Date(month).getFullYear();
-            //     var selectedMonth = new Date(month).getMonth() + 1; // Month is 0-indexed, so add 1
-            //
-            //     // Create the first and last date of the selected month
-            //     var firstDate = new Date(year, selectedMonth - 1, 1); // Set day to 1 for the first day of the month
-            //     var lastDate = new Date(year, selectedMonth, 0); // Set day to 0 to get the last day of the previous month
-            //     // Filter tasks by the selected month
-            //     var filteredTasks = tasks.filter(function(task) {
-            //         var taskDate = new Date(task.date);
-            //         return taskDate >= firstDate && taskDate <= lastDate;
-            //     });
-            //     var dailyRow = '';
-            // }
-
-            // Do something with the filtered tasks
-            //
-
             updateDailySummaryBody(tasks);
-
-
 
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible

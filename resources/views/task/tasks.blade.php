@@ -1,9 +1,9 @@
 @extends('layouts.app',['user' => $user])
 
 @section('tasks')
-@php
-    $incharges = \DB::table('users')->get();
-@endphp
+{{--@php--}}
+{{--    $incharges = \DB::table('users')->get();--}}
+{{--@endphp--}}
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid" style="max-width: 100% !important;">
@@ -60,7 +60,6 @@
                                         <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
                                     </div>
                                     <!--end col-->
-
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
                                             <select name="status" class="form-control" id="taskStatus">
@@ -69,6 +68,16 @@
                                                 <option value="new">New</option>
                                                 <option value="pending">Pending</option>
                                                 <option value="emergency">Emergency</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-3 col-sm-4">
+                                        <div class="input-light">
+                                            <select name="incharge" class="form-control" id="taskIncharge">
+                                                @foreach($incharges as $incharge)
+                                                <option value="{{$incharge->user_name}}" selected>{{$incharge->first_name.' '.$incharge->last_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -386,6 +395,7 @@ function filterTaskList() {
     var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
     var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
     var taskStatus = document.getElementById('taskStatus').value;
+    var taskIncharge = document.getElementById('taskIncharge').value;
 
     $.ajax({
         url : "{{ route('filterTasks') }}",
@@ -394,6 +404,7 @@ function filterTaskList() {
             start: startDate,
             end: endDate,
             status: taskStatus,
+            incharge: taskIncharge,
         },
         success:function (response) {
             var preloader = document.getElementById('preloader');
