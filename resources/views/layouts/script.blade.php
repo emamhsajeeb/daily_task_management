@@ -33,7 +33,7 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
     const registerSw = async () => {
-        return await navigator.serviceWorker.register("{{ asset('assets/js/service_worker.js') }}");
+        return await navigator.serviceWorker.register("{{ asset('/service_worker.js') }}");
     };
 
     const requestNotificationPermission = async () => {

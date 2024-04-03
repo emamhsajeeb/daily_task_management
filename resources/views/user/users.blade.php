@@ -12,12 +12,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Team</h4>
+                        <h4 class="mb-sm-0">All Members</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                <li class="breadcrumb-item active">Team</li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Team</a></li>
+                                <li class="breadcrumb-item active">All Members</li>
                             </ol>
                         </div>
 
@@ -59,7 +59,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div>
-
                         <div id="teamlist">
                             <div class="team-list grid-view-filter row" id="team-member-list">
                             </div>
@@ -348,8 +347,10 @@
 <script>
     var users = {!! json_encode($users->toArray()) !!};
     console.log(users);
-    var buttonGroups,
-        list = document.querySelectorAll(".team-list");
+    var buttonGroups;
+
+    var list = document.querySelectorAll(".team-list");
+
     function onButtonGroupClick(e) {
         "list-view-button" === e.target.id || "list-view-button" === e.target.parentElement.id
             ? (document.getElementById("list-view-button").classList.add("active"),
@@ -363,90 +364,87 @@
                     e.classList.remove("list-view-filter"), e.classList.add("grid-view-filter");
                 }));
     }
+
     list &&
     (buttonGroups = document.querySelectorAll(".filter-button")) &&
     Array.from(buttonGroups).forEach(function (e) {
         e.addEventListener("click", onButtonGroupClick);
     });
+
+
     function loadTeamData(e) {
         (document.querySelector("#team-member-list").innerHTML = ""),
             Array.from(e).forEach(function (e, t) {
-                var r = e.bookmark ? "active" : "";
                 var m = e.user_name
                     ? '<img src="{{ asset("assets/images/users/") }}'+ '/' + e.user_name + '.jpg" alt="" class="member-img img-fluid d-block rounded-circle" />'
                     : '<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">' + e.first_name + "</div>";
 
                 (document.querySelector("#team-member-list").innerHTML +=
-                    '<div class="col">' +
-                    '   <div class="card team-box">' +
-                    '       <div class="team-cover">' +
-                    '           <img src="' + e.coverImg + '" alt="" class="img-fluid" />' +
-                    '       </div>' +
-                    '       <div class="card-body p-4">' +
-                    '           <div class="row align-items-center team-row">' +
-                    '               <div class="col team-settings">' +
-                    '                   <div class="row">' +
-                    '                       <div class="col">' +
-                    '                           <div class="flex-shrink-0 me-2">' +
-                    '                           <button type="button" class="btn btn-light btn-icon rounded-circle btn-sm favourite-btn ' + r + '">' +
-                    '                           <i class="ri-star-fill fs-14"></i>' +
-                    '                           </button>' +
-                    '                           </div>' +
-                    '                       </div>' +
-                    '                       <div class="col text-end dropdown">' +
-                        '                       <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">' +
-                        '                           <i class="ri-more-fill fs-17"></i>' +
-                        '                       </a>' +
-                        '                       <ul class="dropdown-menu dropdown-menu-end">' +
-                            '                       <li>' +
-                            '                           <a class="dropdown-item edit-list" href="#addmemberModal"  data-bs-toggle="modal" data-edit-id="' + e.id + '">' +
-                            '                           <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit</a>' +
-                            '                       </li>' +
-                            '                       <li>' +
-                            '                           <a class="dropdown-item remove-list" href="#removeMemberModal" data-bs-toggle="modal" data-remove-id="' + e.id + '">' +
-                            '                           <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove</a>' +
-                            '                       </li>' +
-                        '                       </ul>' +
-                    '                       </div>' +
-                    '                   </div>' +
-                    '               </div>' +
-                    '               <div class="col-lg-4 col">' +
-                    '                   <div class="team-profile-img">' +
-                    '                       <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">' + m + '' + '</div>' +
-                    '                   <div class="team-content">' +
-                    '                       <a class="member-name" data-bs-toggle="offcanvas" href="#member-overview" aria-controls="member-overview">' +
-                    '                           <h5 class="fs-16 mb-1">' + e.first_name + e.last_name + '</h5>' +
-                    '                       </a>' +
-                    '                       <p class="text-muted member-designation mb-0">' + e.position + '</p>' +
-                    '                   </div>' +
-                    '               </div>' +
-                    '           </div>' +
-                    '           <div class="col-lg-4 col">' +
-                    '               <div class="row text-muted text-center">' +
-                    '                <div class="col-12">' +
-                    '                       <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
-                    '                       <p class="text-muted mb-0">Tasks</p>' +
-                    '                   </div>' +
-                    '               </div>' +
-                    '           </div>' +
-                    '           <div class="col-lg-2 col">' +
-                    '               <div class="text-end">' +
-                    '                   <a href="pages-profile.html" class="btn btn-light view-btn">View Profile</a>' +
-                    '               </div>                        </div>                    </div>                </div>            </div>        </div>'),
-                    bookmarkBtn(),
+                        '<div class="col">' +
+                        '   <div class="card team-box">' +
+                        '       <div class="team-cover">' +
+                        '           <img src="' + e.coverImg + '" alt="" class="img-fluid" />' +
+                        '       </div>' +
+                        '       <div class="card-body p-4">' +
+                        '           <div class="row align-items-center team-row">' +
+                        '               <div class="col team-settings">' +
+                        '                   <div class="row">' +
+                        '                       <div class="col-12 text-end dropdown">' +
+                        '                           <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">' +
+                        '                               <i class="ri-more-fill fs-17"></i>' +
+                        '                           </a>' +
+                        '                           <ul class="dropdown-menu dropdown-menu-end">' +
+                        '                               <li>' +
+                        '                                   <a class="dropdown-item edit-list" href="#addmemberModal"  data-bs-toggle="modal" data-edit-id="' + e.id + '">' +
+                        '                                       <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit' +
+                        '                                   </a>' +
+                        '                               </li>' +
+                        '                               <li>' +
+                        '                                   <a class="dropdown-item remove-list" href="#removeMemberModal" data-bs-toggle="modal" data-remove-id="' + e.id + '">' +
+                        '                                       <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove' +
+                        '                                   </a>' +
+                        '                               </li>' +
+                        '                           </ul>' +
+                        '                       </div>' +
+                        '                   </div>' +
+                        '               </div>' +
+                        '               <div class="col-lg-4 col">' +
+                        '                   <div class="team-profile-img">' +
+                        '                       <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">' + m + '</div>' +
+                        '                       <div class="team-content">' +
+                        '                           <a class="member-name" data-bs-toggle="offcanvas" href="#member-overview" aria-controls="member-overview">' +
+                        '                               <h5 class="fs-16 mb-1">' + e.first_name + ' ' + e.last_name + '</h5>' +
+                        '                           </a>' +
+                        '                           <p class="text-muted member-designation mb-0">' + e.position + '</p>' +
+                        '                       </div>' +
+                        '                   </div>' +
+                        '               </div>' +
+                        '               <div class="col-lg-4 col">' +
+                        '                   <div class="row text-muted text-center">' +
+                        '                       <div class="col-12">' +
+                        '                           <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
+                        '                           <p class="text-muted mb-0">Tasks</p>' +
+                        '                       </div>' +
+                        '                   </div>' +
+                        '               </div>' +
+                        '               <div class="col-lg-2 col">' +
+                        '                   <div class="text-end">' +
+                        '                       <a href="pages-profile.html" class="btn btn-light view-btn">View Profile</a>' +
+                        '                   </div>' +
+                        '               </div>' +
+                        '           </div>' +
+                        '       </div>' +
+                        '   </div>' +
+                        '</div>'
+                ),
                     editMemberList(),
                     removeItem(),
                     memberDetailShow();
             });
     }
-    function bookmarkBtn() {
-        Array.from(document.querySelectorAll(".favourite-btn")).forEach(function (e) {
-            e.addEventListener("click", function () {
-                e.classList.contains("active") ? e.classList.remove("active") : e.classList.add("active");
-            });
-        });
-    }
+
     var editlist = !1;
+
     function editMemberList() {
         var r;
         Array.from(document.querySelectorAll(".edit-list")).forEach(function (t) {
@@ -472,13 +470,16 @@
             });
         });
     }
+
     function fetchIdFromObj(e) {
         return parseInt(e.id);
     }
+
     function findNextId() {
         var e, t;
         return 0 === allmemberlist.length ? 0 : (e = fetchIdFromObj(allmemberlist[allmemberlist.length - 1])) <= (t = fetchIdFromObj(allmemberlist[0])) ? t + 1 : e + 1;
     }
+
     function sortElementsById() {
         loadTeamData(
             allmemberlist.sort(function (e, t) {
@@ -505,6 +506,7 @@
             });
         });
     }
+
     function memberDetailShow() {
         Array.from(document.querySelectorAll(".team-box")).forEach(function (a) {
             a.querySelector(".member-name").addEventListener("click", function () {
@@ -523,6 +525,7 @@
             });
         });
     }
+
     document.querySelector("#member-image-input").addEventListener("change", function () {
         var e = document.querySelector("#member-img"),
             t = document.querySelector("#member-image-input").files[0],
@@ -624,8 +627,11 @@
             : ((document.getElementById("noresult").style.display = "none"), (document.getElementById("teamlist").style.display = "block")),
             loadTeamData(e);
     });
-    window.onload = function () {
-        loadTeamData(users);
+    window.onload = async function () {
+        var preloader = document.getElementById('preloader');
+        await loadTeamData(users);
+        preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+        preloader.style.visibility = 'hidden'; // Set visibility to visible
     };
 
 

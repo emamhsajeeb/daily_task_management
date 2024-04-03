@@ -53,6 +53,10 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
     Route::get('/tasks/daily-summary', [TaskController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummary');
     Route::post('/tasks/daily-summary-filtered', [TaskController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [TaskController::class, 'exportDailySummary'])->name('exportDailySummary');
+
+    Route::get('/users', [ProfileController::class, 'allUsers'])->name('allUsers');
+
+
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');
     Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('deleteUser');
@@ -73,7 +77,6 @@ Route::middleware([CheckRole::class . ':se'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/tasks/daily-summary-json', [TaskController::class, 'dailySummary'])->name('dailySummary');
-    Route::get('/users', [ProfileController::class, 'allUsers'])->name('allUsers');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('viewProfile');
 });
 
