@@ -76,7 +76,7 @@
                                         <div class="input-light">
                                             <select name="incharge" class="form-control" id="taskIncharge">
                                                 @foreach($incharges as $incharge)
-                                                <option value="{{$incharge->user_name}}" selected>{{$incharge->first_name.' '.$incharge->last_name}}</option>
+                                                <option value="{{$incharge->user_name}}">{{$incharge->first_name.' '.$incharge->last_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
