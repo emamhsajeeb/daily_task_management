@@ -189,12 +189,16 @@ function filterDailySummary() {
     console.log('Filtering.')
     // Get selected month from month picker
     var selectedMonth = document.getElementById('monthPicker').value;
+    var taskIncharge = document.getElementById('taskIncharge').value;
 
     // Send selected month to Laravel controller
     $.ajax({
         url: "{{ route('filterSummary') }}",
         type: "POST",
-        data: { month: selectedMonth },
+        data: {
+            month: selectedMonth,
+            incharge: taskIncharge,
+        },
         success: function(response) {
             var preloader = document.getElementById('preloader');
             preloader.style.opacity = '1'; // Set opacity to 1 to make it visible

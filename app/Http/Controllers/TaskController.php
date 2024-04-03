@@ -231,7 +231,7 @@ class TaskController extends Controller
             // Retrieve filtered tasks
             $filteredTasks = $tasksQuery->get();
 
-            
+
             // Return JSON response with filtered tasks
             return response()->json([
                 'tasks' => $filteredTasks,
