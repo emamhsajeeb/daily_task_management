@@ -398,38 +398,45 @@ function updateTaskList() {
 }
 
 function filterTaskList() {
-    // Get start and end dates from the date range picker
-    var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
-    var taskStatus = document.getElementById('taskStatus').value;
-    var taskIncharge = document.getElementById('taskIncharge').value;
+    // Simulating a delay with setTimeout
+    setTimeout(function() {
+        // Your filter logic goes here
+        // Get start and end dates from the date range picker
+        var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
+        var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+        var taskStatus = document.getElementById('taskStatus').value;
+        var taskIncharge = document.getElementById('taskIncharge').value;
 
-    $.ajax({
-        url : "{{ route('filterTasks') }}",
-        type:"POST",
-        data: {
-            start: startDate,
-            end: endDate,
-            status: taskStatus,
-            incharge: taskIncharge,
-        },
-        success:function (response) {
-            var preloader = document.getElementById('preloader');
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            toastr.success(response.message);
-            $('#taskTable').DataTable().clear().destroy();
+        $.ajax({
+            url : "{{ route('filterTasks') }}",
+            type:"POST",
+            data: {
+                start: startDate,
+                end: endDate,
+                status: taskStatus,
+                incharge: taskIncharge,
+            },
+            success:function (response) {
+                var preloader = document.getElementById('preloader');
+                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'visible'; // Set visibility to visible
+                toastr.success(response.message);
+                $('#taskTable').DataTable().clear().destroy();
 
-            const tasks = response.tasks;
+                const tasks = response.tasks;
 
-            updateTaskListBody(tasks);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    })
+                updateTaskListBody(tasks);
+                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'hidden'; // Set visibility to visible
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+        // Once filtering is done, restore the button
+        $('#filterTasks').html('Add Task');
+        $('#filterTasks').prop('disabled', false);
+    }, 2000);
 }
 
 // Function to handle form submission via AJAX
@@ -532,8 +539,10 @@ $( document ).ready(function() {
         addTask();
     });
 
-    $('#filterTasks').click(function() {
-        event.preventDefault();
+    $('#filterTasks').click(function(e) {
+        e.preventDefault();
+        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $(this).prop('disabled', true);
         filterTaskList();
     });
 });
