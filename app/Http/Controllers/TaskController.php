@@ -223,7 +223,7 @@ class TaskController extends Controller
             }
 
             // Filter tasks by incharge
-            if ($request->incharge !== null) {
+            if ($request->incharge !== 'all' && $request->incharge !== null) {
                 $incharge = $request->incharge;
                 $tasksQuery->where('incharge', $incharge);
             }
@@ -265,7 +265,7 @@ class TaskController extends Controller
 
 
             // Filter tasks by incharge
-            if ($request->incharge !== null) {
+            if ($request->incharge !== 'all' && $request->incharge !== null) {
                 $incharge = $request->incharge;
                 $tasksQuery->where('incharge', $incharge);
             }
