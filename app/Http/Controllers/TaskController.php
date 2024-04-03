@@ -205,10 +205,6 @@ class TaskController extends Controller
     public function filterTasks(Request $request)
     {
         try {
-            // Retrieve status from the request
-            $status = $request->status;
-            $incharge = $request->incharge;
-
             // Query tasks based on date range
             $tasksQuery = Tasks::query();
 
@@ -221,20 +217,21 @@ class TaskController extends Controller
             }
 
             // Further filter tasks by status
-            if ($status !== 'all') {
+            if ($request->status !== 'all') {
+                $status = $request->status;
                 $tasksQuery->where('status', $status);
             }
 
             // Filter tasks by incharge
-            if ($incharge !== null) {
+            if ($request->incharge !== null) {
+                $incharge = $request->incharge;
                 $tasksQuery->where('incharge', $incharge);
             }
 
             // Retrieve filtered tasks
             $filteredTasks = $tasksQuery->get();
 
-
-
+            
             // Return JSON response with filtered tasks
             return response()->json([
                 'tasks' => $filteredTasks,
@@ -251,22 +248,29 @@ class TaskController extends Controller
     public function filterSummary(Request $request)
     {
         try {
-            // Retrieve month from the request
-            $selectedMonth = $request->month;
 
-            // Calculate start and end dates for the selected month
-            $startDate = date('Y-m-01', strtotime($selectedMonth));
-            $endDate = date('Y-m-t', strtotime($selectedMonth));
-            $incharge = $request->incharge;
+            // Query tasks based on date range
+            $tasksQuery = Tasks::query();
+
+            // Query tasks based on date range
+            if ($request->month !== null) {
+                // Retrieve month from the request
+                $selectedMonth = $request->month;
+
+                // Calculate start and end dates for the selected month
+                $startDate = date('Y-m-01', strtotime($selectedMonth));
+                $endDate = date('Y-m-t', strtotime($selectedMonth));
+                $tasksQuery->whereBetween('date', [$startDate, $endDate]);
+            }
 
 
-
-            $tasksQuery = Tasks::whereBetween('date', [$startDate, $endDate]);
-            if ($incharge !== null) {
+            // Filter tasks by incharge
+            if ($request->incharge !== null) {
+                $incharge = $request->incharge;
                 $tasksQuery->where('incharge', $incharge);
             }
 
-            // Query tasks based on date range
+            // Retrieve filtered tasks
             $filteredTasks = $tasksQuery->get();
 
             // Return JSON response with filtered tasks
