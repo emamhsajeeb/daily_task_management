@@ -1,9 +1,5 @@
-@extends('layouts.app',['user' => $user])
-
+@extends('layouts.app',['team' => $user])
 @section('tasks')
-{{--@php--}}
-{{--    $incharges = \DB::table('users')->get();--}}
-{{--@endphp--}}
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid" style="max-width: 100% !important;">

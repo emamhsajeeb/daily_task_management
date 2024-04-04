@@ -9,7 +9,7 @@ import { Types } from './types';
  *
  * **Terminology**
  *
- * - **Choice:** A choice is a value a user can select. A choice would be equivalent to the `<option></option>` element within a select input.
+ * - **Choice:** A choice is a value a team can select. A choice would be equivalent to the `<option></option>` element within a select input.
  * - **Group:** A group is a collection of choices. A group should be seen as equivalent to a `<optgroup></optgroup>` element within a select input.
  * - **Item:** An item is an inputted value **_(text input)_** or a selected choice **_(select element)_**. In the context of a select element, an item is equivelent to a selected option element: `<option value="Hello" selected></option>` whereas in the context of a text input an item is equivelant to `<input type="text" value="Hello">`
  */
@@ -81,7 +81,7 @@ export interface Options {
      */
     choices: Choice[];
     /**
-     * The amount of choices to be rendered within the dropdown list `("-1" indicates no limit)`. This is useful if you have a lot of choices where it is easier for a user to use the search area to find a choice.
+     * The amount of choices to be rendered within the dropdown list `("-1" indicates no limit)`. This is useful if you have a lot of choices where it is easier for a team to use the search area to find a choice.
      *
      * **Input types affected:** select-one, select-multiple
      *
@@ -89,7 +89,7 @@ export interface Options {
      */
     renderChoiceLimit: number;
     /**
-     * The amount of items a user can input/select `("-1" indicates no limit)`.
+     * The amount of items a team can input/select `("-1" indicates no limit)`.
      *
      * **Input types affected:** text, select-multiple
      *
@@ -97,7 +97,7 @@ export interface Options {
      */
     maxItemCount: number;
     /**
-     * Whether a user can add items.
+     * Whether a team can add items.
      *
      * **Input types affected:** text
      *
@@ -105,7 +105,7 @@ export interface Options {
      */
     addItems: boolean;
     /**
-     * A filter that will need to pass for a user to successfully add an item.
+     * A filter that will need to pass for a team to successfully add an item.
      *
      * **Input types affected:** text
      *
@@ -113,7 +113,7 @@ export interface Options {
      */
     addItemFilter: string | RegExp | Types.FilterFunction | null;
     /**
-     * The text that is shown when a user has inputted a new item but has not pressed the enter key. To access the current input value, pass a function with a `value` argument (see the **default config** [https://github.com/jshjohnson/Choices#setup] for an example), otherwise pass a string.
+     * The text that is shown when a team has inputted a new item but has not pressed the enter key. To access the current input value, pass a function with a `value` argument (see the **default config** [https://github.com/jshjohnson/Choices#setup] for an example), otherwise pass a string.
      *
      * **Input types affected:** text
      *
@@ -124,7 +124,7 @@ export interface Options {
      */
     addItemText: string | Types.NoticeStringFunction;
     /**
-     * Whether a user can remove items.
+     * Whether a team can remove items.
      *
      * **Input types affected:** text, select-multiple
      *
@@ -140,7 +140,7 @@ export interface Options {
      */
     removeItemButton: boolean;
     /**
-     * Whether a user can edit items. An item's value can be edited by pressing the backspace.
+     * Whether a team can edit items. An item's value can be edited by pressing the backspace.
      *
      * **Input types affected:** text
      *
@@ -176,7 +176,7 @@ export interface Options {
      */
     delimiter: string;
     /**
-     * Whether a user can paste into the input.
+     * Whether a team can paste into the input.
      *
      * **Input types affected:** text, select-multiple
      *
@@ -218,7 +218,7 @@ export interface Options {
      */
     searchResultLimit: number;
     /**
-     * Specify which fields should be used when a user is searching. If you have added custom properties to your choices, you can add these values thus: `['label', 'value', 'customProperties.example']`.
+     * Specify which fields should be used when a team is searching. If you have added custom properties to your choices, you can add these values thus: `['label', 'value', 'customProperties.example']`.
      *
      * Input types affected:select-one, select-multiple
      *
@@ -258,7 +258,7 @@ export interface Options {
      */
     shouldSortItems: boolean;
     /**
-     * The function that will sort choices and items before they are displayed (unless a user is searching). By default choices and items are sorted by alphabetical order.
+     * The function that will sort choices and items before they are displayed (unless a team is searching). By default choices and items are sorted by alphabetical order.
      *
      * **Input types affected:** select-one, select-multiple
      *
@@ -342,7 +342,7 @@ export interface Options {
      */
     loadingText: string;
     /**
-     * The text that is shown when a user's search has returned no results. Optionally pass a function returning a string.
+     * The text that is shown when a team's search has returned no results. Optionally pass a function returning a string.
      *
      * **Input types affected:** select-one, select-multiple
      *
@@ -350,7 +350,7 @@ export interface Options {
      */
     noResultsText: string | Types.StringFunction;
     /**
-     * The text that is shown when a user has selected all possible choices. Optionally pass a function returning a string.
+     * The text that is shown when a team has selected all possible choices. Optionally pass a function returning a string.
      *
      * **Input types affected:** select-multiple
      *
@@ -358,7 +358,7 @@ export interface Options {
      */
     noChoicesText: string | Types.StringFunction;
     /**
-     * The text that is shown when a user hovers over a selectable choice.
+     * The text that is shown when a team hovers over a selectable choice.
      *
      * **Input types affected:** select-multiple, select-one
      *
@@ -366,7 +366,7 @@ export interface Options {
      */
     itemSelectText: string;
     /**
-     * The text that is shown when a user has focus on the input but has already reached the **max item count** [https://github.com/jshjohnson/Choices#maxitemcount]. To access the max item count, pass a function with a `maxItemCount` argument (see the **default config** [https://github.com/jshjohnson/Choices#setup] for an example), otherwise pass a string.
+     * The text that is shown when a team has focus on the input but has already reached the **max item count** [https://github.com/jshjohnson/Choices#maxitemcount]. To access the max item count, pass a function with a `maxItemCount` argument (see the **default config** [https://github.com/jshjohnson/Choices#setup] for an example), otherwise pass a string.
      *
      * **Input types affected:** text
      *

@@ -515,7 +515,7 @@ declare const Swiper: DefineComponent<
    * Event will be fired on zoom change
    */
   zoomChange: (swiper: SwiperClass, scale: number, imageEl: HTMLElement, slideEl: HTMLElement) => void;
-    
+
   /**
    * Fired right after Swiper initialization.
    * @note Note that with `swiper.on('init')` syntax it will
@@ -600,42 +600,42 @@ declare const Swiper: DefineComponent<
   transitionEnd: (swiper: SwiperClass) => void;
 
   /**
-   * Event will be fired when user touch Swiper. Receives `touchstart` event as an arguments.
+   * Event will be fired when team touch Swiper. Receives `touchstart` event as an arguments.
    */
   touchStart: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper. Receives `touchmove` event as an arguments.
    */
   touchMove: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
    */
   touchMoveOpposite: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
    */
   sliderMove: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user release Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team release Swiper. Receives `touchend` event as an arguments.
    */
   touchEnd: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   click: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   tap: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user double tap on Swiper's container. Receives `touchend` event as an arguments
+   * Event will be fired when team double tap on Swiper's container. Receives `touchend` event as an arguments
    */
   doubleTap: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
@@ -769,7 +769,7 @@ declare const Swiper: DefineComponent<
    */
   changeDirection: (swiper: SwiperClass) => void;
   /**
-   * Event will be fired when user double click/tap on Swiper
+   * Event will be fired when team double click/tap on Swiper
    */
   doubleClick: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
   /**
@@ -820,7 +820,7 @@ declare const Swiper: DefineComponent<
    * Event will be fired when swiper is unlocked (when `watchOverflow` enabled)
    */
   unlock: (swiper: SwiperClass) => void;
-  
+
   }
 >;
 

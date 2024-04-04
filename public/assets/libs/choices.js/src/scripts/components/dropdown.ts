@@ -37,7 +37,7 @@ export default class Dropdown {
   }
 
   /**
-   * Show dropdown to user by adding active state class
+   * Show dropdown to team by adding active state class
    */
   show(): this {
     this.element.classList.add(this.classNames.activeState);
@@ -48,7 +48,7 @@ export default class Dropdown {
   }
 
   /**
-   * Hide dropdown from user
+   * Hide dropdown from team
    */
   hide(): this {
     this.element.classList.remove(this.classNames.activeState);

@@ -33,7 +33,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token->plainTextToken, // Replace with your JWT library's appropriate token structure
             'token_type' => 'bearer',
-            'user' => $user, // Optionally include basic user information (be mindful of sensitive data)
+            'team' => $user, // Optionally include basic team information (be mindful of sensitive data)
         ], 200);
     }
 

@@ -1,7 +1,10 @@
 
-@extends('layouts.app',['user' => $user])
+@extends('layouts.app',['team' => $user])
 
-@section('users')
+@section('members')
+    @php
+        $userRole = $user->roles;
+    @endphp
 
 <div class="main-content">
 
@@ -61,9 +64,6 @@
                     <div>
                         <div id="teamlist">
                             <div class="team-list grid-view-filter row" id="team-member-list">
-                            </div>
-                            <div class="text-center mb-3">
-                                <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i> Load More </a>
                             </div>
                         </div>
                         <div class="py-4 mt-4 text-center" id="noresult" style="display: none;">
@@ -346,7 +346,7 @@
 <!--end delete modal -->
 <script>
     var users = {!! json_encode($users->toArray()) !!};
-    console.log(users);
+    const roles = {!! json_encode($roles) !!};
     var buttonGroups;
 
     var list = document.querySelectorAll(".team-list");
@@ -373,8 +373,15 @@
 
 
     function loadTeamData(e) {
+        // String variable to store the dropdown items HTML
+        let dropdownRoles = '';
+        // Iterate over the roles array and generate dropdown items HTML
+        roles.forEach(role => {
+            dropdownRoles += `<a ${role} class="dropdown-item" href="#" data-role="${role}">${role === 'admin' ? 'Admin' : role === 'se' ? 'SE' : ''}</a>`;
+        });
         (document.querySelector("#team-member-list").innerHTML = ""),
             Array.from(e).forEach(function (e, t) {
+
                 var m = e.user_name
                     ? '<img src="{{ asset("assets/images/users/") }}'+ '/' + e.user_name + '.jpg" alt="" class="member-img img-fluid d-block rounded-circle" />'
                     : '<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">' + e.first_name + "</div>";
@@ -420,10 +427,10 @@
                         '                   </div>' +
                         '               </div>' +
                         '               <div class="col-lg-3 col">' +
-                        '                   <div class="row text-muted text-center">' +
-                        '                       <div class="col-12">' +
-                        '                           <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
-                        '                           <p class="text-muted mb-0">Tasks</p>' +
+                        '                   <div class="btn-group">' +
+                        '                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + e.role + '</button>' +
+                        '                           <div class="dropdown-menu">' + dropdownRoles + '</div>' +
+                        '                           </div>' +
                         '                       </div>' +
                         '                   </div>' +
                         '               </div>' +
@@ -464,7 +471,7 @@
                             ((editlist = !0),
                                 (document.getElementById("createMemberLabel").innerHTML = "Edit Member"),
                                 (document.getElementById("addNewMember").innerHTML = "Save"),
-                                "" == e.memberImg ? (document.getElementById("member-img").src = "assets/images/users/user-dummy-img.jpg") : (document.getElementById("member-img").src = e.memberImg),
+                                "" == e.memberImg ? (document.getElementById("member-img").src = "assets/images/users/team-dummy-img.jpg") : (document.getElementById("member-img").src = e.memberImg),
                                 (document.getElementById("cover-img").src = e.coverImg),
                                 (document.getElementById("memberid-input").value = e.id),
                                 (document.getElementById("teammembersName").value = e.memberName),
@@ -520,7 +527,7 @@
             a.querySelector(".member-name").addEventListener("click", function () {
                 var e = a.querySelector(".member-name h5").innerHTML,
                     t = a.querySelector(".member-designation").innerHTML,
-                    r = a.querySelector(".member-img") ? a.querySelector(".member-img").src : "assets/images/users/user-dummy-img.jpg",
+                    r = a.querySelector(".member-img") ? a.querySelector(".member-img").src : "assets/images/users/team-dummy-img.jpg",
                     m = a.querySelector(".team-cover img").src,
                     i = a.querySelector(".projects-num").innerHTML,
                     n = a.querySelector(".tasks-num").innerHTML;
@@ -567,7 +574,7 @@
                     (document.getElementById("teammembersName").value = ""),
                     (document.getElementById("designation").value = ""),
                     (document.getElementById("cover-img").src = "assets/images/small/img-9.jpg"),
-                    (document.getElementById("member-img").src = "assets/images/users/user-dummy-img.jpg"),
+                    (document.getElementById("member-img").src = "assets/images/users/team-dummy-img.jpg"),
                     document.getElementById("memberlist-form").classList.remove("was-validated");
             });
         }),
@@ -585,7 +592,7 @@
                                 (r = document.getElementById("designation").value),
                                 (m = document.getElementById("member-img").src),
                                 (i = document.getElementById("cover-img").src),
-                                (n = "assets/images/users/user-dummy-img.jpg" == m.substring(m.indexOf("/as") + 1) ? "" : m),
+                                (n = "assets/images/users/team-dummy-img.jpg" == m.substring(m.indexOf("/as") + 1) ? "" : m),
                                 (a = t
                                     .match(/\b(\w)/g)
                                     .join("")

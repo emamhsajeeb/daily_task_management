@@ -34,7 +34,7 @@ Route::get('/', function () {
         'pending' => $pending,
         'rfi_submissions' => $rfi_submissions
     ];
-    return view('layouts/dashboard',['title' => 'Dashboard', 'user' => $user,'statistics' => $statistics]);
+    return view('layouts/dashboard',['title' => 'Dashboard', 'team' => $user,'statistics' => $statistics]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
@@ -54,7 +54,7 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
     Route::post('/tasks/daily-summary-filtered', [TaskController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [TaskController::class, 'exportDailySummary'])->name('exportDailySummary');
 
-    Route::get('/users', [ProfileController::class, 'allUsers'])->name('allUsers');
+    Route::get('/team', [ProfileController::class, 'team'])->name('team');
 
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');

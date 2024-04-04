@@ -54,7 +54,7 @@
     <!-- Start right Content here -->
     <!-- ============================================================== -->
     @yield('dashboard')
-    @yield('users')
+    @yield('members')
     @yield('profile')
     @yield('edit_profile')
     @yield('tasks')

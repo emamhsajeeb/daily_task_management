@@ -91,7 +91,7 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    */
   zoomchange: CustomEvent<[swiper: Swiper, scale: number, imageEl: HTMLElement, slideEl: HTMLElement]>;
 
-  
+
   /**
    * Fired right after Swiper initialization.
    * @note Note that with `swiper.on('init')` syntax it will
@@ -176,42 +176,42 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
   transitionend: CustomEvent<[swiper: Swiper]>;
 
   /**
-   * Event will be fired when user touch Swiper. Receives `touchstart` event as an arguments.
+   * Event will be fired when team touch Swiper. Receives `touchstart` event as an arguments.
    */
   touchstart: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper. Receives `touchmove` event as an arguments.
    */
   touchmove: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
    */
   touchmoveopposite: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
    */
   slidermove: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user release Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team release Swiper. Receives `touchend` event as an arguments.
    */
   touchend: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   click: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   tap: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
   /**
-   * Event will be fired when user double tap on Swiper's container. Receives `touchend` event as an arguments
+   * Event will be fired when team double tap on Swiper's container. Receives `touchend` event as an arguments
    */
   doubletap: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
 
@@ -278,32 +278,32 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
   /**
    * !INTERNAL: Event will fired right before breakpoint change
    */
- 
+
 
   /**
    * !INTERNAL: Event will fired after setting CSS classes on swiper container element
    */
- 
+
 
   /**
    * !INTERNAL: Event will fired after setting CSS classes on swiper slide element
    */
- 
+
 
   /**
    * !INTERNAL: Event will fired after setting CSS classes on all swiper slides
    */
- 
+
 
   /**
    * !INTERNAL: Event will fired as soon as swiper instance available (before init)
    */
- 
+
 
   /**
    * !INTERNAL: Event will be fired on free mode touch end (release) and there will no be momentum
    */
- 
+
 
   /**
    * Event will fired on active index change
@@ -342,7 +342,7 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    */
   changedirection: CustomEvent<[swiper: Swiper]>;
   /**
-   * Event will be fired when user double click/tap on Swiper
+   * Event will be fired when team double click/tap on Swiper
    */
   doubleclick: CustomEvent<[swiper: Swiper, event: MouseEvent | TouchEvent | PointerEvent]>;
   /**
@@ -393,7 +393,7 @@ interface SwiperContainerEventMap extends Omit<HTMLElementEventMap, 'click' | 'p
    * Event will be fired when swiper is unlocked (when `watchOverflow` enabled)
    */
   unlock: CustomEvent<[swiper: Swiper]>;
-  
+
 }
 
 interface SwiperContainer extends HTMLElement {}

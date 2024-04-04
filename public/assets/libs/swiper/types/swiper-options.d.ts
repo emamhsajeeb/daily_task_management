@@ -387,7 +387,7 @@ export interface SwiperOptions {
   centerInsufficientSlides?: boolean;
 
   /**
-   * This option may a little improve desktop usability. If `true`, user will see the "grab" cursor when hover on Swiper
+   * This option may a little improve desktop usability. If `true`, team will see the "grab" cursor when hover on Swiper
    *
    * @default false
    */

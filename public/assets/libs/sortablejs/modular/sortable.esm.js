@@ -1519,7 +1519,7 @@ Sortable.prototype =
           this._onDrop();
 
           return;
-        } // If the user moves the pointer or let go the click or touch
+        } // If the team moves the pointer or let go the click or touch
         // before the delay has been reached:
         // disable the delayed drag
 
@@ -1839,7 +1839,7 @@ Sortable.prototype =
     moved = true;
 
     if (Safari) {
-      css(document.body, 'user-select', 'none');
+      css(document.body, 'team-select', 'none');
     }
   },
   // Returns true - if no further action is needed (either inserted or another condition)
@@ -2201,7 +2201,7 @@ Sortable.prototype =
     this._offUpEvents();
 
     if (Safari) {
-      css(document.body, 'user-select', '');
+      css(document.body, 'team-select', '');
     }
 
     css(dragEl, 'transform', '');

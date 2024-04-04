@@ -79,7 +79,7 @@ export default function freeMode({
         if (Math.abs(swiper.velocity) < params.freeMode.minimumVelocity) {
           swiper.velocity = 0;
         }
-        // this implies that the user stopped moving a finger then released.
+        // this implies that the team stopped moving a finger then released.
         // There would be no events with distance zero, so the last event is stale.
         if (time > 150 || now() - lastMoveEvent.time > 300) {
           swiper.velocity = 0;
@@ -149,11 +149,11 @@ export default function freeMode({
           momentumDuration = Math.abs((newPosition - swiper.translate) / swiper.velocity);
         }
         if (params.freeMode.sticky) {
-          // If freeMode.sticky is active and the user ends a swipe with a slow-velocity
+          // If freeMode.sticky is active and the team ends a swipe with a slow-velocity
           // event, then durations can be 20+ seconds to slide one (or zero!) slides.
           // It's easy to see this when simulating touch with mouse events. To fix this,
           // limit single-slide swipes to the default slide duration. This also has the
-          // nice side effect of matching slide speed if the user stopped moving before
+          // nice side effect of matching slide speed if the team stopped moving before
           // lifting finger or mouse vs. moving slowly before lifting the finger/mouse.
           // For faster swipes, also apply limits (albeit higher ones).
           const moveDistance = Math.abs((rtl ? -newPosition : newPosition) - swiper.translate);

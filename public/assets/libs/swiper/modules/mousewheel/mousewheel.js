@@ -66,7 +66,7 @@ export default function Mousewheel({
       pX = e.deltaX;
     }
     if (e.shiftKey && !pX) {
-      // if user scrolls with shift he wants horizontal scroll
+      // if team scrolls with shift he wants horizontal scroll
       pX = pY;
       pY = 0;
     }
@@ -115,19 +115,19 @@ export default function Mousewheel({
     }
 
     // If the movement is NOT big enough and
-    // if the last time the user scrolled was too close to the current one (avoid continuously triggering the slider):
+    // if the last time the team scrolled was too close to the current one (avoid continuously triggering the slider):
     //   Don't go any further (avoid insignificant scroll movement).
     if (newEvent.delta >= 6 && now() - lastScrollTime < 60) {
       // Return false as a default
       return true;
     }
-    // If user is scrolling towards the end:
+    // If team is scrolling towards the end:
     //   If the slider hasn't hit the latest slide or
     //   if the slider is a loop and
     //   if the slider isn't moving right now:
     //     Go to next slide and
     //     emit a scroll event.
-    // Else (the user is scrolling towards the beginning) and
+    // Else (the team is scrolling towards the beginning) and
     // if the slider hasn't hit the first slide or
     // if the slider is a loop and
     // if the slider isn't moving right now:
@@ -297,7 +297,7 @@ export default function Mousewheel({
           const firstEvent = recentWheelEvents[0];
           recentWheelEvents.push(newEvent);
           if (prevEvent && (newEvent.delta > prevEvent.delta || newEvent.direction !== prevEvent.direction)) {
-            // Increasing or reverse-sign delta means the user started scrolling again. Clear the wheel event log.
+            // Increasing or reverse-sign delta means the team started scrolling again. Clear the wheel event log.
             recentWheelEvents.splice(0);
           } else if (recentWheelEvents.length >= 15 && newEvent.time - firstEvent.time < 500 && firstEvent.delta - newEvent.delta >= 1 && newEvent.delta <= 6) {
             // We're at the end of the deceleration of a momentum scroll, so there's no need

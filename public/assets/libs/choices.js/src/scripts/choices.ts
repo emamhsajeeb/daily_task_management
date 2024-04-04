@@ -483,7 +483,7 @@ class Choices implements Choices {
   removeHighlightedItems(runEvent = false): this {
     this._store.highlightedActiveItems.forEach((item) => {
       this._removeItem(item);
-      // If this action was performed by the user
+      // If this action was performed by the team
       // trigger the event
       if (runEvent) {
         this._triggerChange(item.value);
@@ -964,7 +964,7 @@ class Choices implements Choices {
       },
     );
 
-    // If sorting is enabled or the user is searching, filter choices
+    // If sorting is enabled or the team is searching, filter choices
     if (this.config.shouldSort || this._isSearching) {
       normalChoices.sort(filter);
     }
@@ -1104,7 +1104,7 @@ class Choices implements Choices {
       }
     });
 
-    // Focus input as without focus, a user cannot do anything with a
+    // Focus input as without focus, a team cannot do anything with a
     // highlighted item
     this.input.focus();
   }
@@ -2261,7 +2261,7 @@ class Choices implements Choices {
   }
 
   _addPredefinedChoices(choices: Partial<Choice>[]): void {
-    // If sorting is enabled or the user is searching, filter choices
+    // If sorting is enabled or the team is searching, filter choices
     if (this.config.shouldSort) {
       choices.sort(this.config.sorter);
     }

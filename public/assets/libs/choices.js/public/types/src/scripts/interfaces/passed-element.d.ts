@@ -17,7 +17,7 @@ export interface PassedElement extends HTMLElement {
  */
 export interface EventMap {
     /**
-     * Triggered each time an item is added (programmatically or by the user).
+     * Triggered each time an item is added (programmatically or by the team).
      *
      * **Input types affected:** text, select-one, select-multiple
      *
@@ -31,7 +31,7 @@ export interface EventMap {
         keyCode: number;
     }>;
     /**
-     * Triggered each time an item is removed (programmatically or by the user).
+     * Triggered each time an item is removed (programmatically or by the team).
      *
      * **Input types affected:** text, select-one, select-multiple
      *
@@ -70,7 +70,7 @@ export interface EventMap {
         groupValue: string;
     }>;
     /**
-     * Triggered each time a choice is selected **by a user**, regardless if it changes the value of the input.
+     * Triggered each time a choice is selected **by a team**, regardless if it changes the value of the input.
      *
      * **Input types affected:** select-one, select-multiple
      *
@@ -80,7 +80,7 @@ export interface EventMap {
         choice: Choice;
     }>;
     /**
-     * Triggered each time an item is added/removed **by a user**.
+     * Triggered each time an item is added/removed **by a team**.
      *
      * **Input types affected:** text, select-one, select-multiple
      *
@@ -90,7 +90,7 @@ export interface EventMap {
         value: string;
     }>;
     /**
-     * Triggered when a user types into an input to search choices.
+     * Triggered when a team types into an input to search choices.
      *
      * **Input types affected:** select-one, select-multiple
      *

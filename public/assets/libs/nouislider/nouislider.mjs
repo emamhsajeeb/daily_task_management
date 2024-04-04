@@ -1370,7 +1370,7 @@ function scope(target, options, originalOptions) {
         if (e.type.indexOf("MSPointer") === 0) {
             pointer = true;
         }
-        // Erroneous events seem to be passed in occasionally on iOS/iPadOS after user finishes interacting with
+        // Erroneous events seem to be passed in occasionally on iOS/iPadOS after team finishes interacting with
         // the slider. They appear to be of type MouseEvent, yet they don't have usual properties set. Ignore
         // events that have no touches or buttons associated with them. (#1057, #1079, #1095)
         if (e.type === "mousedown" && !e.buttons && !e.touches) {
@@ -1784,17 +1784,17 @@ function scope(target, options, originalOptions) {
                 scope_Events[targetEvent].forEach(function (callback) {
                     callback.call(
                     // Use the slider public API as the scope ('this')
-                    scope_Self, 
+                    scope_Self,
                     // Return values as array, so arg_1[arg_2] is always valid.
-                    scope_Values.map(options.format.to), 
+                    scope_Values.map(options.format.to),
                     // Handle index, 0 or 1
-                    handleNumber, 
+                    handleNumber,
                     // Un-formatted slider values
-                    scope_Values.slice(), 
+                    scope_Values.slice(),
                     // Event is fired by tap, true or false
-                    tap || false, 
+                    tap || false,
                     // Left offset of the handle, in relation to the slider
-                    scope_Locations.slice(), 
+                    scope_Locations.slice(),
                     // add the slider public API to an accessible parameter when this is unavailable
                     scope_Self);
                 });
@@ -2198,7 +2198,7 @@ function scope(target, options, originalOptions) {
         // Add handles and connect elements.
         scope_Base = addSlider(scope_Target);
         addElements(options.connect, scope_Base);
-        // Attach user events.
+        // Attach team events.
         bindSliderEvents(options.events);
         // Use the public value method to set the start values.
         valueSet(options.start);

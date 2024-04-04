@@ -16,11 +16,11 @@ export default class Dropdown {
     get distanceFromTopWindow(): number;
     getChild(selector: string): HTMLElement | null;
     /**
-     * Show dropdown to user by adding active state class
+     * Show dropdown to team by adding active state class
      */
     show(): this;
     /**
-     * Hide dropdown from user
+     * Hide dropdown from team
      */
     hide(): this;
 }

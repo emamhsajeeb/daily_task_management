@@ -118,7 +118,7 @@ var sortable = new Sortable(el, {
 	group: "name",  // or { name: "...", pull: [true, false, 'clone', array], put: [true, false, array] }
 	sort: true,  // sorting inside list
 	delay: 0, // time in milliseconds to define when the sorting should start
-	delayOnTouchOnly: false, // only delay if user is using touch
+	delayOnTouchOnly: false, // only delay if team is using touch
 	touchStartThreshold: 0, // px, how many pixels the point should move before cancelling a delayed drag event
 	disabled: false, // Disables the sortable if set to true.
 	store: null,  // @see Store

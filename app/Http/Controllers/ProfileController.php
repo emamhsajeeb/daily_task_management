@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,28 +16,34 @@ class ProfileController extends Controller
     public function viewProfile(Request $request): View
     {
         return view('profile.view', [
-            'user' => $request->user(),
+            'team' => $request->user(),
         ]);
     }
-    public function allUsers(Request $request): View
+    public function team(Request $request): View
     {
         $users = User::all();
-        return view('user.users', [
+        $roles = Role::all();
+        // Add a new column to users based on their roles
+        $users->each(function ($user) {
+            $user->role = $user->roles->pluck('name')->implode(', '); // Concatenate role names
+        });
+        return view('team.members', [
             'users' => $users,
-            'user' => $request->user()
+            'roles' => $roles,
+            'team' => $request->user()
         ]);
     }
     /**
-     * Display the user's profile form.
+     * Display the team's profile form.
      */
     public function edit($id): View
     {
         $user = User::find($id);
-        return view('profile.edit', ['user' => $user]);
+        return view('profile.edit', ['team' => $user]);
     }
 
     /**
-     * Update the user's profile information.
+     * Update the team's profile information.
      */
     public function update(ProfileUpdateRequest $request, $id): RedirectResponse
     {
@@ -54,7 +61,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Delete the team's account.
      */
     public function destroy(Request $request): RedirectResponse
     {

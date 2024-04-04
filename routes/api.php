@@ -20,6 +20,6 @@ Route::get('/tasks', [TaskController::class, 'index'])->middleware(['auth:sanctu
 
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/team', function (Request $request) {
     return $request->user();
 });

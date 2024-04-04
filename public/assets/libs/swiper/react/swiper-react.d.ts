@@ -108,7 +108,7 @@ interface SwiperProps extends SwiperOptions {
    * Event will be fired on zoom change
    */
   onZoomChange?: (swiper: SwiperClass, scale: number, imageEl: HTMLElement, slideEl: HTMLElement) => void;
-  
+
   /**
    * Fired right after Swiper initialization.
    * @note Note that with `swiper.on('init')` syntax it will
@@ -193,42 +193,42 @@ interface SwiperProps extends SwiperOptions {
   onTransitionEnd?: (swiper: SwiperClass) => void;
 
   /**
-   * Event will be fired when user touch Swiper. Receives `touchstart` event as an arguments.
+   * Event will be fired when team touch Swiper. Receives `touchstart` event as an arguments.
    */
   onTouchStart?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper. Receives `touchmove` event as an arguments.
    */
   onTouchMove?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper in direction opposite to direction parameter. Receives `touchmove` event as an arguments.
    */
   onTouchMoveOpposite?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
+   * Event will be fired when team touch and move finger over Swiper and move it. Receives `touchmove` event as an arguments.
    */
   onSliderMove?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user release Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team release Swiper. Receives `touchend` event as an arguments.
    */
   onTouchEnd?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   onClick?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user click/tap on Swiper. Receives `touchend` event as an arguments.
+   * Event will be fired when team click/tap on Swiper. Receives `touchend` event as an arguments.
    */
   onTap?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
   /**
-   * Event will be fired when user double tap on Swiper's container. Receives `touchend` event as an arguments
+   * Event will be fired when team double tap on Swiper's container. Receives `touchend` event as an arguments
    */
   onDoubleTap?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
 
@@ -362,7 +362,7 @@ interface SwiperProps extends SwiperOptions {
    */
   onChangeDirection?: (swiper: SwiperClass) => void;
   /**
-   * Event will be fired when user double click/tap on Swiper
+   * Event will be fired when team double click/tap on Swiper
    */
   onDoubleClick?: (swiper: SwiperClass, event: MouseEvent | TouchEvent | PointerEvent) => void;
   /**
@@ -413,7 +413,7 @@ interface SwiperProps extends SwiperOptions {
    * Event will be fired when swiper is unlocked (when `watchOverflow` enabled)
    */
   onUnlock?: (swiper: SwiperClass) => void;
-  
+
 }
 
 interface SlideData {

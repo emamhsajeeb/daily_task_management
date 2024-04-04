@@ -119,7 +119,7 @@
 
 {{--                                            <div class="text-reset notification-item d-block dropdown-item position-relative">--}}
 {{--                                                <div class="d-flex">--}}
-{{--                                                    <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic" />--}}
+{{--                                                    <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="team-pic" />--}}
 {{--                                                    <div class="flex-grow-1">--}}
 {{--                                                        <a href="#!" class="stretched-link">--}}
 {{--                                                            <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>--}}
@@ -169,7 +169,7 @@
 
 {{--                                            <div class="text-reset notification-item d-block dropdown-item position-relative">--}}
 {{--                                                <div class="d-flex">--}}
-{{--                                                    <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic" />--}}
+{{--                                                    <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="team-pic" />--}}
 {{--                                                    <div class="flex-grow-1">--}}
 {{--                                                        <a href="#!" class="stretched-link">--}}
 {{--                                                            <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>--}}

@@ -7,12 +7,12 @@ use App\Http\Controllers\PushNotificationController;
 use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Author;
 use App\Models\Tasks; // Model representing the tasks table
-use App\Models\User; // Model representing the users table (assuming user authentication)
+use App\Models\User; // Model representing the users table (assuming team authentication)
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not found models
 use Illuminate\Http\Request; // Represents the incoming HTTP request
-use Illuminate\Support\Facades\Auth; // Facade for user authentication
+use Illuminate\Support\Facades\Auth; // Facade for team authentication
 use Illuminate\Support\Facades\DB; // Facade for interacting with the database
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -415,8 +415,8 @@ class TaskController extends Controller
 //        $settings = [
 //            'title' => 'All Tasks',
 //        ];
-//        $user = Auth::user();
-//        return view('task/add',compact('user', 'settings'));
+//        $team = Auth::team();
+//        return view('task/add',compact('team', 'settings'));
     }
 
 
@@ -425,8 +425,8 @@ class TaskController extends Controller
 //        $settings = [
 //            'title' => 'All Tasks',
 //        ];
-//        $user = Auth::user();
-//        return view('task/add',compact('user', 'settings'));
+//        $team = Auth::team();
+//        return view('task/add',compact('team', 'settings'));
     }
 
     /**

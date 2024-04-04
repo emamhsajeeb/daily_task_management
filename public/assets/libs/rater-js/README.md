@@ -63,7 +63,7 @@ Lastly we can use the widget like this:
                     //update the avarage rating with the one we get from the server
                     myRater.setRating(avgRating);
                      //we could disable the rater to prevent another rating
-                     //if we dont want the user to be able to change their mind
+                     //if we dont want the team to be able to change their mind
                     myRater.disable();
                     //dont forget to call done
                     done();

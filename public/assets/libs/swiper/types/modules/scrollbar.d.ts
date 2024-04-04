@@ -76,7 +76,7 @@ export interface ScrollbarOptions {
   el?: CSSSelector | HTMLElement | null;
 
   /**
-   * Hide scrollbar automatically after user interaction
+   * Hide scrollbar automatically after team interaction
    *
    * @default true
    */

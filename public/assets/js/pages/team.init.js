@@ -79,7 +79,7 @@ function editMemberList() {
                         ((editlist = !0),
                             (document.getElementById("createMemberLabel").innerHTML = "Edit Member"),
                             (document.getElementById("addNewMember").innerHTML = "Save"),
-                            "" == e.memberImg ? (document.getElementById("member-img").src = "assets/images/users/user-dummy-img.jpg") : (document.getElementById("member-img").src = e.memberImg),
+                            "" == e.memberImg ? (document.getElementById("member-img").src = "assets/images/users/team-dummy-img.jpg") : (document.getElementById("member-img").src = e.memberImg),
                             (document.getElementById("cover-img").src = e.coverImg),
                             (document.getElementById("memberid-input").value = e.id),
                             (document.getElementById("teammembersName").value = e.memberName),
@@ -131,7 +131,7 @@ function memberDetailShow() {
         a.querySelector(".member-name").addEventListener("click", function () {
             var e = a.querySelector(".member-name h5").innerHTML,
                 t = a.querySelector(".member-designation").innerHTML,
-                r = a.querySelector(".member-img") ? a.querySelector(".member-img").src : "assets/images/users/user-dummy-img.jpg",
+                r = a.querySelector(".member-img") ? a.querySelector(".member-img").src : "assets/images/users/team-dummy-img.jpg",
                 m = a.querySelector(".team-cover img").src,
                 i = a.querySelector(".projects-num").innerHTML,
                 n = a.querySelector(".tasks-num").innerHTML;
@@ -177,7 +177,7 @@ document.querySelector("#member-image-input").addEventListener("change", functio
                 (document.getElementById("teammembersName").value = ""),
                 (document.getElementById("designation").value = ""),
                 (document.getElementById("cover-img").src = "assets/images/small/img-9.jpg"),
-                (document.getElementById("member-img").src = "assets/images/users/user-dummy-img.jpg"),
+                (document.getElementById("member-img").src = "assets/images/users/team-dummy-img.jpg"),
                 document.getElementById("memberlist-form").classList.remove("was-validated");
         });
     }),
@@ -195,7 +195,7 @@ document.querySelector("#member-image-input").addEventListener("change", functio
                             (r = document.getElementById("designation").value),
                             (m = document.getElementById("member-img").src),
                             (i = document.getElementById("cover-img").src),
-                            (n = "assets/images/users/user-dummy-img.jpg" == m.substring(m.indexOf("/as") + 1) ? "" : m),
+                            (n = "assets/images/users/team-dummy-img.jpg" == m.substring(m.indexOf("/as") + 1) ? "" : m),
                             (a = t
                                 .match(/\b(\w)/g)
                                 .join("")

@@ -1,4 +1,4 @@
-@extends('layouts.app',['user' => $user])
+@extends('layouts.app',['team' => $user])
 
 @section('daily')
 <div class="main-content">

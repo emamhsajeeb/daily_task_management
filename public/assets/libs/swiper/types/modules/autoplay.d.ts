@@ -101,7 +101,7 @@ export interface AutoplayOptions {
   stopOnLastSlide?: boolean;
 
   /**
-   * Set to `false` and autoplay will not be disabled after user interactions (swipes),
+   * Set to `false` and autoplay will not be disabled after team interactions (swipes),
    * it will be restarted every time after interaction
    *
    * @default true
