@@ -324,6 +324,7 @@ async function updateTaskListBody(tasks) {
         scroller: true,
         scrollY: 500,
         deferRender: true,
+        responsive: true,
         fixedHeader: {
             header: true,
             footer: true
