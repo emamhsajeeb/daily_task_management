@@ -377,7 +377,7 @@
         let dropdownRoles = '';
         // Iterate over the roles array and generate dropdown items HTML
         roles.forEach(role => {
-            dropdownRoles += `<a ${role} class="dropdown-item" href="#" data-role="${role}">${role === 'admin' ? 'Admin' : role === 'se' ? 'SE' : ''}</a>`;
+            dropdownRoles += `<a ${role} class="dropdown-item" href="#" data-role="${role}">${role === 'admin' ? 'Admin' : role === 'se' ? 'Supervision Engineer' : ''}</a>`;
         });
         console.log(dropdownRoles);
         (document.querySelector("#team-member-list").innerHTML = ""),
@@ -431,12 +431,11 @@
                         '                   <div class="row text-muted text-center">' +
                         '                       <div class="col-12">' +
                         '                       <div class="btn-group">' +
-                        '                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + e.role + '</button>' +
+                        '                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + e.role === 'admin' ? 'Admin' : e.role === 'se' ? 'Supervision Engineer' : '' + '</button>' +
                         '                          <div class="dropdown-menu">' + dropdownRoles + '</div>' +
                         '                       </div>' +
                         '                       </div>' +
                         '                   </div>' +
-
                         '               </div>' +
                         '               <div class="col-lg-3 col">' +
                         '                   <div class="row text-muted text-center">' +
