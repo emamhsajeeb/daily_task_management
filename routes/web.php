@@ -34,7 +34,7 @@ Route::get('/', function () {
         'pending' => $pending,
         'rfi_submissions' => $rfi_submissions
     ];
-    return view('layouts/dashboard',['title' => 'Dashboard', 'team' => $user,'statistics' => $statistics]);
+    return view('layouts/dashboard',['title' => 'Dashboard', 'user' => $user,'statistics' => $statistics]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
