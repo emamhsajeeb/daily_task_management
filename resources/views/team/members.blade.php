@@ -379,6 +379,7 @@
         roles.forEach(role => {
             dropdownRoles += `<a ${role} class="dropdown-item" href="#" data-role="${role}">${role === 'admin' ? 'Admin' : role === 'se' ? 'SE' : ''}</a>`;
         });
+        console.log(dropdownRoles);
         (document.querySelector("#team-member-list").innerHTML = ""),
             Array.from(e).forEach(function (e, t) {
 
@@ -429,9 +430,7 @@
                         '               <div class="col-lg-3 col">' +
                         '                   <div class="btn-group">' +
                         '                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + e.role + '</button>' +
-                        '                           <div class="dropdown-menu">' + dropdownRoles + '</div>' +
-                        '                           </div>' +
-                        '                       </div>' +
+                        '                          <div class="dropdown-menu">' + dropdownRoles + '</div>' +
                         '                   </div>' +
                         '               </div>' +
                         '               <div class="col-lg-3 col">' +
