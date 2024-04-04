@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,7 +17,7 @@ class ProfileController extends Controller
     public function viewProfile(Request $request): View
     {
         return view('profile.view', [
-            'team' => $request->user(),
+            'user' => $request->user(),
         ]);
     }
     public function team(Request $request): View
@@ -32,7 +33,6 @@ class ProfileController extends Controller
             'users' => $users,
             'user' => $user,
             'roles' => $roles,
-            'team' => $request->user()
         ]);
     }
     /**
@@ -81,5 +81,32 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updateUserRole(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'userId' => 'required|exists:users,id', // Ensure userId exists in the users table
+                'selectedRole' => 'required|in:admin,manager,visitor,se,qci,aqci' // Validate selected role
+            ]);
+
+            // Update the user role
+            $user = User::findOrFail($validatedData['userId']);
+            // Find the role by name
+//            $role = Role::where('name', $validatedData['selectedRole'])->firstOrFail();
+
+            // Sync user's roles
+            $user->syncRoles($validatedData['selectedRole']);
+
+            return response()->json(['message' => 'User role updated successfully'], 200);
+        } catch (ValidationException $e) {
+            // If validation fails, return validation errors
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // If an exception occurs, return an error response
+            return response()->json(['message' => 'Failed to update user role'], 500);
+        }
     }
 }

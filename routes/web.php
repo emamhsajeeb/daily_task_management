@@ -55,6 +55,7 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
     Route::get('/tasks/daily-summary-export', [TaskController::class, 'exportDailySummary'])->name('exportDailySummary');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
+    Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
 
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
