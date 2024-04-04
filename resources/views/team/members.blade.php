@@ -428,10 +428,15 @@
                         '                   </div>' +
                         '               </div>' +
                         '               <div class="col-lg-3 col">' +
-                        '                   <div class="btn-group">' +
+                        '                   <div class="row text-muted text-center">' +
+                        '                       <div class="col-12">' +
+                        '                       <div class="btn-group">' +
                         '                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + e.role + '</button>' +
                         '                          <div class="dropdown-menu">' + dropdownRoles + '</div>' +
+                        '                       </div>' +
+                        '                       </div>' +
                         '                   </div>' +
+
                         '               </div>' +
                         '               <div class="col-lg-3 col">' +
                         '                   <div class="row text-muted text-center">' +
