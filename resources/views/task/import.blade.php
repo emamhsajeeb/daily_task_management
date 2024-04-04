@@ -1,4 +1,4 @@
-@extends('layouts.app',['team' => $user])
+@extends('layouts.app',['user' => $user])
 
 @section('add-task')
     <div class="main-content">

@@ -1,5 +1,5 @@
 
-@extends('layouts.app',['team' => $user])
+@extends('layouts.app',['user' => $user])
 
 @section('members')
     @php

@@ -21,6 +21,7 @@ class ProfileController extends Controller
     }
     public function team(Request $request): View
     {
+        $user = Auth::user();
         $users = User::all();
         $roles = Role::all();
         // Add a new column to users based on their roles
@@ -29,6 +30,7 @@ class ProfileController extends Controller
         });
         return view('team.members', [
             'users' => $users,
+            'user' => $user,
             'roles' => $roles,
             'team' => $request->user()
         ]);
