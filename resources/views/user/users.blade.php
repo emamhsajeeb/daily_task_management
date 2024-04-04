@@ -408,7 +408,7 @@
                         '                       </div>' +
                         '                   </div>' +
                         '               </div>' +
-                        '               <div class="col-lg-4 col">' +
+                        '               <div class="col-lg-3 col">' +
                         '                   <div class="team-profile-img">' +
                         '                       <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">' + m + '</div>' +
                         '                       <div class="team-content">' +
@@ -419,7 +419,15 @@
                         '                       </div>' +
                         '                   </div>' +
                         '               </div>' +
-                        '               <div class="col-lg-4 col">' +
+                        '               <div class="col-lg-3 col">' +
+                        '                   <div class="row text-muted text-center">' +
+                        '                       <div class="col-12">' +
+                        '                           <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
+                        '                           <p class="text-muted mb-0">Tasks</p>' +
+                        '                       </div>' +
+                        '                   </div>' +
+                        '               </div>' +
+                        '               <div class="col-lg-3 col">' +
                         '                   <div class="row text-muted text-center">' +
                         '                       <div class="col-12">' +
                         '                           <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
