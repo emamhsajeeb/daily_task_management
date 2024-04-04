@@ -346,7 +346,7 @@
 <!--end delete modal -->
 <script>
     var users = {!! json_encode($users->toArray()) !!};
-    const roles = {!! json_encode($roles) !!};
+    const roles = {!! json_encode($roles->pluck('name')) !!};
     var buttonGroups;
 
     var list = document.querySelectorAll(".team-list");
