@@ -6,6 +6,7 @@ use App\Events\TasksImported;
 use App\Http\Controllers\PushNotificationController;
 use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Author;
+use App\Models\DailySummary;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming team authentication)
 use Carbon\Carbon;
@@ -32,73 +33,6 @@ class TaskController extends Controller
         $incharges = User::role('se')->get();
         $title = "Task List";
         return view('task/tasks', compact('user','incharges','title'));
-    }
-
-    public function showDailySummary()
-    {
-        $user = Auth::user();
-        $incharges = User::role('se')->get();
-        $title = "Daily Summary";
-        return view('task/daily', compact('user','incharges','title'));
-    }
-
-    public function dailySummary()
-    {
-        // Fetch tasks from the database
-        $user = Auth::user();
-        $tasks = $user ? (
-        $user->hasRole('se')
-            ? DB::table('tasks')->where('incharge', $user->user_name)->get()
-            : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
-        ) : [];
-
-        // Initialize an array to store daily summary
-        $dailySummary = [];
-
-        // Iterate over tasks to calculate daily summary
-        foreach ($tasks as $task) {
-            // Extract date from the task
-            $taskDate = $task->date;
-
-            // Increment total tasks count for the date
-            $dailySummary[$taskDate] = $dailySummary[$taskDate] ?? [
-                'totalTasks' => 0,
-                'completedTasks' => 0,
-                'embankmentTasks' => 0,
-                'structureTasks' => 0,
-                'pavementTasks' => 0,
-                'rfiSubmissions' => 0
-            ];
-            $dailySummary[$taskDate]['totalTasks']++;
-
-            // Count completed, embankment, structure, and pavement tasks
-            $dailySummary[$taskDate]['completedTasks'] += ($task->status === 'completed') ? 1 : 0;
-            $dailySummary[$taskDate]['embankmentTasks'] += ($task->type === 'Embankment') ? 1 : 0;
-            $dailySummary[$taskDate]['structureTasks'] += ($task->type === 'Structure') ? 1 : 0;
-            $dailySummary[$taskDate]['pavementTasks'] += ($task->type === 'Pavement') ? 1 : 0;
-            // Increment RFI submission count if the task has RFI submission
-            $dailySummary[$taskDate]['rfiSubmissions'] += ($task->rfi_submission_date) ? 1 : 0;
-
-        }
-
-        // Calculate completion percentage and RFI submission percentage for each date
-        foreach ($dailySummary as &$info) {
-            $info['completionPercentage'] = (($info['completedTasks'] / $info['totalTasks']) * 100 ?? 0);
-            $info['rfiSubmissionPercentage'] = (($info['rfiSubmissions'] / $info['totalTasks']) * 100 ?? 0);
-            $info['pendingTasks'] = $info['totalTasks'] - $info['completedTasks'];
-            // Round the percentages to one decimal place
-            $info['completionPercentage'] = number_format($info['completionPercentage'], 1);
-            $info['rfiSubmissionPercentage'] = number_format($info['rfiSubmissionPercentage'], 1);
-        }
-
-        $formattedData = [];
-        foreach ($dailySummary as $date => $info) {
-            $formattedData[] = array_merge(['date' => $date], $info);
-        }
-
-        dump($dailySummary);
-
-        return response()->json(['data' => $formattedData]);
     }
 
     public function allTasks(Request $request)
@@ -245,46 +179,7 @@ class TaskController extends Controller
         }
     }
 
-    public function filterSummary(Request $request)
-    {
-        try {
 
-            // Query tasks based on date range
-            $tasksQuery = Tasks::query();
-
-            // Query tasks based on date range
-            if ($request->month !== null) {
-                // Retrieve month from the request
-                $selectedMonth = $request->month;
-
-                // Calculate start and end dates for the selected month
-                $startDate = date('Y-m-01', strtotime($selectedMonth));
-                $endDate = date('Y-m-t', strtotime($selectedMonth));
-                $tasksQuery->whereBetween('date', [$startDate, $endDate]);
-            }
-
-
-            // Filter tasks by incharge
-            if ($request->incharge !== 'all' && $request->incharge !== null) {
-                $incharge = $request->incharge;
-                $tasksQuery->where('incharge', $incharge);
-            }
-
-            // Retrieve filtered tasks
-            $filteredTasks = $tasksQuery->get();
-
-            // Return JSON response with filtered tasks
-            return response()->json([
-                'tasks' => $filteredTasks,
-                'message' => 'Tasks filtered successfully'
-            ]);
-        } catch (\Exception $e) {
-            // Handle any exceptions that occur during filtering
-            return response()->json([
-                'error' => 'An error occurred while filtering tasks: ' . $e->getMessage()
-            ], 500);
-        }
-    }
 
     public function importTasks()
     {
@@ -312,11 +207,12 @@ class TaskController extends Controller
         $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
 
         $newSubmissionCount = 0;
-        $resubmissionCount = 0;
         $date = $importedTasks[0][0];
 
-        foreach ($importedTasks as $importedTask) {
+        // Initialize summary variables
+        $inchargeSummary = [];
 
+        foreach ($importedTasks as $importedTask) {
             $inchargeName = '';
             $k = intval(substr($importedTask[4], 1)); // Extracting the numeric part after 'K'
 
@@ -335,15 +231,25 @@ class TaskController extends Controller
                     break;
             }
 
+            // Initialize incharge summary if not exists
+            if (!isset($inchargeSummary[$inchargeName])) {
+                $inchargeSummary[$inchargeName] = [
+                    'totalTasks' => 0,
+                    'totalResubmission' => 0,
+                    'embankmentTasks' => 0,
+                    'structureTasks' => 0,
+                    'pavementTasks' => 0,
+                ];
+            }
+            $inchargeSummary[$inchargeName]['totalTasks']++;
+
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
-
             if ($existingTask) {
-                $resubmissionCount++;
+                $inchargeSummary[$inchargeName]['totalResubmission']++;
                 // Handle duplicate tasks (handled in separate method)
                 $this->handleDuplicateTask($existingTask, $importedTask, $inchargeName);
             } else {
-                $newSubmissionCount++;
                 // Create a new task for non-duplicates
                 $createdTask = Tasks::create([
                     'date' => $importedTask[0],
@@ -357,13 +263,38 @@ class TaskController extends Controller
                     'planned_time' => $importedTask[7],
                     'incharge' => $inchargeName,
                 ]);
+
+                // Update incharge summary variables based on task type
+
+                switch ($createdTask->type) {
+                    case 'Embankment':
+                        $inchargeSummary[$inchargeName]['embankmentTasks']++;
+                        break;
+                    case 'Structure':
+                        $inchargeSummary[$inchargeName]['structureTasks']++;
+                        break;
+                    case 'Pavement':
+                        $inchargeSummary[$inchargeName]['pavementTasks']++;
+                        break;
+                }
+
                 $userId = Auth::user()->id;
                 $createdTask->authors()->attach($userId);
             }
         }
-        $title = "Daily tasks updated for {$date}";
-        $message = "$newSubmissionCount " . ($newSubmissionCount > 1 ? "new submissions" : "new submission") . " and $resubmissionCount resubmissions.";
-        event(new TasksImported($title, $message));
+
+        // Store summary data in DailySummary model for each incharge
+        foreach ($inchargeSummary as $inchargeName => $summaryData) {
+            DailySummary::create([
+                'date' => $date,
+                'incharge' => $inchargeName,
+                'totalTasks' => $summaryData['totalTasks'],
+                'totalResubmission' => $summaryData['totalResubmission'],
+                'embankmentTasks' => $summaryData['embankmentTasks'],
+                'structureTasks' => $summaryData['structureTasks'],
+                'pavementTasks' => $summaryData['pavementTasks'],
+            ]);
+        }
 
         // Redirect to tasks route with success message
         return redirect()->route('showTasks')->with('success', 'Data imported successfully.');
@@ -389,7 +320,7 @@ class TaskController extends Controller
         $createdTask = Tasks::create([
             'date' => ($existingTask->status === 'completed' ? $existingTask->date : $importedTask[0]),
             'number' => $importedTask[1],
-            'status' => ($existingTask->status === 'completed' ? 'completed' : 'pending'),
+            'status' => ($existingTask->status === 'completed' ? 'completed' : 'resubmission'),
             'type' => $importedTask[2],
             'description' => $importedTask[3],
             'location' => $importedTask[4],
@@ -402,9 +333,7 @@ class TaskController extends Controller
         ]);
 
         $userId = Auth::user()->id;
-//        dd($userId);
         $createdTask->authors()->attach($userId);
-
 
         // Delete the existing task
         $existingTask->delete();
@@ -420,14 +349,7 @@ class TaskController extends Controller
     }
 
 
-    public function exportDailySummary()
-    {
-//        $settings = [
-//            'title' => 'All Tasks',
-//        ];
-//        $team = Auth::team();
-//        return view('task/add',compact('team', 'settings'));
-    }
+
 
     /**
      * Update the status of a task via AJAX request.

@@ -109,67 +109,29 @@
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 
-function updateDailySummaryBody(tasks) {
-    // Initialize an object to store counts and statuses for each date
-    var dailySummary = {};
-
-    // Iterate over tasks to count occurrences of each date and calculate metrics
-    $.each(tasks, function(index, task) {
-        // Extract date from the task
-        var taskDate = task.date;
-
-        // Increment total tasks count for the date
-        dailySummary[taskDate] = dailySummary[taskDate] || {
-            totalTasks: 0,
-            completedTasks: 0,
-            pendingTasks: 0,
-            embankmentTasks: 0,
-            structureTasks: 0,
-            pavementTasks: 0,
-            rfiSubmissions: 0
-        };
-        dailySummary[taskDate].totalTasks++;
-
-        // Count completed, embankment, structure, and pavement tasks
-        dailySummary[taskDate].completedTasks += (task.status === 'completed') ? 1 : 0;
-        dailySummary[taskDate].embankmentTasks += (task.type === 'Embankment') ? 1 : 0;
-        dailySummary[taskDate].structureTasks += (task.type === 'Structure') ? 1 : 0;
-        dailySummary[taskDate].pavementTasks += (task.type === 'Pavement') ? 1 : 0;
-        // Increment RFI submission count if the task has RFI submission
-        dailySummary[taskDate].rfiSubmissions += (task.rfi_submission_date) ? 1 : 0;
-
-    });
-
-    // Calculate completion percentage and RFI submission percentage for each date
-    for (var date in dailySummary) {
-        if (dailySummary.hasOwnProperty(date)) {
-            var info = dailySummary[date];
-            info.completionPercentage = ((info.completedTasks / info.totalTasks) * 100 || 0).toFixed(1);
-            info.rfiSubmissionPercentage = ((info.rfiSubmissions / info.totalTasks) * 100 || 0).toFixed(1);
-            info.pendingTasks = info.totalTasks - info.completedTasks;
-        }
-    }
+function updateDailySummaryBody(summaries) {
 
     var dailyRow = '';
     // Loop through tasks and create table rows
-    for (var date in dailySummary) {
-        if (dailySummary.hasOwnProperty(date)) {
-            var daily = dailySummary[date];
+    summaries.forEach(summary => {
+        // if (dailySummary.hasOwnProperty(date)) {
+        //     var daily = dailySummary[date];
             dailyRow += `
                      <tr>
-                        <td style="text-align: center">${date}</td>
-                        <td style="text-align: center">${daily.totalTasks}</td>
-                        <td style="text-align: center">${daily.structureTasks}</td>
-                        <td style="text-align: center">${daily.embankmentTasks}</td>
-                        <td style="text-align: center">${daily.pavementTasks}</td>
-                        <td style="text-align: center">${daily.completedTasks}</td>
-                        <td style="text-align: center">${daily.completionPercentage}%</td>
-                        <td style="text-align: center">${daily.pendingTasks}</td>
-                        <td style="text-align: center">${daily.rfiSubmissions}</td>
-                        <td style="text-align: center">${daily.rfiSubmissionPercentage}%</td>
+                        <td style="text-align: center">${summary.date}</td>
+                        <td style="text-align: center">${summary.totalTasks}</td>
+                        <td style="text-align: center">${summary.structureTasks}</td>
+                        <td style="text-align: center">${summary.embankmentTasks}</td>
+                        <td style="text-align: center">${summary.pavementTasks}</td>
+                        <td style="text-align: center">${summary.totalResubmission}</td>
+                        <td style="text-align: center">${summary.completed}</td>
+                        <td style="text-align: center">${summary.completionPercentage}%</td>
+                        <td style="text-align: center">${summary.pending}</td>
+                        <td style="text-align: center">${summary.rfiSubmissions}</td>
+                        <td style="text-align: center">${summary.rfiSubmissionPercentage}%</td>
                     </tr>`
-        }
-    }
+        // }
+    });
     $('#dailySummaryBody').html(dailyRow);
 
     $('#dailySummaryTable').DataTable({
@@ -194,50 +156,45 @@ function updateDailySummaryBody(tasks) {
 
 
 async function filterDailySummary() {
-    // Simulating a delay with setTimeout
-    setTimeout(function() {
-        // Get selected month from month picker
-        var selectedMonth = document.getElementById('monthPicker').value;
-        var taskIncharge = admin ? document.getElementById('taskIncharge').value : null;
+    // Get selected month from month picker
+    var selectedMonth = document.getElementById('monthPicker').value;
+    var taskIncharge = admin ? document.getElementById('taskIncharge').value : null;
 
-        // Send selected month to Laravel controller
-        $.ajax({
-            url: admin ? "{{ route('filterSummary') }}" : "{{ route('filterSummarySE') }}" ,
-            type: "POST",
-            data: {
-                month: selectedMonth,
-                incharge: taskIncharge,
-            },
-            success: async function (response) {
-                var preloader = document.getElementById('preloader');
-                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'visible'; // Set visibility to visible
-                toastr.success(response.message);
-                $('#dailySummaryTable').DataTable().clear().destroy();
+    // Send selected month to Laravel controller
+    $.ajax({
+        url: admin ? "{{ route('filterSummary') }}" : "{{ route('filterSummarySE') }}" ,
+        type: "POST",
+        data: {
+            month: selectedMonth,
+            incharge: taskIncharge,
+        },
+        success: async function (response) {
+            var preloader = document.getElementById('preloader');
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            toastr.success(response.message);
+            $('#dailySummaryTable').DataTable().clear().destroy();
 
-                const tasks = response.tasks;
+            const summaries = response.summaries;
 
-                await updateDailySummaryBody(tasks);
-                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'hidden'; // Set visibility to visible
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
+            await updateDailySummaryBody(summaries);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 
-        // Once filtering is done, restore the button
-        $('#filterSummary').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-        $('#filterSummary').prop('disabled', false);
-    }, 2000); // Change 2000 to actual time it takes to execute filterDailySummary()
-
-
+    // Once filtering is done, restore the button
+    $('#filterSummary').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+    $('#filterSummary').prop('disabled', false);
 }
 
 
 async function updateDailySummary(month = null) {
     var preloader = document.getElementById('preloader');
-    var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
+    var url = '{{ route("dailySummary") }}';
     var header = `
         <tr>
         <th>Date</th>
@@ -245,6 +202,7 @@ async function updateDailySummary(month = null) {
         <th>Structure</th>
         <th>Embankment</th>
         <th>Pavement</th>
+        <th>Resubmission</th>
         <th>Completed</th>
         <th>% Completed</th>
         <th>Pending</th>
@@ -260,14 +218,17 @@ async function updateDailySummary(month = null) {
         method: 'GET',
         dataType: 'json',
         success: async function (response) {
-            var tasks = response;
+            var summaries = response.data;
 
-            await updateDailySummaryBody(tasks);
+            console.log(summaries);
+
+            await updateDailySummaryBody(summaries);
 
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
         error: function(xhr, status, error) {
+            console.log(xhr.responseText);
             return error;
         }
     });

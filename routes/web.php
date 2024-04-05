@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\TasksImported;
+use App\Http\Controllers\DailySummaryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Middleware\CheckRole;
@@ -50,9 +51,10 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
     Route::post('/task/import', [TaskController::class, 'importCSV'])->name('importCSV');
     Route::post('/task/update-rfi-submission-date', [TaskController::class, 'updateRfiSubmissionDate'])->name('updateRfiSubmissionDate');
     Route::post('/task/update-completion-date-time', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTime');
-    Route::get('/tasks/daily-summary', [TaskController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummary');
-    Route::post('/tasks/daily-summary-filtered', [TaskController::class, 'filterSummary'])->name('filterSummary');
-    Route::get('/tasks/daily-summary-export', [TaskController::class, 'exportDailySummary'])->name('exportDailySummary');
+    Route::get('/tasks/daily-summary', [DailySummaryController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummary');
+    Route::get('/tasks/daily-summary-get', [DailySummaryController::class, 'dailySummary'])->name('dailySummary');
+    Route::post('/tasks/daily-summary-filtered', [DailySummaryController::class, 'filterSummary'])->name('filterSummary');
+    Route::get('/tasks/daily-summary-export', [DailySummaryController::class, 'exportDailySummary'])->name('exportDailySummary');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
@@ -71,13 +73,13 @@ Route::middleware([CheckRole::class . ':se'])->group(function () {
     Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
     Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
     Route::post('/task/update-completion-date-time-se', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTimeSE');
-    Route::get('/tasks/daily-summary-se', [TaskController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummarySE');
-    Route::post('/tasks/daily-summary-filtered-se', [TaskController::class, 'filterSummary'])->name('filterSummarySE');
+    Route::get('/tasks/daily-summary-se', [DailySummaryController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummarySE');
+    Route::post('/tasks/daily-summary-filtered-se', [DailySummaryController::class, 'filterSummary'])->name('filterSummarySE');
 
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/tasks/daily-summary-json', [TaskController::class, 'dailySummary'])->name('dailySummary');
+    Route::get('/tasks/daily-summary-json', [DailySummaryController::class, 'dailySummary'])->name('dailySummary');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('viewProfile');
 });
 
