@@ -62,7 +62,7 @@
                                                 <option value="all">All</option>
                                                 <option value="completed">Completed</option>
                                                 <option value="new">New</option>
-                                                <option value="pending">Pending</option>
+                                                <option value="resubmission">Resubmission</option>
                                                 <option value="emergency">Emergency</option>
                                             </select>
                                         </div>
@@ -191,7 +191,7 @@
                             <label for="state" class="form-label">Status</label>
                             <select name="status" class="form-control" id="state" required>
                                 <option value="completed">Completed</option>
-                                <option value="pending">Pending</option>
+                                <option value="resubmission">Resubmission</option>
                                 <option value="emergency">Emergency</option>
                             </select>
                         </div>
@@ -234,17 +234,17 @@ async function updateTaskListBody(tasks) {
                 <td style="text-align: center" class="status" >
                     <span icon-task-id="${task.id}">
                     <i  style="${task.status === 'new' ? 'color: blue' :
-            task.status === 'pending' ? 'color: orange' :
+            task.status === 'resubmission' ? 'color: orange' :
                 task.status === 'completed' ? 'color: green' :
                     task.status === 'emergency' ? 'color: red' : ''}"
                         class="${task.status === 'new' ? ' ri-add-circle-line fs-17 align-middle' :
-            task.status === 'pending' ? 'ri-timer-2-line fs-17 align-middle' :
+            task.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :
                 task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
                     task.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>
                     </span>
                     <select ${admin ? 'disabled' : ''} id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${task.id}">
                         <option value="new" ${task.status === "new" ? 'selected' : ''}>New</option>
-                        <option value="pending" ${task.status === "pending" ? 'selected' : ''}>Pending</option>
+                        <option value="resubmission" ${task.status === "resubmission" ? 'selected' : ''}>Resubmission</option>
                         <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
                         <option value="emergency" ${task.status === "emergency" ? 'selected' : ''}>Emergency</option>
                     </select>
@@ -563,7 +563,7 @@ async function updateTaskStatus(taskId, status) {
             icon.innerHTML = '';
             var newIcon = (status) => {
                 return status === 'new' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-add-circle-line fs-17 align-middle"></i>' :
-                    status === 'pending' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
+                    status === 'resubmission' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
                         status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
                             status === 'emergency' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-information-line fs-17 align-middle"></i>' : ''
             };
