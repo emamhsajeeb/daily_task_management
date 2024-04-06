@@ -36,7 +36,7 @@ class DailySummaryController extends Controller
             $summaryQuery->where('incharge', $user->user_name);
         }
 
-        $tasks = $tasksQuery->get();
+        $dailyTasks = $tasksQuery->get();
         $dailySummaries = $summaryQuery->get();
 
         $mergedSummaries = [];
@@ -70,17 +70,22 @@ class DailySummaryController extends Controller
         $dailySummaries = $mergedSummaries;
 
 
+// Group tasks by date
+        $tasksByDate = [];
+        foreach ($dailyTasks as $task) {
+            $tasksByDate[$task->date][] = $task;
+        }
 
-        // Iterate over tasks to calculate counts and percentages
-        foreach ($tasks as $task) {
+// Iterate over summaries
+        foreach ($dailySummaries as $summary) {
+            $date = $summary->date;
+            $completed = 0;
+            $rfiSubmissions = 0;
+            $totalTasks = $summary->totalTasks;
 
-
-            // Count completed and RFI submission tasks for the current date
-            foreach ($dailySummaries as &$summary) {
-                if ($summary->date == $task->date) {
-                    // Initialize counts and percentages
-                    $completed = 0;
-                    $rfiSubmissions = 0;
+            // Calculate total tasks for the current date
+            if (isset($tasksByDate[$date])) {
+                foreach ($tasksByDate[$date] as $task) {
                     // Count completed tasks
                     if ($task->status == 'completed') {
                         $completed++;
@@ -90,15 +95,15 @@ class DailySummaryController extends Controller
                     if ($task->rfi_submission_date != null) {
                         $rfiSubmissions++;
                     }
-
-                    // Calculate completion and RFI submission percentages
-                    $summary->completed = $completed;
-                    $summary->pending = $summary->totalTasks - $completed;
-                    $summary->rfiSubmissions = $rfiSubmissions;
-                    $summary->completionPercentage = ($summary->totalTasks > 0) ? round(($completed / $summary->totalTasks) * 100, 1) : 0;
-                    $summary->rfiSubmissionPercentage = ($summary->totalTasks > 0) ? round(($rfiSubmissions / $summary->totalTasks) * 100, 1) : 0;
                 }
             }
+
+            // Update summary properties
+            $summary->completed = $completed;
+            $summary->pending = $totalTasks - $completed;
+            $summary->rfiSubmissions = $rfiSubmissions;
+            $summary->completionPercentage = ($totalTasks > 0) ? round(($completed / $totalTasks) * 100, 1) : 0;
+            $summary->rfiSubmissionPercentage = ($totalTasks > 0) ? round(($rfiSubmissions / $totalTasks) * 100, 1) : 0;
         }
 
 
