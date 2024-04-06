@@ -73,23 +73,21 @@ class DailySummaryController extends Controller
 
         // Iterate over tasks to calculate counts and percentages
         foreach ($tasks as $task) {
-            // Extract date from the task
-            $taskDate = $task->date;
 
-            // Initialize counts and percentages
-            $completed = 0;
-            $rfiSubmissions = 0;
 
             // Count completed and RFI submission tasks for the current date
             foreach ($dailySummaries as &$summary) {
-                if ($summary->date == $taskDate) {
+                if ($summary->date == $task->date) {
+                    // Initialize counts and percentages
+                    $completed = 0;
+                    $rfiSubmissions = 0;
                     // Count completed tasks
-                    if ($task->status === 'completed') {
+                    if ($task->status == 'completed') {
                         $completed++;
                     }
 
                     // Count RFI submissions
-                    if ($task->rfi_submission_date) {
+                    if ($task->rfi_submission_date != null) {
                         $rfiSubmissions++;
                     }
 

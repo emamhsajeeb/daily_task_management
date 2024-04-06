@@ -245,6 +245,20 @@ class TaskController extends Controller
 
             $existingTask = Tasks::where('number', $importedTask[1])->first();
 
+            // Update incharge summary variables based on task type
+
+            switch ($importedTask[2]) {
+                case 'Embankment':
+                    $inchargeSummary[$inchargeName]['embankmentTasks']++;
+                    break;
+                case 'Structure':
+                    $inchargeSummary[$inchargeName]['structureTasks']++;
+                    break;
+                case 'Pavement':
+                    $inchargeSummary[$inchargeName]['pavementTasks']++;
+                    break;
+            }
+
             if ($existingTask) {
                 $inchargeSummary[$inchargeName]['totalResubmission']++;
                 // Handle duplicate tasks (handled in separate method)
@@ -263,20 +277,6 @@ class TaskController extends Controller
                     'planned_time' => $importedTask[7],
                     'incharge' => $inchargeName,
                 ]);
-
-                // Update incharge summary variables based on task type
-
-                switch ($createdTask->type) {
-                    case 'Embankment':
-                        $inchargeSummary[$inchargeName]['embankmentTasks']++;
-                        break;
-                    case 'Structure':
-                        $inchargeSummary[$inchargeName]['structureTasks']++;
-                        break;
-                    case 'Pavement':
-                        $inchargeSummary[$inchargeName]['pavementTasks']++;
-                        break;
-                }
 
                 $userId = Auth::user()->id;
                 $createdTask->authors()->attach($userId);
@@ -331,6 +331,8 @@ class TaskController extends Controller
             'resubmission_count' => $resubmissionCount,
             'resubmission_date' => $resubmissionDate,
         ]);
+
+
 
         $userId = Auth::user()->id;
         $createdTask->authors()->attach($userId);
