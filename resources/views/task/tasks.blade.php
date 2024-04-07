@@ -376,12 +376,19 @@ async function updateTaskList() {
             const lastDate = new Date(Math.max(...dates));
 
             await updateTaskListBody(tasks);
-
-            flatpickr("#dateRangePicker", {
+            $('#dateRangePicker').daterangepicker({
                 minDate: new Date(firstDate),
                 maxDate: new Date(lastDate),
-                mode: 'range', // Specify 'range' mode as a string
+                opens: 'left'
+            }, function(start, end, label) {
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });
+
+            // flatpickr("#dateRangePicker", {
+            //     minDate: new Date(firstDate),
+            //     maxDate: new Date(lastDate),
+            //     mode: 'range', // Specify 'range' mode as a string
+            // });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
