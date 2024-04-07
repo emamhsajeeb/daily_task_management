@@ -46,7 +46,6 @@
 
                             </div>
                         </div>
-                        @role('admin')
                         <div class="card-body border border-dashed border-end-0 border-start-0">
                             <form id="filterTaskForm">
                                 @csrf
@@ -68,6 +67,7 @@
                                         </div>
                                     </div>
                                     <!--end col-->
+                                    @role('admin')
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
                                             <select name="incharge" class="form-control" id="taskIncharge">
@@ -80,6 +80,7 @@
                                         </div>
                                     </div>
                                     <!--end col-->
+                                    @endrole
                                     <div class="col-xxl-1 col-sm-4">
                                         <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
@@ -91,7 +92,6 @@
                                 <!--end row-->
                             </form>
                         </div>
-                        @endrole
                         <!--end card-body-->
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
