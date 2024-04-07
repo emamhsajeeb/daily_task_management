@@ -393,45 +393,44 @@ async function updateTaskList() {
 }
 
 async function filterTaskList() {
-    // Simulating a delay with setTimeout
-    setTimeout(function() {
-        // Your filter logic goes here
-        // Get start and end dates from the date range picker
-        var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-        var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
-        var taskStatus = document.getElementById('taskStatus').value;
-        var taskIncharge = document.getElementById('taskIncharge').value;
+    $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+    $('#filterTasks').prop('disabled', true);
 
-        $.ajax({
-            url : "{{ route('filterTasks') }}",
-            type:"POST",
-            data: {
-                start: startDate,
-                end: endDate,
-                status: taskStatus,
-                incharge: taskIncharge,
-            },
-            success:async function (response) {
-                var preloader = document.getElementById('preloader');
-                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'visible'; // Set visibility to visible
-                toastr.success(response.message);
-                $('#taskTable').DataTable().clear().destroy();
+    // Get start and end dates from the date range picker
+    var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
+    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+    var taskStatus = document.getElementById('taskStatus').value;
+    var taskIncharge = document.getElementById('taskIncharge').value;
 
-                const tasks = response.tasks;
+    $.ajax({
+        url : "{{ route('filterTasks') }}",
+        type:"POST",
+        data: {
+            start: startDate,
+            end: endDate,
+            status: taskStatus,
+            incharge: taskIncharge,
+        },
+        success:async function (response) {
+            var preloader = document.getElementById('preloader');
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            toastr.success(response.message);
+            $('#taskTable').DataTable().clear().destroy();
 
-                await updateTaskListBody(tasks);
-                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'hidden'; // Set visibility to visible
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-        // Once filtering is done, restore the button
-        $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-        $('#filterTasks').prop('disabled', false);
-    }, 2000);
+            const tasks = response.tasks;
+
+            await updateTaskListBody(tasks);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+    // Once filtering is done, restore the button
+    $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+    $('#filterTasks').prop('disabled', false);
 }
 
 // Function to handle form submission via AJAX
@@ -543,8 +542,6 @@ $( document ).ready(async function () {
 
     $('#filterTasks').click(async function (e) {
         e.preventDefault();
-        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-        $(this).prop('disabled', true);
         await filterTaskList();
     });
 });

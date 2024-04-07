@@ -156,6 +156,8 @@ function updateDailySummaryBody(summaries) {
 
 
 async function filterDailySummary() {
+    $('#filterSummary').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+    $('#filterSummary').prop('disabled', true);
     // Get selected month from month picker
     var selectedMonth = document.getElementById('monthPicker').value;
     var taskIncharge = admin ? document.getElementById('taskIncharge').value : null;
@@ -248,8 +250,6 @@ $( document ).ready(async function () {
     // Event listener for dropdown change
     $('#filterSummary').click(async function (e) {
         e.preventDefault();
-        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-        $(this).prop('disabled', true);
         await filterDailySummary();
     });
 });
