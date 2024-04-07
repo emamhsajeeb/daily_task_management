@@ -138,9 +138,18 @@ class TaskController extends Controller
 
     public function filterTasks(Request $request)
     {
+        // Get the authenticated user
+        $user = Auth::user();
         try {
             // Query tasks based on date range
             $tasksQuery = Tasks::query();
+            $summaryQuery = DailySummary::query();
+            // Check if the user has the 'se' role
+            if ($user->hasRole('se')) {
+                // If user has the 'se' role, get the daily summaries based on the incharge column
+                $tasksQuery->where('incharge', $user->user_name);
+                $summaryQuery->where('incharge', $user->user_name);
+            }
 
             // Query tasks based on date range
             if ($request->start !== null && $request->end !== null) {
