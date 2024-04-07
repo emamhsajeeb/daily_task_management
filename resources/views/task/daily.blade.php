@@ -156,41 +156,42 @@ function updateDailySummaryBody(summaries) {
 
 
 async function filterDailySummary() {
-    $('#filterSummary').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-    $('#filterSummary').prop('disabled', true);
+
     // Get selected month from month picker
     var selectedMonth = document.getElementById('monthPicker').value;
     var taskIncharge = admin ? document.getElementById('taskIncharge').value : null;
 
-    // Send selected month to Laravel controller
-    $.ajax({
-        url: admin ? "{{ route('filterSummary') }}" : "{{ route('filterSummarySE') }}" ,
-        type: "POST",
-        data: {
-            month: selectedMonth,
-            incharge: taskIncharge,
-        },
-        success: async function (response) {
-            var preloader = document.getElementById('preloader');
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            toastr.success(response.message);
-            $('#dailySummaryTable').DataTable().clear().destroy();
+    try {
+        // Send selected month to Laravel controller
+        await $.ajax({
+            url: admin ? "{{ route('filterSummary') }}" : "{{ route('filterSummarySE') }}" ,
+            type: "POST",
+            data: {
+                month: selectedMonth,
+                incharge: taskIncharge,
+            },
+            success: async function (response) {
+                var preloader = document.getElementById('preloader');
+                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'visible'; // Set visibility to visible
+                toastr.success(response.message);
+                $('#dailySummaryTable').DataTable().clear().destroy();
 
-            const summaries = response.summaries;
+                const summaries = response.summaries;
 
-            await updateDailySummaryBody(summaries);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-
-    // Once filtering is done, restore the button
-    $('#filterSummary').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-    $('#filterSummary').prop('disabled', false);
+                await updateDailySummaryBody(summaries);
+                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'hidden'; // Set visibility to visible
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    } finally {
+        // Once filtering is done, restore the button
+        $('#filterSummary').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+        $('#filterSummary').prop('disabled', false);
+    }
 }
 
 
@@ -250,6 +251,8 @@ $( document ).ready(async function () {
     // Event listener for dropdown change
     $('#filterSummary').click(async function (e) {
         e.preventDefault();
+        $('#filterSummary').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $('#filterSummary').prop('disabled', true);
         await filterDailySummary();
     });
 });

@@ -401,9 +401,7 @@ async function filterTaskList() {
     var taskIncharge = document.getElementById('taskIncharge').value;
 
     try {
-        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-        $('#filterTasks').prop('disabled', true);
-        $.ajax({
+        await $.ajax({
             url : "{{ route('filterTasks') }}",
             type:"POST",
             data: {
@@ -545,6 +543,8 @@ $( document ).ready(async function () {
 
     $('#filterTasks').click(async function (e) {
         e.preventDefault();
+        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $('#filterTasks').prop('disabled', true);
         await filterTaskList();
     });
 });
