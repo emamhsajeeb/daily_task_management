@@ -377,16 +377,16 @@ async function updateTaskList() {
             console.log(firstDate, lastDate);
 
             await updateTaskListBody(tasks);
-            $('#dateRangePicker').daterangepicker({
-                minDate: firstDate,
-                maxDate: lastDate,
-            });
-
-            // flatpickr("#dateRangePicker", {
-            //     minDate: new Date(firstDate),
-            //     maxDate: new Date(lastDate),
-            //     mode: 'range', // Specify 'range' mode as a string
+            // $('#dateRangePicker').daterangepicker({
+            //     minDate: firstDate,
+            //     maxDate: lastDate,
             // });
+
+            flatpickr("#dateRangePicker", {
+                minDate: new Date(firstDate),
+                maxDate: new Date(lastDate),
+                mode: 'range', // Specify 'range' mode as a string
+            });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
@@ -470,26 +470,17 @@ async function addTask() {
                 const firstDate = new Date(Math.min(...dates));
                 const lastDate = new Date(Math.max(...dates));
 
-                $('#dateRangePicker').daterangepicker({
-                    minDate: firstDate,
-                    maxDate: lastDate,
-                    opens: 'left'
-                });
-
-                // flatpickr("#dateRangePicker", {
-                //     minDate: new Date(firstDate),
-                //     maxDate: new Date(lastDate),
-                //     mode: 'range', // Specify 'range' mode as a string
-                //     // This onChange event handler will be triggered whenever the date range changes
-                //     onClose: async function (selectedDates, dateStr, instance) {
-                //         // Assuming you want to get the first and last dates from the selected date range
-                //         var start = selectedDates[0];
-                //         var end = selectedDates[selectedDates.length - 1];
-                //
-                //         // Call the updateTaskList function with the updated dates
-                //         await updateTaskList(start, end);
-                //     }
+                // $('#dateRangePicker').daterangepicker({
+                //     minDate: firstDate,
+                //     maxDate: lastDate,
+                //     opens: 'left'
                 // });
+
+                flatpickr("#dateRangePicker", {
+                    minDate: new Date(firstDate),
+                    maxDate: new Date(lastDate),
+                    mode: 'range', // Specify 'range' mode as a string
+                });
 
                 await updateTaskListBody(tasks);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
