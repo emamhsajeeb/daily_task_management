@@ -341,7 +341,7 @@
 </div><!-- /.modal -->
 <!--end delete modal -->
 <script>
-var users = {!! json_encode($users->toArray()) !!};
+const users = {!! json_encode($users->toArray()) !!};
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const roles = {!! json_encode($roles->pluck('name')) !!};
 var buttonGroups;
@@ -439,15 +439,19 @@ function loadTeamData(e) {
                 '                       <select class="form-select rounded-pill mb-3" aria-label="Default select example" data-user-id="' + e.id + '">' + roleOptions + '</select>' +
                 '                       </div>' +
                 '                   </div>' +
-                '               </div>' : '') + (e.role === 'admin' || e.role === 'manager' ?
+                '               </div>' : '') + (e.role === 'admin' || e.role === 'manager' ? '' :
                 '               <div class="col-lg-3 col">' +
                 '                   <div class="row text-muted text-center">' +
-                '                       <div class="col-12">' +
-                '                           <h5 class="mb-1 tasks-num">' + e.tasks + '</h5>' +
+                '                       <div class="col-6">' +
+                '                           <h5 class="mb-1 tasks-num">' + e.tasks_count + '</h5>' +
                 '                           <p class="text-muted mb-0">Tasks</p>' +
                 '                       </div>' +
+                '                       <div class="col-6">' +
+                '                           <h5 class="mb-1 tasks-num">' + e.completed_count + '</h5>' +
+                '                           <p class="text-muted mb-0">Completed</p>' +
+                '                       </div>' +
                 '                   </div>' +
-                '               </div>' : '') +
+                '               </div>') +
                 '               <div class="col-lg-2 col">' +
                 '                   <div class="text-end">' +
                 '                       <a href="{{ route('viewProfile') }}" class="btn btn-light view-btn">View Profile</a>' +

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Role;
+use App\Models\Tasks;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,13 @@ class ProfileController extends Controller
         $roles = Role::all();
         // Add a new column to users based on their roles
         $users->each(function ($user) {
-            $user->role = $user->roles->pluck('name')->implode(', '); // Concatenate role names
+            $tasksCount = Tasks::where('incharge', $user->user_name)->count();
+            $completedCount = Tasks::where('incharge', $user->user_name)
+                ->where('status', 'completed')
+                ->count();
+            $user->tasks_count = $tasksCount;
+            $user->completed_count = $completedCount;
+            $user->role = $user->roles->pluck('name')->implode(', ');
         });
         return view('team.members', [
             'users' => $users,
