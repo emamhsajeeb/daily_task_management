@@ -34,7 +34,7 @@
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
                                         @role('admin')
-                                        <a title="Export Summary" href="{{ route('exportDailySummary') }}" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
+                                        <a id="exportToExcel" title="Export Summary" href="#" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
                                         @endrole
                                     </div>
                                 </div>
@@ -238,6 +238,47 @@ async function updateDailySummary(month = null) {
 
 }
 
+async function exportToExcel() {
+    try {
+        // Get the HTML table element
+        var table = document.getElementById("dailySummaryTable");
+
+        // Create an empty Excel Workbook
+        var excelData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+        excelData += '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>';
+        excelData += '<body>';
+        excelData += '<table>';
+
+        // Add the table rows and cells to the Excel data
+        for (var i = 0; i < table.rows.length; i++) {
+            excelData += '<tr>';
+            for (var j = 0; j < table.rows[i].cells.length; j++) {
+                excelData += '<td>' + table.rows[i].cells[j].innerHTML + '</td>';
+            }
+            excelData += '</tr>';
+        }
+
+        excelData += '</table>';
+        excelData += '</body>';
+        excelData += '</html>';
+
+        // Create a data URI
+        var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelData);
+
+        // Create a new window and open the data URI
+        var link = document.createElement('a');
+        link.href = uri;
+        link.style = "visibility:hidden";
+        link.download = "table.xls";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } finally {
+        $('#exportToExcel').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+        $('#exportToExcel').prop('disabled', false);
+    }
+}
+
 
 // Call the function when the page loads
 $( document ).ready(async function () {
@@ -254,6 +295,13 @@ $( document ).ready(async function () {
         $('#filterSummary').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $('#filterSummary').prop('disabled', true);
         await filterDailySummary();
+    });
+
+    await $('#exportToExcel').click(async function (e) {
+        e.preventDefault();
+        $('#exportToExcel').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $('#exportToExcel').prop('disabled', true);
+        await exportToExcel();
     });
 });
 
