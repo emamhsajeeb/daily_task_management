@@ -147,7 +147,7 @@ class TaskController extends Controller
 //                // Retrieve start and end date from the request
 //                $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
 //                $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
-                $tasksQuery->whereBetween('date', [$startDate, $endDate]);
+                $tasksQuery->whereBetween('date', [$request->start, $request->end]);
             }
 
             // Further filter tasks by status
