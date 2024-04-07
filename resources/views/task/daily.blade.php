@@ -34,7 +34,7 @@
                                 <div class="flex-shrink-0">
                                     <div class="d-flex flex-wrap gap-2">
                                         @role('admin')
-                                        <a id="exportToExcel" title="Export Summary" href="#" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
+                                        <button id="exportToExcel" title="Export Summary" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></button>
                                         @endrole
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@ async function exportToExcel() {
         link.click();
         document.body.removeChild(link);
     } finally {
-        $('#exportToExcel').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+        $('#exportToExcel').html('<i class="ri-download-2-line align-bottom me-1"></i>');
         $('#exportToExcel').prop('disabled', false);
     }
 }
