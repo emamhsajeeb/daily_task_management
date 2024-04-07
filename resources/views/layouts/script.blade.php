@@ -9,9 +9,7 @@
 
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
 <!-- particles js -->
-<script src="{{ asset('assets/libs/particles.js/particles.js') }}"></script>
-<!-- particles app js -->
-<script src="{{ asset('assets/js/pages/particles.app.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.js" integrity="sha512-BgV3bZfMmUklIZI+dP0SILdmQ0RBY2gxegFFyfgo4Ui56WhKF4Pny9LsV/l96jxDDA+2w47zAXA4IyHo2UT/Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- password-addon init -->
 <script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
 <!-- list.js min js -->
