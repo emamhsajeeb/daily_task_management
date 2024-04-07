@@ -401,7 +401,7 @@ async function filterTaskList() {
 
     // Get start and end dates from the date range picker
     var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = document.getElementById('taskIncharge').value;
 
