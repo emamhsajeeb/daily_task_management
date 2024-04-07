@@ -52,7 +52,7 @@
                                 @csrf
                                 <div class="row g-3">
                                     <div class="col-xxl-3 col-sm-4">
-                                        <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date range" />
+                                        <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
                                     </div>
                                     <!--end col-->
                                     <div class="col-xxl-3 col-sm-4">
@@ -395,8 +395,8 @@ async function updateTaskList() {
 async function filterTaskList() {
 
     // Get start and end dates from the date range picker
-    var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1];
+    var startDate = document.getElementById('dateRangePicker').value.split(" - ")[0];
+    var endDate = document.getElementById('dateRangePicker').value.split(" - ")[1];
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = document.getElementById('taskIncharge').value;
 
@@ -465,20 +465,29 @@ async function addTask() {
                 const firstDate = new Date(Math.min(...dates));
                 const lastDate = new Date(Math.max(...dates));
 
-                flatpickr("#dateRangePicker", {
+                $('#dateRangePicker').daterangepicker({
                     minDate: new Date(firstDate),
                     maxDate: new Date(lastDate),
-                    mode: 'range', // Specify 'range' mode as a string
-                    // This onChange event handler will be triggered whenever the date range changes
-                    onClose: async function (selectedDates, dateStr, instance) {
-                        // Assuming you want to get the first and last dates from the selected date range
-                        var start = selectedDates[0];
-                        var end = selectedDates[selectedDates.length - 1];
-
-                        // Call the updateTaskList function with the updated dates
-                        await updateTaskList(start, end);
-                    }
+                    opens: 'left'
+                }, function(start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
                 });
+
+                // flatpickr("#dateRangePicker", {
+                //     minDate: new Date(firstDate),
+                //     maxDate: new Date(lastDate),
+                //     mode: 'range', // Specify 'range' mode as a string
+                //     // This onChange event handler will be triggered whenever the date range changes
+                //     onClose: async function (selectedDates, dateStr, instance) {
+                //         // Assuming you want to get the first and last dates from the selected date range
+                //         var start = selectedDates[0];
+                //         var end = selectedDates[selectedDates.length - 1];
+                //
+                //         // Call the updateTaskList function with the updated dates
+                //         await updateTaskList(start, end);
+                //     }
+                // });
+
                 await updateTaskListBody(tasks);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'hidden'; // Set visibility to visible

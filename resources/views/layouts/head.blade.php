@@ -36,7 +36,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/toastr.css') }}">
     <script type="text/javascript" src="{{ asset('assets/js/toastr.js') }}"></script>
     <!-- Add this to the head section of your layout file -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">--}}
+{{--    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>--}}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 </head>
