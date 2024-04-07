@@ -40,7 +40,7 @@ Route::get('/', function () {
 
 Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
 
-Route::middleware([CheckRole::class . ':admin'])->group(function () {
+Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(function () {
     // Routes accessible only to users with the 'admin' role
     Route::get('/tasks-all', [TaskController::class, 'allTasks'])->name('allTasks');
     Route::post('/tasks-filtered', [TaskController::class, 'filterTasks'])->name('filterTasks');
@@ -66,7 +66,7 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
 });
 
 
-Route::middleware([CheckRole::class . ':se'])->group(function () {
+Route::middleware([CheckRole::class . ':se','auth', 'verified'])->group(function () {
     Route::get('/tasks-all-se', [TaskController::class, 'allTasks'])->name('allTasksSE');
     Route::post('/tasks-filtered-se', [TaskController::class, 'filterTasks'])->name('filterTasksSE');
     Route::get('/tasks/se', [TaskController::class, 'showTasks'])->name('showTasksSE');
