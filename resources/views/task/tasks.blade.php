@@ -224,6 +224,7 @@ var user = {!! json_encode($user) !!};
 const incharges = {!! json_encode($incharges) !!};
 
 async function updateTaskListBody(tasks) {
+    var preloader = document.getElementById('preloader');
     // Loop through tasks and create table rows
     var taskRow = '';
     $.each(tasks, function(index, task) {
@@ -313,6 +314,8 @@ async function updateTaskListBody(tasks) {
         }
     });
     $('#taskListBody').html(taskRow);
+    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+    preloader.style.visibility = 'hidden'; // Set visibility to visible
     $('#taskTable').DataTable({
         processing: true,
         language: {
@@ -358,8 +361,6 @@ async function updateTaskList() {
         `;
 
     $('#taskListHead').html(header);
-
-    var preloader = document.getElementById('preloader');
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
     $.ajax({
@@ -387,8 +388,7 @@ async function updateTaskList() {
                 maxDate: new Date(lastDate),
                 mode: 'range', // Specify 'range' mode as a string
             });
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
+
         },
         error: function(xhr, status, error) {
             return error;

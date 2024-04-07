@@ -110,29 +110,31 @@ const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 
 function updateDailySummaryBody(summaries) {
+    var preloader = document.getElementById('preloader');
 
     var dailyRow = '';
     // Loop through tasks and create table rows
     summaries.forEach(summary => {
-        // if (dailySummary.hasOwnProperty(date)) {
-        //     var daily = dailySummary[date];
-            dailyRow += `
-                     <tr>
-                        <td style="text-align: center">${summary.date}</td>
-                        <td style="text-align: center">${summary.totalTasks}</td>
-                        <td style="text-align: center">${summary.structureTasks}</td>
-                        <td style="text-align: center">${summary.embankmentTasks}</td>
-                        <td style="text-align: center">${summary.pavementTasks}</td>
-                        <td style="text-align: center">${summary.totalResubmission}</td>
-                        <td style="text-align: center">${summary.completed}</td>
-                        <td style="text-align: center">${summary.completionPercentage}%</td>
-                        <td style="text-align: center">${summary.pending}</td>
-                        <td style="text-align: center">${summary.rfiSubmissions}</td>
-                        <td style="text-align: center">${summary.rfiSubmissionPercentage}%</td>
-                    </tr>`
-        // }
+        dailyRow += `
+             <tr>
+                <td style="text-align: center">${summary.date}</td>
+                <td style="text-align: center">${summary.totalTasks}</td>
+                <td style="text-align: center">${summary.structureTasks}</td>
+                <td style="text-align: center">${summary.embankmentTasks}</td>
+                <td style="text-align: center">${summary.pavementTasks}</td>
+                <td style="text-align: center">${summary.totalResubmission}</td>
+                <td style="text-align: center">${summary.completed}</td>
+                <td style="text-align: center">${summary.completionPercentage}%</td>
+                <td style="text-align: center">${summary.pending}</td>
+                <td style="text-align: center">${summary.rfiSubmissions}</td>
+                <td style="text-align: center">${summary.rfiSubmissionPercentage}%</td>
+            </tr>`
     });
+
     $('#dailySummaryBody').html(dailyRow);
+
+    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+    preloader.style.visibility = 'hidden'; // Set visibility to visible
 
     $('#dailySummaryTable').DataTable({
         processing: true,
@@ -220,7 +222,6 @@ async function filterDailySummary() {
 
 
 async function updateDailySummary(month = null) {
-    var preloader = document.getElementById('preloader');
     var url = '{{ route("dailySummary") }}';
     var header = `
         <tr>
@@ -250,9 +251,6 @@ async function updateDailySummary(month = null) {
             console.log(summaries);
 
             await updateDailySummaryBody(summaries);
-
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
