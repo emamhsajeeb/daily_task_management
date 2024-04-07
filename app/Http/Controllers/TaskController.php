@@ -144,9 +144,9 @@ class TaskController extends Controller
 
             // Query tasks based on date range
             if ($request->start !== null && $request->end !== null) {
-                // Retrieve start and end date from the request
-                $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
-                $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
+//                // Retrieve start and end date from the request
+//                $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
+//                $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
                 $tasksQuery->whereBetween('date', [$startDate, $endDate]);
             }
 
