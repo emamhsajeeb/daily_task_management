@@ -407,7 +407,7 @@ async function filterTaskList() {
 
     try {
         await $.ajax({
-            url : "{{ route('filterTasks') }}",
+            url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
             type:"POST",
             data: {
                 start: startDate,

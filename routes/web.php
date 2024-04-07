@@ -68,6 +68,7 @@ Route::middleware([CheckRole::class . ':admin'])->group(function () {
 
 Route::middleware([CheckRole::class . ':se'])->group(function () {
     Route::get('/tasks-all-se', [TaskController::class, 'allTasks'])->name('allTasksSE');
+    Route::post('/tasks-filtered-se', [TaskController::class, 'filterTasks'])->name('filterTasksSE');
     Route::get('/tasks/se', [TaskController::class, 'showTasks'])->name('showTasksSE');
     Route::post('/task/add-se', [TaskController::class, 'addTask'])->name('addTaskSE');
     Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
