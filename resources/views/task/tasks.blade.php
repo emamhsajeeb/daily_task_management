@@ -402,35 +402,33 @@ async function filterTaskList() {
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = document.getElementById('taskIncharge').value;
 
-    $.ajax({
-        url : "{{ route('filterTasks') }}",
-        type:"POST",
-        data: {
-            start: startDate,
-            end: endDate,
-            status: taskStatus,
-            incharge: taskIncharge,
-        },
-        success:async function (response) {
-            var preloader = document.getElementById('preloader');
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            toastr.success(response.message);
-            $('#taskTable').DataTable().clear().destroy();
+    try {
+        // Perform AJAX request to filter tasks
+        var response = await $.ajax({
+            url: "{{ route('filterTasks') }}",
+            type: "POST",
+            data: {
+                start: startDate,
+                end: endDate,
+                status: taskStatus,
+                incharge: taskIncharge,
+            }
+        });
 
-            const tasks = response.tasks;
+        // Display success message
+        toastr.success(response.message);
 
-            await updateTaskListBody(tasks);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-    // Once filtering is done, restore the button
-    $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-    $('#filterTasks').prop('disabled', false);
+        // Update task list with filtered tasks
+        await updateTaskListBody(response.tasks);
+    } catch (error) {
+        // Display error message if AJAX request fails
+        console.error(error);
+        toastr.error("An error occurred while filtering tasks.");
+    } finally {
+        // Enable the filter button and restore its original text
+        $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+        $('#filterTasks').prop('disabled', false);
+    }
 }
 
 // Function to handle form submission via AJAX
