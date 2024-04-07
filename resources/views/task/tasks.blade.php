@@ -403,7 +403,7 @@ async function filterTaskList() {
     var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
     var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
     var taskStatus = document.getElementById('taskStatus').value;
-    var taskIncharge = document.getElementById('taskIncharge').value;
+    var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
 
     try {
         await $.ajax({
