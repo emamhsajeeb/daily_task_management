@@ -393,8 +393,6 @@ async function updateTaskList() {
 }
 
 async function filterTaskList() {
-    $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-    $('#filterTasks').prop('disabled', true);
 
     // Get start and end dates from the date range picker
     var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
@@ -403,6 +401,8 @@ async function filterTaskList() {
     var taskIncharge = document.getElementById('taskIncharge').value;
 
     try {
+        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $('#filterTasks').prop('disabled', true);
         $.ajax({
             url : "{{ route('filterTasks') }}",
             type:"POST",
