@@ -69,14 +69,13 @@ class DailySummaryController extends Controller
         }
         $dailySummaries = $mergedSummaries;
 
-
-// Group tasks by date
+        // Group tasks by date
         $tasksByDate = [];
         foreach ($dailyTasks as $task) {
             $tasksByDate[$task->date][] = $task;
         }
 
-// Iterate over summaries
+        // Iterate over summaries
         foreach ($dailySummaries as $summary) {
             $date = $summary->date;
             $completed = 0;
@@ -182,39 +181,41 @@ class DailySummaryController extends Controller
             }
             $dailySummaries = $mergedSummaries;
 
-            // Iterate over tasks to calculate counts and percentages
+            // Group tasks by date
+            $tasksByDate = [];
             foreach ($filteredTasks as $task) {
-                // Extract date from the task
-                $taskDate = $task->date;
+                $tasksByDate[$task->date][] = $task;
+            }
 
-                // Initialize counts and percentages
+            // Iterate over summaries
+            foreach ($dailySummaries as $summary) {
+                $date = $summary->date;
                 $completed = 0;
                 $rfiSubmissions = 0;
+                $totalTasks = $summary->totalTasks;
 
-                // Count completed and RFI submission tasks for the current date
-                foreach ($dailySummaries as &$summary) {
-                    if ($summary->date == $taskDate) {
+                // Calculate total tasks for the current date
+                if (isset($tasksByDate[$date])) {
+                    foreach ($tasksByDate[$date] as $task) {
                         // Count completed tasks
-                        if ($task->status === 'completed') {
+                        if ($task->status == 'completed') {
                             $completed++;
                         }
 
                         // Count RFI submissions
-                        if ($task->rfi_submission_date) {
+                        if ($task->rfi_submission_date != null) {
                             $rfiSubmissions++;
                         }
-
-                        // Calculate completion and RFI submission percentages
-                        $summary->completed = $completed;
-                        $summary->pending = $summary->totalTasks - $completed;
-                        $summary->rfiSubmissions = $rfiSubmissions;
-                        $summary->completionPercentage = ($summary->totalTasks > 0) ? round(($completed / $summary->totalTasks) * 100, 1) : 0;
-                        $summary->rfiSubmissionPercentage = ($summary->totalTasks > 0) ? round(($rfiSubmissions / $summary->totalTasks) * 100, 1) : 0;
                     }
                 }
+
+                // Update summary properties
+                $summary->completed = $completed;
+                $summary->pending = $totalTasks - $completed;
+                $summary->rfiSubmissions = $rfiSubmissions;
+                $summary->completionPercentage = ($totalTasks > 0) ? round(($completed / $totalTasks) * 100, 1) : 0;
+                $summary->rfiSubmissionPercentage = ($totalTasks > 0) ? round(($rfiSubmissions / $totalTasks) * 100, 1) : 0;
             }
-
-
 
             // Return JSON response with filtered tasks
             return response()->json([
