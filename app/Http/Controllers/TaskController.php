@@ -215,6 +215,15 @@ class TaskController extends Controller
 
         $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
 
+        // Validate imported tasks
+        $validatedTasks = Validator::make($importedTasks, [
+            '*.0' => 'date_format:Y-m-d', // date
+            '*.1' => 'required|string', // number
+            '*.2' => 'required|string|in:Embankment,Structure,Pavement', // type
+            '*.3' => 'required|string', // description
+            '*.4' => 'required|string', // location
+        ])->validate();
+
         $newSubmissionCount = 0;
         $date = $importedTasks[0][0];
 
