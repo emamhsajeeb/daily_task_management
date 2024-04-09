@@ -234,7 +234,7 @@ class TaskController extends Controller
         // Initialize summary variables
         $inchargeSummary = [];
 
-        foreach ($validatedTasks as $importedTask) {
+        foreach ($importedTasks as $importedTask) {
             $inchargeName = '';
             $k = intval(substr($importedTask[4], 1)); // Extracting the numeric part after 'K'
 
