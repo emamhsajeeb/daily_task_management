@@ -16,6 +16,7 @@ use Illuminate\Http\Request; // Represents the incoming HTTP request
 use Illuminate\Support\Facades\Auth; // Facade for team authentication
 use Illuminate\Support\Facades\DB; // Facade for interacting with the database
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel; // Facade for working with Excel files
