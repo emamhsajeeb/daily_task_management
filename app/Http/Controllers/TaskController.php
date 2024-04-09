@@ -222,7 +222,10 @@ class TaskController extends Controller
             '*.1' => 'required|string', // number
             '*.2' => 'required|string|in:Embankment,Structure,Pavement', // type
             '*.3' => 'required|string', // description
-            '*.4' => 'required|string|custom_location', // location
+            '*.4' => 'required|string|custom_location',
+            '*.5' => 'string',
+            '*.6' => 'string',
+            '*.7' => 'string'
         ])->validate();
 
         $newSubmissionCount = 0;
