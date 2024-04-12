@@ -382,7 +382,7 @@ async function updateTaskList() {
         </tr>
         `;
 
-    $('#taskListHead').html(header);
+    $('#taskListHead').html(header).css('text-align', 'center');
 
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
