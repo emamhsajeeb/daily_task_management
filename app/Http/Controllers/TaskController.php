@@ -42,11 +42,28 @@ class TaskController extends Controller
 
         $tasks = $user ? (
         $user->hasRole('se')
-            ? DB::table('tasks')->where('incharge', $user->user_name)->get()
-            : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
+            ? DB::table('tasks')->where('incharge', $user->user_name)
+            : ($user->hasRole('admin') ? DB::table('tasks') : [])
         ) : [];
 
-        return response()->json($tasks);
+
+//        return response()->json($tasks);
+
+        $perPage = $request->input('perPage', 20); // Number of records per page
+        $page = $request->input('page', 1); // Current page number
+
+        $offset = ($page - 1) * $perPage;
+
+        $data = $tasks->offset($offset)
+            ->limit($perPage)
+            ->get();
+
+        $totalRecords = Tasks::count();
+
+        return response()->json([
+            'data' => $data,
+            'totalRecords' => $totalRecords,
+        ]);
     }
 
     public function addTask(Request $request)

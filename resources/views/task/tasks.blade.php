@@ -361,39 +361,103 @@ async function updateTaskList() {
         `;
 
     $('#taskListHead').html(header);
-    var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
-    $.ajax({
-        url: url,
-        method: 'GET',
-        dataType: 'json',
-        success: async function (response) {
-            var tasks = response;
-            // Extracting dates from tasks
-            const dates = tasks.map(task => new Date(task.date));
-
-            // Finding the first and last dates
-            const firstDate = new Date(Math.min(...dates));
-            const lastDate = new Date(Math.max(...dates));
-            console.log(firstDate, lastDate);
-
-            await updateTaskListBody(tasks);
-            // $('#dateRangePicker').daterangepicker({
-            //     minDate: firstDate,
-            //     maxDate: lastDate,
-            // });
-
-            flatpickr("#dateRangePicker", {
-                minDate: new Date(firstDate),
-                maxDate: new Date(lastDate),
-                mode: 'range', // Specify 'range' mode as a string
-            });
-
+    $('#taskTable').DataTable({
+        serverSide: true,
+        ajax: {
+            url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
+            type: 'GET',
+            data: function(d) {
+                d.page = d.start / d.length + 1; // Calculate current page
+                d.perPage = d.length; // Number of records per page
+            }
         },
-        error: function(xhr, status, error) {
-            return error;
-        }
+        columns: [
+            { data: 'date' },
+            { data: 'number' },
+            {
+                data: 'status',
+                render: function(data, type, row) {
+                    var iconHtml = `
+            <span icon-task-id="${row.id}">
+                <i  style="${row.status === 'new' ? 'color: blue' :
+                        row.status === 'resubmission' ? 'color: orange' :
+                            row.status === 'completed' ? 'color: green' :
+                                row.status === 'emergency' ? 'color: red' : ''}"
+                    class="${row.status === 'new' ? 'ri-add-circle-line fs-17 align-middle' :
+                        row.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :
+                            row.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                                row.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>
+            </span>
+        `;
+                    var statusOptions = `
+            <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
+                <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
+                <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
+                <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
+                <option value="emergency" ${data === 'emergency' ? 'selected' : ''}>Emergency</option>
+            </select>
+        `;
+                    return iconHtml + statusOptions;
+                }
+            },
+            { data: 'type' },
+            { data: 'description' },
+            { data: 'location' },
+            { data: 'side' },
+            { data: 'qty_layer' },
+            { data: 'planned_time' },
+            { data: 'incharge' },
+            { data: 'completion_time', render: function(data, type, row) {
+                    // Render completion time as date time picker
+                    return '<input type="datetime-local" value="' + data + '">';
+                }},
+            { data: 'inspection_details', render: function(data, type, row) {
+                    // Render comments as text area
+                    return '<textarea>' + data + '</textarea>';
+                }},
+            { data: 'resubmission_count' },
+            { data: 'rfi_submission_date', render: function(data, type, row) {
+                    // Render rfisubmission as date picker
+                    return '<input type="date" value="' + data + '">';
+                }}
+        ]
     });
+
+
+    {{--var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';--}}
+
+    {{--$.ajax({--}}
+    {{--    url: url,--}}
+    {{--    method: 'GET',--}}
+    {{--    dataType: 'json',--}}
+    {{--    success: async function (response) {--}}
+    {{--        var tasks = response;--}}
+    {{--        // Extracting dates from tasks--}}
+    {{--        const dates = tasks.map(task => new Date(task.date));--}}
+
+    {{--        // Finding the first and last dates--}}
+    {{--        const firstDate = new Date(Math.min(...dates));--}}
+    {{--        const lastDate = new Date(Math.max(...dates));--}}
+    {{--        console.log(firstDate, lastDate);--}}
+
+    {{--        await updateTaskListBody(tasks);--}}
+    {{--        // $('#dateRangePicker').daterangepicker({--}}
+    {{--        //     minDate: firstDate,--}}
+    {{--        //     maxDate: lastDate,--}}
+    {{--        // });--}}
+
+    {{--        flatpickr("#dateRangePicker", {--}}
+    {{--            minDate: new Date(firstDate),--}}
+    {{--            maxDate: new Date(lastDate),--}}
+    {{--            mode: 'range', // Specify 'range' mode as a string--}}
+    {{--        });--}}
+
+    {{--    },--}}
+    {{--    error: function(xhr, status, error) {--}}
+    {{--        return error;--}}
+    {{--    }--}}
+    {{--});--}}
 
 }
 
