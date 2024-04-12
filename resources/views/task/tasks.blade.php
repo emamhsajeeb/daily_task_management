@@ -367,7 +367,7 @@ async function updateTaskList() {
         },
         destroy: true,
         // scrollCollapse: true,
-        scroller: true,
+        // scroller: true,
         scrollY: 500,
         deferRender: true,
         fixedHeader: {
@@ -485,7 +485,6 @@ async function updateTaskList() {
                 defaultContent: '<td>Click</td>'
             } : null,
         ],
-        order: [[0,'desc']],
     });
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
