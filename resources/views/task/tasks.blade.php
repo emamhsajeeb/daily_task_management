@@ -366,7 +366,7 @@ async function updateTaskList() {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
         },
         destroy: true,
-        // scrollCollapse: true,
+        scrollCollapse: true,
         // scroller: true,
         scrollY: 500,
         deferRender: true,
