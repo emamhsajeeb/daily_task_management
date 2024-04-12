@@ -47,7 +47,7 @@ class TaskController extends Controller
         ) : [];
 
         $perPage = $request->input('perPage', 50); // Number of records per page
-        $page = $request->input('page', 1); // Current page number
+        $page = intval($request->input('page', 1)); // Current page number
 
         $offset = ($page - 1) * $perPage;
 
