@@ -613,7 +613,7 @@ async function updateTaskList() {
         method: 'GET',
         dataType: 'json',
         success: async function (response) {
-            var tasks = response;
+            var tasks = response.tasks;
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 
