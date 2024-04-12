@@ -61,10 +61,13 @@ class TaskController extends Controller
 
 
         $recordsTotal = $tasks->count();
+        $recordsFiltered = $tasks->count();
 
         return response()->json([
             'data' => $data,
             'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+
         ]);
     }
 
