@@ -51,6 +51,8 @@ class TaskController extends Controller
 
         $offset = ($page - 1) * $perPage;
 
+        $tasks->orderBy('date', 'desc');
+
         $data = $tasks->offset($offset)
             ->limit($perPage)
             ->get();
