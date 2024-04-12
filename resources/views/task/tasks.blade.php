@@ -226,94 +226,99 @@ const incharges = {!! json_encode($incharges) !!};
 async function updateTaskListBody(tasks) {
     var preloader = document.getElementById('preloader');
     // Loop through tasks and create table rows
-    var taskRow = '';
-    $.each(tasks, function(index, task) {
-        taskRow += `
-            <tr>
-                <td style="text-align: center" class="due_date">${task.date}</td>
-                <td style="text-align: center" class="id">${task.number}</td>
-                <td style="text-align: center" class="status" >
-                    <span icon-task-id="${task.id}">
-                    <i  style="${task.status === 'new' ? 'color: blue' :
-            task.status === 'resubmission' ? 'color: orange' :
-                task.status === 'completed' ? 'color: green' :
-                    task.status === 'emergency' ? 'color: red' : ''}"
-                        class="${task.status === 'new' ? ' ri-add-circle-line fs-17 align-middle' :
-            task.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :
-                task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                    task.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>
-                    </span>
-                    <select ${admin ? 'disabled' : ''} id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${task.id}">
-                        <option value="new" ${task.status === "new" ? 'selected' : ''}>New</option>
-                        <option value="resubmission" ${task.status === "resubmission" ? 'selected' : ''}>Resubmission</option>
-                        <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>
-                        <option value="emergency" ${task.status === "emergency" ? 'selected' : ''}>Emergency</option>
-                    </select>
-                </td>
-                <td style="text-align: center" class="client_name">${task.type}</td>
-                <td>
-                    <div class="d-flex">
-                        <div style="cursor: pointer; width: 200px; ${admin ? 'overflow: hidden; text-overflow: ellipsis' : 'overflow: auto;' }" title="${task.description}" class="flex-grow-1 tasks_name">${task.description}</div>
-                    </div>
-                </td>
-                <td style="text-align: center" class="client_name">${task.location}</td>
-                <td style="text-align: center" class="client_name">${task.side}</td>
-                <td style="text-align: center" class="client_name">${task.qty_layer ? task.qty_layer : ''}</td>
-                <td style="text-align: center" class="client_name">${task.planned_time}</td>
-                `;
+    {{--var taskRow = '';--}}
+    {{--$.each(tasks, function(index, task) {--}}
+    {{--    taskRow += `--}}
+    {{--        <tr>--}}
+    {{--            <td style="text-align: center" class="due_date">${task.date}</td>--}}
+    {{--            <td style="text-align: center" class="id">${task.number}</td>--}}
+    {{--            <td style="text-align: center" class="status" >--}}
+    {{--                <span icon-task-id="${task.id}">--}}
+    {{--                <i  style="${task.status === 'new' ? 'color: blue' :--}}
+    {{--        task.status === 'resubmission' ? 'color: orange' :--}}
+    {{--            task.status === 'completed' ? 'color: green' :--}}
+    {{--                task.status === 'emergency' ? 'color: red' : ''}"--}}
+    {{--                    class="${task.status === 'new' ? ' ri-add-circle-line fs-17 align-middle' :--}}
+    {{--        task.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :--}}
+    {{--            task.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :--}}
+    {{--                task.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>--}}
+    {{--                </span>--}}
+    {{--                <select ${admin ? 'disabled' : ''} id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${task.id}">--}}
+    {{--                    <option value="new" ${task.status === "new" ? 'selected' : ''}>New</option>--}}
+    {{--                    <option value="resubmission" ${task.status === "resubmission" ? 'selected' : ''}>Resubmission</option>--}}
+    {{--                    <option value="completed" ${task.status === "completed" ? 'selected' : ''}>Completed</option>--}}
+    {{--                    <option value="emergency" ${task.status === "emergency" ? 'selected' : ''}>Emergency</option>--}}
+    {{--                </select>--}}
+    {{--            </td>--}}
+    {{--            <td style="text-align: center" class="client_name">${task.type}</td>--}}
+    {{--            <td>--}}
+    {{--                <div class="d-flex">--}}
+    {{--                    <div style="cursor: pointer; width: 200px; ${admin ? 'overflow: hidden; text-overflow: ellipsis' : 'overflow: auto;' }" title="${task.description}" class="flex-grow-1 tasks_name">${task.description}</div>--}}
+    {{--                </div>--}}
+    {{--            </td>--}}
+    {{--            <td style="text-align: center" class="client_name">${task.location}</td>--}}
+    {{--            <td style="text-align: center" class="client_name">${task.side}</td>--}}
+    {{--            <td style="text-align: center" class="client_name">${task.qty_layer ? task.qty_layer : ''}</td>--}}
+    {{--            <td style="text-align: center" class="client_name">${task.planned_time}</td>--}}
+    {{--            `;--}}
 
-        if (admin) {
-            // Find the incharge object that matches the task's incharge property
-            var matchingIncharge = incharges.find(function (incharges) {
-                return incharges.user_name === task.incharge;
-            });
-            var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";
-            taskRow += `
-                        <td style="text-align: center" class="incharge">
-                            <div class="avatar-group">
-                                <a
-                                    href="#"
-                                    class="avatar-group-item"
-                                    style="border: 2px solid #fff0; border-radius: 50%;"
-                                    data-bs-trigger="hover"
-                                    data-bs-placement="top"
-                                    id="inchargeTooltip"
-                                    title="${matchingIncharge.first_name}">
-                                <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
-                                <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
-                                </a>
-                            </div>
-                        </td>
-                            `;
-        }
+    {{--    if (admin) {--}}
+    {{--        // Find the incharge object that matches the task's incharge property--}}
+    {{--        var matchingIncharge = incharges.find(function (incharges) {--}}
+    {{--            return incharges.user_name === task.incharge;--}}
+    {{--        });--}}
+    {{--        var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";--}}
+    {{--        taskRow += `--}}
+    {{--                    <td style="text-align: center" class="incharge">--}}
+    {{--                        <div class="avatar-group">--}}
+    {{--                            <a--}}
+    {{--                                href="#"--}}
+    {{--                                class="avatar-group-item"--}}
+    {{--                                style="border: 2px solid #fff0; border-radius: 50%;"--}}
+    {{--                                data-bs-trigger="hover"--}}
+    {{--                                data-bs-placement="top"--}}
+    {{--                                id="inchargeTooltip"--}}
+    {{--                                title="${matchingIncharge.first_name}">--}}
+    {{--                            <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />--}}
+    {{--                            <span id="inchargeFirstName">${matchingIncharge.first_name}</span>--}}
+    {{--                            </a>--}}
+    {{--                        </div>--}}
+    {{--                    </td>--}}
+    {{--                        `;--}}
+    {{--    }--}}
 
-        taskRow += `
-            <td style="text-align: center" class="client_name">
-                <input data-task-id="${task.id}" value="${task.completion_time ? task.completion_time : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">
-            </td>
-            <td ${task.inspection_details ? `title="${task.inspection_details}"` : ''} class="client_name">
-                <div style="cursor: pointer; width: 200px; ${task.inspection_details ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${task.id}">
-                    <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${task.inspection_details ? task.inspection_details : 'N/A'}</span>
-                    <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
-                    <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
-                </div>
-            </td>
-            <td style="text-align: center" class="client_name" title="${task.resubmission_date}">${task.resubmission_count ? (task.resubmission_count > 1 ? task.resubmission_count + " times" : task.resubmission_count + " time") : ''}</td>`;
-        if(admin) {
-            taskRow += `
-                    <td style="text-align: center" class="client_name">
-                        <input ${admin ? '' : 'disabled'} value="${task.rfi_submission_date ? task.rfi_submission_date : ''}" data-task-id="${task.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">
-                    </td>
-                `;
-        }
-        if (admin) {
-            taskRow += `
-                    <td>Click</td>
-                    </tr>
-                    `;
-        }
-    });
-    $('#taskListBody').html(taskRow);
+    {{--    taskRow += `--}}
+    {{--        <td style="text-align: center" class="client_name">--}}
+    {{--            <input data-task-id="${task.id}" value="${task.completion_time ? task.completion_time : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">--}}
+    {{--        </td>--}}
+    {{--        <td ${task.inspection_details ? `title="${task.inspection_details}"` : ''} class="client_name">--}}
+    {{--            <div style="cursor: pointer; width: 200px; ${task.inspection_details ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${task.id}">--}}
+    {{--                <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${task.inspection_details ? task.inspection_details : 'N/A'}</span>--}}
+    {{--                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>--}}
+    {{--                <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>--}}
+    {{--            </div>--}}
+    {{--        </td>--}}
+    {{--        <td style="text-align: center" class="client_name" title="${task.resubmission_date}">${task.resubmission_count ? (task.resubmission_count > 1 ? task.resubmission_count + " times" : task.resubmission_count + " time") : ''}</td>`;--}}
+    {{--    if(admin) {--}}
+    {{--        taskRow += `--}}
+    {{--                <td style="text-align: center" class="client_name">--}}
+    {{--                    <input ${admin ? '' : 'disabled'} value="${task.rfi_submission_date ? task.rfi_submission_date : ''}" data-task-id="${task.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">--}}
+    {{--                </td>--}}
+    {{--            `;--}}
+    {{--    }--}}
+    {{--    if (admin) {--}}
+    {{--        taskRow += `--}}
+    {{--                <td>Click</td>--}}
+    {{--                </tr>--}}
+    {{--                `;--}}
+    {{--    }--}}
+    {{--});--}}
+    {{--$('#taskListBody').html(taskRow);--}}
+    // Destroy existing DataTable (if any)
+    if ($.fn.DataTable.isDataTable('#taskTable')) {
+        $('#taskTable').DataTable().destroy();
+    }
+
     $('#taskTable').DataTable({
         processing: true,
         language: {
@@ -328,7 +333,111 @@ async function updateTaskListBody(tasks) {
         fixedHeader: {
             header: true,
             footer: true
-        }
+        },
+        data: tasks, // Pass tasks data to DataTable
+        columns: [
+                { data: 'date', searchable: true },
+                { data: 'number', searchable: true },
+                {
+                    data: 'status',
+                    render: function(data, type, row) {
+                        var iconHtml = `
+                <span icon-task-id="${row.id}">
+                    <i  style="${row.status === 'new' ? 'color: blue' :
+                            row.status === 'resubmission' ? 'color: orange' :
+                                row.status === 'completed' ? 'color: green' :
+                                    row.status === 'emergency' ? 'color: red' : ''}"
+                        class="${row.status === 'new' ? 'ri-add-circle-line fs-17 align-middle' :
+                            row.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :
+                                row.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                                    row.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>
+                </span>
+            `;
+                        var statusOptions = `
+                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
+                    <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
+                    <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
+                    <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
+                    <option value="emergency" ${data === 'emergency' ? 'selected' : ''}>Emergency</option>
+                </select>
+            `;
+                        return iconHtml + statusOptions;
+                    }
+                },
+                { data: 'type' },
+                { data: 'description' },
+                { data: 'location' },
+                { data: 'side' },
+                { data: 'qty_layer' },
+                { data: 'planned_time' },
+                admin ?
+                    {
+                        data: 'incharge',
+                        render: function(data, type, row) {
+                            // Find the incharge object that matches the task's incharge property
+                            var matchingIncharge = incharges.find(function(incharge) {
+                                return incharge.user_name === data;
+                            });
+                            // Generate image path
+                            var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";
+                            // Generate HTML for incharge cell
+                            return `
+                            <td style="text-align: center" class="incharge">
+                                <div class="avatar-group">
+                                    <a
+                                        href="#"
+                                        class="avatar-group-item"
+                                        style="border: 2px solid #fff0; border-radius: 50%;"
+                                        data-bs-trigger="hover"
+                                        data-bs-placement="top"
+                                        id="inchargeTooltip"
+                                        title="${matchingIncharge.first_name}">
+                                        <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
+                                        <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
+                                    </a>
+                                </div>
+                            </td>
+                        `;
+                        }
+                    } : null,
+                {
+                    data: 'completion_time',
+                    render: function(data, type, row) {
+                        return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
+                    }
+                },
+                {
+                    data: 'inspection_details',
+                    render: function(data, type, row) {
+                        return `
+                            <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
+                                <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
+                                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                                <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
+                            </div>`;
+                    }
+                },
+                admin ?
+                {
+                    data: 'resubmission_count',
+                    render: function(data, type, row) {
+                        return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
+                    }
+                } : null,
+                {
+                    data: 'rfi_submission_date',
+                    render: function(data, type, row) {
+                        return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
+                    }
+                },
+                admin ?
+                {
+                    data: null,
+                    defaultContent: '<td>Click</td>'
+                } : null,
+            // Define your columns here
+        ]
+
     });
 }
 
@@ -360,173 +469,171 @@ async function updateTaskList() {
 
     $('#taskListHead').html(header);
 
-    $('#taskTable').DataTable({
-        // lengthMenu: [[50],[50]],
-        // lengthChange: false,
-        processing: true,
-        language: {
-            processing: "<i class='fa fa-refresh fa-spin'></i>",
-        },
-        destroy: true,
-        // scrollCollapse: true,
-        scroller: true,
-        scrollY: 500,
-        // deferRender: true,
-        fixedHeader: {
-            header: true,
-            footer: true
-        },
-        serverSide: true,
-        ajax: {
-            url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
-            type: 'GET',
-            // data: function(d) {
-            //     d.searchValue = d.search.value;
-            //     console.log(d);
-            //     d.page = d.start / d.length + 1; // Calculate current page
-            //     d.perPage = d.length; // Number of records per page
-            // }
-        },
-        columns: [
-            { data: 'date', searchable: true },
-            { data: 'number', searchable: true },
-            {
-                data: 'status',
-                render: function(data, type, row) {
-                    var iconHtml = `
-            <span icon-task-id="${row.id}">
-                <i  style="${row.status === 'new' ? 'color: blue' :
-                        row.status === 'resubmission' ? 'color: orange' :
-                            row.status === 'completed' ? 'color: green' :
-                                row.status === 'emergency' ? 'color: red' : ''}"
-                    class="${row.status === 'new' ? 'ri-add-circle-line fs-17 align-middle' :
-                        row.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :
-                            row.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                                row.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>
-            </span>
-        `;
-                    var statusOptions = `
-            <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
-                <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
-                <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
-                <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
-                <option value="emergency" ${data === 'emergency' ? 'selected' : ''}>Emergency</option>
-            </select>
-        `;
-                    return iconHtml + statusOptions;
-                }
-            },
-            { data: 'type' },
-            { data: 'description' },
-            { data: 'location' },
-            { data: 'side' },
-            { data: 'qty_layer' },
-            { data: 'planned_time' },
-            admin ?
-                {
-                    data: 'incharge',
-                    render: function(data, type, row) {
-                        // Find the incharge object that matches the task's incharge property
-                        var matchingIncharge = incharges.find(function(incharge) {
-                            return incharge.user_name === data;
-                        });
-                        // Generate image path
-                        var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";
-                        // Generate HTML for incharge cell
-                        return `
-                        <td style="text-align: center" class="incharge">
-                            <div class="avatar-group">
-                                <a
-                                    href="#"
-                                    class="avatar-group-item"
-                                    style="border: 2px solid #fff0; border-radius: 50%;"
-                                    data-bs-trigger="hover"
-                                    data-bs-placement="top"
-                                    id="inchargeTooltip"
-                                    title="${matchingIncharge.first_name}">
-                                    <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
-                                    <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
-                                </a>
-                            </div>
-                        </td>
-                    `;
-                    }
-                } : null,
-            {
-                data: 'completion_time',
-                render: function(data, type, row) {
-                    return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
-                }
-            },
-            {
-                data: 'inspection_details',
-                render: function(data, type, row) {
-                    return `
-                        <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
-                            <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
-                            <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
-                            <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
-                        </div>`;
-                }
-            },
-            admin ?
-            {
-                data: 'resubmission_count',
-                render: function(data, type, row) {
-                    return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
-                }
-            } : null,
-            {
-                data: 'rfi_submission_date',
-                render: function(data, type, row) {
-                    return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
-                }
-            },
-            admin ?
-            {
-                data: null,
-                defaultContent: '<td>Click</td>'
-            } : null,
-        ]
-    });
+    // $('#taskTable').DataTable({
+    //     processing: true,
+    //     language: {
+    //         processing: "<i class='fa fa-refresh fa-spin'></i>",
+    //     },
+    //     destroy: true,
+    //     scrollCollapse: true,
+    //     scroller: true,
+    //     scrollY: 500,
+    //     deferRender: true,
+    //     fixedHeader: {
+    //         header: true,
+    //         footer: true
+    //     },
+        {{--serverSide: true,--}}
+        {{--ajax: {--}}
+        {{--    url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',--}}
+        {{--    type: 'GET',--}}
+        {{--    // data: function(d) {--}}
+        {{--    //     d.searchValue = d.search.value;--}}
+        {{--    //     console.log(d);--}}
+        {{--    //     d.page = d.start / d.length + 1; // Calculate current page--}}
+        {{--    //     d.perPage = d.length; // Number of records per page--}}
+        {{--    // }--}}
+        {{--},--}}
+        {{--columns: [--}}
+        {{--    { data: 'date', searchable: true },--}}
+        {{--    { data: 'number', searchable: true },--}}
+        {{--    {--}}
+        {{--        data: 'status',--}}
+        {{--        render: function(data, type, row) {--}}
+        {{--            var iconHtml = `--}}
+        {{--    <span icon-task-id="${row.id}">--}}
+        {{--        <i  style="${row.status === 'new' ? 'color: blue' :--}}
+        {{--                row.status === 'resubmission' ? 'color: orange' :--}}
+        {{--                    row.status === 'completed' ? 'color: green' :--}}
+        {{--                        row.status === 'emergency' ? 'color: red' : ''}"--}}
+        {{--            class="${row.status === 'new' ? 'ri-add-circle-line fs-17 align-middle' :--}}
+        {{--                row.status === 'resubmission' ? 'ri-timer-2-line fs-17 align-middle' :--}}
+        {{--                    row.status === 'completed' ? 'ri-checkbox-circle-line fs-17 align-middle' :--}}
+        {{--                        row.status === 'emergency' ? 'ri-information-line fs-17 align-middle' : ''}"></i>--}}
+        {{--    </span>--}}
+        {{--`;--}}
+        {{--            var statusOptions = `--}}
+        {{--    <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>--}}
+        {{--        <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>--}}
+        {{--        <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>--}}
+        {{--        <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>--}}
+        {{--        <option value="emergency" ${data === 'emergency' ? 'selected' : ''}>Emergency</option>--}}
+        {{--    </select>--}}
+        {{--`;--}}
+        {{--            return iconHtml + statusOptions;--}}
+        {{--        }--}}
+        {{--    },--}}
+        {{--    { data: 'type' },--}}
+        {{--    { data: 'description' },--}}
+        {{--    { data: 'location' },--}}
+        {{--    { data: 'side' },--}}
+        {{--    { data: 'qty_layer' },--}}
+        {{--    { data: 'planned_time' },--}}
+        {{--    admin ?--}}
+        {{--        {--}}
+        {{--            data: 'incharge',--}}
+        {{--            render: function(data, type, row) {--}}
+        {{--                // Find the incharge object that matches the task's incharge property--}}
+        {{--                var matchingIncharge = incharges.find(function(incharge) {--}}
+        {{--                    return incharge.user_name === data;--}}
+        {{--                });--}}
+        {{--                // Generate image path--}}
+        {{--                var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";--}}
+        {{--                // Generate HTML for incharge cell--}}
+        {{--                return `--}}
+        {{--                <td style="text-align: center" class="incharge">--}}
+        {{--                    <div class="avatar-group">--}}
+        {{--                        <a--}}
+        {{--                            href="#"--}}
+        {{--                            class="avatar-group-item"--}}
+        {{--                            style="border: 2px solid #fff0; border-radius: 50%;"--}}
+        {{--                            data-bs-trigger="hover"--}}
+        {{--                            data-bs-placement="top"--}}
+        {{--                            id="inchargeTooltip"--}}
+        {{--                            title="${matchingIncharge.first_name}">--}}
+        {{--                            <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />--}}
+        {{--                            <span id="inchargeFirstName">${matchingIncharge.first_name}</span>--}}
+        {{--                        </a>--}}
+        {{--                    </div>--}}
+        {{--                </td>--}}
+        {{--            `;--}}
+        {{--            }--}}
+        {{--        } : null,--}}
+        {{--    {--}}
+        {{--        data: 'completion_time',--}}
+        {{--        render: function(data, type, row) {--}}
+        {{--            return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;--}}
+        {{--        }--}}
+        {{--    },--}}
+        {{--    {--}}
+        {{--        data: 'inspection_details',--}}
+        {{--        render: function(data, type, row) {--}}
+        {{--            return `--}}
+        {{--                <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">--}}
+        {{--                    <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>--}}
+        {{--                    <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>--}}
+        {{--                    <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>--}}
+        {{--                </div>`;--}}
+        {{--        }--}}
+        {{--    },--}}
+        {{--    admin ?--}}
+        {{--    {--}}
+        {{--        data: 'resubmission_count',--}}
+        {{--        render: function(data, type, row) {--}}
+        {{--            return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;--}}
+        {{--        }--}}
+        {{--    } : null,--}}
+        {{--    {--}}
+        {{--        data: 'rfi_submission_date',--}}
+        {{--        render: function(data, type, row) {--}}
+        {{--            return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;--}}
+        {{--        }--}}
+        {{--    },--}}
+        {{--    admin ?--}}
+        {{--    {--}}
+        {{--        data: null,--}}
+        {{--        defaultContent: '<td>Click</td>'--}}
+        {{--    } : null,--}}
+        {{--]--}}
+    // });
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
     preloader.style.visibility = 'hidden'; // Set visibility to visible
 
 
-    {{--var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';--}}
+    var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
-    {{--$.ajax({--}}
-    {{--    url: url,--}}
-    {{--    method: 'GET',--}}
-    {{--    dataType: 'json',--}}
-    {{--    success: async function (response) {--}}
-    {{--        var tasks = response;--}}
-    {{--        // Extracting dates from tasks--}}
-    {{--        const dates = tasks.map(task => new Date(task.date));--}}
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json',
+        success: async function (response) {
+            var tasks = response;
+            // Extracting dates from tasks
+            const dates = tasks.map(task => new Date(task.date));
 
-    {{--        // Finding the first and last dates--}}
-    {{--        const firstDate = new Date(Math.min(...dates));--}}
-    {{--        const lastDate = new Date(Math.max(...dates));--}}
-    {{--        console.log(firstDate, lastDate);--}}
+            // Finding the first and last dates
+            const firstDate = new Date(Math.min(...dates));
+            const lastDate = new Date(Math.max(...dates));
+            console.log(firstDate, lastDate);
 
-    {{--        await updateTaskListBody(tasks);--}}
-    {{--        // $('#dateRangePicker').daterangepicker({--}}
-    {{--        //     minDate: firstDate,--}}
-    {{--        //     maxDate: lastDate,--}}
-    {{--        // });--}}
+            await updateTaskListBody(tasks);
+            // $('#dateRangePicker').daterangepicker({
+            //     minDate: firstDate,
+            //     maxDate: lastDate,
+            // });
 
-    {{--        flatpickr("#dateRangePicker", {--}}
-    {{--            minDate: new Date(firstDate),--}}
-    {{--            maxDate: new Date(lastDate),--}}
-    {{--            mode: 'range', // Specify 'range' mode as a string--}}
-    {{--        });--}}
+            flatpickr("#dateRangePicker", {
+                minDate: new Date(firstDate),
+                maxDate: new Date(lastDate),
+                mode: 'range', // Specify 'range' mode as a string
+            });
 
-    {{--    },--}}
-    {{--    error: function(xhr, status, error) {--}}
-    {{--        return error;--}}
-    {{--    }--}}
-    {{--});--}}
+        },
+        error: function(xhr, status, error) {
+            return error;
+        }
+    });
 
 }
 
@@ -553,7 +660,7 @@ async function filterTaskList() {
                 preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'visible'; // Set visibility to visible
                 toastr.success(response.message);
-                $('#taskTable').DataTable().clear().destroy();
+                // $('#taskTable').DataTable().clear().destroy();
 
                 const tasks = response.tasks;
 
