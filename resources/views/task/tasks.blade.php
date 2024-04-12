@@ -318,6 +318,11 @@ async function updateTaskListBody(tasks) {
     if ($.fn.DataTable.isDataTable('#taskTable')) {
         $('#taskTable').DataTable().destroy();
     }
+    // Ensure tasks is an array of objects
+    if (!Array.isArray(tasks)) {
+        // If tasks is not an array, try to extract the array of tasks from it
+        tasks = tasks.data; // Assuming tasks is an object with a 'data' property containing the array of tasks
+    }
 
     $('#taskTable').DataTable({
         processing: true,
