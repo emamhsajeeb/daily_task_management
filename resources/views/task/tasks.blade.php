@@ -371,8 +371,8 @@ async function updateTaskList() {
         scroller: {
             loadingIndicator: true // Show loading indicator while scrolling
         },
-        // // scrollY: 500,
-        // deferRender: true,
+        scrollY: 500,
+        deferRender: true,
         fixedHeader: {
             header: true,
             footer: true
