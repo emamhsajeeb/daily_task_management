@@ -43,7 +43,7 @@ class TaskController extends Controller
         $tasks = $user ? (
         $user->hasRole('se')
             ? DB::table('tasks')->where('incharge', $user->user_name)
-            : ($user->hasRole('admin') ? DB::table('tasks') : [])
+            : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
         ) : [];
 
 //        $perPage = $request->input('perPage', 50); // Number of records per page
