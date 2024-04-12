@@ -380,12 +380,12 @@ async function updateTaskList() {
         ajax: {
             url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
             type: 'GET',
-            data: function(d) {
-                d.searchValue = d.search.value;
-                console.log(d);
-                d.page = d.start / d.length + 1; // Calculate current page
-                d.perPage = d.length; // Number of records per page
-            }
+            // data: function(d) {
+            //     d.searchValue = d.search.value;
+            //     console.log(d);
+            //     d.page = d.start / d.length + 1; // Calculate current page
+            //     d.perPage = d.length; // Number of records per page
+            // }
         },
         columns: [
             { data: 'date', searchable: true },
