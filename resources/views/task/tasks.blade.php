@@ -419,7 +419,11 @@ async function updateTaskList() {
             { data: 'rfi_submission_date', render: function(data, type, row) {
                     // Render rfisubmission as date picker
                     return '<input type="date" value="' + data + '">';
-                }}
+                }},
+            {
+                data: null,
+                defaultContent: '<td>Click</td>'
+            }
         ]
     });
 
