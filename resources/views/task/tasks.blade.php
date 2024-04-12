@@ -361,6 +361,7 @@ async function updateTaskList() {
     $('#taskListHead').html(header);
 
     $('#taskTable').DataTable({
+        lengthMenu: [[100],[100]],
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
