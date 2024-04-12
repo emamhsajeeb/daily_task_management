@@ -49,14 +49,15 @@ class TaskController extends Controller
 
 //        return response()->json($tasks);
 
-        $perPage = $request->input('perPage', 20); // Number of records per page
-        $page = $request->input('page', 1); // Current page number
-
-        $offset = ($page - 1) * $perPage;
-
-        $data = $tasks->offset($offset)
-            ->limit($perPage)
-            ->get();
+//        $perPage = $request->input('perPage', 20); // Number of records per page
+//        $page = $request->input('page', 1); // Current page number
+//
+//        $offset = ($page - 1) * $perPage;
+//
+//        $data = $tasks->offset($offset)
+//            ->limit($perPage)
+//            ->get();
+        $data = $tasks->get();
 
         $totalRecords = Tasks::count();
 
