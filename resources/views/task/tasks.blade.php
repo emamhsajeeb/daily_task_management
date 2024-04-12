@@ -251,8 +251,8 @@ async function updateTaskListBody(tasks) {
         },
         data: tasks, // Pass tasks data to DataTable
         columns: [
-                { data: 'date', searchable: true },
-                { data: 'number', searchable: true },
+                { data: 'date', searchable: true, className: 'dataTables-center' },
+                { data: 'number', searchable: true, className: 'dataTables-center' },
                 {
                     data: 'status',
                     render: function(data, type, row) {
@@ -277,14 +277,15 @@ async function updateTaskListBody(tasks) {
                 </select>
             `;
                         return iconHtml + statusOptions;
-                    }
+                    },
+                    className: 'dataTables-center'
                 },
-                { data: 'type' },
+                { data: 'type', className: 'dataTables-center' },
                 { data: 'description' },
-                { data: 'location' },
-                { data: 'side' },
-                { data: 'qty_layer' },
-                { data: 'planned_time' },
+                { data: 'location', className: 'dataTables-center' },
+                { data: 'side', className: 'dataTables-center' },
+                { data: 'qty_layer', className: 'dataTables-center' },
+                { data: 'planned_time', className: 'dataTables-center' },
                 admin ?
                     {
                         data: 'incharge',
@@ -313,13 +314,15 @@ async function updateTaskListBody(tasks) {
                                 </div>
                             </td>
                         `;
-                        }
+                        },
+                        className: 'dataTables-center'
                     } : null,
                 {
                     data: 'completion_time',
                     render: function(data, type, row) {
                         return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
-                    }
+                    },
+                    className: 'dataTables-center'
                 },
                 {
                     data: 'inspection_details',
@@ -337,18 +340,21 @@ async function updateTaskListBody(tasks) {
                     data: 'resubmission_count',
                     render: function(data, type, row) {
                         return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
-                    }
+                    },
+                    className: 'dataTables-center'
                 } : null,
                 {
                     data: 'rfi_submission_date',
                     render: function(data, type, row) {
                         return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
-                    }
+                    },
+                    className: 'dataTables-center'
                 },
                 admin ?
                 {
                     data: null,
-                    defaultContent: '<td>Click</td>'
+                    defaultContent: '<td>Click</td>',
+                    className: 'dataTables-center'
                 } : null,
             // Define your columns here
         ]
@@ -712,6 +718,12 @@ toastr.options = {
 };
 
 </script>
+
+    <style>
+        .dataTables-center {
+            text-align: center;
+        }
+    </style>
 @endsection
 
 
