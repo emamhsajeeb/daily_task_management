@@ -366,7 +366,6 @@ async function updateTaskList() {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
         },
         destroy: true,
-        order: [[0,'desc']],
         // scrollCollapse: true,
         scroller: {
             loadingIndicator: true // Show loading indicator while scrolling
@@ -487,7 +486,8 @@ async function updateTaskList() {
                 data: null,
                 defaultContent: '<td>Click</td>'
             } : null,
-        ]
+        ],
+        order: [[0,'desc']],
     });
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
