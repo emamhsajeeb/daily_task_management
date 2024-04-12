@@ -362,6 +362,7 @@ async function updateTaskList() {
 
     $('#taskTable').DataTable({
         lengthMenu: [ [100], [100] ],
+        lengthChange: false,
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
@@ -486,6 +487,16 @@ async function updateTaskList() {
                 defaultContent: '<td>Click</td>'
             } : null,
         ],
+        drawCallback: function(settings) {
+            var api = this.api();
+            var searchedValue = api.search(); // Get the searched value
+
+            // If a search value is entered and no matching records found on the current page
+            if (searchedValue && api.rows({search: 'applied'}).count() === 0) {
+                // Remove the search filter and redraw the table to show all records
+                api.search('').draw();
+            }
+        }
     });
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
