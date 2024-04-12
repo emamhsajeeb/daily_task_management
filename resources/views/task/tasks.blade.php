@@ -361,17 +361,15 @@ async function updateTaskList() {
     $('#taskListHead').html(header);
 
     $('#taskTable').DataTable({
-        lengthMenu: [ [100], [100] ],
-        lengthChange: false,
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
         },
         destroy: true,
-        // scrollCollapse: true,
-        // scroller: true,
+        scrollCollapse: true,
+        scroller: true,
         scrollY: 500,
-        // deferRender: true,
+        deferRender: true,
         fixedHeader: {
             header: true,
             footer: true
@@ -380,11 +378,11 @@ async function updateTaskList() {
         ajax: {
             url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
             type: 'GET',
-            data: function(d) {
-                console.log(d);
-                d.page = d.start / d.length + 1; // Calculate current page
-                d.perPage = d.length; // Number of records per page
-            }
+            // data: function(d) {
+            //     console.log(d);
+            //     d.page = d.start / d.length + 1; // Calculate current page
+            //     d.perPage = d.length; // Number of records per page
+            // }
         },
         columns: [
             { data: 'date' },
