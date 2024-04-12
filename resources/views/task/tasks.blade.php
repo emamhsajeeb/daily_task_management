@@ -250,9 +250,14 @@ async function updateTaskListBody(tasks) {
             footer: true
         },
         data: tasks, // Pass tasks data to DataTable
+        columnDefs: [
+            {
+                searchable: true, targets: [0,1]
+            }
+        ],
         columns: [
-                { data: 'date', searchable: true, className: 'dataTables-center' },
-                { data: 'number', searchable: true, className: 'dataTables-center' },
+                { data: 'date', className: 'dataTables-center' },
+                { data: 'number', className: 'dataTables-center' },
                 {
                     data: 'status',
                     render: function(data, type, row) {
