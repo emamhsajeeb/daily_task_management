@@ -63,7 +63,7 @@ class TaskController extends Controller
 
         return response()->json([
             'data' => $data,
-            'totalRecords' => $recordsTotal,
+            'recordsTotal' => $recordsTotal,
         ]);
     }
 
