@@ -369,7 +369,7 @@ async function updateTaskList() {
         },
         destroy: true,
         // scrollCollapse: true,
-        scroller: true,
+        // scroller: true,
         scrollY: 500,
         deferRender: true,
         fixedHeader: {
