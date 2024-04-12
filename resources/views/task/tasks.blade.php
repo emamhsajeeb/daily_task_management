@@ -368,9 +368,9 @@ async function updateTaskList() {
         },
         destroy: true,
         // scrollCollapse: true,
-        scroller: true,
+        // scroller: true,
         scrollY: 500,
-        deferRender: true,
+        // deferRender: true,
         fixedHeader: {
             header: true,
             footer: true
