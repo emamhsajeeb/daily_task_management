@@ -365,25 +365,25 @@ async function updateTaskListBody(tasks) {
 async function updateTaskList() {
     var header = `
         <tr>
-        <th>Date</th>
-        <th>RFI NO</th>
-        <th>Status</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Location</th>
-        <th>Road Type</th>
-        <th>Quantity/Layer No.</th>
-        <th>Planned Time</th>
+        <th class="dataTables-center">Date</th>
+        <th class="dataTables-center">RFI NO</th>
+        <th class="dataTables-center">Status</th>
+        <th class="dataTables-center">Type</th>
+        <th class="dataTables-center">Description</th>
+        <th class="dataTables-center">Location</th>
+        <th class="dataTables-center">Road Type</th>
+        <th class="dataTables-center">Quantity/Layer No.</th>
+        <th class="dataTables-center">Planned Time</th>
         ${admin ? `
-        <th>In-charge</th>
+        <th class="dataTables-center">In-charge</th>
         ` : ''}
-        <th>Completion Date/Time</th>
-        <th>Comments</th>
-        <th>Resubmitted</th>
+        <th class="dataTables-center">Completion Date/Time</th>
+        <th class="dataTables-center">Comments</th>
+        <th class="dataTables-center">Resubmitted</th>
         ${admin ? `
-        <th>RFI Submission Date</th>` : ''}
+        <th class="dataTables-center">RFI Submission Date</th>` : ''}
         ${admin ? `
-        <th>Edit</th>
+        <th class="dataTables-center">Edit</th>
         ` : ''}
         </tr>
         `;
