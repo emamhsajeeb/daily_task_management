@@ -50,6 +50,18 @@ class TaskController extends Controller
 //        $page = intval($request->input('page', 1)); // Current page number
 //
 //        $offset = ($page - 1) * $perPage;
+        $searchValue = $request->input('search.value'); // Get the global search value from the request
+
+
+        // Apply global search filter if search value is provided
+        if (!empty($searchValue)) {
+            $tasks->where(function ($query) use ($searchValue) {
+                // Adjust the columns and conditions as per your requirements
+                $query->where('number', 'like', '%' . $searchValue . '%')
+                    ->orWhere('date', 'like', '%' . $searchValue . '%');
+                // Add more columns as needed
+            });
+        }
 
         $tasks->orderBy('date', 'desc');
 
