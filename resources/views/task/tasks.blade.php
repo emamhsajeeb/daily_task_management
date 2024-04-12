@@ -96,8 +96,8 @@
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
                                 <div>
-                                    <table id="taskTable" class="dt[-head]-center table-bordered column-order table-nowrap display compact align-middle">
-                                        <thead id="taskListHead">
+                                    <table id="taskTable" class="table-bordered column-order table-nowrap display compact align-middle">
+                                        <thead id="taskListHead" style="text-align-all: center">
                                         </thead>
                                         <tbody id="taskListBody">
                                         </tbody>
