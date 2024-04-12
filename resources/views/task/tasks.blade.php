@@ -361,7 +361,8 @@ async function updateTaskList() {
     $('#taskListHead').html(header);
 
     $('#taskTable').DataTable({
-        lengthMenu: [[100],[100]],
+        lengthMenu: [[50],[50]],
+        lengthChange: false,
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
@@ -379,11 +380,11 @@ async function updateTaskList() {
         ajax: {
             url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
             type: 'GET',
-            // data: function(d) {
-            //     console.log(d);
-            //     d.page = d.start / d.length + 1; // Calculate current page
-            //     d.perPage = d.length; // Number of records per page
-            // }
+            data: function(d) {
+                console.log(d);
+                d.page = d.start / d.length + 1; // Calculate current page
+                d.perPage = d.length; // Number of records per page
+            }
         },
         columns: [
             { data: 'date' },
@@ -486,16 +487,16 @@ async function updateTaskList() {
                 defaultContent: '<td>Click</td>'
             } : null,
         ],
-        // drawCallback: function(settings) {
-        //     var api = this.api();
-        //     var searchedValue = api.search(); // Get the searched value
-        //
-        //     // If a search value is entered and no matching records found on the current page
-        //     if (searchedValue && api.rows({search: 'applied'}).count() === 0) {
-        //         // Remove the search filter and redraw the table to show all records
-        //         api.search('').draw();
-        //     }
-        // }
+        drawCallback: function(settings) {
+            var api = this.api();
+            var searchedValue = api.search(); // Get the searched value
+
+            // If a search value is entered and no matching records found on the current page
+            if (searchedValue && api.rows({search: 'applied'}).count() === 0) {
+                // Remove the search filter and redraw the table to show all records
+                api.search('').draw();
+            }
+        }
     });
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
