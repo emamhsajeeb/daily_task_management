@@ -367,9 +367,7 @@ async function updateTaskList() {
         },
         destroy: true,
         // scrollCollapse: true,
-        scroller: {
-            loadingIndicator: true // Show loading indicator while scrolling
-        },
+        scroller: true,
         scrollY: 500,
         deferRender: true,
         fixedHeader: {
@@ -380,11 +378,11 @@ async function updateTaskList() {
         ajax: {
             url: admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
             type: 'GET',
-            // data: function(d) {
-            //     console.log(d);
-            //     d.page = d.start / d.length + 1; // Calculate current page
-            //     d.perPage = d.length; // Number of records per page
-            // }
+            data: function(d) {
+                console.log(d);
+                d.page = d.start / d.length + 1; // Calculate current page
+                d.perPage = d.length; // Number of records per page
+            }
         },
         columns: [
             { data: 'date' },
