@@ -46,17 +46,18 @@ class TaskController extends Controller
             : ($user->hasRole('admin') ? DB::table('tasks') : [])
         ) : [];
 
-        $perPage = $request->input('perPage', 50); // Number of records per page
-        $page = intval($request->input('page', 1)); // Current page number
-
-        $offset = ($page - 1) * $perPage;
+//        $perPage = $request->input('perPage', 50); // Number of records per page
+//        $page = intval($request->input('page', 1)); // Current page number
+//
+//        $offset = ($page - 1) * $perPage;
 
         $tasks->orderBy('date', 'desc');
 
 
-        $data = $tasks->offset($offset)
-            ->limit($perPage)
-            ->get();
+//        $data = $tasks->offset($offset)
+//            ->limit($perPage)
+//            ->get();
+        $data = $tasks->get();
 
 
 
