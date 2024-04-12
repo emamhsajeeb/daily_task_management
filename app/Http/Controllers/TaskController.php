@@ -59,11 +59,11 @@ class TaskController extends Controller
 //            ->get();
         $data = $tasks->get();
 
-        $totalRecords = Tasks::count();
+        $recordsTotal = $tasks::count();
 
         return response()->json([
             'data' => $data,
-            'totalRecords' => $totalRecords,
+            'totalRecords' => $recordsTotal,
         ]);
     }
 
