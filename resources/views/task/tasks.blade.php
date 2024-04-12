@@ -361,7 +361,7 @@ async function updateTaskList() {
     $('#taskListHead').html(header);
 
     $('#taskTable').DataTable({
-        lengthMenu: [[50],[50]],
+        // lengthMenu: [[50],[50]],
         lengthChange: false,
         processing: true,
         language: {
