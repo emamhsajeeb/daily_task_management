@@ -367,7 +367,7 @@ async function updateTaskList() {
         },
         destroy: true,
         order: [[0,'desc']],
-        scrollCollapse: true,
+        // scrollCollapse: true,
         // scroller: true,
         // // scrollY: 500,
         // deferRender: true,
@@ -420,24 +420,71 @@ async function updateTaskList() {
             { data: 'side' },
             { data: 'qty_layer' },
             { data: 'planned_time' },
-            { data: 'incharge' },
-            { data: 'completion_time', render: function(data, type, row) {
-                    // Render completion time as date time picker
-                    return '<input type="datetime-local" value="' + data + '">';
-                }},
-            { data: 'inspection_details', render: function(data, type, row) {
-                    // Render comments as text area
-                    return '<textarea>' + data + '</textarea>';
-                }},
-            { data: 'resubmission_count' },
-            { data: 'rfi_submission_date', render: function(data, type, row) {
-                    // Render rfisubmission as date picker
-                    return '<input type="date" value="' + data + '">';
-                }},
+            admin ?
+                {
+                    data: 'incharge',
+                    render: function(data, type, row) {
+                        // Find the incharge object that matches the task's incharge property
+                        var matchingIncharge = incharges.find(function(incharge) {
+                            return incharge.user_name === data;
+                        });
+                        // Generate image path
+                        var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";
+                        // Generate HTML for incharge cell
+                        return `
+                        <td style="text-align: center" class="incharge">
+                            <div class="avatar-group">
+                                <a
+                                    href="#"
+                                    class="avatar-group-item"
+                                    style="border: 2px solid #fff0; border-radius: 50%;"
+                                    data-bs-trigger="hover"
+                                    data-bs-placement="top"
+                                    id="inchargeTooltip"
+                                    title="${matchingIncharge.first_name}">
+                                    <img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />
+                                    <span id="inchargeFirstName">${matchingIncharge.first_name}</span>
+                                </a>
+                            </div>
+                        </td>
+                    `;
+                    }
+                } : null,
+            {
+                data: 'completion_time',
+                render: function(data, type, row) {
+                    return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
+                }
+            },
+            {
+                data: 'inspection_details',
+                render: function(data, type, row) {
+                    return `
+                        <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
+                            <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
+                            <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                            <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
+                        </div>`;
+                }
+            },
+            admin ?
+            {
+                data: 'resubmission_count',
+                render: function(data, type, row) {
+                    return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
+                }
+            } : null,
+            {
+                data: 'rfi_submission_date',
+                render: function(data, type, row) {
+                    return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
+                }
+            },
+            admin ?
             {
                 data: null,
                 defaultContent: '<td>Click</td>'
-            }
+            } : null,
         ]
     });
 
