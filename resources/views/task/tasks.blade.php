@@ -314,8 +314,6 @@ async function updateTaskListBody(tasks) {
         }
     });
     $('#taskListBody').html(taskRow);
-    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-    preloader.style.visibility = 'hidden'; // Set visibility to visible
     $('#taskTable').DataTable({
         processing: true,
         language: {
@@ -423,6 +421,9 @@ async function updateTaskList() {
                 }}
         ]
     });
+
+    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+    preloader.style.visibility = 'hidden'; // Set visibility to visible
 
 
     {{--var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';--}}
