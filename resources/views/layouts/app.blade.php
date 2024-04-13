@@ -91,11 +91,11 @@
     </div>
 </div>
 
-<div id="chat-container">
-    <div id="chat-messages"></div>
-    <input type="text" id="user-input" placeholder="Type your message...">
-    <button id="send-button">Send</button>
-</div>
+{{--<div id="chat-container">--}}
+{{--    <div id="chat-messages"></div>--}}
+{{--    <input type="text" id="user-input" placeholder="Type your message...">--}}
+{{--    <button id="send-button">Send</button>--}}
+{{--</div>--}}
 
 <!-- THEME SETTING -->
 @include('layouts.themesetting')

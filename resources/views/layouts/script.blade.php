@@ -92,16 +92,16 @@
             });
         }
 
-        $('#send-button').click(function() {
-            var userInput = $('#user-input').val();
-            $('#chat-messages').append('<div>You: ' + userInput + '</div>');
-            $('#user-input').val('');
-
-            // Send user input to backend for processing
-            $.post('/botman', { message: userInput }, function(response) {
-                $('#chat-messages').append('<div>Bot: ' + response + '</div>');
-            });
-        });
+        // $('#send-button').click(function() {
+        //     var userInput = $('#user-input').val();
+        //     $('#chat-messages').append('<div>You: ' + userInput + '</div>');
+        //     $('#user-input').val('');
+        //
+        //     // Send user input to backend for processing
+        //     $.post('/botman', { message: userInput }, function(response) {
+        //         $('#chat-messages').append('<div>Bot: ' + response + '</div>');
+        //     });
+        // });
     });
 
     // Function to display browser notifications
