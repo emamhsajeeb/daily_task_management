@@ -559,7 +559,7 @@ async function addTask() {
 async function exportToExcel() {
     try {
         // Get the HTML table element
-        var table = document.getElementById("dailySummaryTable");
+        var table = document.getElementById("taskTable");
 
         // Create an empty Excel Workbook
         var excelData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
