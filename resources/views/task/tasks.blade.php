@@ -39,7 +39,7 @@
                                         @endcan
                                         @role('admin')
                                         <a title="Import Tasks" href="{{ route('importTasks') }}" class="btn btn-outline-warning btn-icon waves-effect waves-light"><i class="ri-upload-2-line align-bottom me-1"></i></a>
-                                        <a title="Export Tasks" href="{{ route('exportTasks') }}" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></a>
+                                        <button id="exportToExcel" title="Export Tasks" class="btn btn-outline-success btn-icon waves-effect waves-light"><i class="ri-download-2-line align-bottom me-1"></i></button>
                                         @endrole
                                     </div>
                                 </div>
@@ -556,6 +556,47 @@ async function addTask() {
     }, 2000);
 }
 
+async function exportToExcel() {
+    try {
+        // Get the HTML table element
+        var table = document.getElementById("dailySummaryTable");
+
+        // Create an empty Excel Workbook
+        var excelData = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+        excelData += '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>';
+        excelData += '<body>';
+        excelData += '<table>';
+
+        // Add the table rows and cells to the Excel data
+        for (var i = 0; i < table.rows.length; i++) {
+            excelData += '<tr>';
+            for (var j = 0; j < table.rows[i].cells.length; j++) {
+                excelData += '<td>' + table.rows[i].cells[j].innerHTML + '</td>';
+            }
+            excelData += '</tr>';
+        }
+
+        excelData += '</table>';
+        excelData += '</body>';
+        excelData += '</html>';
+
+        // Create a data URI
+        var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelData);
+
+        // Create a new window and open the data URI
+        var link = document.createElement('a');
+        link.href = uri;
+        link.style = "visibility:hidden";
+        link.download = "Tasks.xls";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } finally {
+        $('#exportToExcel').html('<i class="ri-download-2-line align-bottom me-1"></i>');
+        $('#exportToExcel').prop('disabled', false);
+    }
+}
+
 // Call the function when the page loads
 $( document ).ready(async function () {
     $.ajaxSetup({
@@ -581,6 +622,13 @@ $( document ).ready(async function () {
         $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $('#filterTasks').prop('disabled', true);
         await filterTaskList();
+    });
+
+    await $('#exportToExcel').click(async function (e) {
+        e.preventDefault();
+        $('#exportToExcel').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $('#exportToExcel').prop('disabled', true);
+        await exportToExcel();
     });
 });
 

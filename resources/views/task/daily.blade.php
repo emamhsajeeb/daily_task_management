@@ -291,7 +291,7 @@ async function exportToExcel() {
         var link = document.createElement('a');
         link.href = uri;
         link.style = "visibility:hidden";
-        link.download = "table.xls";
+        link.download = "Summary.xls";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
