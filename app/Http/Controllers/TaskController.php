@@ -42,7 +42,7 @@ class TaskController extends Controller
 
         $tasks = $user ? (
         $user->hasRole('se')
-            ? DB::table('tasks')->where('incharge', $user->user_name)
+            ? DB::table('tasks')->where('incharge', $user->user_name)->get()
             : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
         ) : [];
 
@@ -80,13 +80,21 @@ class TaskController extends Controller
                 'type.required' => 'Type is required.',
                 'description.required' => 'Description is required.',
                 'location.required' => 'Location is required.',
+                'location.custom_location' => 'The :attribute must start with \'K\' and be in the range K0 to K48.',
                 'side.required' => 'Road Type is required.',
                 'qty_layer.required' => $request->input('type') === 'Embankment' ? 'Layer No. is required when the type is Embankment.' : '',
                 'completion_time.required' => 'Completion time is required.',
                 'qty_layer.string' => 'Quantity/Layer No. is not string'
             ]);
 
+            // Check if a task with the same number already exists
+            $existingTask = Tasks::where('number', $validatedData['number'])->first();
+            if ($existingTask) {
+                return response()->json(['error' => 'A task with the same RFI number already exists.'], 422);
+            }
+
             $k = intval(substr($validatedData['location'], 1)); // Extracting the numeric part after 'K'
+
             switch (true) {
                 case ($k > -1 && $k <= 12):
                     $inchargeName = 'habibur';

@@ -66,18 +66,30 @@
                     </div>
                 </li>
                 @role('admin')
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                            <i class="ri-group-2-line"></i><span data-key="t-tasks">Team</span>
-                        </a>
-                        <div class="collapse menu-dropdown" id="sidebarUsers">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('team') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Members </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-group-2-line"></i><span data-key="t-tasks">Team</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarUsers">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('team') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Members </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarQCReports" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-group-2-line"></i><span data-key="t-tasks">QC Reports</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarQCReports">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('ncrs') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All NCRs </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 @endrole
             </ul>
         </div>

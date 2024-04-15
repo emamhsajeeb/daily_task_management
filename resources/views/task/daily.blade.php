@@ -112,27 +112,6 @@ var user = {!! json_encode($user) !!};
 function updateDailySummaryBody(summaries) {
     var preloader = document.getElementById('preloader');
 
-    var dailyRow = '';
-    // Loop through tasks and create table rows
-    summaries.forEach(summary => {
-        dailyRow += `
-             <tr>
-                <td style="text-align: center">${summary.date}</td>
-                <td style="text-align: center">${summary.totalTasks}</td>
-                <td style="text-align: center">${summary.structureTasks}</td>
-                <td style="text-align: center">${summary.embankmentTasks}</td>
-                <td style="text-align: center">${summary.pavementTasks}</td>
-                <td style="text-align: center">${summary.totalResubmission}</td>
-                <td style="text-align: center">${summary.completed}</td>
-                <td style="text-align: center">${summary.completionPercentage}%</td>
-                <td style="text-align: center">${summary.pending}</td>
-                <td style="text-align: center">${summary.rfiSubmissions}</td>
-                <td style="text-align: center">${summary.rfiSubmissionPercentage}%</td>
-            </tr>`
-    });
-
-    $('#dailySummaryBody').html(dailyRow);
-
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
     preloader.style.visibility = 'hidden'; // Set visibility to visible
 
@@ -151,30 +130,26 @@ function updateDailySummaryBody(summaries) {
             header: true,
             footer: true
         },
-        "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
+        data: summaries, // Pass tasks data to DataTable
+        columnDefs: [
+            {
+                searchable: true, targets: [0]
+            }
+        ],
+        columns: [
+            { data: 'date', className: 'dataTables-center' },
+            { data: 'totalTasks', className: 'dataTables-center' },
+            { data: 'structureTasks', className: 'dataTables-center' },
+            { data: 'embankmentTasks', className: 'dataTables-center' },
+            { data: 'pavementTasks', className: 'dataTables-center' },
+            { data: 'totalResubmission', className: 'dataTables-center' },
+            { data: 'completed', className: 'dataTables-center' },
+            { data: 'completionPercentage', className: 'dataTables-center' },
+            { data: 'pending', className: 'dataTables-center' },
+            { data: 'rfiSubmissions', className: 'dataTables-center' },
+            { data: 'rfiSubmissionPercentage', className: 'dataTables-center' },
+        ]
 
-            // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
-
-            // Total over all pages
-            total = api
-                .column( 4 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            // Update footer
-            $( api.column( 4 ).footer() ).html(
-                '$'+total
-            );
-        }
     });
 }
 
@@ -348,6 +323,12 @@ toastr.options = {
 };
 
 </script>
+
+<style>
+    .dataTables-center {
+        text-align: center;
+    }
+</style>
 @endsection
 
 

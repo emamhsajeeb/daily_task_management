@@ -96,7 +96,7 @@
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
                                 <div>
-                                    <table id="taskTable" class="dt[-head|-body]-center table-bordered column-order table-nowrap display compact align-middle">
+                                    <table id="taskTable" class="table-bordered column-order table-nowrap display compact align-middle">
                                         <thead id="taskListHead" style="text-align-all: center">
                                         </thead>
                                         <tbody id="taskListBody">
@@ -321,7 +321,7 @@ async function updateTaskListBody(tasks) {
                         `;
                         },
                         className: 'dataTables-center'
-                    } : null,
+                    } : '',
                 {
                     data: 'completion_time',
                     render: function(data, type, row) {
@@ -340,29 +340,29 @@ async function updateTaskListBody(tasks) {
                             </div>`;
                     }
                 },
-                admin ?
                 {
                     data: 'resubmission_count',
                     render: function(data, type, row) {
                         return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
                     },
                     className: 'dataTables-center'
-                } : null,
+                },
+                admin ?
                 {
                     data: 'rfi_submission_date',
                     render: function(data, type, row) {
                         return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
                     },
                     className: 'dataTables-center'
-                },
+                } : '',
                 admin ?
                 {
                     data: null,
                     defaultContent: '<td>Click</td>',
                     className: 'dataTables-center'
-                } : null,
+                } : '',
             // Define your columns here
-        ]
+        ].filter(Boolean)
 
     });
 }
@@ -403,6 +403,7 @@ async function updateTaskList() {
         dataType: 'json',
         success: async function (response) {
             var tasks = response.tasks;
+            console.log(tasks);
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 
@@ -597,123 +598,6 @@ async function exportToExcel() {
     }
 }
 
-// Call the function when the page loads
-$( document ).ready(async function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    await updateTaskList();
-
-    $("#showAddModalBtn").click(function () {
-        $("#showAddModal").modal('show');
-    });
-
-    $('#addTask').click(async function (e) {
-        e.preventDefault();
-        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
-        $(this).prop('disabled', true);
-        await addTask();
-    });
-
-    $('#filterTasks').click(async function (e) {
-        e.preventDefault();
-        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-        $('#filterTasks').prop('disabled', true);
-        await filterTaskList();
-    });
-
-    await $('#exportToExcel').click(async function (e) {
-        e.preventDefault();
-        $('#exportToExcel').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-        $('#exportToExcel').prop('disabled', true);
-        await exportToExcel();
-    });
-});
-
-// Function to handle status update
-async function updateTaskStatus(taskId, status) {
-    $.ajax({
-        url : "{{ route('updateTaskStatus') }}",
-        type:"POST",
-        data: {
-            id: taskId,
-            status: status
-        },
-        success:function (data) {
-            var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
-            icon.innerHTML = '';
-            var newIcon = (status) => {
-                return status === 'new' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-add-circle-line fs-17 align-middle"></i>' :
-                    status === 'resubmission' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
-                        status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
-                            status === 'emergency' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-information-line fs-17 align-middle"></i>' : ''
-            };
-            toastr.success(data.message+status);
-            icon.innerHTML = newIcon(status);
-            status === 'completed' ? $('#completionDateTime').click() : '';
-        },
-        error: function(xhr, status, error) {
-            // Handle error
-            console.error(xhr.responseText);
-        }
-    })
-}
-
-// Event listener for dropdown change
-$(document).on('input', '#status-dropdown', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var status = e.target.value;
-    await updateTaskStatus(taskId, status);
-});
-
-
-// Function to handle status update
-async function updateRfiSubmissionDate(taskId, date) {
-    $.ajax({
-        url:"{{ route('updateRfiSubmissionDate') }}",
-        type:"POST",
-        data: {
-            id: taskId,
-            date: date
-        },
-        success:async function (data) {
-            var status = 'complete';
-            await updateTaskStatus(taskId, status);
-            $('#status-dropdown').val('completed');
-            $('#completionDateTime').click();
-            toastr.success(data.message + date);
-        }
-    })
-}
-
-$(document).on('input', '#rfiSubmissionDate', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var date = e.target.value;
-    await updateRfiSubmissionDate(taskId, date)
-});
-
-async function updateCompletionDateTime(taskId, dateTime) {
-    $.ajax({
-        url:admin ? "{{ route('updateCompletionDateTime') }}" : "{{ route('updateCompletionDateTimeSE') }}",
-        type:"POST",
-        data: {
-            id: taskId,
-            dateTime: dateTime
-        },
-        success:function (data) {
-            toastr.success(data.message+dateTime);
-        }
-    })
-}
-
-$(document).on('input', '#completionDateTime', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var dateTime = e.target.value;
-    await updateCompletionDateTime(taskId, dateTime)
-});
-
 async function editInspectionDetails(element) {
     element.removeAttribute('onclick');
     var taskId = element.getAttribute('data-task-id');
@@ -750,7 +634,123 @@ async function updateInspectionDetails(element, taskId, inspectionText, inspecti
     })
 }
 
+// Function to handle status update
+async function updateTaskStatus(taskId, status) {
+    $.ajax({
+        url : "{{ route('updateTaskStatus') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            status: status
+        },
+        success:function (data) {
+            var icon = document.querySelector(`[icon-task-id="${taskId}"]`);
+            icon.innerHTML = '';
+            var newIcon = (status) => {
+                return status === 'new' ? '<i icon-task-id="${ taskId }" style="color: blue" class="ri-add-circle-line fs-17 align-middle"></i>' :
+                    status === 'resubmission' ? '<i icon-task-id="${ taskId }" style="color: orange" class="ri-timer-2-line fs-17 align-middle"></i>' :
+                        status === 'completed' ? '<i icon-task-id="${ taskId }" style="color: green" class="ri-checkbox-circle-line fs-17 align-middle"></i>' :
+                            status === 'emergency' ? '<i icon-task-id="${ taskId }" style="color: red" class="ri-information-line fs-17 align-middle"></i>' : ''
+            };
+            toastr.success(data.message+status);
+            icon.innerHTML = newIcon(status);
+            status === 'completed' ? $('#completionDateTime').click() : '';
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+        }
+    })
+}
 
+// Function to handle status update
+async function updateRfiSubmissionDate(taskId, date) {
+    $.ajax({
+        url:"{{ route('updateRfiSubmissionDate') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            date: date
+        },
+        success:async function (data) {
+            var status = 'complete';
+            await updateTaskStatus(taskId, status);
+            $('#status-dropdown').val('completed');
+            $('#completionDateTime').click();
+            toastr.success(data.message + date);
+        }
+    })
+}
+
+async function updateCompletionDateTime(taskId, dateTime) {
+    $.ajax({
+        url:admin ? "{{ route('updateCompletionDateTime') }}" : "{{ route('updateCompletionDateTimeSE') }}",
+        type:"POST",
+        data: {
+            id: taskId,
+            dateTime: dateTime
+        },
+        success:function (data) {
+            toastr.success(data.message+dateTime);
+        }
+    })
+}
+
+// Call the function when the page loads
+$( document ).ready(async function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    await updateTaskList();
+
+    $("#showAddModalBtn").click(function () {
+        $("#showAddModal").modal('show');
+    });
+
+    $('#addTask').click(async function (e) {
+        e.preventDefault();
+        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
+        $(this).prop('disabled', true);
+        await addTask();
+    });
+
+    $('#filterTasks').click(async function (e) {
+        e.preventDefault();
+        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $('#filterTasks').prop('disabled', true);
+        await filterTaskList();
+    });
+
+    await $('#exportToExcel').click(async function (e) {
+        e.preventDefault();
+        $('#exportToExcel').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        $('#exportToExcel').prop('disabled', true);
+        await exportToExcel();
+    });
+});
+
+
+
+// Event listener for dropdown change
+$(document).on('input', '#status-dropdown', async function (e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var status = e.target.value;
+    await updateTaskStatus(taskId, status);
+});
+
+$(document).on('input', '#rfiSubmissionDate', async function (e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var date = e.target.value;
+    await updateRfiSubmissionDate(taskId, date)
+});
+
+$(document).on('input', '#completionDateTime', async function (e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var dateTime = e.target.value;
+    await updateCompletionDateTime(taskId, dateTime)
+});
 
 toastr.options = {
     "closeButton": true,
@@ -772,11 +772,11 @@ toastr.options = {
 
 </script>
 
-    <style>
-        .dataTables-center {
-            text-align: center;
-        }
-    </style>
+<style>
+    .dataTables-center {
+        text-align: center;
+    }
+</style>
 @endsection
 
 

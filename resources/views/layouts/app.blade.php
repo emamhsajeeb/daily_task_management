@@ -54,12 +54,16 @@
     <!-- Start right Content here -->
     <!-- ============================================================== -->
     @yield('dashboard')
+
     @yield('members')
     @yield('profile')
     @yield('edit_profile')
+
     @yield('tasks')
     @yield('add-task')
     @yield('daily')
+
+    @yield('ncrs')
 
 
 
