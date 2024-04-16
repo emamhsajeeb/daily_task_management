@@ -34,7 +34,8 @@ class TaskController extends Controller
         $user = Auth::user();
         $incharges = User::role('se')->get();
         $title = "Task List";
-        return view('task/tasks', compact('user','incharges','title'));
+        $ncrs = NCR::all();
+        return view('task/tasks', compact('user','incharges','title','ncrs'));
     }
 
     public function allTasks(Request $request)
@@ -47,8 +48,10 @@ class TaskController extends Controller
             : ($user->hasRole('admin') ? Tasks::with('ncrs')->get() : [])
         ) : [];
 
+
+
         return response()->json([
-            'tasks' => $tasks
+            'tasks' => $tasks,
         ]);
     }
 

@@ -371,7 +371,7 @@ async function updateTaskListBody(tasks) {
                         // Construct the multi-select dropdown HTML
                         var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
                         // Iterate over each NCR and create an option element
-                        row.ncrs.forEach(function (ncr) {
+                        $ncrs.forEach(function (ncr) {
                             html += '<option value="' + ncr.ncr_no + '">' + ncr.ncr_no + '</option>';
                         });
                         html += '</select>';
