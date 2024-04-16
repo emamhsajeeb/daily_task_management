@@ -19,6 +19,6 @@ class NCR extends Model
 
     public function tasks()
     {
-        return $this->belongsToMany(Tasks::class, 'task_has_ncr');
+        return $this->belongsToMany(Tasks::class, 'task_has_ncr', 'ncr_id', 'task_id');
     }
 }
