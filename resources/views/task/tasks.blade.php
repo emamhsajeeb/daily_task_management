@@ -867,8 +867,24 @@ $('#taskTable').on('select2:select', '.js-example-basic-multiple', async functio
     var taskId = $(this).data('task-id');
     console.log("Task ID:", taskId);
     await updateTaskNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
-        console.log('Task_has_ncr table updated successfully.');
         await updateRowData(taskId, response.updatedRowData);
+        toastr.success(response.message, {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
     });
 });
 
@@ -877,8 +893,24 @@ $('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async funct
     var deselectedOption = e.params.data.id;
     var taskId = $(this).data('task-id');
     await updateTaskNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
-        console.log('NCR detached from task successfully.');
         await updateRowData(taskId, response.updatedRowData);
+        toastr.success(response.message, {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
     });
 });
 
