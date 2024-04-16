@@ -74,16 +74,6 @@ class NCRController extends Controller
             // Retrieve updated list of NCRs
             $ncrs = NCR::all();
 
-            $matchingTasks = Tasks::where(function ($query) use ($chainages) {
-                // Look for tasks with chainages contained in the NCR chainages
-                foreach ($chainages as $chainage) {
-                    $query->orWhere(DB::raw("CONCAT(location, '(', side, ')')"), 'like', "%$chainage%");
-                }
-            })->where('type', $validatedData['ncr_type'])->get();
-            foreach ($matchingTasks as $task) {
-                $task->ncrs()->attach($ncr->id);
-            }
-
             // Return a success response
             return response()->json(['message' => 'NCR added successfully', 'ncrs' => $ncrs]);
         } catch (ValidationException $e) {

@@ -7,6 +7,7 @@ use App\Http\Controllers\PushNotificationController;
 use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Author;
 use App\Models\DailySummary;
+use App\Models\NCR;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming team authentication)
 use Carbon\Carbon;
@@ -458,6 +459,23 @@ class TaskController extends Controller
             $suffix = $suffix[$lastDigit];
         }
         return $number . $suffix;
+    }
+
+    public function attachNCR(Request $request)
+    {
+        $taskId = $request->input('task_id');
+        $selectedOptions = $request->input('selected_options');
+
+        // Find the task by ID
+        $task = Tasks::findOrFail($taskId);
+
+        // Loop through the selected options (NCR IDs) and attach them to the task
+        foreach ($selectedOptions as $ncrId) {
+            $ncr = NCR::findOrFail($ncrId);
+            $task->ncrs()->attach($ncr->id);
+        }
+
+        return response()->json(['message' => 'NCRs attached to the task successfully.']);
     }
 
 }

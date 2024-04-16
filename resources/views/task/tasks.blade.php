@@ -365,6 +365,20 @@ async function updateTaskListBody(tasks) {
                 } : '',
                 admin ?
                 {
+                    data: 'ncr_select',
+                    render: function (data, type, row, meta) {
+                        // Construct the multi-select dropdown HTML
+                        var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
+                        // Iterate over each NCR and create an option element
+                        row.ncrs.forEach(function (ncr) {
+                            html += '<option value="' + ncr.ncr_no + '">' + ncr.ncr_no + '</option>';
+                        });
+                        html += '</select>';
+                        return html;
+                    }
+                } : '',
+                admin ?
+                {
                     data: null,
                     defaultContent: '<td>Click</td>',
                     className: 'dataTables-center'
@@ -766,6 +780,29 @@ $(document).on('input', '#completionDateTime', async function (e) {
     var dateTime = e.target.value;
     await updateCompletionDateTime(taskId, dateTime)
 });
+
+// Add event listener for change event on multi-select dropdown
+$('#taskTable').on('change', '.js-example-basic-multiple', function() {
+    var selectedOptions = $(this).val(); // Get selected options
+    var taskId = $(this).closest('tr').find('.taskId').text(); // Get the task ID
+
+    // Make AJAX request to update task_has_ncr table
+    $.ajax({
+        url: '{{ route('attachNCR') }}', // Replace with your Laravel route
+        type: 'POST',
+        data: {
+            task_id: taskId,
+            selected_options: selectedOptions
+        },
+        success: function(response) {
+            console.log('Task_has_ncr table updated successfully.');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating task_has_ncr table:', error);
+        }
+    });
+});
+
 
 toastr.options = {
     "closeButton": true,

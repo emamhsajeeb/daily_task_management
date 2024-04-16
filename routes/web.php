@@ -58,6 +58,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/tasks/daily-summary-get', [DailySummaryController::class, 'dailySummary'])->name('dailySummary');
     Route::post('/tasks/daily-summary-filtered', [DailySummaryController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [DailySummaryController::class, 'exportDailySummary'])->name('exportDailySummary');
+    Route::post('/tasks/attach-ncr', [TaskController::class, 'attachNCR'])->name('attachNCR');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
@@ -65,6 +66,8 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('ncrs');
     Route::get('/ncrs-json', [NCRController::class, 'allNCRs'])->name('allNCRs');
     Route::post('/ncrs/add', [NCRController::class, 'addNCR'])->name('addNCR');
+
+
 
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
