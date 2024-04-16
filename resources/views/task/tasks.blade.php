@@ -409,9 +409,11 @@ async function updateTaskListBody(tasks) {
                     data: null,
                     className: 'dataTables-center',
                     render: function(data, type, row, meta) {
-                        return '<td class="dataTables-center" >' +
-                            '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-success fs-15"><i class="ri-edit-2-line"></i></a>' +
-                            '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-danger fs-15"><i class="ri-delete-bin-line"></i></a>' +
+                        return '<td class="dataTables-center" style="text-align: center;">' +
+                            '<div style="display: flex; justify-content: space-around;">' +
+                            '<a style="text-align: center" href="javascript:void(0);" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>' +
+                            '<a style="text-align: center" href="javascript:void(0);" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>' +
+                            '</div>' +
                             '</td>';
                     }
                 } : '',
