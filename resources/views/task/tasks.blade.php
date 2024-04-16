@@ -263,6 +263,21 @@ async function updateTaskListBody(tasks) {
                 }
             }
         ],
+        columnDefs: [
+            {
+                targets: -1, // Target the last column
+                render: function(data, type, row, meta) {
+                    // Construct the multi-select dropdown HTML
+                    var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
+                    // Iterate over each NCR from the global variable $ncrs and create an option element
+                    @foreach($ncrs as $ncr)
+                        html += '<option value="{{ $ncr->ncr_no }}">{{ $ncr->ncr_no }}</option>';
+                    @endforeach
+                        html += '</select>';
+                    return html;
+                }
+            }
+        ],
         columns: [
                 { data: 'date', className: 'dataTables-center' },
                 { data: 'number', className: 'dataTables-center' },
@@ -363,21 +378,7 @@ async function updateTaskListBody(tasks) {
                     },
                     className: 'dataTables-center'
                 } : '',
-                admin ?
-                {
-                    data: 'ncr_select',
-                    render: function (data, type, row, meta) {
 
-                        // Construct the multi-select dropdown HTML
-                        var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
-                        // Iterate over each NCR and create an option element
-                        $ncrs.forEach(function (ncr) {
-                            html += '<option value="' + ncr.ncr_no + '">' + ncr.ncr_no + '</option>';
-                        });
-                        html += '</select>';
-                        return html;
-                    }
-                } : '',
                 admin ?
                 {
                     data: null,
