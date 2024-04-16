@@ -268,7 +268,7 @@ async function updateTaskListBody(tasks) {
                 targets: -1, // Target the last column
                 render: function(data, type, row, meta) {
                     // Construct the multi-select dropdown HTML
-                    var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
+                    var html = '<select class="js-example-basic-multiple" data-task-id="' + row.task_id + '" name="ncr_select[]" multiple="multiple">';
                     // Iterate over each NCR from the global variable $ncrs and create an option element
                     @foreach($ncrs as $ncr)
                         html += '<option value="{{ $ncr->ncr_no }}">{{ $ncr->ncr_no }}</option>';
@@ -786,7 +786,7 @@ $(document).on('input', '#completionDateTime', async function (e) {
 // Add event listener for change event on multi-select dropdown
 $('#taskTable').on('change', '.js-example-basic-multiple', function() {
     var selectedOptions = $(this).val(); // Get selected options
-    var taskId = $(this).closest('tr').find('.taskId').text(); // Get the task ID
+    var taskId = $(this).data('task-id');
 
     // Make AJAX request to update task_has_ncr table
     $.ajax({
