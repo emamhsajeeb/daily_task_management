@@ -410,16 +410,13 @@ async function updateTaskListBody(tasks) {
                     className: 'dataTables-center',
                     render: function(data, type, row, meta) {
                         return '<td class="dataTables-center" >' +
-                            '<div class="dataTables-center hstack gap-3" style="text-align: center; vertical-align: middle;">' +
                             '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-success fs-15"><i class="ri-edit-2-line"></i></a>' +
                             '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-danger fs-15"><i class="ri-delete-bin-line"></i></a>' +
-                            '</div>' +
                             '</td>';
                     }
                 } : '',
             // Define your columns here
-        ].filter(Boolean)
-        ,
+        ].filter(Boolean),
         createdRow: function(row, data, dataIndex) {
             // Check if NCRs exist for the current row
             if (data.ncrs && data.ncrs.length > 0) {
