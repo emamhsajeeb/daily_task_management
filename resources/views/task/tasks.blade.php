@@ -400,11 +400,12 @@ async function updateTaskListBody(tasks) {
                     },
                     className: 'dataTables-center'
                 } : '',
+                admin ?
                 {
                     data: null,
                     className: 'dataTables-center',
                     defaultContent: ''
-                },
+                } : '',
                 admin ?
                 {
                     data: null,
