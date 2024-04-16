@@ -787,7 +787,7 @@ async function updateRowAppearance(row) {
 
 // Reinitialize Select2 for the updated row
 async function reinitializeSelect2(rowNode) {
-    $(rowNode).find('.js-example-basic-multiple').select2();
+    $(rowNode).find('.js-example-basic-multiple').select2('destroy').select2();
 }
 
 // AJAX request to update task_has_ncr table
