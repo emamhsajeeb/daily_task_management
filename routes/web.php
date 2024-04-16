@@ -59,6 +59,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::post('/tasks/daily-summary-filtered', [DailySummaryController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [DailySummaryController::class, 'exportDailySummary'])->name('exportDailySummary');
     Route::post('/tasks/attach-ncr', [TaskController::class, 'attachNCR'])->name('attachNCR');
+    Route::post('/tasks/detach-ncr', [TaskController::class, 'detachNCR'])->name('detachNCR');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');

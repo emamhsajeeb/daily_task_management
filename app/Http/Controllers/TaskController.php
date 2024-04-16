@@ -474,13 +474,43 @@ class TaskController extends Controller
 
         // Loop through the selected options (NCR numbers) and attach them to the task
         foreach ($selectedOptions as $ncrNo) {
-            // Find the NCR by its ncr_no
-            $ncr = NCR::where('ncr_no', $ncrNo)->firstOrFail();
-            $task->ncrs()->attach($ncr->id);
+            // Check if the NCR is already attached to the task
+            if (!$task->ncrs()->where('ncr_no', $ncrNo)->exists()) {
+                // Find the NCR by its ncr_no
+                $ncr = NCR::where('ncr_no', $ncrNo)->firstOrFail();
+                $task->ncrs()->attach($ncr->id);
+            }
         }
 
-        return response()->json(['message' => 'NCRs attached to the task successfully.']);
+        // Retrieve the updated task data
+        $updatedTask = Tasks::with('ncrs')->findOrFail($taskId);
+
+        // Return response with success message and updated row data
+        return response()->json(['message' => 'NCRs attached to the task successfully.', 'updatedRowData' => $updatedTask]);
     }
+
+
+    public function detachNCR(Request $request)
+    {
+        $taskId = $request->input('task_id');
+        $deselectedOption = $request->input('deselected_option');
+
+        // Find the task by ID
+        $task = Tasks::findOrFail($taskId);
+
+        // Find the NCR by its ncr_no
+        $ncr = NCR::where('ncr_no', $deselectedOption)->firstOrFail();
+
+        // Detach the NCR from the task
+        $task->ncrs()->detach($ncr->id);
+
+        // Retrieve the updated task data
+        $updatedTask = Tasks::with('ncrs')->findOrFail($taskId);
+
+        // Return response with success message and updated row data
+        return response()->json(['message' => 'NCR detached from the task successfully.', 'updatedRowData' => $updatedTask]);
+    }
+
 
 }
 

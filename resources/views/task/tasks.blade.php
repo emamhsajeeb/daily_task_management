@@ -253,30 +253,51 @@ async function updateTaskListBody(tasks) {
         data: tasks, // Pass tasks data to DataTable
         columnDefs: [
             {
-                searchable: true, targets: [0,1],
+                targets: [0, 1], // Target the date and number columns
+                searchable: true,
                 render: function(data, type, row, meta) {
-                    // Render the NCR number as badge if present
-                    if (row.ncr_no) {
-                        return '<span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> ' + row.ncr_no + '</span>';
+                    // Check if NCRs exist for the current row
+                    if (meta.col === 1 && row.ncrs && row.ncrs.length > 0) {
+                        // Initialize an empty string to hold badge HTML
+                        var badgeHTML = '';
+                        // Iterate through each NCR
+                        row.ncrs.forEach(function(ncr) {
+                            badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> ' + ncr.ncr_no + '</span></div>';
+                        });
+                        // Return the concatenated badge HTML
+                        return data + badgeHTML;
                     }
+                    // If no NCRs exist or not in the number column, return the original data
                     return data;
                 }
-            }
-        ],
-        columnDefs: [
+            },
             {
-                targets: -1, // Target the last column
+                targets: -2, // Target the last column
                 render: function(data, type, row, meta) {
                     // Construct the multi-select dropdown HTML
                     var html = '<select class="js-example-basic-multiple" data-task-id="' + row.id + '" name="ncr_select[]" multiple="multiple">';
+
                     // Iterate over each NCR from the global variable $ncrs and create an option element
                     @foreach($ncrs as $ncr)
-                        html += '<option value="{{ $ncr->ncr_no }}">{{ $ncr->ncr_no }}</option>';
+                    // Check if the current NCR is selected for the current row
+                    var selected = row.ncrs && row.ncrs.some(ncr => ncr.ncr_no === '{{ $ncr->ncr_no }}') ? 'selected="selected"' : '';
+                    html += '<option value="{{ $ncr->ncr_no }}" ' + selected + '>{{ $ncr->ncr_no }}</option>';
                     @endforeach
+
                         html += '</select>';
                     return html;
+                },
+                createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
+                    // Check if Select2 has already been initialized for the dropdown element
+                    if (!$(cell).find('.js-example-basic-multiple').hasClass('select2-hidden-accessible')) {
+                        // Initialize Select2 for the created dropdown element with the dynamic data array
+                        $(cell).find('.js-example-basic-multiple').select2();
+                    } else {
+                        $(cell).find('.js-example-basic-multiple').select2('destroy').select2();
+                    }
                 }
             }
+
         ],
         columns: [
                 { data: 'date', className: 'dataTables-center' },
@@ -378,24 +399,35 @@ async function updateTaskListBody(tasks) {
                     },
                     className: 'dataTables-center'
                 } : '',
-
+                {
+                    data: null,
+                    className: 'dataTables-center',
+                    defaultContent: ''
+                },
                 admin ?
                 {
                     data: null,
-                    defaultContent: '<td>Click</td>',
-                    className: 'dataTables-center'
+                    className: 'dataTables-center',
+                    render: function(data, type, row, meta) {
+                        return '<td class="dataTables-center" >' +
+                            '<div class="dataTables-center hstack gap-3" style="text-align: center; vertical-align: middle;">' +
+                            '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-success fs-15"><i class="ri-edit-2-line"></i></a>' +
+                            '<a style="text-align: center" href="javascript:void(0);" class="dataTables-center link-danger fs-15"><i class="ri-delete-bin-line"></i></a>' +
+                            '</div>' +
+                            '</td>';
+                    }
                 } : '',
             // Define your columns here
         ].filter(Boolean)
         ,
         createdRow: function(row, data, dataIndex) {
-            // Add red font color to rows with associated NCRs
-            if (data.ncr_no) {
+            // Check if NCRs exist for the current row
+            if (data.ncrs && data.ncrs.length > 0) {
+                // Add red font color to the row
                 $(row).css('color', 'red');
             }
         }
     });
-    $(".js-example-basic-multiple").select2();
 }
 
 async function updateTaskList() {
@@ -419,7 +451,10 @@ async function updateTaskList() {
         ${admin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
         ${admin ? `
-        <th class="dataTables-center">Edit</th>
+        <th class="dataTables-center">Attach/Detach NCR</th>
+        ` : ''}
+        ${admin ? `
+        <th class="dataTables-center">Actions</th>
         ` : ''}
         </tr>
         `;
@@ -762,8 +797,6 @@ $( document ).ready(async function () {
     });
 });
 
-
-
 // Event listener for dropdown change
 $(document).on('input', '#status-dropdown', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
@@ -783,10 +816,36 @@ $(document).on('input', '#completionDateTime', async function (e) {
     await updateCompletionDateTime(taskId, dateTime)
 });
 
+// Function to update a row in the DataTable
+// Function to update a row in the DataTable and initialize createdRow function
+function updateRowData(taskId, newData) {
+    var table = $('#taskTable').DataTable();
+    var index = table.row(function (idx, data, node) {
+        return data.id === taskId; // Assuming 'id' is the task ID property in your data
+    }).index();
+    table.row(index).data(newData).draw(false);
+
+    // Check if NCRs exist for the current row
+    var row = table.row(index).node();
+    var data = table.row(index).data();
+    if (data.ncrs && data.ncrs.length > 0) {
+        // Add red font color to the row
+        $(row).css('color', 'red');
+    } else {
+        $(row).css('color', '');
+    }
+
+    // Reinitialize Select2 for the updated row
+    $(row).find('.js-example-basic-multiple').select2();
+}
+
+
 // Add event listener for change event on multi-select dropdown
-$('#taskTable').on('change', '.js-example-basic-multiple', function() {
+$('#taskTable').on('select2:select', '.js-example-basic-multiple', function(e) {
     var selectedOptions = $(this).val(); // Get selected options
     var taskId = $(this).data('task-id');
+    // Make sure you're working with the correct task ID
+    console.log("Task ID:", taskId);
 
     // Make AJAX request to update task_has_ncr table
     $.ajax({
@@ -798,6 +857,8 @@ $('#taskTable').on('change', '.js-example-basic-multiple', function() {
         },
         success: function(response) {
             console.log('Task_has_ncr table updated successfully.');
+            // Update the row data in DataTables
+            updateRowData(taskId, response.updatedRowData);
         },
         error: function(xhr, status, error) {
             // Handle error
@@ -805,6 +866,32 @@ $('#taskTable').on('change', '.js-example-basic-multiple', function() {
         }
     });
 });
+
+// Add event listener for select2:unselect event on multi-select dropdown
+$('#taskTable').on('select2:unselect', '.js-example-basic-multiple', function(e) {
+    var deselectedOption = e.params.data.id; // Get deselected option
+    var taskId = $(this).data('task-id');
+
+    // Make AJAX request to detach NCR from task
+    $.ajax({
+        url: '{{ route('detachNCR') }}', // Replace with your Laravel route
+        type: 'POST',
+        data: {
+            task_id: taskId,
+            deselected_option: deselectedOption
+        },
+        success: function(response) {
+            console.log('NCR detached from task successfully.');
+            // Update the row data in DataTables
+            updateRowData(taskId, response.updatedRowData);
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+        }
+    });
+});
+
 
 
 toastr.options = {
