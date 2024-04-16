@@ -367,6 +367,7 @@ async function updateTaskListBody(tasks) {
                 {
                     data: 'ncr_select',
                     render: function (data, type, row, meta) {
+
                         // Construct the multi-select dropdown HTML
                         var html = '<select class="js-example-basic-multiple" name="ncr_select[]" multiple="multiple">';
                         // Iterate over each NCR and create an option element
@@ -392,8 +393,8 @@ async function updateTaskListBody(tasks) {
                 $(row).css('color', 'red');
             }
         }
-
     });
+    $(".js-example-basic-multiple").select2();
 }
 
 async function updateTaskList() {
