@@ -20,7 +20,7 @@ return new class extends Migration
 
             // Define foreign key constraints
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
-            $table->foreign('ncr_id')->references('id')->on('ncrs')->onDelete('cascade');
+            $table->foreign('ncr_id')->references('id')->on('n_c_r_s')->onDelete('cascade');
         });
     }
 
