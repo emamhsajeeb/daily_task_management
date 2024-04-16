@@ -234,6 +234,7 @@ async function updateTaskListBody(tasks) {
         tasks = tasks.data; // Assuming tasks is an object with a 'data' property containing the array of tasks
     }
 
+
     $('#taskTable').DataTable({
         processing: true,
         language: {
@@ -252,7 +253,14 @@ async function updateTaskListBody(tasks) {
         data: tasks, // Pass tasks data to DataTable
         columnDefs: [
             {
-                searchable: true, targets: [0,1]
+                searchable: true, targets: [0,1],
+                render: function(data, type, row, meta) {
+                    // Render the NCR number as badge if present
+                    if (row.ncr_no) {
+                        return '<span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> ' + row.ncr_no + '</span>';
+                    }
+                    return data;
+                }
             }
         ],
         columns: [
@@ -363,6 +371,13 @@ async function updateTaskListBody(tasks) {
                 } : '',
             // Define your columns here
         ].filter(Boolean)
+        ,
+        createdRow: function(row, data, dataIndex) {
+            // Add red font color to rows with associated NCRs
+            if (data.ncr_no) {
+                $(row).css('color', 'red');
+            }
+        }
 
     });
 }

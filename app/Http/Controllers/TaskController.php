@@ -42,8 +42,8 @@ class TaskController extends Controller
 
         $tasks = $user ? (
         $user->hasRole('se')
-            ? DB::table('tasks')->where('incharge', $user->user_name)->get()
-            : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
+            ? Tasks::with('ncrs')->where('incharge', $user->user_name)->get()
+            : ($user->hasRole('admin') ? Tasks::with('ncrs')->get() : [])
         ) : [];
 
         return response()->json([

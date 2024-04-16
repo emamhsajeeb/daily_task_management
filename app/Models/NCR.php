@@ -16,4 +16,9 @@ class NCR extends Model
         'status',
         'remarks'
     ];
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Tasks::class, 'task_has_ncr');
+    }
 }

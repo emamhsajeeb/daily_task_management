@@ -35,4 +35,9 @@ class Tasks extends Model
     {
         return $this->belongsToMany(Author::class, 'task_has_author', 'task_id', 'author_id');
     }
+
+    public function ncrs()
+    {
+        return $this->belongsToMany(NCR::class, 'task_has_ncr');
+    }
 }

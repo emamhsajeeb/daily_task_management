@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\NCR;
+use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -71,6 +72,12 @@ class NCRController extends Controller
 
             // Retrieve updated list of NCRs
             $ncrs = NCR::all();
+
+            // Check for tasks with matching chainages and associate them with the NCR
+            $matchingTasks = Tasks::whereIn('location', $chainages)->get();
+            foreach ($matchingTasks as $task) {
+                $task->ncrs()->attach($ncr->id);
+            }
 
             // Return a success response
             return response()->json(['message' => 'NCR added successfully', 'ncrs' => $ncrs]);
