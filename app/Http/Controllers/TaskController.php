@@ -472,9 +472,10 @@ class TaskController extends Controller
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
 
-        // Loop through the selected options (NCR IDs) and attach them to the task
-        foreach ($selectedOptions as $ncrId) {
-            $ncr = NCR::findOrFail($ncrId);
+        // Loop through the selected options (NCR numbers) and attach them to the task
+        foreach ($selectedOptions as $ncrNo) {
+            // Find the NCR by its ncr_no
+            $ncr = NCR::where('ncr_no', $ncrNo)->firstOrFail();
             $task->ncrs()->attach($ncr->id);
         }
 
