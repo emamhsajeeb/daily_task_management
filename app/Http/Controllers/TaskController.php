@@ -493,7 +493,7 @@ class TaskController extends Controller
     public function detachNCR(Request $request)
     {
         $taskId = $request->input('task_id');
-        $deselectedOption = $request->input('deselected_option');
+        $deselectedOption = $request->input('selected_options');
 
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
