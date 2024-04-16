@@ -6,6 +6,7 @@ use App\Models\NCR;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class NCRController extends Controller
@@ -76,7 +77,7 @@ class NCRController extends Controller
             $matchingTasks = Tasks::where(function ($query) use ($chainages) {
                 // Look for tasks with chainages contained in the NCR chainages
                 foreach ($chainages as $chainage) {
-                    $query->orWhere('location', 'like', "%$chainage%");
+                    $query->orWhere(DB::raw("CONCAT(location, '(', side, ')')"), 'like', "%$chainage%");
                 }
             })->where('type', $validatedData['ncr_type'])->get();
             foreach ($matchingTasks as $task) {
