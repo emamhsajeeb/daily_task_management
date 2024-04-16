@@ -262,7 +262,8 @@ async function updateTaskListBody(tasks) {
                         var badgeHTML = '';
                         // Iterate through each NCR
                         row.ncrs.forEach(function(ncr) {
-                            badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> ' + ncr.ncr_no + '</span></div>';
+                            badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> NCR ' + ncr.ncr_no + '</span></div>';
+
                         });
                         // Return the concatenated badge HTML
                         return data + badgeHTML;
