@@ -38,6 +38,6 @@ class Tasks extends Model
 
     public function ncrs()
     {
-        return $this->belongsToMany(NCR::class, 'task_has_ncr');
+        return $this->belongsToMany(NCR::class, 'task_has_ncr', 'task_id','ncr_id');
     }
 }
