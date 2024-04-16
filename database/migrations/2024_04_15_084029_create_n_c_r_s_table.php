@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('ref_no');
             $table->string('ncr_type');
             $table->date('issue_date');
-            $table->string('chainages');
+            $table->text('chainages');
             $table->text('details');
             $table->string('status');
             $table->string('remarks')->nullable();
