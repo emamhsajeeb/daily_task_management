@@ -770,7 +770,7 @@ async function updateRowData(taskId, newData) {
         return data.id === taskId; // Assuming 'id' is the task ID property in your data
     }).index();
     table.row(index).data(newData).draw(false);
-    updateRowAppearance(table.row(index));
+    await updateRowAppearance(table.row(index));
 }
 
 // Update appearance of a row based on its data
@@ -782,7 +782,7 @@ async function updateRowAppearance(row) {
     } else {
         rowNode.style.color = '';
     }
-    reinitializeSelect2(rowNode);
+    await reinitializeSelect2(rowNode);
 }
 
 // Reinitialize Select2 for the updated row
@@ -791,7 +791,7 @@ async function reinitializeSelect2(rowNode) {
 }
 
 // AJAX request to update task_has_ncr table
-async function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
+function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
     $.ajax({
         url: url,
         type: 'POST',
