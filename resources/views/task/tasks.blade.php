@@ -761,6 +761,49 @@ async function updateCompletionDateTime(taskId, dateTime) {
     })
 }
 
+// Function to update a row in the DataTable
+async function updateRowData(taskId, newData) {
+    var table = $('#taskTable').DataTable();
+    var index = table.row(function (idx, data, node) {
+        return data.id === taskId; // Assuming 'id' is the task ID property in your data
+    }).index();
+    table.row(index).data(newData).draw(false);
+    updateRowAppearance(table.row(index));
+}
+
+// Update appearance of a row based on its data
+async function updateRowAppearance(row) {
+    var rowData = row.data();
+    var rowNode = row.node();
+    if (rowData.ncrs && rowData.ncrs.length > 0) {
+        rowNode.style.color = 'red';
+    } else {
+        rowNode.style.color = '';
+    }
+    reinitializeSelect2(rowNode);
+}
+
+// Reinitialize Select2 for the updated row
+async function reinitializeSelect2(rowNode) {
+    $(rowNode).find('.js-example-basic-multiple').select2();
+}
+
+// AJAX request to update task_has_ncr table
+async function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            task_id: taskId,
+            selected_options: selectedOptions
+        },
+        success: successCallback,
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 // Call the function when the page loads
 $( document ).ready(async function () {
     $.ajaxSetup({
@@ -815,81 +858,28 @@ $(document).on('input', '#completionDateTime', async function (e) {
     await updateCompletionDateTime(taskId, dateTime)
 });
 
-// Function to update a row in the DataTable
-// Function to update a row in the DataTable and initialize createdRow function
-function updateRowData(taskId, newData) {
-    var table = $('#taskTable').DataTable();
-    var index = table.row(function (idx, data, node) {
-        return data.id === taskId; // Assuming 'id' is the task ID property in your data
-    }).index();
-    table.row(index).data(newData).draw(false);
 
-    // Check if NCRs exist for the current row
-    var row = table.row(index).node();
-    var data = table.row(index).data();
-    if (data.ncrs && data.ncrs.length > 0) {
-        // Add red font color to the row
-        $(row).css('color', 'red');
-    } else {
-        $(row).css('color', '');
-    }
-
-    // Reinitialize Select2 for the updated row
-    $(row).find('.js-example-basic-multiple').select2();
-}
-
-
-// Add event listener for change event on multi-select dropdown
-$('#taskTable').on('select2:select', '.js-example-basic-multiple', function(e) {
-    var selectedOptions = $(this).val(); // Get selected options
+// Event listener for change event on multi-select dropdown
+$('#taskTable').on('select2:select', '.js-example-basic-multiple', async function (e) {
+    var selectedOptions = $(this).val();
     var taskId = $(this).data('task-id');
-    // Make sure you're working with the correct task ID
     console.log("Task ID:", taskId);
-
-    // Make AJAX request to update task_has_ncr table
-    $.ajax({
-        url: '{{ route('attachNCR') }}', // Replace with your Laravel route
-        type: 'POST',
-        data: {
-            task_id: taskId,
-            selected_options: selectedOptions
-        },
-        success: function(response) {
-            console.log('Task_has_ncr table updated successfully.');
-            // Update the row data in DataTables
-            updateRowData(taskId, response.updatedRowData);
-        },
-        error: function(xhr, status, error) {
-            // Handle error
-            console.error(xhr.responseText);
-        }
+    await updateTaskNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
+        console.log('Task_has_ncr table updated successfully.');
+        await updateRowData(taskId, response.updatedRowData);
     });
 });
 
-// Add event listener for select2:unselect event on multi-select dropdown
-$('#taskTable').on('select2:unselect', '.js-example-basic-multiple', function(e) {
-    var deselectedOption = e.params.data.id; // Get deselected option
+// Event listener for select2:unselect event on multi-select dropdown
+$('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async function (e) {
+    var deselectedOption = e.params.data.id;
     var taskId = $(this).data('task-id');
-
-    // Make AJAX request to detach NCR from task
-    $.ajax({
-        url: '{{ route('detachNCR') }}', // Replace with your Laravel route
-        type: 'POST',
-        data: {
-            task_id: taskId,
-            deselected_option: deselectedOption
-        },
-        success: function(response) {
-            console.log('NCR detached from task successfully.');
-            // Update the row data in DataTables
-            updateRowData(taskId, response.updatedRowData);
-        },
-        error: function(xhr, status, error) {
-            // Handle error
-            console.error(xhr.responseText);
-        }
+    await updateTaskNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
+        console.log('NCR detached from task successfully.');
+        await updateRowData(taskId, response.updatedRowData);
     });
 });
+
 
 
 
