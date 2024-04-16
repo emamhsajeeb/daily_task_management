@@ -80,10 +80,10 @@
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
                                 <div>
-                                    <table id="dailySummaryTable" class="dt[-head]-center table-bordered column-order table-nowrap display compact align-middle">
-                                        <thead id="dailySummaryHead">
+                                    <table id="dailySummaryTable" class="dataTables-center table-bordered column-order table-nowrap display compact align-middle">
+                                        <thead id="dailySummaryHead" class="dataTables-center">
                                         </thead>
-                                        <tbody id="dailySummaryBody">
+                                        <tbody id="dailySummaryBody" class="dataTables-center">
                                         </tbody>
                                     </table>
                                 </div>
@@ -144,10 +144,34 @@ function updateDailySummaryBody(summaries) {
             { data: 'pavementTasks', className: 'dataTables-center' },
             { data: 'totalResubmission', className: 'dataTables-center' },
             { data: 'completed', className: 'dataTables-center' },
-            { data: 'completionPercentage', className: 'dataTables-center' },
+            {
+                data: 'completionPercentage',
+                className: 'dataTables-center',
+                render: function(data, type, row) {
+                    // Check if the data exists and if it's of the type 'display'
+                    if (data && type === 'display') {
+                        // Concatenate the data with '%' sign
+                        return data + '%';
+                    }
+                    // Otherwise, just return the original data
+                    return data;
+                }
+            },
             { data: 'pending', className: 'dataTables-center' },
             { data: 'rfiSubmissions', className: 'dataTables-center' },
-            { data: 'rfiSubmissionPercentage', className: 'dataTables-center' },
+            {
+                data: 'rfiSubmissionPercentage',
+                className: 'dataTables-center',
+                render: function(data, type, row) {
+                    // Check if the data exists and if it's of the type 'display'
+                    if (data && type === 'display') {
+                        // Concatenate the data with '%' sign
+                        return data + '%';
+                    }
+                    // Otherwise, just return the original data
+                    return data;
+                }
+            }
         ]
 
     });
