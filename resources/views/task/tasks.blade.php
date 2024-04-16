@@ -800,7 +800,8 @@ $('#taskTable').on('change', '.js-example-basic-multiple', function() {
             console.log('Task_has_ncr table updated successfully.');
         },
         error: function(xhr, status, error) {
-            console.error('Error updating task_has_ncr table:', error);
+            // Handle error
+            console.error(xhr.responseText);
         }
     });
 });
