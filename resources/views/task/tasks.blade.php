@@ -297,8 +297,16 @@ async function updateTaskListBody(tasks) {
                         $(cell).find('.js-example-basic-multiple').select2('destroy').select2();
                     }
                 }
+            },
+            {
+                "targets": 4, // Targeting the fifth column (index 4)
+                "className": "description-column", // Apply custom CSS class
+                "render": function(data, type, row) {
+                    return type === 'display' && data.length > 200 ?
+                        '<span title="' + data + '">' + data.substr(0, 200) + '...</span>' :
+                        data;
+                }
             }
-
         ],
         columns: [
                 { data: 'date', className: 'dataTables-center' },
@@ -331,7 +339,7 @@ async function updateTaskListBody(tasks) {
                     className: 'dataTables-center'
                 },
                 { data: 'type', className: 'dataTables-center' },
-                { data: 'description', className: 'description-column'},
+                { data: 'description' },
                 { data: 'location', className: 'dataTables-center' },
                 { data: 'side', className: 'dataTables-center' },
                 { data: 'qty_layer', className: 'dataTables-center' },
@@ -944,16 +952,6 @@ toastr.options = {
 <style>
     .dataTables-center {
         text-align: center;
-    }
-    .description-column {
-        width: 200px; /* Fixed width */
-        white-space: nowrap; /* Prevent text from wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Display ellipsis for overflowed text */
-    }
-    .description-column:hover {
-        overflow: visible; /* Show overflow on hover */
-        white-space: normal; /* Allow text to wrap on hover */
     }
 </style>
 @endsection
