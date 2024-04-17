@@ -29,9 +29,10 @@
     <!-- custom Css-->
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <!--datatable css-->
-    <link href="https://cdn.datatables.net/v/dt/dt-2.0.3/fh-4.0.1/r-3.0.1/sc-2.4.1/datatables.min.css" rel="stylesheet">
 
-    <script src="https://cdn.datatables.net/v/dt/dt-2.0.3/fh-4.0.1/r-3.0.1/sc-2.4.1/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.4/cr-2.0.1/fh-4.0.1/r-3.0.2/sc-2.4.1/sp-2.3.1/datatables.min.css" rel="stylesheet">
+
+    <script src="https://cdn.datatables.net/v/dt/dt-2.0.4/cr-2.0.1/fh-4.0.1/r-3.0.2/sc-2.4.1/sp-2.3.1/datatables.min.js"></script>
 
     <link rel="stylesheet" href="{{ asset('assets/css/toastr.css') }}">
     <script type="text/javascript" src="{{ asset('assets/js/toastr.js') }}"></script>
