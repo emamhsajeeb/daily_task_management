@@ -236,7 +236,6 @@ async function updateTaskListBody(tasks) {
 
 
     $('#taskTable').DataTable({
-        colReorder: true,
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
