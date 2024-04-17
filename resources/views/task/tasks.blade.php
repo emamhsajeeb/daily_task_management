@@ -302,8 +302,8 @@ async function updateTaskListBody(tasks) {
                 "targets": 4, // Targeting the fifth column (index 4)
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
-                    return type === 'display' && data.length > 50 ?
-                        '<span title="' + data + '">' + data.substr(0, 50) + '...</span>' :
+                    return type === 'display' && data.length > 30 ?
+                        '<span title="' + data + '">' + data.substr(0, 30) + '...</span>' :
                         data;
                 }
             }
