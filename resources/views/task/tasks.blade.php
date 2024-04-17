@@ -303,7 +303,7 @@ async function updateTaskListBody(tasks) {
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
                     return type === 'display' && data.length > 30 ?
-                        '<span title="' + data + '">' + data.substr(0, 30) + '...</span>' :
+                        `<span ${admin ? '' : 'style="overflow-y: auto; max-height: 30px;"'} title="` + data + '">' + data.substr(0, 30) + '...</span>' :
                         data;
                 }
             }
