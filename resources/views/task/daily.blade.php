@@ -148,13 +148,7 @@ function updateDailySummaryBody(summaries) {
                 data: 'completionPercentage',
                 className: 'dataTables-center',
                 render: function(data, type, row) {
-                    // Check if the data exists and if it's of the type 'display'
-                    if (data && type === 'display') {
-                        // Concatenate the data with '%' sign
-                        return data + '%';
-                    }
-                    // Otherwise, just return the original data
-                    return data;
+                    return data + '%';
                 }
             },
             { data: 'pending', className: 'dataTables-center' },
@@ -163,13 +157,7 @@ function updateDailySummaryBody(summaries) {
                 data: 'rfiSubmissionPercentage',
                 className: 'dataTables-center',
                 render: function(data, type, row) {
-                    // Check if the data exists and if it's of the type 'display'
-                    if (data && type === 'display') {
-                        // Concatenate the data with '%' sign
-                        return data + '%';
-                    }
-                    // Otherwise, just return the original data
-                    return data;
+                    return data + '%';
                 }
             }
         ]
