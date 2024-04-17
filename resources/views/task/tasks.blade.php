@@ -331,7 +331,7 @@ async function updateTaskListBody(tasks) {
                     className: 'dataTables-center'
                 },
                 { data: 'type', className: 'dataTables-center' },
-                { data: 'description' },
+                { data: 'description', className: 'description-column'},
                 { data: 'location', className: 'dataTables-center' },
                 { data: 'side', className: 'dataTables-center' },
                 { data: 'qty_layer', className: 'dataTables-center' },
@@ -944,6 +944,16 @@ toastr.options = {
 <style>
     .dataTables-center {
         text-align: center;
+    }
+    .description-column {
+        width: 200px; /* Fixed width */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Display ellipsis for overflowed text */
+    }
+    .description-column:hover {
+        overflow: visible; /* Show overflow on hover */
+        white-space: normal; /* Allow text to wrap on hover */
     }
 </style>
 @endsection
