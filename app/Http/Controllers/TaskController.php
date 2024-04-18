@@ -17,10 +17,14 @@ use Illuminate\Http\Request; // Represents the incoming HTTP request
 use Illuminate\Support\Facades\Auth; // Facade for team authentication
 use Illuminate\Support\Facades\DB; // Facade for interacting with the database
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Maatwebsite\Excel\Facades\Excel; // Facade for working with Excel files
+use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
+
+// Facade for working with Excel files
 
 class TaskController extends Controller
 {
@@ -218,119 +222,137 @@ class TaskController extends Controller
      * Import tasks from an uploaded Excel/CSV file.
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function importCSV(Request $request): \Illuminate\Http\RedirectResponse
+    public function importCSV(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:xlsx,csv,ods',
-        ]);
-
-        $path = $request->file('file')->store('temp'); // Store uploaded file temporarily
-
-        $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
-
-        // Validate imported tasks
-        $validatedTasks = Validator::make($importedTasks, [
-            '*.0' => 'date_format:Y-m-d', // date
-            '*.1' => 'required|string', // number
-            '*.2' => 'required|string|in:Embankment,Structure,Pavement', // type
-            '*.3' => 'required|string', // description
-            '*.4' => 'required|string|custom_location',
-        ])->validate();
-
-        $newSubmissionCount = 0;
-        $date = $importedTasks[0][0];
-
-        // Initialize summary variables
-        $inchargeSummary = [];
-
-        foreach ($importedTasks as $importedTask) {
-            $inchargeName = '';
-            $k = intval(substr($importedTask[4], 1)); // Extracting the numeric part after 'K'
-
-            switch (true) {
-                case ($k > -1 && $k <= 12):
-                    $inchargeName = 'habibur';
-                    break;
-                case ($k >= 13 && $k <= 21):
-                    $inchargeName = 'prodip';
-                    break;
-                case ($k >= 22 && $k <= 33):
-                    $inchargeName = 'debashis';
-                    break;
-                case ($k >= 34 && $k <= 48):
-                    $inchargeName = 'rabbi';
-                    break;
-            }
-
-            // Initialize incharge summary if not exists
-            if (!isset($inchargeSummary[$inchargeName])) {
-                $inchargeSummary[$inchargeName] = [
-                    'totalTasks' => 0,
-                    'totalResubmission' => 0,
-                    'embankmentTasks' => 0,
-                    'structureTasks' => 0,
-                    'pavementTasks' => 0,
-                ];
-            }
-            $inchargeSummary[$inchargeName]['totalTasks']++;
-
-            $existingTask = Tasks::where('number', $importedTask[1])->first();
-
-            // Update incharge summary variables based on task type
-
-            switch ($importedTask[2]) {
-                case 'Embankment':
-                    $inchargeSummary[$inchargeName]['embankmentTasks']++;
-                    break;
-                case 'Structure':
-                    $inchargeSummary[$inchargeName]['structureTasks']++;
-                    break;
-                case 'Pavement':
-                    $inchargeSummary[$inchargeName]['pavementTasks']++;
-                    break;
-            }
-
-            if ($existingTask) {
-                $inchargeSummary[$inchargeName]['totalResubmission']++;
-                // Handle duplicate tasks (handled in separate method)
-                $this->handleDuplicateTask($existingTask, $importedTask, $inchargeName);
-            } else {
-                // Create a new task for non-duplicates
-                $createdTask = Tasks::create([
-                    'date' => $importedTask[0],
-                    'number' => $importedTask[1],
-                    'status' => 'new',
-                    'type' => $importedTask[2],
-                    'description' => $importedTask[3],
-                    'location' => $importedTask[4],
-                    'side' => $importedTask[5],
-                    'qty_layer' => $importedTask[6],
-                    'planned_time' => $importedTask[7],
-                    'incharge' => $inchargeName,
-                ]);
-
-                $userId = Auth::user()->id;
-                $createdTask->authors()->attach($userId);
-            }
-        }
-
-        // Store summary data in DailySummary model for each incharge
-        foreach ($inchargeSummary as $inchargeName => $summaryData) {
-            DailySummary::create([
-                'date' => $date,
-                'incharge' => $inchargeName,
-                'totalTasks' => $summaryData['totalTasks'],
-                'totalResubmission' => $summaryData['totalResubmission'],
-                'embankmentTasks' => $summaryData['embankmentTasks'],
-                'structureTasks' => $summaryData['structureTasks'],
-                'pavementTasks' => $summaryData['pavementTasks'],
+        try {
+            $request->validate([
+                'file' => 'required|file|mimes:xlsx,csv,ods',
             ]);
-        }
 
-        // Redirect to tasks route with success message
-        return redirect()->route('showTasks')->with('success', 'Data imported successfully.');
+            $path = $request->file('file')->store('temp'); // Store uploaded file temporarily
+
+            $importedTasks = Excel::toArray(new TaskImport, $path)[0]; // Import data using TaskImport
+
+            // Validate imported tasks with custom messages
+            $validator = Validator::make($importedTasks, [
+                '*.0' => 'required|date_format:Y-m-d',
+                '*.1' => 'required|string',
+                '*.2' => 'required|string|in:Embankment,Structure,Pavement',
+                '*.3' => 'required|string',
+                '*.4' => 'required|string|custom_location',
+            ], [
+                '*.0.required' => 'Task number :taskNumber must have a valid date.',
+                '*.0.date_format' => 'Task number :taskNumber must be a date in the format Y-m-d.',
+                '*.1.required' => 'Task number :taskNumber must have a value for field 1.',
+                '*.2.required' => 'Task number :taskNumber must have a value for field 2.',
+                '*.2.in' => 'Task number :taskNumber must have a value for field 2 that is either Embankment, Structure, or Pavement.',
+                '*.3.required' => 'Task number :taskNumber must have a value for field 3.',
+                '*.4.required' => 'Task number :taskNumber must have a value for field 4.',
+                '*.4.custom_location' => 'Task number :taskNumber has an invalid custom location: :value',
+            ]);
+
+            // Validate the data
+            $validator->validate();
+
+
+            $newSubmissionCount = 0;
+            $date = $importedTasks[0][0];
+
+            // Initialize summary variables
+            $inchargeSummary = [];
+
+            foreach ($importedTasks as $importedTask) {
+                $inchargeName = '';
+                $k = intval(substr($importedTask[4], 1)); // Extracting the numeric part after 'K'
+
+                switch (true) {
+                    case ($k > -1 && $k <= 12):
+                        $inchargeName = 'habibur';
+                        break;
+                    case ($k >= 13 && $k <= 21):
+                        $inchargeName = 'prodip';
+                        break;
+                    case ($k >= 22 && $k <= 33):
+                        $inchargeName = 'debashis';
+                        break;
+                    case ($k >= 34 && $k <= 48):
+                        $inchargeName = 'rabbi';
+                        break;
+                }
+
+                // Initialize incharge summary if not exists
+                if (!isset($inchargeSummary[$inchargeName])) {
+                    $inchargeSummary[$inchargeName] = [
+                        'totalTasks' => 0,
+                        'totalResubmission' => 0,
+                        'embankmentTasks' => 0,
+                        'structureTasks' => 0,
+                        'pavementTasks' => 0,
+                    ];
+                }
+                $inchargeSummary[$inchargeName]['totalTasks']++;
+
+                $existingTask = Tasks::where('number', $importedTask[1])->first();
+
+                // Update incharge summary variables based on task type
+                switch ($importedTask[2]) {
+                    case 'Embankment':
+                        $inchargeSummary[$inchargeName]['embankmentTasks']++;
+                        break;
+                    case 'Structure':
+                        $inchargeSummary[$inchargeName]['structureTasks']++;
+                        break;
+                    case 'Pavement':
+                        $inchargeSummary[$inchargeName]['pavementTasks']++;
+                        break;
+                }
+
+                if ($existingTask) {
+                    $inchargeSummary[$inchargeName]['totalResubmission']++;
+                    // Handle duplicate tasks (handled in separate method)
+                    $this->handleDuplicateTask($existingTask, $importedTask, $inchargeName);
+                } else {
+                    // Create a new task for non-duplicates
+                    $createdTask = Tasks::create([
+                        'date' => $importedTask[0],
+                        'number' => $importedTask[1],
+                        'status' => 'new',
+                        'type' => $importedTask[2],
+                        'description' => $importedTask[3],
+                        'location' => $importedTask[4],
+                        'side' => $importedTask[5],
+                        'qty_layer' => $importedTask[6],
+                        'planned_time' => $importedTask[7],
+                        'incharge' => $inchargeName,
+                    ]);
+
+                    $userId = Auth::user()->id;
+                    $createdTask->authors()->attach($userId);
+                }
+            }
+
+            // Store summary data in DailySummary model for each incharge
+            foreach ($inchargeSummary as $inchargeName => $summaryData) {
+                DailySummary::create([
+                    'date' => $date,
+                    'incharge' => $inchargeName,
+                    'totalTasks' => $summaryData['totalTasks'],
+                    'totalResubmission' => $summaryData['totalResubmission'],
+                    'embankmentTasks' => $summaryData['embankmentTasks'],
+                    'structureTasks' => $summaryData['structureTasks'],
+                    'pavementTasks' => $summaryData['pavementTasks'],
+                ]);
+            }
+
+            // Redirect to tasks route with success message
+            return response()->json(['message' => 'Data imported successfully.'], 200);
+        } catch (ValidationException $exception) {
+
+            // Return error response with exception message
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 
     /**
