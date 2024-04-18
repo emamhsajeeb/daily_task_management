@@ -91,7 +91,7 @@ Route::middleware([CheckRole::class . ':se','auth', 'verified'])->group(function
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/tasks/daily-summary-json', [DailySummaryController::class, 'dailySummary'])->name('dailySummary');
+    Route::get('/tasks/daily-summary-json', [DailySummaryController::class, 'dailySummary'])->name('dailySummaryJSON');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('viewProfile');
 });
 

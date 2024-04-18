@@ -209,7 +209,7 @@ async function filterDailySummary() {
 
 
 async function updateDailySummary(month = null) {
-    var url = '{{ route("dailySummary") }}';
+    var url = '{{ route("dailySummaryJSON") }}';
     var header = `
         <tr>
         <th>Date</th>
@@ -234,9 +234,6 @@ async function updateDailySummary(month = null) {
         dataType: 'json',
         success: async function (response) {
             var summaries = response.data;
-
-            console.log(summaries);
-
             await updateDailySummaryBody(summaries);
         },
         error: function(xhr, status, error) {

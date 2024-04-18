@@ -478,14 +478,12 @@ async function updateTaskList() {
         dataType: 'json',
         success: async function (response) {
             var tasks = response.tasks;
-            console.log(tasks);
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 
             // Finding the first and last dates
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
-            console.log(firstDate, lastDate);
 
             await updateTaskListBody(tasks);
 
@@ -568,7 +566,6 @@ async function addTask() {
                 $('#taskTable').DataTable().clear().destroy();
                 preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'visible'; // Set visibility to visible
-                console.log(response.tasks);
                 const tasks = response.tasks;
 
                 // Extracting dates from tasks
@@ -877,7 +874,6 @@ $(document).on('input', '#completionDateTime', async function (e) {
 $('#taskTable').on('select2:select', '.js-example-basic-multiple', async function (e) {
     var selectedOptions = $(this).val();
     var taskId = $(this).data('task-id');
-    console.log("Task ID:", taskId);
     await updateTaskNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
         await updateRowData(taskId, response.updatedRowData);
         toastr.success(response.message, {
