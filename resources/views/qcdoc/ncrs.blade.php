@@ -105,14 +105,14 @@
                             <input type="date" name="issue_date" id="issue_date" class="form-control" required />
                         </div>
                         <!--end col-->
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <label for="chainages" class="form-label">Chainages</label>
-                            <textarea class="form-control" name="chainages" id="chainages" rows="3" placeholder="Enter Chainages..."></textarea>
+                            <textarea class="form-control" name="chainages" id="chainages" rows="4" placeholder="Enter Chainages..."></textarea>
                         </div>
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="details" class="form-label">Details</label>
-                            <textarea class="form-control" name="details" id="details" rows="3" placeholder="Enter details..."></textarea>
+                            <textarea class="form-control" name="details" id="details" rows="4" placeholder="Enter details..."></textarea>
                         </div>
                         <!--end col-->
                         <div class="col-lg-12">
