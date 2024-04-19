@@ -37,7 +37,7 @@ class NCRController extends Controller
                 'ref_no' => 'required|string',
                 'ncr_type' => 'required|string',
                 'issue_date' => 'required|date',
-                'chainages' => 'required|ncr_chainages',
+                'chainages' => 'required|string',
                 'details' => 'required|string',
                 'status' => 'required|string',
             ],[
@@ -49,8 +49,6 @@ class NCRController extends Controller
                 'issue_date.required' => 'Issue Date is required.',
                 'issue_date.date' => 'Issue Date must be a valid date format.',
                 'chainages.required' => 'Chainages are required.',
-                'chainages.ncr_chainages' => 'Invalid Chainages.',
-                'chainages.comma_separator' => 'Chainages should be followed by comma.',
                 'details.required' => 'Details is required.',
                 'status.required' => 'Status is required.',
             ]);
@@ -62,8 +60,9 @@ class NCRController extends Controller
             $ncr->ref_no = $validatedData['ref_no'];
             $ncr->ncr_type = $validatedData['ncr_type'];
             $ncr->issue_date = $validatedData['issue_date'];
-            $chainages = explode(' ', str_replace(',', ' ', $validatedData['chainages']));
-            $ncr->chainages = implode(', ', array_filter($chainages));
+//            $chainages = explode(' ', str_replace(',', ' ', $validatedData['chainages']));
+//            $ncr->chainages = implode(', ', array_filter($chainages));
+            $ncr->chainages = $validatedData['chainages'];
             $ncr->details = $validatedData['details'];
             $ncr->status = $validatedData['status'];
             $ncr->remarks = $request->input('remarks');

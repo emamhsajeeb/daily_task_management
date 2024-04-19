@@ -40,4 +40,9 @@ class Tasks extends Model
     {
         return $this->belongsToMany(NCR::class, 'task_has_ncr', 'task_id','ncr_id');
     }
+
+    public function objections()
+    {
+        return $this->belongsToMany(Objection::class, 'task_has_objection', 'task_id','obj_id');
+    }
 }

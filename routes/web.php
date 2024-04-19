@@ -4,6 +4,7 @@ use App\Events\TasksImported;
 use App\Http\Controllers\DailySummaryController;
 use App\Http\Controllers\MyBotController;
 use App\Http\Controllers\NCRController;
+use App\Http\Controllers\ObjectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Middleware\CheckRole;
@@ -64,12 +65,13 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
 
-    Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('ncrs');
+    Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('showNCRs');
     Route::get('/ncrs-json', [NCRController::class, 'allNCRs'])->name('allNCRs');
     Route::post('/ncrs/add', [NCRController::class, 'addNCR'])->name('addNCR');
 
-
-
+    Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
+    Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
+    Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');

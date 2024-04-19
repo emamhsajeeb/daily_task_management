@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NCR extends Model
+class Objection extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'ncr_no',
+        'obj_no',
         'ref_no',
-        'ncr_type',
+        'obj_type',
         'issue_date',
         'chainages',
         'details',
@@ -22,6 +22,6 @@ class NCR extends Model
 
     public function tasks()
     {
-        return $this->belongsToMany(Tasks::class, 'task_has_ncr', 'ncr_id', 'task_id');
+        return $this->belongsToMany(Tasks::class, 'task_has_objection', 'obj_id', 'task_id');
     }
 }

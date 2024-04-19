@@ -64,6 +64,7 @@
     @yield('daily')
 
     @yield('ncrs')
+    @yield('objections')
 
 
 
