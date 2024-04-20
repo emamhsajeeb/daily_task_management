@@ -66,6 +66,8 @@
     @yield('ncrs')
     @yield('objections')
 
+    @yield('attendance')
+
 
 
     <!-- end main content-->

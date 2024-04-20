@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\TasksImported;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DailySummaryController;
 use App\Http\Controllers\MyBotController;
 use App\Http\Controllers\NCRController;
@@ -72,6 +73,9 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
     Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
     Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
+
+    Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('showAttendance');
+    Route::get('/attendance-json', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');
