@@ -244,6 +244,9 @@
                 dateColumns.each(function(index) {
                     $(this).text(index + 1); // Assuming dates start from 1st of the month
                 });
+
+                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'hidden'; // Set visibility to visible
             }
 
 
