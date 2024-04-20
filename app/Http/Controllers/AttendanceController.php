@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\NCR;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -20,30 +22,119 @@ class AttendanceController extends Controller
 
     public function allAttendance(Request $request)
     {
-        // Get the current month's data for all users
-        $currentMonthAttendance = Attendance::whereMonth('date', Carbon::now()->month)
-            ->with('user')
-            ->get();
+        try {
+            // Get the current month's data for all users with user_name
+            $currentMonthAttendance = Attendance::whereMonth('date', Carbon::now()->month)
+                ->join('users', 'attendances.user_id', '=', 'users.id')
+                ->select('attendances.*', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS user_name"))
+                ->get();
 
-        // Prepare an array to store the formatted attendance data
-        $formattedAttendance = [];
+            $formattedAttendance = [];
 
-        // Loop through each attendance record
-        foreach ($currentMonthAttendance as $attendance) {
-            // Concatenate first name and last name for the user
-            $userName = $attendance->user->firstName . ' ' . $attendance->user->lastName;
+            // Group attendance records by user
+            $groupedAttendance = $currentMonthAttendance->groupBy('user_name');
 
-            // Add the formatted data to the array
-            $formattedAttendance[] = [
-                'user_id' => $attendance->user_id,
-                'date' => $attendance->date,
-                'user_name' => $userName,
-                'symbol' => $attendance->symbol
-            ];
+            // Get all dates for the current month
+            $startDate = Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+            $allDates = [];
+
+            while ($startDate <= $endDate) {
+                $allDates[] = $startDate->toDateString();
+                $startDate->addDay();
+            }
+
+            // Loop through each group (each user)
+            foreach ($groupedAttendance as $userAttendance) {
+                // Construct an array to store attendance data for each user
+                $userData = [
+                    'user_id' => $userAttendance->first()->user_id,
+                    'user_name' => $userAttendance->first()->user_name,
+                    'attendance' => [], // Initialize an array to store attendance for each date
+                    'symbol_counts' => [
+                        "√" => 0,
+                        "§" => 0,
+                        "×" => 0,
+                        "◎" => 0,
+                        "■" => 0,
+                        "△" => 0,
+                        "□" => 0,
+                        "☆" => 0,
+                        "*" => 0,
+                        "○" => 0,
+                        "▼" => 0,
+                        "/" => 0,
+                        "#" => 0
+                    ] // Initialize an array to store the count of each symbol
+                ];
+
+                // Loop through all dates of the month
+                foreach ($allDates as $date) {
+                    // Check if attendance record exists for the date
+                    $attendanceRecord = $userAttendance->firstWhere('date', $date);
+                    if ($attendanceRecord) {
+                        // Store attendance symbol for the date in the user's attendance array
+                        $userData['attendance'][$date] = $attendanceRecord->symbol;
+
+                        // Increment the count for the symbol
+                        $userData['symbol_counts'][$attendanceRecord->symbol]++;
+                    } else {
+                        // If attendance record doesn't exist, set it to null
+                        $userData['attendance'][$date] = null;
+                    }
+                }
+
+                // Add the formatted user data to the array
+                $formattedAttendance[] = $userData;
+            }
+
+            return response()->json([
+                'attendance' => $formattedAttendance
+            ]);
+        } catch (QueryException $e) {
+            // Handle database query exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        return response()->json([
-            'attendance' => $formattedAttendance
-        ]);
     }
+
+    public function updateAttendance(Request $request)
+    {
+        try {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'user_id' => 'required|integer',
+                'date' => 'required|date',
+                'symbol' => 'required|string|max:255' // Add appropriate validation rules
+            ]);
+
+            // Extract validated data
+            $userId = $validatedData['user_id'];
+            $date = $validatedData['date'];
+            $symbol = $validatedData['symbol'];
+
+            // Check if the attendance record already exists
+            $attendance = Attendance::where('user_id', $userId)->whereDate('date', $date)->first();
+
+            // If the record doesn't exist, create a new one
+            if (!$attendance) {
+                $attendance = new Attendance();
+                $attendance->user_id = $userId;
+                $attendance->date = $date;
+            }
+
+            // Update the symbol
+            $attendance->symbol = $symbol;
+            $attendance->save();
+
+            // Return a success response
+            return response()->json(['message' => 'Attendance updated successfully']);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 }

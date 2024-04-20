@@ -376,6 +376,8 @@ function loadTeamData(e) {
             console.log(e);
             // String variable to store the dropdown items HTML
             let roleOptions = '';
+
+            roleOptions += `<option disabled selected>Select role</option>`; // Placeholder option
             // Iterate over the roles array and generate dropdown items HTML
             roles.forEach(role => {
                 roleOptions += `<option data-role="${role}" ${e.role === role ? 'selected' : ''}>

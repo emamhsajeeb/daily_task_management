@@ -76,6 +76,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
 
     Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('showAttendance');
     Route::get('/attendance-json', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
+    Route::post('/attendance-update', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');
