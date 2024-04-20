@@ -41,12 +41,46 @@
 
                                 <div class="live-preview">
                                     <div class="table-responsive table-card">
-                                        <table id="ncrTable" class="table align-middle table-nowrap table-hover table-striped-columns mb-0">
-                                            <thead id="ncrTableHead" class="table-light">
+                                        <table id="attendanceTable" style="table-border: 1px solid black">
+                                            <thead>
+                                            <tr>
+                                                <td rowspan="2">SL</td>
+                                                <td rowspan="2">Name</td>
+                                                <!-- Date columns -->
+                                                <td colspan="30">Date: 01.04.2024 - 30.04.2024</td>
+                                                <!-- Reason for leave columns -->
+                                                <td colspan="8">Reason for leave (days)</td>
+                                                <td>Remark</td>
+                                            </tr>
+                                            <tr>
+                                                <!-- Date headers -->
+                                                <!-- Insert date headers dynamically using JavaScript -->
+                                                <!-- Leave reason headers -->
+                                                <td colspan="30">
+                                                    <!-- Insert date numbers dynamically using JavaScript -->
+                                                </td>
+                                                <td>Absence</td>
+                                                <td>Personal</td>
+                                                <td>Sick</td>
+                                                <td>Marital</td>
+                                                <td>Funeral</td>
+                                                <td>Maternity</td>
+                                                <td>Annual Holiday</td>
+                                                <td>Festival Holiday</td>
+                                                <td></td>
+                                            </tr>
                                             </thead>
-                                            <tbody id="ncrTableBody">
+                                            <tbody>
+                                            <!-- Table body content will be populated dynamically -->
                                             </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <!-- Remark footer -->
+                                                <td colspan="41">Remark: Symbol description: “√” attendance, “§” personal leave, “×” sickness, “◎” maternity leave, “■” funeral leave, “△” annual holiday, “□” marital leave, “☆” late, “*” leave early, “○” business trip, “▼” absence, “/” weekend, “#” festival holiday.</td>
+                                            </tr>
+                                            </tfoot>
                                         </table>
+
                                     </div>
                                 </div>
                             </div><!-- end card-body -->
@@ -174,6 +208,43 @@
             const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
             var user = {!! json_encode($user) !!};
             var ncrs;
+
+            async function updateAttendance() {
+                // Initialize DataTables
+                var table = $('#attendanceTable').DataTable();
+
+                // Example data
+                var attendanceData = [
+                    // Sample data for a single person
+                    // Replace this with your actual data fetched from your source
+                    {
+                        name: "Md. Hafizur Rahman",
+                        attendance: ["√", "√", "√", "√", "/", "√", "#", "√", "#", "#", "#", "#", "#", "#", "#", "√", "√", "√", "√", "/", "√", "√", "√", "√", "√", "√", "/", "√", "√", "√", "√", "-", "-", "-", "-", "-", "-", "-", "-", "7", ""]
+                    }
+                    // Add more data objects for additional persons
+                ];
+
+                // Populate table body
+                attendanceData.forEach(function(person) {
+                    var row = $('<tr>');
+                    row.append('<td>1</td>'); // Sample SL value, replace as needed
+                    row.append('<td>' + person.name + '</td>'); // Person's name
+
+                    // Attendance data
+                    person.attendance.forEach(function(attendance) {
+                        row.append('<td>' + attendance + '</td>');
+                    });
+
+                    // Append row to table body
+                    $('#attendanceTable tbody').append(row);
+                });
+
+                // Insert date numbers dynamically into the date columns
+                var dateColumns = $('#attendanceTable thead tr:nth-child(2) td[colspan="30"]');
+                dateColumns.each(function(index) {
+                    $(this).text(index + 1); // Assuming dates start from 1st of the month
+                });
+            }
 
 
             async function updateNCRList() {
@@ -377,7 +448,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-                await updateNCRList();
+                await updateAttendance();
 
                 $("#showAddModalBtn").click(function () {
                     $("#showAddModal").modal('show');
@@ -461,4 +532,6 @@
 
 
         </style>
+
+
 @endsection
