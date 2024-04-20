@@ -102,7 +102,7 @@
                     <div class="collapse menu-dropdown" id="sidebarPayroll">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('attendance') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> Attendance </a>
+                                <a href="{{ route('showAttendance') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> Attendance </a>
                             </li>
                         </ul>
                     </div>
