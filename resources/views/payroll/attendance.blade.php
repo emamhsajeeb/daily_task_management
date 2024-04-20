@@ -44,21 +44,8 @@
                                         <table id="attendanceTable" style="table-border: 1px solid black">
                                             <thead>
                                             <tr>
-                                                <td rowspan="2">SL</td>
-                                                <td rowspan="2">Name</td>
-                                                <!-- Date columns -->
-                                                <td colspan="30">Date: 01.04.2024 - 30.04.2024</td>
-                                                <!-- Reason for leave columns -->
-                                                <td colspan="8">Reason for leave (days)</td>
-                                                <td>Remark</td>
-                                            </tr>
-                                            <tr>
-                                                <!-- Date headers -->
-                                                <!-- Insert date headers dynamically using JavaScript -->
-                                                <!-- Leave reason headers -->
-                                                <td colspan="30">
-                                                    <!-- Insert date numbers dynamically using JavaScript -->
-                                                </td>
+                                                <td>SL</td>
+                                                <td>Name</td>
                                                 <td>Absence</td>
                                                 <td>Personal</td>
                                                 <td>Sick</td>
@@ -67,7 +54,7 @@
                                                 <td>Maternity</td>
                                                 <td>Annual Holiday</td>
                                                 <td>Festival Holiday</td>
-                                                <td></td>
+                                                <td>Remark</td>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -210,8 +197,7 @@
             var ncrs;
 
             async function updateAttendance() {
-                // Initialize DataTables
-                var table = $('#attendanceTable').DataTable();
+
 
                 // Example data
                 var attendanceData = [
@@ -244,6 +230,9 @@
                 dateColumns.each(function(index) {
                     $(this).text(index + 1); // Assuming dates start from 1st of the month
                 });
+
+                // Initialize DataTables
+                var table = $('#attendanceTable').DataTable();
 
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'hidden'; // Set visibility to visible
