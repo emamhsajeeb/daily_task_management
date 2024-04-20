@@ -42,28 +42,15 @@
                                 <div class="live-preview">
                                     <div class="table-responsive table-card">
                                         <table id="attendanceTable" style="table-border: 1px solid black">
-                                            <thead>
-                                            <tr>
-                                                <td>SL</td>
-                                                <td>Name</td>
-                                                <td>Absence</td>
-                                                <td>Personal</td>
-                                                <td>Sick</td>
-                                                <td>Marital</td>
-                                                <td>Funeral</td>
-                                                <td>Maternity</td>
-                                                <td>Annual Holiday</td>
-                                                <td>Festival Holiday</td>
-                                                <td>Remark</td>
-                                            </tr>
+                                            <thead id="attendanceTableHead">
                                             </thead>
-                                            <tbody>
+                                            <tbody id="attendanceTableBody">
                                             <!-- Table body content will be populated dynamically -->
                                             </tbody>
-                                            <tfoot>
+                                            <tfoot id="attendanceTableBody">
                                             <tr>
                                                 <!-- Remark footer -->
-                                                <td colspan="41">Remark: Symbol description: “√” attendance, “§” personal leave, “×” sickness, “◎” maternity leave, “■” funeral leave, “△” annual holiday, “□” marital leave, “☆” late, “*” leave early, “○” business trip, “▼” absence, “/” weekend, “#” festival holiday.</td>
+                                                <td>Remark: Symbol description: “√” attendance, “§” personal leave, “×” sickness, “◎” maternity leave, “■” funeral leave, “△” annual holiday, “□” marital leave, “☆” late, “*” leave early, “○” business trip, “▼” absence, “/” weekend, “#” festival holiday.</td>
                                             </tr>
                                             </tfoot>
                                         </table>
@@ -198,41 +185,87 @@
 
             async function updateAttendance() {
 
+                var header = `
+                <tr>
+                    <th>SL</th>
+                    <td>Name</td>
+                    <td>Absence</td>
+                    <td>Personal</td>
+                    <td>Sick</td>
+                    <td>Marital</td>
+                    <td>Funeral</td>
+                    <td>Maternity</td>
+                    <td>Annual Holiday</td>
+                    <td>Festival Holiday</td>
+                    <td>Remark</td>
+                </tr>
+    `;
 
-                // Example data
-                var attendanceData = [
-                    // Sample data for a single person
-                    // Replace this with your actual data fetched from your source
-                    {
-                        name: "Md. Hafizur Rahman",
-                        attendance: ["√", "√", "√", "√", "/", "√", "#", "√", "#", "#", "#", "#", "#", "#", "#", "√", "√", "√", "√", "/", "√", "√", "√", "√", "√", "√", "/", "√", "√", "√", "√", "-", "-", "-", "-", "-", "-", "-", "-", "7", ""]
+                $('#attendanceTable').html(header).css('text-align', 'center');
+
+                await $.ajax({
+                    url: '{{ route("allAttendance") }}',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: async function (response) {
+                        const attendances = response.attendance;
+                        $('#attendanceTable').DataTable({
+                            processing: true,
+                            language: {
+                                processing: "<i class='fa fa-refresh fa-spin'></i>",
+                            },
+                            destroy: true,
+                            order: [[0,'desc']],
+                            scrollCollapse: true,
+                            scroller: true,
+                            scrollY: 500,
+                            deferRender: true,
+                            fixedHeader: {
+                                header: true,
+                                footer: true
+                            },
+                            data: attendances, // Use the correct variable name
+                            columns: [
+                                { data: 'date', className: 'dataTables-center' },
+                                {
+                                    data: 'user_name', // Assuming 'user_name' is the property name for the concatenated first and last name
+                                    className: 'dataTables-center'
+                                },
+                                {
+                                    data: 'date',
+                                    render: function(data, type, row) {
+                                        return data; // Render the date in this column
+                                    },
+                                    className: 'dataTables-center'
+                                },
+                                {
+                                    data: 'symbol',
+                                    render: function(data, type, row) {
+                                        const symbols = [
+                                            "√", "§", "×", "◎", "■", "△", "□", "☆", "*", "○", "▼", "/", "#"
+                                        ];
+                                        var symbolOptions = symbols.map(function(symbol) {
+                                            return `<option value="${symbol}" ${data === symbol ? 'selected' : ''}>${symbol}</option>`;
+                                        }).join('');
+
+                                        var statusOptions = `
+                                <select class="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
+                                    ${symbolOptions}
+                                </select>
+                            `;
+                                        return statusOptions;
+                                    },
+                                    className: 'dataTables-center'
+                                }
+                            ],
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        return error;
                     }
-                    // Add more data objects for additional persons
-                ];
-
-                // Populate table body
-                attendanceData.forEach(function(person) {
-                    var row = $('<tr>');
-                    row.append('<td>1</td>'); // Sample SL value, replace as needed
-                    row.append('<td>' + person.name + '</td>'); // Person's name
-
-                    // Attendance data
-                    person.attendance.forEach(function(attendance) {
-                        row.append('<td>' + attendance + '</td>');
-                    });
-
-                    // Append row to table body
-                    $('#attendanceTable tbody').append(row);
                 });
 
-                // Insert date numbers dynamically into the date columns
-                var dateColumns = $('#attendanceTable thead tr:nth-child(2) td[colspan="30"]');
-                dateColumns.each(function(index) {
-                    $(this).text(index + 1); // Assuming dates start from 1st of the month
-                });
 
-                // Initialize DataTables
-                var table = $('#attendanceTable').DataTable();
 
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'hidden'; // Set visibility to visible
