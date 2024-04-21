@@ -83,13 +83,17 @@ class ApplicationBuilder
     /**
      * Register the core event service provider for the application.
      *
-     * @param  array  $discover
+     * @param  array|bool  $discover
      * @return $this
      */
-    public function withEvents(array $discover = [])
+    public function withEvents(array|bool $discover = [])
     {
-        if (count($discover) > 0) {
+        if (is_array($discover) && count($discover) > 0) {
             AppEventServiceProvider::setEventDiscoveryPaths($discover);
+        }
+
+        if ($discover === false) {
+            AppEventServiceProvider::disableEventDiscovery();
         }
 
         if (! isset($this->pendingProviders[AppEventServiceProvider::class])) {
@@ -104,7 +108,7 @@ class ApplicationBuilder
     }
 
     /**
-     * Register the braodcasting services for the application.
+     * Register the broadcasting services for the application.
      *
      * @param  string  $channels
      * @param  array  $attributes
@@ -285,7 +289,7 @@ class ApplicationBuilder
     /**
      * Register the scheduled tasks for the application.
      *
-     * @param  callable(Schedule $schedule): void  $callback
+     * @param  callable(\Illuminate\Console\Scheduling\Schedule $schedule): void  $callback
      * @return $this
      */
     public function withSchedule(callable $callback)

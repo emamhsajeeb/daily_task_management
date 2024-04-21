@@ -1081,7 +1081,7 @@ trait Date
      *
      * @throws UnknownGetterException
      *
-     * @return string|int|bool|DateTimeZone|null
+     * @return string|int|bool|DateTimeZone
      */
     public function get(Unit|string $name): mixed
     {
@@ -1307,7 +1307,7 @@ trait Date
             // @property CarbonTimeZone $timezone the current timezone
             // @property CarbonTimeZone $tz alias of $timezone
             case $name === 'timezone' || $name === 'tz':
-                return CarbonTimeZone::instance($this->getTimezone());
+                return $this->getTimezone();
 
             // @property-read string $timezoneName the current timezone name
             // @property-read string $tzName alias of $timezoneName
@@ -2607,223 +2607,16 @@ trait Date
      */
     public function __call(string $method, array $parameters): mixed
     {
-        if (preg_match('/^(diff|floatDiff)In(Real|UTC|Utc)?(.+)$/', $method, $match)) {
-            $mode = strtoupper($match[2] ?? '');
-            $betterMethod = $match[1] === 'floatDiff' ? str_replace('floatDiff', 'diff', $method) : null;
-
-            if ($mode === 'REAL') {
-                $mode = 'UTC';
-                $betterMethod = str_replace($match[1], 'UTC', $betterMethod ?? $method);
-            }
-
-            if ($betterMethod) {
-                @trigger_error(
-                    "Use the method $betterMethod instead to make it more explicit about what it does.\n".
-                    'On next major version, "float" prefix will be removed (as all diff are now returning floating numbers)'.
-                    ' and "Real" methods will be removed in favor of "UTC" because what it actually does is to convert both'.
-                    ' dates to UTC timezone before comparison, while by default it does it only if both dates don\'t have'.
-                    ' exactly the same timezone (Note: 2 timezones with the same offset but different names are considered'.
-                    ' different as it\'s not safe to assume they will always have the same offset).',
-                    \E_USER_DEPRECATED,
-                );
-            }
-
-            $unit = self::pluralUnit($match[3]);
-            $method = 'diffIn'.ucfirst($unit);
-
-            if (\in_array($unit, ['days', 'weeks', 'months', 'quarters', 'years'])) {
-                $parameters['utc'] = ($mode === 'UTC');
-            }
-
-            if (method_exists($this, $method)) {
-                return $this->$method(...$parameters);
-            }
-        }
-
-        $diffSizes = [
-            // @mode diffForHumans
-            'short' => true,
-            // @mode diffForHumans
-            'long' => false,
-        ];
-        $diffSyntaxModes = [
-            // @call diffForHumans
-            'Absolute' => CarbonInterface::DIFF_ABSOLUTE,
-            // @call diffForHumans
-            'Relative' => CarbonInterface::DIFF_RELATIVE_AUTO,
-            // @call diffForHumans
-            'RelativeToNow' => CarbonInterface::DIFF_RELATIVE_TO_NOW,
-            // @call diffForHumans
-            'RelativeToOther' => CarbonInterface::DIFF_RELATIVE_TO_OTHER,
-        ];
-        $sizePattern = implode('|', array_keys($diffSizes));
-        $syntaxPattern = implode('|', array_keys($diffSyntaxModes));
-
-        if (preg_match("/^(?<size>$sizePattern)(?<syntax>$syntaxPattern)DiffForHumans$/", $method, $match)) {
-            $dates = array_filter($parameters, function ($parameter) {
-                return $parameter instanceof DateTimeInterface;
-            });
-            $other = null;
-
-            if (\count($dates)) {
-                $key = key($dates);
-                $other = current($dates);
-                array_splice($parameters, $key, 1);
-            }
-
-            return $this->diffForHumans($other, $diffSyntaxModes[$match['syntax']], $diffSizes[$match['size']], ...$parameters);
-        }
-
-        $roundedValue = $this->callRoundMethod($method, $parameters);
-
-        if ($roundedValue !== null) {
-            return $roundedValue;
-        }
-
         $unit = rtrim($method, 's');
 
-        if (str_starts_with($unit, 'is')) {
-            $word = substr($unit, 2);
-
-            if (\in_array($word, static::$days, true)) {
-                return $this->isDayOfWeek($word);
-            }
-
-            switch ($word) {
-                // @call is Check if the current instance has UTC timezone. (Both isUtc and isUTC cases are valid.)
-                case 'Utc':
-                case 'UTC':
-                    return $this->utc;
-                // @call is Check if the current instance has non-UTC timezone.
-                case 'Local':
-                    return $this->local;
-                // @call is Check if the current instance is a valid date.
-                case 'Valid':
-                    return $this->year !== 0;
-                // @call is Check if the current instance is in a daylight saving time.
-                case 'DST':
-                    return $this->dst;
-            }
-        }
-
-        $action = substr($unit, 0, 3);
-        $overflow = null;
-
-        if ($action === 'set') {
-            $unit = strtolower(substr($unit, 3));
-        }
-
-        if (\in_array($unit, static::$units, true)) {
-            return $this->setUnit($unit, ...$parameters);
-        }
-
-        if ($action === 'add' || $action === 'sub') {
-            $unit = substr($unit, 3);
-            $utcUnit = $this->getUTCUnit($unit);
-
-            if ($utcUnit) {
-                $unit = static::singularUnit($utcUnit);
-
-                return $this->{"{$action}RealUnit"}($unit, ...$parameters);
-            }
-
-            if (preg_match('/^(Month|Quarter|Year|Decade|Century|Centurie|Millennium|Millennia)s?(No|With|Without|WithNo)Overflow$/', $unit, $match)) {
-                $unit = $match[1];
-                $overflow = $match[2] === 'With';
-            }
-
-            $unit = static::singularUnit($unit);
-        }
-
-        if (static::isModifiableUnit($unit)) {
-            return $this->{"{$action}Unit"}($unit, $this->getMagicParameter($parameters, 0, 'value', 1), $overflow);
-        }
-
-        $sixFirstLetters = substr($unit, 0, 6);
-        $factor = -1;
-
-        if ($sixFirstLetters === 'isLast') {
-            $sixFirstLetters = 'isNext';
-            $factor = 1;
-        }
-
-        if ($sixFirstLetters === 'isNext') {
-            $lowerUnit = strtolower(substr($unit, 6));
-
-            if (static::isModifiableUnit($lowerUnit)) {
-                return $this->avoidMutation()->addUnit($lowerUnit, $factor, false)->isSameUnit($lowerUnit, ...($parameters ?: ['now']));
-            }
-        }
-
-        if ($sixFirstLetters === 'isSame') {
-            try {
-                return $this->isSameUnit(strtolower(substr($unit, 6)), ...$parameters);
-            } catch (BadComparisonUnitException) {
-                // Try next
-            }
-        }
-
-        if (str_starts_with($unit, 'isCurrent')) {
-            try {
-                return $this->isCurrentUnit(strtolower(substr($unit, 9)));
-            } catch (BadComparisonUnitException | BadMethodCallException) {
-                // Try next
-            }
-        }
-
-        if (str_ends_with($method, 'Until')) {
-            try {
-                $unit = static::singularUnit(substr($method, 0, -5));
-
-                return $this->range(
-                    $this->getMagicParameter($parameters, 0, 'endDate', $this),
-                    $this->getMagicParameter($parameters, 1, 'factor', 1),
-                    $unit
-                );
-            } catch (InvalidArgumentException) {
-                // Try macros
-            }
-        }
-
-        if (preg_match('/^([a-z]{2,})(In|Of)([A-Z][a-z]+)$/', $method, $match)) {
-            $value = null;
-            $localStrictModeEnabled = $this->localStrictModeEnabled;
-            $this->localStrictModeEnabled = true;
-
-            try {
-                $value = $this->callGetOrSet($method, $parameters[0] ?? null);
-            } catch (UnknownGetterException|UnknownSetterException|ImmutableException) {
-                // continue to macro
-            } finally {
-                $this->localStrictModeEnabled = $localStrictModeEnabled;
-            }
-
-            if ($value !== null) {
-                return $value;
-            }
-        }
-
-        return static::bindMacroContext($this, function () use (&$method, &$parameters) {
-            $macro = $this->getLocalMacro($method);
-
-            if (!$macro) {
-                foreach ($this->getAllGenericMacros() as $callback) {
-                    try {
-                        return $this->executeCallable($callback, $method, ...$parameters);
-                    } catch (BadMethodCallException) {
-                        continue;
-                    }
-                }
-
-                if ($this->isLocalStrictModeEnabled()) {
-                    throw new UnknownMethodException($method);
-                }
-
-                return null;
-            }
-
-            return $this->executeCallable($macro, ...$parameters);
-        });
+        return $this->callDiffAlias($unit, $parameters)
+            ?? $this->callHumanDiffAlias($unit, $parameters)
+            ?? $this->callRoundMethod($unit, $parameters)
+            ?? $this->callIsMethod($unit, $parameters)
+            ?? $this->callModifierMethod($unit, $parameters)
+            ?? $this->callPeriodMethod($method, $parameters)
+            ?? $this->callGetOrSetMethod($method, $parameters)
+            ?? $this->callMacroMethod($method, $parameters);
     }
 
     /**
@@ -2932,6 +2725,24 @@ trait Date
         return $this->getTranslationMessage("$key.$subKey", null, $defaultValue);
     }
 
+    private function callGetOrSetMethod(string $method, array $parameters): mixed
+    {
+        if (preg_match('/^([a-z]{2,})(In|Of)([A-Z][a-z]+)$/', $method)) {
+            $localStrictModeEnabled = $this->localStrictModeEnabled;
+            $this->localStrictModeEnabled = true;
+
+            try {
+                return $this->callGetOrSet($method, $parameters[0] ?? null);
+            } catch (UnknownGetterException|UnknownSetterException|ImmutableException) {
+                // continue to macro
+            } finally {
+                $this->localStrictModeEnabled = $localStrictModeEnabled;
+            }
+        }
+
+        return null;
+    }
+
     private function callGetOrSet(string $name, mixed $value): mixed
     {
         if ($value !== null) {
@@ -2956,5 +2767,226 @@ trait Date
         }
 
         return null;
+    }
+
+    private function callDiffAlias(string $method, array $parameters): mixed
+    {
+        if (preg_match('/^(diff|floatDiff)In(Real|UTC|Utc)?(.+)$/', $method, $match)) {
+            $mode = strtoupper($match[2] ?? '');
+            $betterMethod = $match[1] === 'floatDiff' ? str_replace('floatDiff', 'diff', $method) : null;
+
+            if ($mode === 'REAL') {
+                $mode = 'UTC';
+                $betterMethod = str_replace($match[2], 'UTC', $betterMethod ?? $method);
+            }
+
+            if ($betterMethod) {
+                @trigger_error(
+                    "Use the method $betterMethod instead to make it more explicit about what it does.\n".
+                    'On next major version, "float" prefix will be removed (as all diff are now returning floating numbers)'.
+                    ' and "Real" methods will be removed in favor of "UTC" because what it actually does is to convert both'.
+                    ' dates to UTC timezone before comparison, while by default it does it only if both dates don\'t have'.
+                    ' exactly the same timezone (Note: 2 timezones with the same offset but different names are considered'.
+                    " different as it's not safe to assume they will always have the same offset).",
+                    \E_USER_DEPRECATED,
+                );
+            }
+
+            $unit = self::pluralUnit($match[3]);
+            $diffMethod = 'diffIn'.ucfirst($unit);
+
+            if (\in_array($unit, ['days', 'weeks', 'months', 'quarters', 'years'])) {
+                $parameters['utc'] = ($mode === 'UTC');
+            }
+
+            if (method_exists($this, $diffMethod)) {
+                return $this->$diffMethod(...$parameters);
+            }
+        }
+
+        return null;
+    }
+
+    private function callHumanDiffAlias(string $method, array $parameters): ?string
+    {
+        $diffSizes = [
+            // @mode diffForHumans
+            'short' => true,
+            // @mode diffForHumans
+            'long' => false,
+        ];
+        $diffSyntaxModes = [
+            // @call diffForHumans
+            'Absolute' => CarbonInterface::DIFF_ABSOLUTE,
+            // @call diffForHumans
+            'Relative' => CarbonInterface::DIFF_RELATIVE_AUTO,
+            // @call diffForHumans
+            'RelativeToNow' => CarbonInterface::DIFF_RELATIVE_TO_NOW,
+            // @call diffForHumans
+            'RelativeToOther' => CarbonInterface::DIFF_RELATIVE_TO_OTHER,
+        ];
+        $sizePattern = implode('|', array_keys($diffSizes));
+        $syntaxPattern = implode('|', array_keys($diffSyntaxModes));
+
+        if (preg_match("/^(?<size>$sizePattern)(?<syntax>$syntaxPattern)DiffForHuman$/", $method, $match)) {
+            $dates = array_filter($parameters, function ($parameter) {
+                return $parameter instanceof DateTimeInterface;
+            });
+            $other = null;
+
+            if (\count($dates)) {
+                $key = key($dates);
+                $other = current($dates);
+                array_splice($parameters, $key, 1);
+            }
+
+            return $this->diffForHumans($other, $diffSyntaxModes[$match['syntax']], $diffSizes[$match['size']], ...$parameters);
+        }
+
+        return null;
+    }
+
+    private function callIsMethod(string $unit, array $parameters): ?bool
+    {
+        if (!str_starts_with($unit, 'is')) {
+            return null;
+        }
+
+        $word = substr($unit, 2);
+
+        if (\in_array($word, static::$days, true)) {
+            return $this->isDayOfWeek($word);
+        }
+
+        return match ($word) {
+            // @call is Check if the current instance has UTC timezone. (Both isUtc and isUTC cases are valid.)
+            'Utc', 'UTC' => $this->utc,
+            // @call is Check if the current instance has non-UTC timezone.
+            'Local' => $this->local,
+            // @call is Check if the current instance is a valid date.
+            'Valid' => $this->year !== 0,
+            // @call is Check if the current instance is in a daylight saving time.
+            'DST' => $this->dst,
+            default => $this->callComparatorMethod($word, $parameters),
+        };
+    }
+
+    private function callComparatorMethod(string $unit, array $parameters): ?bool
+    {
+        $start = substr($unit, 0, 4);
+        $factor = -1;
+
+        if ($start === 'Last') {
+            $start = 'Next';
+            $factor = 1;
+        }
+
+        if ($start === 'Next') {
+            $lowerUnit = strtolower(substr($unit, 4));
+
+            if (static::isModifiableUnit($lowerUnit)) {
+                return $this->avoidMutation()->addUnit($lowerUnit, $factor, false)->isSameUnit($lowerUnit, ...($parameters ?: ['now']));
+            }
+        }
+
+        if ($start === 'Same') {
+            try {
+                return $this->isSameUnit(strtolower(substr($unit, 4)), ...$parameters);
+            } catch (BadComparisonUnitException) {
+                // Try next
+            }
+        }
+
+        if (str_starts_with($unit, 'Current')) {
+            try {
+                return $this->isCurrentUnit(strtolower(substr($unit, 7)));
+            } catch (BadComparisonUnitException | BadMethodCallException) {
+                // Try next
+            }
+        }
+
+        return null;
+    }
+
+    private function callModifierMethod(string $unit, array $parameters): ?static
+    {
+        $action = substr($unit, 0, 3);
+        $overflow = null;
+
+        if ($action === 'set') {
+            $unit = strtolower(substr($unit, 3));
+        }
+
+        if (\in_array($unit, static::$units, true)) {
+            return $this->setUnit($unit, ...$parameters);
+        }
+
+        if ($action === 'add' || $action === 'sub') {
+            $unit = substr($unit, 3);
+            $utcUnit = $this->getUTCUnit($unit);
+
+            if ($utcUnit) {
+                $unit = static::singularUnit($utcUnit);
+
+                return $this->{"{$action}UTCUnit"}($unit, ...$parameters);
+            }
+
+            if (preg_match('/^(Month|Quarter|Year|Decade|Century|Centurie|Millennium|Millennia)s?(No|With|Without|WithNo)Overflow$/', $unit, $match)) {
+                $unit = $match[1];
+                $overflow = $match[2] === 'With';
+            }
+
+            $unit = static::singularUnit($unit);
+        }
+
+        if (static::isModifiableUnit($unit)) {
+            return $this->{"{$action}Unit"}($unit, $this->getMagicParameter($parameters, 0, 'value', 1), $overflow);
+        }
+
+        return null;
+    }
+
+    private function callPeriodMethod(string $method, array $parameters): ?CarbonPeriod
+    {
+        if (str_ends_with($method, 'Until')) {
+            try {
+                $unit = static::singularUnit(substr($method, 0, -5));
+
+                return $this->range(
+                    $this->getMagicParameter($parameters, 0, 'endDate', $this),
+                    $this->getMagicParameter($parameters, 1, 'factor', 1),
+                    $unit
+                );
+            } catch (InvalidArgumentException) {
+                // Try macros
+            }
+        }
+
+        return null;
+    }
+
+    private function callMacroMethod(string $method, array $parameters): mixed
+    {
+        return static::bindMacroContext($this, function () use (&$method, &$parameters) {
+            $macro = $this->getLocalMacro($method);
+
+            if (!$macro) {
+                foreach ($this->getAllGenericMacros() as $callback) {
+                    try {
+                        return $this->executeCallable($callback, $method, ...$parameters);
+                    } catch (BadMethodCallException) {
+                        continue;
+                    }
+                }
+
+                if ($this->isLocalStrictModeEnabled()) {
+                    throw new UnknownMethodException($method);
+                }
+
+                return null;
+            }
+
+            return $this->executeCallable($macro, ...$parameters);
+        });
     }
 }

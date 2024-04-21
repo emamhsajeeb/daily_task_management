@@ -99,22 +99,52 @@ class Repository
      * Retrieve the given key's value.
      *
      * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->data[$key] ?? null;
+        return $this->data[$key] ?? value($default);
     }
 
     /**
      * Retrieve the given key's hidden value.
      *
      * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
-    public function getHidden($key)
+    public function getHidden($key, $default = null)
     {
-        return $this->hidden[$key] ?? null;
+        return $this->hidden[$key] ?? value($default);
+    }
+
+    /**
+     * Retrieve the given key's value and then forget it.
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function pull($key, $default = null)
+    {
+        return tap($this->get($key, $default), function () use ($key) {
+            $this->forget($key);
+        });
+    }
+
+    /**
+     * Retrieve the given key's hidden value and then forget it.
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function pullHidden($key, $default = null)
+    {
+        return tap($this->getHidden($key, $default), function () use ($key) {
+            $this->forgetHidden($key);
+        });
     }
 
     /**
