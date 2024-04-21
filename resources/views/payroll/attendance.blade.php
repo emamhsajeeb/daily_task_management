@@ -86,6 +86,8 @@ const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 
 async function updateAttendanceTable(month) {
+    preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+    preloader.style.visibility = 'visible'; // Set visibility to visible
     await $.ajax({
         url: '{{ route("allAttendance") }}',
         method: 'GET',
