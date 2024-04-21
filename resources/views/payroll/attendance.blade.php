@@ -50,9 +50,9 @@
                                 </form>
                             </div>
                             <div class="card-body">
-                                <div class="live-preview">
-                                    <div class="table-responsive table-card">
-                                        <table  id="attendanceTable" class="table-bordered column-order table-nowrap display compact align-middle">
+                                <div class="table-responsive">
+                                    <div>
+                                        <table  id="attendanceTable" class="table-bordered table-nowrap display compact align-middle">
                                             <thead id="attendanceTableHead" style="text-align: center">
                                             </thead>
                                             <tbody id="attendanceTableBody">
@@ -65,7 +65,6 @@
                                             </tr>
                                             </tfoot>
                                         </table>
-
                                     </div>
                                 </div>
                             </div><!-- end card-body -->
