@@ -175,25 +175,28 @@ async function updateAttendanceTable(month) {
 
 
             $('#remarkFooter').attr('colspan', 14+numberOfDays);
+
+            $('#attendanceTable').DataTable({
+                processing: true,
+                scroller: true,
+                scrollY: 500,
+                language: {
+                    processing: "<i class='fa fa-refresh fa-spin'></i>",
+                },
+                destroy: true,
+                order: [[0,'desc']],
+                scrollCollapse: true,
+                deferRender: true,
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+            });
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
 
 
-            // $('#attendanceTable').DataTable({
-            //     lengthChange: false,
-            //     processing: true,
-            //     language: {
-            //         processing: "<i class='fa fa-refresh fa-spin'></i>",
-            //     },
-            //     destroy: true,
-            //     order: [[0,'desc']],
-            //     scrollCollapse: true,
-            //     deferRender: true,
-            //     fixedHeader: {
-            //         header: true,
-            //         footer: true
-            //     },
-            // });
+
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
