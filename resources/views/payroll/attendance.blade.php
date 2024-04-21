@@ -51,7 +51,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="live-preview">
-                                    <div style="margin: 15px;" class="table-responsive table-card">
+                                    <div class="table-responsive table-card">
                                         <table  id="attendanceTable" class="table-bordered column-order table-nowrap display compact align-middle">
                                             <thead id="attendanceTableHead" style="text-align: center">
                                             </thead>
