@@ -92,6 +92,9 @@ async function updateAttendanceTable(month) {
         data: { month: month }, // Pass the selected month to the server
         dataType: 'json',
         success: async function(response) {
+            // Append the row to the table body
+            $('#attendanceTableHead').html('');
+            $('#attendanceTableBody').html('');
             const attendances = response.attendance;
             console.log(attendances);
 
