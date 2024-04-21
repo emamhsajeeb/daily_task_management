@@ -38,7 +38,7 @@ class AttendanceController extends Controller
                 // Initialize user data array
                 $userData = [
                     'user_id' => $userId,
-                    'user_name' => User::find($userId)->user_name, // Assuming you have a method to get full_name
+                    'user_name' => User::find($userId)->first_name .' '. User::find($userId)->last_name, // Assuming you have a method to get full_name
                     'attendance' => [], // Initialize an array to store attendance for each date
                     'symbol_counts' => [
                         "√" => 0, "§" => 0, "×" => 0, "◎" => 0, "■" => 0, "△" => 0, "□" => 0, "☆" => 0, "*" => 0, "○" => 0, "▼" => 0, "/" => 0, "#" => 0

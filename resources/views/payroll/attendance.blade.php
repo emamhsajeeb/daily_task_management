@@ -156,7 +156,7 @@ async function updateAttendanceTable() {
                                     data-date="${date}"
                                     data-user-id="${userAttendance.user_id}"
                                     class="symbol-dropdown"
-                            >${statusOptions}</select></td>`;
+                            ><option value="" ${!symbol ? 'selected' : ''}></option>${statusOptions}</select></td>`;
 
                 }
 
