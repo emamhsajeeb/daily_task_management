@@ -45,13 +45,6 @@
                                             <input  type="month" id="monthPicker" name="monthPicker" class="form-control bg-light border-light" placeholder="Select month..." />
                                         </div>
                                         <!--end col-->
-                                        <div class="col-xxl-1 col-sm-4">
-                                            <button type="button" class="btn btn-primary w-100" id="filterSummary">
-                                                <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                                Filter
-                                            </button>
-                                        </div>
-                                        <!--end col-->
                                     </div>
                                     <!--end row-->
                                 </form>
@@ -246,11 +239,13 @@ $( document ).ready(async function () {
         $("#showAddModal").modal('show');
     });
 
-    $('#filterTasks').click(async function (e) {
-        e.preventDefault();
-        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
-        $('#filterTasks').prop('disabled', true);
-        await filterTaskList();
+    // Attach change event listener to the month input field
+    $('#monthPicker').change(function() {
+        // Get the new selected month value
+        const newMonth = $(this).val();
+
+        // Call the updateAttendanceTable function with the new month value
+        updateAttendanceTable(newMonth);
     });
 
     await $('#exportToExcel').click(async function (e) {
