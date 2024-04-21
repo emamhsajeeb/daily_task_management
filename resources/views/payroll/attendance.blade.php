@@ -92,19 +92,18 @@
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 
-async function updateAttendanceTable() {
+async function updateAttendanceTable(month) {
     await $.ajax({
         url: '{{ route("allAttendance") }}',
         method: 'GET',
+        data: { month: month }, // Pass the selected month to the server
         dataType: 'json',
-        success: async function (response) {
-            // const all_dates = response.all_dates;
+        success: async function(response) {
             const attendances = response.attendance;
             console.log(attendances);
 
-            // Get the current date
-            var currentDate = new Date();
-            var numberOfDays = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+            const [year, monthNumber] = month.split('-').map(Number);
+            const numberOfDays = new Date(year, monthNumber, 0).getDate();
             var header = `
                 <tr>
                     <th>Name</th>`;
@@ -233,7 +232,15 @@ $( document ).ready(async function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    await updateAttendanceTable();
+    // Set default month to current month
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    const defaultMonth = `${currentYear}-${currentMonth.toString().padStart(2, '0')}`;
+    $('#monthPicker').val(defaultMonth);
+
+    // Call updateAttendanceTable initially with default month
+    await updateAttendanceTable(defaultMonth);
 
     $("#showAddModalBtn").click(function () {
         $("#showAddModal").modal('show');
