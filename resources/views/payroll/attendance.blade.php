@@ -243,6 +243,7 @@ $( document ).ready(async function () {
     $('#monthPicker').change(function() {
         // Get the new selected month value
         const newMonth = $(this).val();
+        console.log(newMonth);
 
         // Call the updateAttendanceTable function with the new month value
         updateAttendanceTable(newMonth);
