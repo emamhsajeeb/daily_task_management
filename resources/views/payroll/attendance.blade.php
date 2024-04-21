@@ -52,7 +52,7 @@
                             <div class="card-body">
                                 <div class="live-preview">
                                     <div class="table-responsive table-card">
-                                        <table id="attendanceTable" class="table-bordered table-nowrap">
+                                        <table style="margin: 15px;" id="attendanceTable" class="table-bordered table-nowrap">
                                             <thead id="attendanceTableHead" style="text-align: center">
                                             </thead>
                                             <tbody id="attendanceTableBody">
