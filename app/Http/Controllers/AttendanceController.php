@@ -28,11 +28,6 @@ class AttendanceController extends Controller
             $users = User::pluck('id');
             $month = $request->input('month');
 
-            // If no month is specified, default to the current month
-            if (!$month) {
-                $month = Carbon::now()->format('Y-m');
-            }
-
             $formattedAttendance = [];
 
             foreach ($users as $userId) {
