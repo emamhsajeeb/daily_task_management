@@ -26,28 +26,34 @@ class AttendanceController extends Controller
         try {
 
             $users = User::pluck('id');
+            $month = $request->input('month');
+
+            // If no month is specified, default to the current month
+            if (!$month) {
+                $month = Carbon::now()->format('Y-m');
+            }
 
             $formattedAttendance = [];
 
             foreach ($users as $userId) {
                 // Get the current month's data for the user
                 $currentMonthAttendance = Attendance::where('user_id', $userId)
-                    ->whereMonth('date', Carbon::now()->month)
+                    ->whereMonth('date', Carbon::parse($month)->month)
                     ->get();
 
                 // Initialize user data array
                 $userData = [
                     'user_id' => $userId,
-                    'user_name' => User::find($userId)->first_name .' '. User::find($userId)->last_name, // Assuming you have a method to get full_name
-                    'attendance' => [], // Initialize an array to store attendance for each date
+                    'user_name' => User::find($userId)->first_name .' '. User::find($userId)->last_name,
+                    'attendance' => [],
                     'symbol_counts' => [
                         "√" => 0, "§" => 0, "×" => 0, "◎" => 0, "■" => 0, "△" => 0, "□" => 0, "☆" => 0, "*" => 0, "○" => 0, "▼" => 0, "/" => 0, "#" => 0
-                    ] // Initialize an array to store the count of each symbol
+                    ]
                 ];
 
                 // Get all dates for the current month
-                $startDate = Carbon::now()->startOfMonth();
-                $endDate = Carbon::now()->endOfMonth();
+                $startDate = Carbon::parse($month)->startOfMonth();
+                $endDate = Carbon::parse($month)->endOfMonth();
                 $allDates = [];
 
                 while ($startDate <= $endDate) {
