@@ -24,42 +24,55 @@ class AttendanceController extends Controller
     public function allAttendance(Request $request)
     {
         try {
+
+            $users = User::pluck('id');
             $month = $request->input('month');
-            $users = User::with('attendance')->pluck('id');
-            $attendances = Attendance::whereMonth('date', Carbon::parse($month)->month)->get();
-            $attendancesByUser = $attendances->groupBy('user_id');
 
             $formattedAttendance = [];
 
-            foreach ($attendancesByUser as $userId => $attendances) {
+            foreach ($users as $userId) {
+                // Get the current month's data for the user
+                $currentMonthAttendance = Attendance::where('user_id', $userId)
+                    ->whereMonth('date', Carbon::parse($month)->month)
+                    ->get();
+
+                // Initialize user data array
                 $userData = [
                     'user_id' => $userId,
-                    'user_name' => User::find($userId)->first_name. ' '. User::find($userId)->last_name,
+                    'user_name' => User::find($userId)->first_name .' '. User::find($userId)->last_name,
                     'attendance' => [],
-                    'symbol_counts' => []
+                    'symbol_counts' => [
+                        "√" => 0, "§" => 0, "×" => 0, "◎" => 0, "■" => 0, "△" => 0, "□" => 0, "☆" => 0, "*" => 0, "○" => 0, "▼" => 0, "/" => 0, "#" => 0
+                    ]
                 ];
 
-                $allDates = [];
+                // Get all dates for the current month
                 $startDate = Carbon::parse($month)->startOfMonth();
                 $endDate = Carbon::parse($month)->endOfMonth();
+                $allDates = [];
 
                 while ($startDate <= $endDate) {
                     $allDates[] = $startDate->toDateString();
                     $startDate->addDay();
                 }
 
+                // Loop through all dates of the month
                 foreach ($allDates as $date) {
-                    $attendanceRecord = $attendances->firstWhere('date', $date);
+                    // Check if attendance record exists for the date
+                    $attendanceRecord = $currentMonthAttendance->firstWhere('date', $date);
                     if ($attendanceRecord) {
+                        // Store attendance symbol for the date in the user's attendance array
                         $userData['attendance'][$date] = $attendanceRecord->symbol;
+
+                        // Increment the count for the symbol
+                        $userData['symbol_counts'][$attendanceRecord->symbol]++;
                     } else {
+                        // If attendance record doesn't exist, set it to null
                         $userData['attendance'][$date] = null;
                     }
                 }
 
-                $symbolCounts = array_count_values($attendances->pluck('symbol')->all());
-                $userData['symbol_counts'] = $symbolCounts;
-
+                // Add the formatted user data to the array
                 $formattedAttendance[] = $userData;
             }
 
