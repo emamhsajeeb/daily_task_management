@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\NCR;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -23,55 +24,41 @@ class AttendanceController extends Controller
     public function allAttendance(Request $request)
     {
         try {
-            // Get the current month's data for all users with user_name
-            $currentMonthAttendance = Attendance::whereMonth('date', Carbon::now()->month)
-                ->join('users', 'attendances.user_id', '=', 'users.id')
-                ->select('attendances.*', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS user_name"))
-                ->get();
+
+            $users = User::pluck('id');
 
             $formattedAttendance = [];
 
-            // Group attendance records by user
-            $groupedAttendance = $currentMonthAttendance->groupBy('user_name');
+            foreach ($users as $userId) {
+                // Get the current month's data for the user
+                $currentMonthAttendance = Attendance::where('user_id', $userId)
+                    ->whereMonth('date', Carbon::now()->month)
+                    ->get();
 
-            // Get all dates for the current month
-            $startDate = Carbon::now()->startOfMonth();
-            $endDate = Carbon::now()->endOfMonth();
-            $allDates = [];
-
-            while ($startDate <= $endDate) {
-                $allDates[] = $startDate->toDateString();
-                $startDate->addDay();
-            }
-
-            // Loop through each group (each user)
-            foreach ($groupedAttendance as $userAttendance) {
-                // Construct an array to store attendance data for each user
+                // Initialize user data array
                 $userData = [
-                    'user_id' => $userAttendance->first()->user_id,
-                    'user_name' => $userAttendance->first()->user_name,
+                    'user_id' => $userId,
+                    'user_name' => User::find($userId)->user_name, // Assuming you have a method to get full_name
                     'attendance' => [], // Initialize an array to store attendance for each date
                     'symbol_counts' => [
-                        "√" => 0,
-                        "§" => 0,
-                        "×" => 0,
-                        "◎" => 0,
-                        "■" => 0,
-                        "△" => 0,
-                        "□" => 0,
-                        "☆" => 0,
-                        "*" => 0,
-                        "○" => 0,
-                        "▼" => 0,
-                        "/" => 0,
-                        "#" => 0
+                        "√" => 0, "§" => 0, "×" => 0, "◎" => 0, "■" => 0, "△" => 0, "□" => 0, "☆" => 0, "*" => 0, "○" => 0, "▼" => 0, "/" => 0, "#" => 0
                     ] // Initialize an array to store the count of each symbol
                 ];
+
+                // Get all dates for the current month
+                $startDate = Carbon::now()->startOfMonth();
+                $endDate = Carbon::now()->endOfMonth();
+                $allDates = [];
+
+                while ($startDate <= $endDate) {
+                    $allDates[] = $startDate->toDateString();
+                    $startDate->addDay();
+                }
 
                 // Loop through all dates of the month
                 foreach ($allDates as $date) {
                     // Check if attendance record exists for the date
-                    $attendanceRecord = $userAttendance->firstWhere('date', $date);
+                    $attendanceRecord = $currentMonthAttendance->firstWhere('date', $date);
                     if ($attendanceRecord) {
                         // Store attendance symbol for the date in the user's attendance array
                         $userData['attendance'][$date] = $attendanceRecord->symbol;
@@ -91,6 +78,7 @@ class AttendanceController extends Controller
             return response()->json([
                 'attendance' => $formattedAttendance
             ]);
+
         } catch (QueryException $e) {
             // Handle database query exceptions
             return response()->json(['error' => $e->getMessage()], 500);
