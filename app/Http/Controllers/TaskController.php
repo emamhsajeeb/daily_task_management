@@ -327,9 +327,6 @@ class TaskController extends Controller
                         'planned_time' => $importedTask[7],
                         'incharge' => $inchargeName,
                     ]);
-
-                    $userId = Auth::user()->id;
-                    $createdTask->authors()->attach($userId);
                 }
             }
 
