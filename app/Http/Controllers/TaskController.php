@@ -384,11 +384,6 @@ class TaskController extends Controller
             'resubmission_date' => $resubmissionDate,
         ]);
 
-
-
-        $userId = Auth::user()->id;
-        $createdTask->authors()->attach($userId);
-
         // Delete the existing task
         $existingTask->delete();
     }
