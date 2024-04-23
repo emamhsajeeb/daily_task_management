@@ -36,8 +36,6 @@ class AttendanceController extends Controller
                     ->whereMonth('date', Carbon::parse($month)->month)
                     ->get();
 
-                $currentMonthAttendance = $currentMonthAttendance->sortBy('user_id');
-
                 // Initialize user data array
                 $userData = [
                     'user_id' => $userId,
@@ -77,6 +75,8 @@ class AttendanceController extends Controller
                 // Add the formatted user data to the array
                 $formattedAttendance[] = $userData;
             }
+
+            $formattedAttendance = collect($formattedAttendance)->sortBy('user_id')->values()->all();
 
             return response()->json([
                 'attendance' => $formattedAttendance
