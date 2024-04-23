@@ -903,7 +903,7 @@ $(document).on('input', '#status-dropdown', async function (e) {
 $(document).on('input', '#assign-dropdown', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
     var user_name = e.target.value;
-    await updateTaskStatus(taskId, user_name);
+    await assignTask(taskId, user_name);
 });
 
 $(document).on('input', '#rfiSubmissionDate', async function (e) {
