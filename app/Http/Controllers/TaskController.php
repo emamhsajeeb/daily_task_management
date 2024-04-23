@@ -36,32 +36,39 @@ class TaskController extends Controller
     public function showTasks()
     {
         $user = Auth::user();
-        $incharges = User::role('se')->get();
         $title = "Task List";
         $ncrs = NCR::all();
-        return view('task/tasks', compact('user','incharges','title','ncrs'));
+        return view('task/tasks', compact('user','title','ncrs'));
     }
 
     public function allTasks(Request $request)
     {
         $user = Auth::user();
 
-        $tasks = $user ? (
-        $user->hasRole('se')
-            ? Tasks::with('ncrs')->where('incharge', $user->user_name)->get()
-            : ($user->hasRole('admin') ? Tasks::with('ncrs')->get() : [])
-        ) : [];
+        $tasks = $user->hasRole('se')
+            ? [
+                'tasks' => Tasks::with('ncrs')->where('incharge', $user->user_name)->get(),
+                'juniors' => User::where('incharge', $user->user_name)->get(),
+            ]
+            : ($user->hasRole('qci') || $user->hasRole('aqci')
+                ? ['tasks' => Tasks::with('ncrs')->where('assigned', $user->user_name)->get()]
+                : ($user->hasRole('admin') || $user->hasRole('manager')
+                    ? [
+                        'tasks' => Tasks::with('ncrs')->get(),
+                        'incharges' => User::role('se')->get(),
+                    ]
+                    : ['tasks' => []]
+                )
+            );
 
+        return response()->json($tasks);
 
-
-        return response()->json([
-            'tasks' => $tasks,
-        ]);
     }
 
     public function addTask(Request $request)
     {
         $user = Auth::user();
+        $juniors = User::where('incharge', $user->user_name)->get();
 
         $inchargeName = '';
 
@@ -145,7 +152,7 @@ class TaskController extends Controller
             ) : [];
 
             // Return a response
-            return response()->json(['message' => 'Task added successfully', 'tasks' => $tasks]);
+            return response()->json(['message' => 'Task added successfully', 'tasks' => $tasks, 'juniors' => $juniors]);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);
@@ -159,6 +166,8 @@ class TaskController extends Controller
     {
         // Get the authenticated user
         $user = Auth::user();
+        $juniors = User::where('incharge', $user->user_name)->get();
+
         try {
             // Query tasks based on date range
             $tasksQuery = Tasks::query();
@@ -197,6 +206,7 @@ class TaskController extends Controller
             // Return JSON response with filtered tasks
             return response()->json([
                 'tasks' => $filteredTasks,
+                'juniors' => $juniors,
                 'message' => 'Tasks filtered successfully'
             ]);
         } catch (\Exception $e) {
@@ -428,6 +438,34 @@ class TaskController extends Controller
 
             // Return JSON response with success message
             return response()->json(['message' => 'Task status updated successfully']);
+        } catch (ValidationException $e) {
+            // Validation failed, return error response
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Other exceptions occurred, return error response
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function assignTask(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Find task by ID
+            $task = Tasks::find($request->task_id);
+
+            // If task not found, return 404 error response
+            if (!$task) {
+                return response()->json(['error' => 'Task not found'], 404);
+            }
+
+            $user = User::where('user_name', $request->user_name)->first();
+
+            // Update task status
+            $task->assigned = $request->user_name;
+            $task->save();
+
+            // Return JSON response with success message
+            return response()->json(['message' => 'Task assigned to'.$user->first_name]);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);

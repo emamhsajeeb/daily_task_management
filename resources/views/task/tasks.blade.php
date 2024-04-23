@@ -220,10 +220,10 @@
 
 // Function to get the tasks dynamically
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
-var user = {!! json_encode($user) !!};
-const incharges = {!! json_encode($incharges) !!};
+const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
+const user = {!! json_encode($user) !!};
 
-async function updateTaskListBody(tasks) {
+async function updateTaskListBody(tasks, incharges, juniors) {
     var preloader = document.getElementById('preloader');
     if ($.fn.DataTable.isDataTable('#taskTable')) {
         $('#taskTable').DataTable().destroy();
@@ -338,6 +338,23 @@ async function updateTaskListBody(tasks) {
                     },
                     className: 'dataTables-center'
                 },
+                userIsSe ?
+                {
+                    data: 'assigned',
+                    render: function(data, type, row) {
+                        var assignOptions = !data ? `<option value="" selected disabled>Please select</option>` : '';
+                        juniors.forEach(function (junior) {
+                            assignOptions += !data ? '' : `<option value="${junior.user_name}" ${data === junior.user_name ? 'selected' : ''}>${junior.first_name}</option>`;
+                        });
+                        var assignTo = `
+                            <select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
+                                ${assignOptions}
+                            </select>
+                        `;
+                        return assignTo;
+                    },
+                    className: 'dataTables-center'
+                } : '',
                 { data: 'type', className: 'dataTables-center' },
                 { data: 'description' },
                 { data: 'location', className: 'dataTables-center' },
@@ -445,6 +462,9 @@ async function updateTaskList() {
         <th class="dataTables-center">Date</th>
         <th class="dataTables-center">RFI NO</th>
         <th class="dataTables-center">Status</th>
+        ${userIsSe ? `
+        <th class="dataTables-center">Assign</th>
+        ` : ''}
         <th class="dataTables-center">Type</th>
         <th class="dataTables-center">Description</th>
         <th class="dataTables-center">Location</th>
@@ -477,7 +497,9 @@ async function updateTaskList() {
         method: 'GET',
         dataType: 'json',
         success: async function (response) {
-            var tasks = response.tasks;
+            const tasks = response.tasks ? response.tasks : null;
+            const incharges = response.incharges ? response.incharges : null ;
+            const juniors = response.incharges ? response.juniors : null ;
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 
@@ -485,7 +507,7 @@ async function updateTaskList() {
             const firstDate = new Date(Math.min(...dates));
             const lastDate = new Date(Math.max(...dates));
 
-            await updateTaskListBody(tasks);
+            await updateTaskListBody(tasks, incharges, juniors);
 
             flatpickr("#dateRangePicker", {
                 minDate: new Date(firstDate),
@@ -736,6 +758,25 @@ async function updateTaskStatus(taskId, status) {
 }
 
 // Function to handle status update
+async function updateTaskStatus(taskId, userName) {
+    $.ajax({
+        url : "{{ route('assignTask') }}",
+        type:"POST",
+        data: {
+            task_id: taskId,
+            user_name: userName
+        },
+        success:function (response) {
+            toastr.success(response.message);
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+        }
+    })
+}
+
+// Function to handle status update
 async function updateRfiSubmissionDate(taskId, date) {
     $.ajax({
         url:"{{ route('updateRfiSubmissionDate') }}",
@@ -855,6 +896,12 @@ $(document).on('input', '#status-dropdown', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
     var status = e.target.value;
     await updateTaskStatus(taskId, status);
+});
+
+$(document).on('input', '#assign-dropdown', async function (e) {
+    var taskId = e.target.getAttribute('data-task-id');
+    var user_name = e.target.value;
+    await updateTaskStatus(taskId, user_name);
 });
 
 $(document).on('input', '#rfiSubmissionDate', async function (e) {
