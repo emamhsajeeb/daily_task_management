@@ -3,7 +3,7 @@
 @section('ncrs')
 <div class="main-content">
     <div class="page-content">
-        <div class="container-fluid">
+        <div class="container-fluid" style="max-width: 100% !important;">
 
             <!-- start page title -->
             <div class="row">
