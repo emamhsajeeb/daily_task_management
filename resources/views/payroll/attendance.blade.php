@@ -176,6 +176,8 @@ async function updateAttendanceTable(month) {
             $('#remarkFooter').attr('colspan', 14+numberOfDays);
 
             $('#attendanceTable').DataTable({
+                info: false,
+                searching: false,
                 ordering: false,
                 processing: true,
                 scroller: true,
