@@ -34,7 +34,7 @@ class AttendanceController extends Controller
                 // Get the current month's data for the user
                 $currentMonthAttendance = Attendance::where('user_id', $userId)
                     ->whereMonth('date', Carbon::parse($month)->month)
-                    ->get();
+                    ->get()->sortBy('user_id');
 
                 // Initialize user data array
                 $userData = [
