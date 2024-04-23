@@ -122,6 +122,8 @@
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
+
+
 </script>
 @endsection
 

@@ -23,6 +23,30 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        // Seed roles and assign permissions
+        $roles = [
+            [
+                'name' => 'aqci',
+                'permissions' => ['showTasksSE', 'updateTaskStatus', 'updateInspectionDetails', 'updateCompletionDateTime'],
+            ],
+            [
+                'name' => 'qci',
+                'permissions' => ['showTasksSE', 'updateTaskStatus', 'updateInspectionDetails', 'updateCompletionDateTime'],
+            ],
+            // Add more roles and their permissions as needed
+        ];
+
+        foreach ($roles as $roleData) {
+            // Find role by name
+            $role = Role::where('name', $roleData['name'])->first();
+
+            // Check if role exists
+            if ($role) {
+                // Assign permissions to role
+                $role->givePermissionTo($roleData['permissions']);
+            }
+        }
+
 
     }
 
