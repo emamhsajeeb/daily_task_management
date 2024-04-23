@@ -466,7 +466,7 @@ class TaskController extends Controller
             $task->save();
 
             // Return JSON response with success message
-            return response()->json(['message' => 'Task assigned to'.$user->first_name]);
+            return response()->json(['message' => 'Task assigned to '.$user->first_name]);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);

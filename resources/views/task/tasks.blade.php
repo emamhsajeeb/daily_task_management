@@ -299,7 +299,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 }
             },
             {
-                "targets": 4, // Targeting the fifth column (index 4)
+                "targets": userIsSe ? 5 : 4, // Targeting the fifth column (index 4)
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
                     return type === 'display' && data.length > 30 ?
@@ -344,7 +344,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     render: function(data, type, row) {
                         var assignOptions = !data ? `<option value="" selected disabled>Please select</option>` : '';
                         juniors.forEach(function (junior) {
-                            assignOptions += !data ? '' : `<option value="${junior.user_name}" ${data === junior.user_name ? 'selected' : ''}>${junior.first_name}</option>`;
+                            assignOptions += `<option value="${junior.user_name}" ${data === junior.user_name ? 'selected' : ''}>${junior.first_name}</option>`;
                         });
                         var assignTo = `
                             <select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
@@ -358,6 +358,17 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 { data: 'type', className: 'dataTables-center' },
                 { data: 'description' },
                 { data: 'location', className: 'dataTables-center' },
+                {
+                    data: 'inspection_details',
+                    render: function(data, type, row) {
+                        return `
+                                <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
+                                    <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
+                                    <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                                    <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
+                                </div>`;
+                    }
+                },
                 { data: 'side', className: 'dataTables-center' },
                 { data: 'qty_layer', className: 'dataTables-center' },
                 { data: 'planned_time', className: 'dataTables-center' },
@@ -398,17 +409,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
                     },
                     className: 'dataTables-center'
-                },
-                {
-                    data: 'inspection_details',
-                    render: function(data, type, row) {
-                        return `
-                            <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
-                                <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
-                                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
-                                <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
-                            </div>`;
-                    }
                 },
                 {
                     data: 'resubmission_count',
@@ -468,6 +468,7 @@ async function updateTaskList() {
         <th class="dataTables-center">Type</th>
         <th class="dataTables-center">Description</th>
         <th class="dataTables-center">Location</th>
+        <th class="dataTables-center">Comments</th>
         <th class="dataTables-center">Road Type</th>
         <th class="dataTables-center">Quantity/Layer No.</th>
         <th class="dataTables-center">Planned Time</th>
@@ -475,7 +476,6 @@ async function updateTaskList() {
         <th class="dataTables-center">In-charge</th>
         ` : ''}
         <th class="dataTables-center">Completion Date/Time</th>
-        <th class="dataTables-center">Comments</th>
         <th class="dataTables-center">Resubmitted</th>
         ${admin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
@@ -760,7 +760,7 @@ async function updateTaskStatus(taskId, status) {
 }
 
 // Function to handle status update
-async function updateTaskStatus(taskId, userName) {
+async function assignTask(taskId, userName) {
     $.ajax({
         url : "{{ route('assignTask') }}",
         type:"POST",

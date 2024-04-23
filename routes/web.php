@@ -28,7 +28,12 @@ use App\Http\Controllers\PushNotificationController;
 
 Route::get('/', function () {
     $user = Auth::user();
-    $tasks = $user->hasRole('se') ? Tasks::where('incharge', $user->user_name)->get() : Tasks::all();
+    $tasks = $user->hasRole('se')
+        ? Tasks::where('incharge', $user->user_name)->get()
+        : ($user->hasRole('qci') || $user->hasRole('aqci')
+            ? Tasks::where('assigned', $user->user_name)->get()
+            : Tasks::all()
+        );
     $total = $tasks->count();
     $completed = $tasks->where('status', 'completed')->count();
     $pending = $total - $completed;
