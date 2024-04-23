@@ -303,7 +303,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
                     return type === 'display' && data.length > 30 ?
-                        `<span ${admin ? '' : 'style="overflow-y: auto; max-height: 30px;"'} title="` + data + '">' + data.substr(0, 30) + '...</span>' :
+                        `<span style="overflow-y: auto; max-height: 30px;" title="` + data + '">' + data.substr(0, 30) + '...</span>' :
                         data;
                 }
             }
@@ -499,7 +499,9 @@ async function updateTaskList() {
         success: async function (response) {
             const tasks = response.tasks ? response.tasks : null;
             const incharges = response.incharges ? response.incharges : null ;
-            const juniors = response.incharges ? response.juniors : null ;
+            const juniors = response.juniors ? response.juniors : null ;
+
+            console.log('Tasks :', tasks, 'Incharges: ', incharges, 'Juniors: ', juniors);
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 

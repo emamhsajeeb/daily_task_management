@@ -84,17 +84,17 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
 });
 
 
-Route::middleware([CheckRole::class . ':se','auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tasks-all-se', [TaskController::class, 'allTasks'])->name('allTasksSE');
     Route::post('/tasks-filtered-se', [TaskController::class, 'filterTasks'])->name('filterTasksSE');
     Route::get('/tasks/se', [TaskController::class, 'showTasks'])->name('showTasksSE');
     Route::post('/task/add-se', [TaskController::class, 'addTask'])->name('addTaskSE');
     Route::post('/task/update-inspection-details', [TaskController::class, 'updateInspectionDetails'])->name('updateInspectionDetails');
     Route::post('/task/update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
+    Route::post('/task/assign', [TaskController::class, 'assignTask'])->name('assignTask');
     Route::post('/task/update-completion-date-time-se', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTimeSE');
     Route::get('/tasks/daily-summary-se', [DailySummaryController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummarySE');
     Route::post('/tasks/daily-summary-filtered-se', [DailySummaryController::class, 'filterSummary'])->name('filterSummarySE');
-
 });
 
 Route::middleware('auth')->group(function () {
