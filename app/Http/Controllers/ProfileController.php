@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -41,13 +42,24 @@ class ProfileController extends Controller
                 ->where('status', 'completed')
                 ->count();
 
+            // Check if the user image exists in the main directory
+            $userImg = file_exists(public_path("assets/images/users/{$user->user_name}.jpg"))
+                ? asset("assets/images/users/{$user->user_name}.jpg") // Return the user image URL
+                : asset("assets/images/users/user-dummy-img.jpg"); // Return the dummy image URL as fallback
+
+            // Check if the user image exists in the main directory
+            $coverImg = file_exists(public_path("assets/images/users/{$user->user_name}_cover.jpg"))
+                ? asset("assets/images/users/{$user->user_name}_cover.jpg") // Return the user image URL
+                : asset("assets/images/users/user-dummy-cover.jpg"); // Return the dummy image URL as fallback
+
             return [
                 'id' => $user->id,
                 'userName' => $user->user_name,
                 'firstName' => $user->first_name,
                 'lastName' => $user->last_name,
                 'position' => $user->position,
-                'coverImg' => asset("assets/images/users/{$user->user_name}.jpg"),
+                'userImg' => $userImg,
+                'coverImg' => $coverImg,
                 'tasksCount' => $tasksCount,
                 'completedCount' => $completedCount,
                 'role' => $user->roles->pluck('name')->implode(', '),
