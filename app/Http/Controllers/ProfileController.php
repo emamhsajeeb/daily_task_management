@@ -24,23 +24,37 @@ class ProfileController extends Controller
     public function team(Request $request): View
     {
         $user = Auth::user();
-        $users = User::all();
-        $roles = Role::all();
-        // Add a new column to users based on their roles
-        $users->each(function ($user) {
+        return view('team.members', [
+            'user' => $user,
+        ]);
+    }
+
+    public function members(Request $request)
+    {
+        $users = User::with('roles')->get();
+
+        $roles = Role::pluck('name');
+
+        $users->transform(function ($user) {
             $tasksCount = Tasks::where('incharge', $user->user_name)->count();
             $completedCount = Tasks::where('incharge', $user->user_name)
                 ->where('status', 'completed')
                 ->count();
-            $user->tasks_count = $tasksCount;
-            $user->completed_count = $completedCount;
-            $user->role = $user->roles->pluck('name')->implode(', ');
+
+            return [
+                'id' => $user->id,
+                'userName' => $user->user_name,
+                'firstName' => $user->first_name,
+                'lastName' => $user->last_name,
+                'position' => $user->position,
+                'coverImg' => asset("assets/images/users/{$user->user_name}.jpg"),
+                'tasksCount' => $tasksCount,
+                'completedCount' => $completedCount,
+                'role' => $user->roles->pluck('name')->implode(', '),
+            ];
         });
-        return view('team.members', [
-            'users' => $users,
-            'user' => $user,
-            'roles' => $roles,
-        ]);
+
+        return response()->json(['users' => $users, 'roles' => $roles]);
     }
     /**
      * Display the team's profile form.
@@ -48,7 +62,7 @@ class ProfileController extends Controller
     public function edit($id): View
     {
         $user = User::find($id);
-        return view('profile.edit', ['team' => $user]);
+        return view('profile.edit', ['user' => $user]);
     }
 
     /**

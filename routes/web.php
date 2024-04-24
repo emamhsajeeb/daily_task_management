@@ -69,6 +69,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::post('/tasks/detach-ncr', [TaskController::class, 'detachNCR'])->name('detachNCR');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
+    Route::get('/team-members', [ProfileController::class, 'members'])->name('members');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
 
     Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('showNCRs');
