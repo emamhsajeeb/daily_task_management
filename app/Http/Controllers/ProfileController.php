@@ -127,8 +127,6 @@ class ProfileController extends Controller
 
             // Update the user role
             $user = User::findOrFail($validatedData['userId']);
-            // Find the role by name
-//            $role = Role::where('name', $validatedData['selectedRole'])->firstOrFail();
 
             // Sync user's roles
             $user->syncRoles($validatedData['selectedRole']);

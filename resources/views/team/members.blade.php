@@ -58,7 +58,7 @@
                             <h5 class="mt-4">Sorry! No Result Found</h5>
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade" id="addmemberModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade" id="showAddEditModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content border-0">
 
@@ -141,6 +141,88 @@
                         </div>
                         <!--end modal-->
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="showAddEditModals" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0">
+                                    <div class="modal-body">
+                                        <form autocomplete="off" id="memberlist-form" class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <input type="hidden" id="memberid-input" class="form-control" value="">
+                                                    <div class="mb-3">
+                                                        <label for="username" class="form-label">Username</label>
+                                                        <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                                        <div class="invalid-feedback">Please enter a username.</div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="deviceToken" class="form-label">Device Token</label>
+                                                        <textarea class="form-control" id="deviceToken" placeholder="Enter device token" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="firstName" class="form-label">First Name</label>
+                                                        <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="lastName" class="form-label">Last Name</label>
+                                                        <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="phone" class="form-label">Phone</label>
+                                                        <input type="tel" class="form-control" id="phone" placeholder="Enter phone" required>
+                                                        <div class="invalid-feedback">Please enter a phone number.</div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="email" class="form-label">Email</label>
+                                                        <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                                                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="joiningDate" class="form-label">Joining Date</label>
+                                                        <input type="date" class="form-control" id="joiningDate">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="dob" class="form-label">Date of Birth</label>
+                                                        <input type="date" class="form-control" id="dob">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="address" class="form-label">Address</label>
+                                                        <textarea class="form-control" id="address" placeholder="Enter address" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="about" class="form-label">About</label>
+                                                        <textarea class="form-control" id="about" placeholder="Enter about" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="password" class="form-label">Password</label>
+                                                        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                                                        <div class="invalid-feedback">Please enter a password.</div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="position" class="form-label">Position</label>
+                                                        <input type="text" class="form-control" id="position" placeholder="Enter position">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="passport" class="form-label">Passport</label>
+                                                        <input type="text" class="form-control" id="passport" placeholder="Enter passport">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="nid" class="form-label">NID</label>
+                                                        <input type="text" class="form-control" id="nid" placeholder="Enter NID">
+                                                    </div>
+                                                    <div class="hstack gap-2 justify-content-end">
+                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success" id="addNewMember">Add Member</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div><!-- end col -->
             </div>
@@ -189,8 +271,6 @@ async function loadTeamData() {
         success: function(response) {
             let users = response.users;
             let roles = response.roles;
-
-            console.log(roles);
             let teamMemberList = $('#team-member-list');
 
             teamMemberList.empty();
@@ -214,9 +294,8 @@ async function loadTeamData() {
                     `<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">${user.firstName}</div>`;
 
                 const teamMember = `
-                <div class="col aos-init aos-animate" data-aos="fade-right">
+                <div class="col">
                     <div class="card team-box">
-
                         <div class="card-body p-4">
                             <div class="row align-items-center team-row">
                                 <div class="col team-settings">
@@ -227,14 +306,14 @@ async function loadTeamData() {
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a class="dropdown-item edit-list" href="#addmemberModal" data-bs-toggle="modal" data-edit-id="11">
+                                                    <button class="dropdown-item edit-list" id="addEditModal" data-bs-toggle="modal" data-edit-id="${user.id}">
                                                     <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit
-                                                    </a>
+                                                    </button>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item remove-list" href="#removeMemberModal" data-bs-toggle="modal" data-remove-id="11">
+                                                    <button class="dropdown-item remove-list" data-remove-id="${user.id}">
                                                     <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove
-                                                    </a>
+                                                    </button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -292,6 +371,8 @@ async function loadTeamData() {
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
     preloader.style.visibility = 'hidden'; // Set visibility to visible
 }
+
+
 
 
 var editlist = !1;
@@ -500,15 +581,43 @@ $(document).ready(async function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var preloader = document.getElementById('preloader');
     await loadTeamData();
 
     $(document).on('change', '.form-select', async function () {
         var selectedRole = $(this).find(':selected').data('role'); // Get the selected role
         var userId = $(this).data('user-id'); // Get the user id from data attribute
-        console.log(selectedRole, " ", userId);
         await updateUserRole(userId, selectedRole);
     });
+
+    $("#addEditModal").click(function () {
+        $("#showAddEditModal").modal('show');
+        // Extract user ID from data-edit-id attribute
+        var userId = $(this).data('edit-id');
+
+        console.log(userId);
+    });
+    // Add event listener to edit link
+    // $('.edit-list').click(function(event) {
+    //     event.preventDefault(); // Prevent default link behavior
+    //
+    //
+    //
+    //     // // Fetch user data corresponding to the userId (you need to implement this AJAX call)
+    //     // $.ajax({
+    //     //     url: '/getUserData', // Endpoint to fetch user data
+    //     //     method: 'GET',
+    //     //     data: { id: userId }, // Send user ID as parameter
+    //     //     success: function(response) {
+    //     //         // Populate modal fields with retrieved user data
+    //     //         $('#teammembersName').val(response.first_name + ' ' + response.last_name);
+    //     //         $('#designation').val(response.position);
+    //     //         // Populate other fields similarly
+    //     //     },
+    //     //     error: function(xhr, status, error) {
+    //     //         console.error(error);
+    //     //     }
+    //     // });
+    // });
 });
 
 toastr.options = {
