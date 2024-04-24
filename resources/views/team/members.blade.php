@@ -214,61 +214,80 @@ function loadTeamData() {
                                 </option>`;
                 });
 
-                let memberImage = user.userName ? `<img src="${user.coverImg}" alt="" class="member-img img-fluid d-block rounded-circle" />` :
+                let memberImage = user.coverImg ? `<img src="${user.coverImg}" alt="" class="member-img img-fluid d-block rounded-circle" />` :
                     `<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">${user.firstName}</div>`;
 
-                const teamMember = 
-
-                teamMemberList.append(`
-                    <div class="col">
-                        <div class="card team-box">
-                            <div class="team-cover">
-                                <img src="${user.coverImg}" alt="" class="img-fluid" />
-                            </div>
-                            <div class="card-body p-4">
-                                <div class="row align-items-center team-row">
-                                    <div class="col-lg-3 col">
-                                        <div class="team-profile-img">
-                                            <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">${memberImage}</div>
-                                            <div class="team-content">
-                                                <h5 class="fs-16 mb-1">${user.firstName} ${user.lastName}</h5>
-                                                <p class="text-muted member-designation mb-0">${user.position}</p>
-                                            </div>
+                const teamMember = `
+                <div class="col">
+                    <div class="card team-box">
+                        <div class="team-cover">
+                            <img src="${user.coverImg}" alt="" class="img-fluid" />
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center team-row">
+                                <div class="col team-settings">
+                                    <div class="row">
+                                        <div class="col text-end dropdown">
+                                            <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ri-more-fill fs-17"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item edit-list" href="#addmemberModal" data-bs-toggle="modal" data-edit-id="11">
+                                                    <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item remove-list" href="#removeMemberModal" data-bs-toggle="modal" data-remove-id="11">
+                                                    <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    (admin ?
-                                    <div class="col-lg-3 col">
-                                        <div class="row text-muted text-center">
-                                            <div class="col-12">
-                                                <select class="form-select rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
-                                                    ${roleOptions}
-                                                </select>
-                                            </div>
+                                </div>
+                                <div class="col-lg-3 col">
+                                    <div class="team-profile-img">
+                                        <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">${memberImage}</div>
+                                        <div class="team-content">
+                                            <h5 class="fs-16 mb-1">${user.firstName} ${user.lastName}</h5>
+                                            <p class="text-muted member-designation mb-0">${user.position}</p>
                                         </div>
-                                    </div>  : '')
-                                    (e.role === 'admin' || e.role === 'manager' ? '' :
-                                    <div class="col-lg-3 col">
-                                        <div class="row text-muted text-center">
-                                            <div class="col-6">
-                                                <h5 class="mb-1 tasks-num">${user.tasksCount}</h5>
-                                                <p class="text-muted mb-0">Tasks</p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-1 tasks-num">${user.completedCount}</h5>
-                                                <p class="text-muted mb-0">Completed</p>
-                                            </div>
+                                    </div>
+                                </div>
+                                ${admin ? `
+                                <div class="col-lg-3 col">
+                                    <div class="row text-muted text-center">
+                                        <div class="col-12">
+                                            <select class="form-select rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
+                                                ${roleOptions}
+                                            </select>
                                         </div>
-                                    </div>)
-                                    <div class="col-lg-2 col">
-                                        <div class="text-end">
-                                            <a href="{{ route('viewProfile') }}" class="btn btn-light view-btn">View Profile</a>
+                                    </div>
+                                </div>  ` : ''}
+                                ${user.role === 'admin' || user.role === 'manager' ? '' :
+                                `<div class="col-lg-3 col">
+                                    <div class="row text-muted text-center">
+                                        <div class="col-6">
+                                            <h5 class="mb-1 tasks-num">${user.tasksCount}</h5>
+                                            <p class="text-muted mb-0">Tasks</p>
                                         </div>
+                                        <div class="col-6">
+                                            <h5 class="mb-1 tasks-num">${user.completedCount}</h5>
+                                            <p class="text-muted mb-0">Completed</p>
+                                        </div>
+                                    </div>
+                                </div> `}
+                                <div class="col-lg-2 col">
+                                    <div class="text-end">
+                                        <a href="{{ route('viewProfile') }}" class="btn btn-light view-btn">View Profile</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `);
+                </div>`;
+                teamMemberList.append(teamMember);
             });
         },
         error: function(xhr, status, error) {
