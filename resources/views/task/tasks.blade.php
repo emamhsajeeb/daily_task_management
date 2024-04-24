@@ -424,7 +424,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 {
                     data: 'rfi_submission_date',
                     render: function(data, type, row) {
-                        return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
+                        return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" data-task-status="${row.status}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
                     },
                     className: 'dataTables-center'
                 } : '',
@@ -605,11 +605,6 @@ async function addTask() {
                 const firstDate = new Date(Math.min(...dates));
                 const lastDate = new Date(Math.max(...dates));
 
-                // $('#dateRangePicker').daterangepicker({
-                //     minDate: firstDate,
-                //     maxDate: lastDate,
-                //     opens: 'left'
-                // });
 
                 flatpickr("#dateRangePicker", {
                     minDate: new Date(firstDate),
@@ -757,6 +752,8 @@ async function updateTaskStatus(taskId, status) {
             toastr.success(data.message+status);
             icon.innerHTML = newIcon(status);
             status === 'completed' ? $('#completionDateTime').click() : '';
+
+            document.querySelector('#status-dropdown[data-task-id="' + taskId + '"]').value = status;
         },
         error: function(xhr, status, error) {
             // Handle error
@@ -785,7 +782,7 @@ async function assignTask(taskId, userName) {
 }
 
 // Function to handle status update
-async function updateRfiSubmissionDate(taskId, date) {
+async function updateRfiSubmissionDate(taskId, date, status) {
     $.ajax({
         url:"{{ route('updateRfiSubmissionDate') }}",
         type:"POST",
@@ -794,11 +791,17 @@ async function updateRfiSubmissionDate(taskId, date) {
             date: date
         },
         success:async function (data) {
-            var status = 'complete';
-            await updateTaskStatus(taskId, status);
-            $('#status-dropdown').val('completed');
-            $('#completionDateTime').click();
-            toastr.success(data.message + date);
+            toastr.success(data.message+date);
+            // Check if status is not 'complete'
+            if (!(status === 'completed')) {
+                await updateTaskStatus(taskId, 'completed');
+            }
+
+            // Check if status is 'complete' and #completionDateTime has no value
+            if (status === 'completed' && !$('#completionDateTime').val()) {
+                $('#completionDateTime').click();
+            }
+
         }
     })
 }
@@ -914,8 +917,10 @@ $(document).on('input', '#assign-dropdown', async function (e) {
 
 $(document).on('input', '#rfiSubmissionDate', async function (e) {
     var taskId = e.target.getAttribute('data-task-id');
+    var taskStatus = e.target.getAttribute('data-task-status');
+    console.log(taskStatus);
     var date = e.target.value;
-    await updateRfiSubmissionDate(taskId, date)
+    await updateRfiSubmissionDate(taskId, date, taskStatus)
 });
 
 $(document).on('input', '#completionDateTime', async function (e) {

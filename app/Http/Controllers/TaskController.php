@@ -459,7 +459,7 @@ class TaskController extends Controller
             $task->save();
 
             // Return JSON response with success message
-            return response()->json(['message' => 'Task status updated successfully']);
+            return response()->json(['message' => 'Task status updated to ']);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);
@@ -511,7 +511,6 @@ class TaskController extends Controller
     {
         $task = Tasks::findOrFail($request->id);
         $task->rfi_submission_date = $request->date;
-        $task->status = ($task->status != 'completed') ? 'completed' : $task->status;
         $task->save();
 
         return response()->json(['message' => 'RFI Submission date updated to ']);
