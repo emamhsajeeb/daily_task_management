@@ -214,10 +214,13 @@ function loadTeamData() {
                                 </option>`;
                 });
 
+                let memberImage = user.userImg ? `<img src="${user.userImg}" alt="" class="member-img img-fluid d-block rounded-circle" />` :
+                    `<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">${user.firstName}</div>`;
+
                 const teamMember = `
                 <div class="col">
                     <div class="card team-box">
-                       
+
                         <div class="card-body p-4">
                             <div class="row align-items-center team-row">
                                 <div class="col team-settings">
@@ -243,7 +246,7 @@ function loadTeamData() {
                                 </div>
                                 <div class="col-lg-3 col">
                                     <div class="team-profile-img">
-                                        <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">${user.userImg}</div>
+                                        <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">${memberImage}</div>
                                         <div class="team-content">
                                             <h5 class="fs-16 mb-1">${user.firstName} ${user.lastName}</h5>
                                             <p class="text-muted member-designation mb-0">${user.position}</p>

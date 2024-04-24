@@ -413,7 +413,10 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 {
                     data: 'resubmission_count',
                     render: function(data, type, row) {
-                        return `<td style="text-align: center" class="client_name" title="${row.resubmission_date}">${data ? (data > 1 ? data + " times" : data + " time") : ''}</td>`;
+                        return data ? `<td style="text-align: center" class="client_name" title="">
+
+                        <button type="button" class="btn btn-sm btn-lg" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Resubmission Dates" data-content="${row.resubmission_date}">${data > 1 ? data + " times" : data + " time"}</button>
+                        </td>` : '';
                     },
                     className: 'dataTables-center'
                 },
