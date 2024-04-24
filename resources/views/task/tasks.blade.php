@@ -550,11 +550,14 @@ async function filterTaskList() {
                 preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
                 preloader.style.visibility = 'visible'; // Set visibility to visible
                 toastr.success(response.message);
-                // $('#taskTable').DataTable().clear().destroy();
 
-                const tasks = response.tasks;
+                const tasks = response.tasks ? response.tasks : null;
+                const incharges = response.incharges ? response.incharges : null ;
+                const juniors = response.juniors ? response.juniors : null ;
 
-                await updateTaskListBody(tasks);
+                console.log('Tasks :', tasks, 'Incharges: ', incharges, 'Juniors: ', juniors);
+
+                await updateTaskListBody(tasks, incharges, juniors);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
                 preloader.style.visibility = 'hidden'; // Set visibility to visible
             },

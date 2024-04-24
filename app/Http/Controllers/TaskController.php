@@ -69,7 +69,6 @@ class TaskController extends Controller
     public function addTask(Request $request)
     {
         $user = Auth::user();
-        $juniors = User::where('incharge', $user->user_name)->get();
 
         $inchargeName = '';
 
@@ -146,14 +145,30 @@ class TaskController extends Controller
             $userId = Auth::user()->id;
             $task->authors()->attach($userId);
 
-            $tasks = $user ? (
-            $user->hasRole('se')
-                ? DB::table('tasks')->where('incharge', $user->user_name)->get()
-                : ($user->hasRole('admin') ? DB::table('tasks')->get() : [])
-            ) : [];
+            $tasks = $user->hasRole('se')
+                ? [
+                    'tasks' => Tasks::with('ncrs')->where('incharge', $user->user_name)->get(),
+                    'juniors' => User::where('incharge', $user->user_name)->get(),
+                    'message' => 'Task added successfully',
+                ] : ($user->hasRole('qci') || $user->hasRole('aqci')
+                    ? [
+                        'tasks' => Tasks::with('ncrs')->where('assigned', $user->user_name)->get(),
+                        'message' => 'Task added successfully'
+                    ]
+                    : ($user->hasRole('admin') || $user->hasRole('manager')
+                        ? [
+                            'tasks' => Tasks::with('ncrs')->get(),
+                            'incharges' => User::role('se')->get(),
+                            'message' => 'Task added successfully'
+                        ]
+                        : ['tasks' => [],
+                            'message' => 'Task added successfully'
+                        ]
+                    )
+                );
 
             // Return a response
-            return response()->json(['message' => 'Task added successfully', 'tasks' => $tasks, 'juniors' => $juniors]);
+            return response()->json($tasks);
         } catch (ValidationException $e) {
             // Validation failed, return error response
             return response()->json(['error' => $e->errors()], 422);
@@ -167,49 +182,55 @@ class TaskController extends Controller
     {
         // Get the authenticated user
         $user = Auth::user();
-        $juniors = User::where('incharge', $user->user_name)->get();
 
         try {
-            // Query tasks based on date range
-            $tasksQuery = Tasks::query();
-            $summaryQuery = DailySummary::query();
-            // Check if the user has the 'se' role
-            if ($user->hasRole('se')) {
-                // If user has the 'se' role, get the daily summaries based on the incharge column
-                $tasksQuery->where('incharge', $user->user_name);
-                $summaryQuery->where('incharge', $user->user_name);
-            }
-
-            // Query tasks based on date range
-            if ($request->start !== null && $request->end !== null) {
-//                // Retrieve start and end date from the request
-//                $startDate = Carbon::createFromFormat('d M, Y', $request->start)->format('Y-m-d');
-//                $endDate = Carbon::createFromFormat('d M, Y', $request->end)->format('Y-m-d');
-                $tasksQuery->whereBetween('date', [$request->start, $request->end]);
-            }
-
-            // Further filter tasks by status
-            if ($request->status !== 'all' && $request->status !== null) {
-                $status = $request->status;
-                $tasksQuery->where('status', $status);
-            }
-
-            // Filter tasks by incharge
-            if ($request->incharge !== 'all' && $request->incharge !== null) {
-                $incharge = $request->incharge;
-                $tasksQuery->where('incharge', $incharge);
-            }
-
-            // Retrieve filtered tasks
-            $filteredTasks = $tasksQuery->get();
+            // Query tasks based on date range, status, and incharge
+            $filteredTasks = Tasks::query()
+                ->when($user->hasRole('se'), function ($query) use ($user) {
+                    $query->where('incharge', $user->user_name);
+                })
+                ->when($user->hasRole('qci') || $user->hasRole('aqci'), function ($query) use ($user) {
+                    $query->where('assigned', $user->user_name);
+                })
+                ->when($request->start && $request->end, function ($query) use ($request) {
+                    $query->whereBetween('date', [$request->start, $request->end]);
+                })
+                ->when($request->status && $request->status !== 'all', function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+                ->when($request->incharge && $request->incharge !== 'all', function ($query) use ($request) {
+                    $query->where('incharge', $request->incharge);
+                })
+                ->get();
 
 
-            // Return JSON response with filtered tasks
-            return response()->json([
-                'tasks' => $filteredTasks,
-                'juniors' => $juniors,
-                'message' => 'Tasks filtered successfully'
-            ]);
+
+            // Determine the return array based on user roles
+            $tasks = $user->hasRole('se')
+                ? [
+                    'tasks' => $filteredTasks,
+                    'juniors' => User::where('incharge', $user->user_name)->get(),
+                    'message' => 'Tasks filtered successfully',
+                ] : ($user->hasRole('qci') || $user->hasRole('aqci')
+                    ? [
+                        'tasks' => $filteredTasks,
+                        'message' => 'Tasks filtered successfully',
+                    ]
+                    : ($user->hasRole('admin') || $user->hasRole('manager')
+                        ? [
+                            'tasks' => $filteredTasks,
+                            'incharges' => User::role('se')->get(),
+                            'message' => 'Tasks filtered successfully',
+                        ]
+                        : [
+                            'tasks' => [],
+                            'message' => 'Tasks filtered successfully',
+                        ]
+                    )
+                );
+
+            // Return a response
+            return response()->json($tasks);
         } catch (\Exception $e) {
             // Handle any exceptions that occur during filtering
             return response()->json([
