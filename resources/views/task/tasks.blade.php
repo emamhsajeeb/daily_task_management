@@ -982,9 +982,6 @@ $('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async funct
     });
 });
 
-
-
-
 toastr.options = {
     "closeButton": true,
     "debug": false,

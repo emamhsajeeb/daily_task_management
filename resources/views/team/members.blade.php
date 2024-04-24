@@ -180,12 +180,8 @@
 <!--end delete modal -->
 <script>
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
-{{--const roles = {!! json_encode($roles->pluck('name')) !!};--}}
 
-
-
-
-function loadTeamData() {
+async function loadTeamData() {
     $.ajax({
         url: '{{ route('members') }}',
         type: 'GET',
@@ -218,7 +214,7 @@ function loadTeamData() {
                     `<div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">${user.firstName}</div>`;
 
                 const teamMember = `
-                <div class="col">
+                <div class="col aos-init aos-animate" data-aos="fade-right">
                     <div class="card team-box">
 
                         <div class="card-body p-4">
@@ -253,19 +249,20 @@ function loadTeamData() {
                                         </div>
                                     </div>
                                 </div>
-                                ${admin ? `
                                 <div class="col-lg-3 col">
                                     <div class="row text-muted text-center">
+                                        ${admin ? `
                                         <div class="col-12">
                                             <select class="form-select rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
                                                 ${roleOptions}
                                             </select>
                                         </div>
+                                          ` : ''}
                                     </div>
-                                </div>  ` : ''}
-                                ${user.role === 'admin' || user.role === 'manager' ? '' :
-                                `<div class="col-lg-3 col">
+                                </div>
+                                <div class="col-lg-3 col">
                                     <div class="row text-muted text-center">
+                                        ${user.role === 'admin' || user.role === 'manager' ? '' : `
                                         <div class="col-6">
                                             <h5 class="mb-1 tasks-num">${user.tasksCount}</h5>
                                             <p class="text-muted mb-0">Tasks</p>
@@ -273,9 +270,9 @@ function loadTeamData() {
                                         <div class="col-6">
                                             <h5 class="mb-1 tasks-num">${user.completedCount}</h5>
                                             <p class="text-muted mb-0">Completed</p>
-                                        </div>
+                                        </div> `}
                                     </div>
-                                </div> `}
+                                </div>
                                 <div class="col-lg-2 col">
                                     <div class="text-end">
                                         <a href="{{ route('viewProfile') }}" class="btn btn-light view-btn">View Profile</a>
@@ -285,13 +282,15 @@ function loadTeamData() {
                         </div>
                     </div>
                 </div>`;
-                teamMemberList.append(teamMember);
+                $(teamMember).hide().appendTo(teamMemberList).fadeIn();
             });
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
         }
     });
+    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+    preloader.style.visibility = 'hidden'; // Set visibility to visible
 }
 
 
@@ -487,7 +486,7 @@ async function updateUserRole(userId, selectedRole) {
         method: 'POST',
         data: { userId: userId, selectedRole: selectedRole },
         success: function(response) {
-            console.log('User role updated successfully.');
+            toastr.success(response.message);
         },
         error: function(xhr, status, error) {
             console.error('Error updating user role:', xhr.responseText);
@@ -503,8 +502,6 @@ $(document).ready(async function () {
     });
     var preloader = document.getElementById('preloader');
     await loadTeamData();
-    preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-    preloader.style.visibility = 'hidden'; // Set visibility to visible
 
     $(document).on('change', '.form-select', async function () {
         var selectedRole = $(this).find(':selected').data('role'); // Get the selected role
@@ -513,6 +510,24 @@ $(document).ready(async function () {
         await updateUserRole(userId, selectedRole);
     });
 });
+
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
 
 
 
