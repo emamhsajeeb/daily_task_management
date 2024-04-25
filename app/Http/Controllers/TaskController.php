@@ -497,6 +497,34 @@ class TaskController extends Controller
         }
     }
 
+    public function assignIncharge(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Find task by ID
+            $task = Tasks::find($request->task_id);
+
+            // If task not found, return 404 error response
+            if (!$task) {
+                return response()->json(['error' => 'Task not found'], 404);
+            }
+
+            $user = User::where('user_name', $request->user_name)->first();
+
+            // Update task status
+            $task->incharge = $request->user_name;
+            $task->save();
+
+            // Return JSON response with success message
+            return response()->json(['message' => 'Task incharge updated to '.$user->first_name]);
+        } catch (ValidationException $e) {
+            // Validation failed, return error response
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Other exceptions occurred, return error response
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 
     public function updateInspectionDetails(Request $request): \Illuminate\Http\JsonResponse
     {
