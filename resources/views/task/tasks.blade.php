@@ -376,18 +376,19 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     {
                         data: 'incharge',
                         render: function(data, type, row) {
-                            // Generate image path
-                            var imagePath = "{{ asset("assets/images/users") }}" + "/" + matchingIncharge.user_name + ".jpg";
+
 
                             var inchargeOptions = !data ? `<option value="" selected disabled>Please select</option>` : '';
                             incharges.forEach(function (incharge) {
+                                // Generate image path
+                                const imagePath = "{{ asset("assets/images/users") }}" + "/" + incharge.user_name + ".jpg";
                                 inchargeOptions += `<option
                                         class="avatar-group-item"
                                         style="border: 2px solid #fff0; border-radius: 50%;"
                                         data-bs-trigger="hover"
                                         data-bs-placement="top"
                                         id="inchargeTooltip"
-                                        title="${matchingIncharge.first_name}"
+                                        title="${incharge.first_name}"
                                         value="${incharge.user_name}" ${data === incharge.user_name ? 'selected' : ''}
                                         ><img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />${incharge.first_name}</option>`;
                             });
