@@ -376,29 +376,14 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     {
                         data: 'incharge',
                         render: function(data, type, row) {
-
-
-                            var inchargeOptions = !data ? `<option value="" selected disabled>Please select</option>` : '';
+                            var inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
                             incharges.forEach(function (incharge) {
                                 // Generate image path
-                                const imagePath = "{{ asset("assets/images/users") }}" + "/" + incharge.user_name + ".jpg";
-                                inchargeOptions += `<option
-                                        class="avatar-group-item"
-                                        style="border: 2px solid #fff0; border-radius: 50%;"
-                                        data-bs-trigger="hover"
-                                        data-bs-placement="top"
-                                        id="inchargeTooltip"
-                                        title="${incharge.first_name}"
-                                        value="${incharge.user_name}" ${data === incharge.user_name ? 'selected' : ''}
-                                        ><img id="inchargeImage" src="${imagePath}" alt="" class="rounded-circle avatar-xxs" />${incharge.first_name}</option>`;
+                                const avatar = '<img id="inchargeImage" src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="" class="rounded-circle avatar-xxs" />';
+                                inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
-                            var assignIncharge = `
-                            <select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}">
-                                ${inchargeOptions}
-                            </select>
-                        `;
-                            return assignIncharge;
-
+                            var assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
+                            return avatar + assignIncharge;
                         },
                         className: 'dataTables-center'
                     } : '',
@@ -503,7 +488,6 @@ async function updateTaskList() {
             const incharges = response.incharges ? response.incharges : null ;
             const juniors = response.juniors ? response.juniors : null ;
 
-            console.log('Tasks :', tasks, 'Incharges: ', incharges, 'Juniors: ', juniors);
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
 
@@ -556,8 +540,6 @@ async function filterTaskList() {
                 const tasks = response.tasks ? response.tasks : null;
                 const incharges = response.incharges ? response.incharges : null ;
                 const juniors = response.juniors ? response.juniors : null ;
-
-                console.log('Tasks :', tasks, 'Incharges: ', incharges, 'Juniors: ', juniors);
 
                 await updateTaskListBody(tasks, incharges, juniors);
                 preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
@@ -922,28 +904,30 @@ $( document ).ready(async function () {
 
 // Event listener for dropdown change
 $(document).on('input', '#status-dropdown', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var status = e.target.value;
+    const taskId = e.target.getAttribute('data-task-id');
+    const status = e.target.value;
     await updateTaskStatus(taskId, status);
 });
 
 $(document).on('input', '#assign-dropdown', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var user_name = e.target.value;
+    const taskId = e.target.getAttribute('data-task-id');
+    const user_name = e.target.value;
     await assignTask(taskId, user_name);
 });
 
 $(document).on('input', '#incharge-dropdown', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var user_name = e.target.value;
+    const selectedUsername = $(this).val();
+    const selectedAvatarSrc = $('.avatar[src*="' + selectedUsername + '"]').attr('src');
+    $('.avatar').attr('src', selectedAvatarSrc);
+    const taskId = e.target.getAttribute('data-task-id');
+    const user_name = e.target.value;
     await assignIncharge(taskId, user_name);
 });
 
 $(document).on('input', '#rfiSubmissionDate', async function (e) {
-    var taskId = e.target.getAttribute('data-task-id');
-    var taskStatus = e.target.getAttribute('data-task-status');
-    console.log(taskStatus);
-    var date = e.target.value;
+    const taskId = e.target.getAttribute('data-task-id');
+    const taskStatus = e.target.getAttribute('data-task-status');
+    const date = e.target.value;
     await updateRfiSubmissionDate(taskId, date, taskStatus)
 });
 
