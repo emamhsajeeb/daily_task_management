@@ -916,7 +916,11 @@ $(document).on('input', '#assign-dropdown', async function (e) {
 
 $(document).on('input', '#incharge-dropdown', async function (e) {
     const selectedUsername = $(this).val();
-    const selectedAvatarSrc = $('.avatar[src*="' + selectedUsername + '"]').attr('src');
+    // Find the corresponding avatar within the same row
+    const selectedRow = $(this).closest('tr'); // Get the closest parent row
+    const selectedAvatar = selectedRow.find('.avatar'); // Find the avatar within the row
+    const selectedAvatarSrc = selectedAvatar.attr('src'); // Get the src attribute of the avatar
+    selectedAvatar.attr('src', selectedAvatarSrc);
     $('.avatar').attr('src', selectedAvatarSrc);
     const taskId = e.target.getAttribute('data-task-id');
     const user_name = e.target.value;
