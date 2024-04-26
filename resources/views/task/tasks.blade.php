@@ -379,11 +379,11 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                             var inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
                             incharges.forEach(function (incharge) {
                                 // Generate image path
-                                const avatar = '<img id="inchargeImage" src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="" class="rounded-circle avatar-xxs" />';
+                                const avatar = '<img class="avatar" src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="' + incharge.first_name + '" class="rounded-circle avatar-xxs" />';
                                 inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
                             var assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
-                            return avatar + assignIncharge;
+                            return '<div class="avatar-container">' + avatar + assignIncharge + '</div>';
                         },
                         className: 'dataTables-center'
                     } : '',
