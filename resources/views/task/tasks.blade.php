@@ -342,16 +342,13 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 {
                     data: 'assigned',
                     render: function(data, type, row) {
-                        var assignOptions = !data ? `<option value="" selected disabled>Please select</option>` : '';
+                        let assignOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
+                        let avatar = '<img src="{{ asset("assets/images/users") }}/' + data + '.jpg" alt="' + data + '" class="avatar rounded-circle avatar-xxs" />';
                         juniors.forEach(function (junior) {
-                            assignOptions += `<option value="${junior.user_name}" ${data === junior.user_name ? 'selected' : ''}>${junior.first_name}</option>`;
+                            assignOptions += '<option value="' + junior.user_name + '" ' + (data === junior.user_name ? 'selected' : '') + '>' + junior.first_name + '</option>';
                         });
-                        var assignTo = `
-                            <select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
-                                ${assignOptions}
-                            </select>
-                        `;
-                        return assignTo;
+                        const assignJunior = '<select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + assignOptions + '</select>';
+                        return '<div class="avatar-container">' + avatar + assignJunior + '</div>';
                     },
                     className: 'dataTables-center'
                 } : '',
@@ -909,6 +906,20 @@ $(document).on('input', '#status-dropdown', async function (e) {
 });
 
 $(document).on('input', '#assign-dropdown', async function (e) {
+    const selectedUsername = $(this).val();
+    const selectedRow = $(this).closest('tr'); // Get the closest parent row
+
+    // Construct the avatar source path and alt text
+    const selectedAvatarSrc = "{{ asset('assets/images/users') }}/" + selectedUsername + ".jpg";
+    const selectedAvatarAlt = selectedUsername;
+
+    // Find the avatar element within the selected row
+    const selectedAvatar = selectedRow.find('.avatar');
+
+    // Update the src and alt attributes of the avatar
+    selectedAvatar.attr('src', selectedAvatarSrc);
+    selectedAvatar.attr('alt', selectedAvatarAlt);
+
     const taskId = e.target.getAttribute('data-task-id');
     const user_name = e.target.value;
     await assignTask(taskId, user_name);
