@@ -376,13 +376,14 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     {
                         data: 'incharge',
                         render: function(data, type, row) {
-                            var inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
+                            let inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
+                            let avatar;
                             incharges.forEach(function (incharge) {
                                 // Generate image path
-                                const avatar = '<img class="avatar" src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="' + incharge.first_name + '" class="rounded-circle avatar-xxs" />';
+                                avatar = '<img class="avatar" src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="' + incharge.first_name + '" class="rounded-circle avatar-xxs" />';
                                 inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
-                            var assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
+                            const assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
                             return '<div class="avatar-container">' + avatar + assignIncharge + '</div>';
                         },
                         className: 'dataTables-center'
