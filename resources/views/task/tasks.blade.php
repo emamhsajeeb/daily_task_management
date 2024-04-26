@@ -377,10 +377,8 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         data: 'incharge',
                         render: function(data, type, row) {
                             let inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
-                            let avatar;
+                            let avatar = '<img src="{{ asset("assets/images/users") }}/' + data + '.jpg" alt="' + data + '" class="avatar rounded-circle avatar-xxs" />';
                             incharges.forEach(function (incharge) {
-                                // Generate image path
-                                avatar = '<img src="{{ asset("assets/images/users") }}/' + incharge.user_name + '.jpg" alt="' + incharge.first_name + '" class="avatar rounded-circle avatar-xxs" />';
                                 inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
                             const assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
