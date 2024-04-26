@@ -343,7 +343,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     data: 'assigned',
                     render: function(data, type, row) {
                         let assignOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
-                        let avatar = '<img src="{{ asset("assets/images/users") }}/' + data + '.jpg" alt="' + data + '" class="avatar rounded-circle avatar-xxs" />';
+                        let avatar = '<img src="{{ asset("assets/images/users") }}/' + data ? data : 'user-dummy-img' + '.jpg" alt="' + data ? data : 'Not assigned' + '" class="avatar rounded-circle avatar-xxs" />';
                         juniors.forEach(function (junior) {
                             assignOptions += '<option value="' + junior.user_name + '" ' + (data === junior.user_name ? 'selected' : '') + '>' + junior.first_name + '</option>';
                         });
@@ -374,7 +374,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         data: 'incharge',
                         render: function(data, type, row) {
                             let inchargeOptions = !data ? '<option value="" selected disabled>Please select</option>' : '';
-                            let avatar = '<img src="{{ asset("assets/images/users") }}/' + data + '.jpg" alt="' + data + '" class="avatar rounded-circle avatar-xxs" />';
+                            let avatar = '<img src="{{ asset("assets/images/users") }}/' + data ? data : 'user-dummy-img' + '.jpg" alt="' + data ? data : 'Not assigned' + '" class="avatar rounded-circle avatar-xxs" />';
                             incharges.forEach(function (incharge) {
                                 inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
