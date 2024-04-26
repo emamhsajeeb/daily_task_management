@@ -359,11 +359,11 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     data: 'inspection_details',
                     render: function(data, type, row) {
                         return `
-                                <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
-                                    <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
-                                    <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
-                                    <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
-                                </div>`;
+                            <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
+                                <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
+                                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                                <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
+                            </div>`;
                     }
                 },
                 { data: 'side', className: 'dataTables-center' },
