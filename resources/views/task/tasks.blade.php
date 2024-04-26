@@ -916,14 +916,24 @@ $(document).on('input', '#assign-dropdown', async function (e) {
 
 $(document).on('input', '#incharge-dropdown', async function (e) {
     const selectedUsername = $(this).val();
-    // Find the corresponding avatar within the same row
     const selectedRow = $(this).closest('tr'); // Get the closest parent row
-    const selectedAvatar = selectedRow.find('.avatar'); // Find the avatar within the row
-    const selectedAvatarSrc = selectedAvatar.attr('src'); // Get the src attribute of the avatar
+
+    // Construct the avatar source path and alt text
+    const selectedAvatarSrc = "{{ asset('assets/images/users') }}/" + selectedUsername + ".jpg";
+    const selectedAvatarAlt = selectedUsername;
+
+    // Find the avatar element within the selected row
+    const selectedAvatar = selectedRow.find('.avatar');
+
+    // Update the src and alt attributes of the avatar
     selectedAvatar.attr('src', selectedAvatarSrc);
-    $('.avatar').attr('src', selectedAvatarSrc);
+    selectedAvatar.attr('alt', selectedAvatarAlt);
+
+    // Get the task ID and username for further processing
     const taskId = e.target.getAttribute('data-task-id');
     const user_name = e.target.value;
+
+    // Call the assignIncharge function asynchronously
     await assignIncharge(taskId, user_name);
 });
 
