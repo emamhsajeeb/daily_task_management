@@ -8,6 +8,7 @@ use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
 use App\Models\Author;
 use App\Models\DailySummary;
 use App\Models\NCR;
+use App\Models\Objection;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming team authentication)
 use Carbon\Carbon;
@@ -38,8 +39,9 @@ class TaskController extends Controller
         $user = Auth::user();
         $title = "Task List";
         $ncrs = NCR::all();
+        $obections = Objection::all();
         $incharges = User::role('se');
-        return view('task/tasks', compact('user','incharges','title','ncrs'));
+        return view('task/tasks', compact('user','incharges','title','ncrs','obections'));
     }
 
     public function allTasks(Request $request)

@@ -81,6 +81,11 @@
                                     </div>
                                     <!--end col-->
                                     @endrole
+                                    <div class="col-xxl-3 col-sm-4">
+                                        <div class="input-light" id="ncrObjectionDropdown">
+                                        </div>
+                                    </div>
+                                    <!--end col-->
                                     <div class="col-xxl-1 col-sm-4">
                                         <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
@@ -222,6 +227,25 @@
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
+const ncrs = {!! json_encode($ncrs) !!};
+const objections = {!! json_encode($objections) !!};
+
+async function generateReportOptions() {
+    let reportOptions = `<select name="qc_reports" class="form-control" id="taskReport">
+        <option value="" disabled selected>Select NCR/Obj</option>`;
+
+    ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
+    ncrs.forEach(ncr => reportOptions += `<option value="${ncr.ncr_no}">${ncr.ncr_no}</option>`);
+    ncrs.length > 0 && (reportOptions += `</optgroup>`);
+
+    objections.length > 0 && (reportOptions += `<optgroup label="Objections">`);
+    objections.forEach(objection => reportOptions += `<option value="${objection.id}">${objection.ncr_no}</option>`);
+    objections.length > 0 && (reportOptions += `</optgroup>`);
+
+    reportOptions += `</select>`;
+
+    $('#ncrObjectionDropdown').html(reportOptions);
+}
 
 async function updateTaskListBody(tasks, incharges, juniors) {
     var preloader = document.getElementById('preloader');
@@ -554,81 +578,78 @@ async function filterTaskList() {
 
 // Function to handle form submission via AJAX
 async function addTask() {
-    setTimeout(function() {
+    // Get form data
+    var formData = new FormData(document.getElementById('addTaskForm'));
 
-        // Get form data
-        var formData = new FormData(document.getElementById('addTaskForm'));
+    // AJAX request
+    await $.ajax({
+        url: admin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: async function (response) {
+            var preloader = document.getElementById('preloader');
+            toastr.success(response.message);
+            $("#showAddModal").modal('hide');
+            $('#taskTable').DataTable().clear().destroy();
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            const tasks = response.tasks;
 
-        // AJAX request
-        $.ajax({
-            url: admin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: async function (response) {
-                var preloader = document.getElementById('preloader');
-                toastr.success(response.message);
-                $("#showAddModal").modal('hide');
-                $('#taskTable').DataTable().clear().destroy();
-                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'visible'; // Set visibility to visible
-                const tasks = response.tasks;
+            // Extracting dates from tasks
+            const dates = tasks.map(task => new Date(task.date));
 
-                // Extracting dates from tasks
-                const dates = tasks.map(task => new Date(task.date));
-
-                // Finding the first and last dates
-                const firstDate = new Date(Math.min(...dates));
-                const lastDate = new Date(Math.max(...dates));
+            // Finding the first and last dates
+            const firstDate = new Date(Math.min(...dates));
+            const lastDate = new Date(Math.max(...dates));
 
 
-                flatpickr("#dateRangePicker", {
-                    minDate: new Date(firstDate),
-                    maxDate: new Date(lastDate),
-                    mode: 'range', // Specify 'range' mode as a string
-                });
+            flatpickr("#dateRangePicker", {
+                minDate: new Date(firstDate),
+                maxDate: new Date(lastDate),
+                mode: 'range', // Specify 'range' mode as a string
+            });
 
-                await updateTaskListBody(tasks);
-                preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'hidden'; // Set visibility to visible
+            await updateTaskListBody(tasks);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
 
-            },
-            error: function(xhr, status) {
-                console.log(xhr.responseText)
-                // Handle error
-                var errorData = JSON.parse(xhr.responseText).error;
-                var delay = 300;
-                for (var error in errorData) {
-                    (function(error) { // Closure to capture the current value of 'error'
-                        setTimeout(function() {
-                            toastr.error(errorData[error], {
-                                "closeButton": true,
-                                "debug": false,
-                                "newestOnTop": false,
-                                "progressBar": false,
-                                "positionClass": "toast-top-center",
-                                "preventDuplicates": false,
-                                "onclick": null,
-                                "showDuration": "300",
-                                "hideDuration": "1000",
-                                "timeOut": "5000",
-                                "extendedTimeOut": "1000",
-                                "showEasing": "swing",
-                                "hideEasing": "linear",
-                                "showMethod": "fadeIn",
-                                "hideMethod": "fadeOut"
-                            });
-                        }, delay);
-                    })(error); // Pass the current value of 'error' to the closure
-                    delay += 300;
-                }
+        },
+        error: function(xhr, status) {
+            console.log(xhr.responseText)
+            // Handle error
+            var errorData = JSON.parse(xhr.responseText).error;
+            var delay = 300;
+            for (var error in errorData) {
+                (function(error) { // Closure to capture the current value of 'error'
+                    setTimeout(function() {
+                        toastr.error(errorData[error], {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        });
+                    }, delay);
+                })(error); // Pass the current value of 'error' to the closure
+                delay += 300;
             }
-        });
-        // Once filtering is done, restore the button
-        $('#addTask').html('Add Task');
-        $('#addTask').prop('disabled', false);
-    }, 2000);
+        }
+    });
+    // Once filtering is done, restore the button
+    $('#addTask').html('Add Task');
+    $('#addTask').prop('disabled', false);
 }
 
 async function exportToExcel() {
@@ -848,7 +869,7 @@ async function reinitializeSelect2(rowNode) {
 }
 
 // AJAX request to update task_has_ncr table
-function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
+async function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
     $.ajax({
         url: url,
         type: 'POST',
@@ -870,6 +891,15 @@ $( document ).ready(async function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    await generateReportOptions();
+    await $('#taskReport').on('change', function() {
+        // Retrieve selected options
+        const selectedOptions = $(this).val();
+        // Log selected options to console
+        console.log('Selected options:', selectedOptions);
+    });
+
     await updateTaskList();
 
     $("#showAddModalBtn").click(function () {
