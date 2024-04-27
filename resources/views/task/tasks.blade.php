@@ -484,8 +484,10 @@ async function isLocalTasksLatest(timeStamp) {
         console.log("Server Time Stamp: ",new Date(response.timestamp));
 
         if (new Date(response.timestamp) > localTimeStamp) {
+            console.info("Local storage data is expired");
             return false;
         } else if (new Date(response.timestamp) < localTimeStamp) {
+            console.info("Local storage data is latest");
             return true;
         }
     } catch (error) {
@@ -502,6 +504,7 @@ async function getTasksData() {
         (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
         (userIsQciAqci && tasksData.tasks)
     )) {
+        console.info("Got tasks data from local storage");
         return tasksData; // Return the data if no AJAX call is made
     } else {
         try {
@@ -523,7 +526,7 @@ async function getTasksData() {
                 timestamp: new Date().getTime() // Store current timestamp
             };
             localStorage.setItem('tasksData', JSON.stringify(tasksData));
-
+            console.info("Got tasks data from server side");
             return tasksData; // Return the data
         } catch (error) {
             throw error; // Throw error if AJAX call fails
