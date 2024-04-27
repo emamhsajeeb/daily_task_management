@@ -226,7 +226,7 @@
 // Function to get the tasks dynamically
 const userIsAdmin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
-const userIsQciAqci = {{$user->hasRole('se') ? 'true' : 'false'}};
+const userIsQciAqci = {{$user->hasRole('qci') || $user->hasRole('qci') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
@@ -506,11 +506,11 @@ async function updateTaskList() {
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
         console.log(tasksData);
         let tasks, incharges, juniors;
-        if (userIsSe && (tasksData.tasks && !tasksData.juniors) || (userIsAdmin && (tasksData.tasks && tasksData.incharges)) || (userIsQciAqci && tasksData.tasks)) {
+        if ((userIsSe && (tasksData.tasks && tasksData.juniors)) || (userIsAdmin && (tasksData.tasks && tasksData.incharges)) || (userIsQciAqci && tasksData.tasks)) {
             console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;
-            juniors = tasksData.incharges;
+            juniors = tasksData.juniors;
         } else {
             console.log("Tasks not found in local storage");
             await $.ajax({
