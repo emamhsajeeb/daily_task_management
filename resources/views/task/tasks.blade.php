@@ -542,7 +542,7 @@ async function filterTaskList() {
     var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
-    var taskReports = document.getElementById('taskReport').value;
+    var taskReports = $('#taskReport').val();
 
     try {
         await $.ajax({
@@ -899,7 +899,7 @@ $( document ).ready(async function () {
     await generateReportOptions();
     await $('#taskReport').on('change', function() {
         // Retrieve selected options
-        var selectedOptions = document.getElementById('taskReport').value;
+        const selectedOptions = $('#taskReport').val();
         // Log selected options to console
         console.log('Selected options:', selectedOptions);
     });
