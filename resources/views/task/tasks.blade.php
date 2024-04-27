@@ -234,17 +234,19 @@ async function generateReportOptions() {
     let reportOptions = `<select class="form-control" multiple name="qc_reports[]" class="form-control" id="taskReport">`;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
-    ncrs.forEach(ncr => reportOptions += `<option value="${ncr.ncr_no}">${ncr.ncr_no}</option>`);
+    ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
     ncrs.length > 0 && (reportOptions += `</optgroup>`);
 
     objections.length > 0 && (reportOptions += `<optgroup label="Objections">`);
-    objections.forEach(objection => reportOptions += `<option value="${objection.id}">${objection.ncr_no}</option>`);
+    objections.forEach(objection => reportOptions += `<option value="${'obj_' + objection.obj_no}">${objection.obj_no}</option>`);
     objections.length > 0 && (reportOptions += `</optgroup>`);
 
     reportOptions += `</select>`;
 
     $('#ncrObjectionDropdown').html(reportOptions);
-    $('#taskReport').select2();
+    $('#taskReport').select2({
+        placeholder: "Select NCR/Obj"
+    });
 }
 
 async function updateTaskListBody(tasks, incharges, juniors) {
