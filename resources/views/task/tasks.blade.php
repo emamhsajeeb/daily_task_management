@@ -229,10 +229,11 @@ const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
 const userIsQciAqci = {{$user->hasRole('qci') || $user->hasRole('qci') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
 const users = {!! json_encode($users) !!};
+const incharges = {!! json_encode($incharges) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
 
-console.log(users);
+console.log(incharges);
 
 async function generateReportOptions() {
     let reportOptions = `<select class="form-select" multiple="multiple" name="qc_reports[]" id="taskReport">`;
@@ -963,12 +964,6 @@ $( document ).ready(async function () {
     });
 
     await generateReportOptions();
-    await $('#taskReport').on('change', function() {
-        // Retrieve selected options
-        const selectedOptions = $('#taskReport').val();
-        // Log selected options to console
-        console.log('Selected options:', selectedOptions);
-    });
 
     await updateTaskList();
 

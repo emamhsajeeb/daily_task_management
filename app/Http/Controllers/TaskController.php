@@ -46,8 +46,9 @@ class TaskController extends Controller
             $user->role = $user->roles->first()->name;
             return $user;
         });
+
         $objections = Objection::all();
-        $incharges = User::role('se');
+        $incharges = User::role('se')->get();
         return view('task/tasks', compact('user','users','incharges','title','ncrs','objections'));
     }
 
