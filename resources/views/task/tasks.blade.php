@@ -466,6 +466,24 @@ async function updateTaskListBody(tasks, incharges, juniors) {
     });
 }
 
+async function isLocalTasksLatest(timeStamp) {
+    try {
+        const response = await $.ajax({
+            url: '{{ route("getLatestTimestamp") }}',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        if (response.timestamp > timeStamp) {
+            return false;
+        } else {
+            return true;
+        }
+    } catch (error) {
+        return error;
+    }
+}
+
 async function updateTaskList() {
     var header = `
         <tr>
@@ -504,13 +522,13 @@ async function updateTaskList() {
 
 
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
-        console.log(tasksData);
+
         let tasks, incharges, juniors;
-    if (tasksData != null && (
-        (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
-        (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
-        (userIsQciAqci && tasksData.tasks)
-    )) {
+        if (await isLocalTasksLatest(tasksData.timestamp) && (
+            (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
+            (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
+            (userIsQciAqci && tasksData.tasks)
+        )) {
             console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;

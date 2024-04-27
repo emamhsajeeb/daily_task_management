@@ -44,6 +44,13 @@ class TaskController extends Controller
         return view('task/tasks', compact('user','incharges','title','ncrs','objections'));
     }
 
+    public function getLatestTimestamp()
+    {
+        $latestTimestamp = Tasks::max('updated_at'); // Assuming 'updated_at' is the timestamp field
+
+        return response()->json(['timestamp' => $latestTimestamp]);
+    }
+
     public function allTasks(Request $request)
     {
         $user = Auth::user();
