@@ -501,7 +501,7 @@ async function updateTaskList() {
 
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
-    try {
+
         const tasksData  = JSON.parse(localStorage.getItem('tasksData'));
         let tasks = tasksData.tasks;
         let incharges = tasksData.incharges;
@@ -551,9 +551,7 @@ async function updateTaskList() {
 
         // Use tasks data
         console.log(tasks);
-    } catch (error) {
-        console.error('Error fetching tasks:', error);
-    }
+
 
 
 
