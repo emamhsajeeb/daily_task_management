@@ -506,7 +506,7 @@ async function updateTaskList() {
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
         console.log(tasksData);
         let tasks, incharges, juniors;
-        if ((userIsSe && (tasksData.tasks && tasksData.juniors)) || (userIsAdmin && (tasksData.tasks && tasksData.incharges)) || (userIsQciAqci && tasksData.tasks)) {
+        if (tasksData && (userIsSe && (tasksData.tasks && tasksData.juniors)) || (userIsAdmin && (tasksData.tasks && tasksData.incharges)) || (userIsQciAqci && tasksData.tasks)) {
             console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;
