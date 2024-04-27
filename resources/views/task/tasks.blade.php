@@ -524,15 +524,11 @@ async function updateTaskList() {
         `;
 
     $('#taskListHead').html(header).css('text-align', 'center');
-
-    var url = userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
-
-
-        const tasksData = JSON.parse(localStorage.getItem('tasksData'));
+        let tasksData = JSON.parse(localStorage.getItem('tasksData'));
 
         let tasks, incharges, juniors;
 
-        if (await isLocalTasksLatest(tasksData.timestamp) && (
+        if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
             (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
             (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
             (userIsQciAqci && tasksData.tasks)
@@ -544,19 +540,22 @@ async function updateTaskList() {
         } else {
             console.log("Tasks not found in local storage");
             await $.ajax({
-                url: url,
+                url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
                 method: 'GET',
                 dataType: 'json',
                 success: async function (response) {
+                    console.log(response);
                     tasks = response.tasks ? response.tasks : null;
                     incharges = response.incharges ? response.incharges : null ;
                     juniors = response.juniors ? response.juniors : null ;
 
                     // Update existing tasksData in localStorage
-                    tasksData.tasks = tasks;
-                    tasksData.incharges = incharges;
-                    tasksData.juniors = juniors;
-                    tasksData.timestamp = new Date().getTime(); // Update timestamp
+                    tasksData = {
+                        tasks: tasks,
+                        incharges: incharges,
+                        juniors: juniors,
+                        timestamp: new Date().getTime() // Store current timestamp
+                    };
 
                     localStorage.setItem('tasksData', JSON.stringify(tasksData));
                 },
