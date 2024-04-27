@@ -502,11 +502,13 @@ async function updateTaskList() {
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
 
-        const tasksData  = JSON.parse(localStorage.getItem('tasksData'));
-        let tasks = tasksData.tasks;
-        let incharges = tasksData.incharges;
-        let juniors = tasksData.juniors;
-        if (!tasks) {
+        const tasksData = JSON.parse(localStorage.getItem('tasksData'));
+        let tasks, incharges, juniors;
+        if (tasksData) {
+            tasks = tasksData.tasks;
+            incharges = tasksData.incharges;
+            juniors = tasksData.juniors;
+        } else {
             console.log("Tasks not found in local storage");
             await $.ajax({
                 url: url,
