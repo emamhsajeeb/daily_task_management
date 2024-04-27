@@ -899,7 +899,7 @@ $( document ).ready(async function () {
     await generateReportOptions();
     await $('#taskReport').on('change', function() {
         // Retrieve selected options
-        const selectedOptions = $(this).val();
+        var selectedOptions = document.getElementById('taskReport').value;
         // Log selected options to console
         console.log('Selected options:', selectedOptions);
     });
