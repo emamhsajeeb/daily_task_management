@@ -475,8 +475,10 @@ async function isLocalTasksLatest(timeStamp) {
         });
 
         if (response.timestamp > timeStamp) {
+            console.log("Local storage has the expired data");
             return false;
         } else {
+            console.log("Local storage has the latest data");
             return true;
         }
     } catch (error) {
@@ -524,6 +526,7 @@ async function updateTaskList() {
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
 
         let tasks, incharges, juniors;
+
         if (await isLocalTasksLatest(tasksData.timestamp) && (
             (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
             (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
@@ -544,12 +547,12 @@ async function updateTaskList() {
                     incharges = response.incharges ? response.incharges : null ;
                     juniors = response.juniors ? response.juniors : null ;
 
-                    const tasksData = {
-                        tasks: tasks,
-                        incharges: incharges,
-                        juniors: juniors,
-                        timestamp: new Date().getTime() // Store current timestamp
-                    };
+                    // Update existing tasksData in localStorage
+                    tasksData.tasks = tasks;
+                    tasksData.incharges = incharges;
+                    tasksData.juniors = juniors;
+                    tasksData.timestamp = new Date().getTime(); // Update timestamp
+
                     localStorage.setItem('tasksData', JSON.stringify(tasksData));
                 },
                 error: function(xhr, status, error) {
