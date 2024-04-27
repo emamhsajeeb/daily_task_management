@@ -468,16 +468,21 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 
 async function isLocalTasksLatest(timeStamp) {
     try {
+        // Convert timeStamp to a Date object
+        const localTimeStamp = new Date(timeStamp);
+        console.log("Local Time Stamp: ",localTimeStamp);
         const response = await $.ajax({
             url: '{{ route("getLatestTimestamp") }}',
             method: 'GET',
             dataType: 'json'
         });
 
-        if (response.timestamp > timeStamp) {
+        console.log("Server Time Stamp: ",new Date(response.timestamp));
+
+        if (new Date(response.timestamp) > localTimeStamp) {
             console.log("Local storage has the expired data");
             return false;
-        } else {
+        } else if (new Date(response.timestamp) < localTimeStamp) {
             console.log("Local storage has the latest data");
             return true;
         }
