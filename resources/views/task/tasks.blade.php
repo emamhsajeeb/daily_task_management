@@ -231,7 +231,7 @@ const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
 
 async function generateReportOptions() {
-    let reportOptions = `<select name="qc_reports" class="form-control" id="taskReport">
+    let reportOptions = `<select multiple name="qc_reports" class="form-control" id="taskReport">
         <option value="" disabled selected>Select NCR/Obj</option>`;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
@@ -540,6 +540,7 @@ async function filterTaskList() {
     var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
+    var taskReports = document.getElementById('taskReport').value;
 
     try {
         await $.ajax({
@@ -550,6 +551,7 @@ async function filterTaskList() {
                 end: endDate,
                 status: taskStatus,
                 incharge: taskIncharge,
+                reports: taskReports,
             },
             success:async function (response) {
                 var preloader = document.getElementById('preloader');
