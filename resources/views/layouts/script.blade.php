@@ -130,9 +130,7 @@
     });
 
     var channel = pusher.subscribe('tasks-channel');
-    channel.bind('pusher:subscription_succeeded', function() {
-        console.log('Successfully subscribed to tasks-channel.');
-    });
+    channel.bind('pusher:subscription_succeeded', function() {});
 
 
     channel.bind('tasks-event', function(data) {
