@@ -202,29 +202,49 @@ class TaskController extends Controller
                 })
                 ->when($request->incharge && $request->incharge !== 'all', function ($query) use ($request) {
                     $query->where('incharge', $request->incharge);
+                })
+                ->when($request->reports, function ($query) use ($request) {
+                    $query->where(function ($query) use ($request) {
+                        foreach ($request->reports as $report) {
+                            // Check if the report is NCR or objection
+                            if (str_starts_with($report, 'ncr_')) {
+                                // Extract NCR number after the dash
+                                $ncrNumber = substr($report, strpos($report, '_') + 1);
+                                // Filter tasks with NCRs having the extracted NCR number
+                                $query->orWhereHas('ncrs', function ($query) use ($ncrNumber) {
+                                    $query->where('ncr_no', $ncrNumber);
+                                });
+                            } elseif (str_starts_with($report, 'obj_')) {
+                                // Extract objection number after the dash
+                                $objectionNumber = substr($report, strpos($report, '_') + 1);
+                                // Filter tasks with objections having the extracted objection number
+                                $query->orWhere('objection_number', $objectionNumber);
+                            }
+                        }
+                    });
                 });
 
-            // Filter tasks based on reports
-            if ($request->reports) {
-                $tasksQuery->where(function ($query) use ($request) {
-                    foreach ($request->reports as $report) {
-                        // Check if the report is NCR or objection
-                        if (str_starts_with($report, 'ncr_')) {
-                            // Extract NCR number after the dash
-                            $ncrNumber = substr($report, strpos($report, '_') + 1);
-                            // Filter tasks with NCRs having the extracted NCR number
-                            $query->orWhereHas('ncrs', function ($query) use ($ncrNumber) {
-                                $query->where('ncr_no', $ncrNumber);
-                            });
-                        } elseif (str_starts_with($report, 'obj_')) {
-                            // Extract objection number after the dash
-                            $objectionNumber = substr($report, strpos($report, '_') + 1);
-                            // Filter tasks with objections having the extracted objection number
-                            $query->orWhere('objection_number', $objectionNumber);
-                        }
-                    }
-                });
-            }
+//            // Filter tasks based on reports
+//            if ($request->reports) {
+//                $tasksQuery->where(function ($query) use ($request) {
+//                    foreach ($request->reports as $report) {
+//                        // Check if the report is NCR or objection
+//                        if (str_starts_with($report, 'ncr_')) {
+//                            // Extract NCR number after the dash
+//                            $ncrNumber = substr($report, strpos($report, '_') + 1);
+//                            // Filter tasks with NCRs having the extracted NCR number
+//                            $query->orWhereHas('ncrs', function ($query) use ($ncrNumber) {
+//                                $query->where('ncr_no', $ncrNumber);
+//                            });
+//                        } elseif (str_starts_with($report, 'obj_')) {
+//                            // Extract objection number after the dash
+//                            $objectionNumber = substr($report, strpos($report, '_') + 1);
+//                            // Filter tasks with objections having the extracted objection number
+//                            $query->orWhere('objection_number', $objectionNumber);
+//                        }
+//                    }
+//                });
+//            }
 
             // Get the filtered tasks
             $filteredTasks = $tasksQuery->get();
