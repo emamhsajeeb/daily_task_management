@@ -39,9 +39,16 @@ class TaskController extends Controller
         $user = Auth::user();
         $title = "Task List";
         $ncrs = NCR::all();
+        $users = User::with('roles')->get();
+
+        // Loop through each user and add a new field 'role' with the role name
+        $users->transform(function ($user) {
+            $user->role = $user->roles->first()->name;
+            return $user;
+        });
         $objections = Objection::all();
         $incharges = User::role('se');
-        return view('task/tasks', compact('user','incharges','title','ncrs','objections'));
+        return view('task/tasks', compact('user','users','incharges','title','ncrs','objections'));
     }
 
     public function getLatestTimestamp()
@@ -57,14 +64,14 @@ class TaskController extends Controller
 
         $tasks = $user->hasRole('se')
             ? [
-                'tasks' => Tasks::with('ncrs')->where('incharge', $user->user_name)->get(),
+                'tasks' => Tasks::with('ncrs', 'objections')->where('incharge', $user->user_name)->get(),
                 'juniors' => User::where('incharge', $user->user_name)->get(),
             ]
             : ($user->hasRole('qci') || $user->hasRole('aqci')
-                ? ['tasks' => Tasks::with('ncrs')->where('assigned', $user->user_name)->get()]
+                ? ['tasks' => Tasks::with('ncrs', 'objections')->where('assigned', $user->user_name)->get()]
                 : ($user->hasRole('admin') || $user->hasRole('manager')
                     ? [
-                        'tasks' => Tasks::with('ncrs')->get(),
+                        'tasks' => Tasks::with('ncrs', 'objections')->get(),
                         'incharges' => User::role('se')->get(),
                     ]
                     : ['tasks' => []]
@@ -231,32 +238,8 @@ class TaskController extends Controller
                     });
                 });
 
-//            // Filter tasks based on reports
-//            if ($request->reports) {
-//                $tasksQuery->where(function ($query) use ($request) {
-//                    foreach ($request->reports as $report) {
-//                        // Check if the report is NCR or objection
-//                        if (str_starts_with($report, 'ncr_')) {
-//                            // Extract NCR number after the dash
-//                            $ncrNumber = substr($report, strpos($report, '_') + 1);
-//                            // Filter tasks with NCRs having the extracted NCR number
-//                            $query->orWhereHas('ncrs', function ($query) use ($ncrNumber) {
-//                                $query->where('ncr_no', $ncrNumber);
-//                            });
-//                        } elseif (str_starts_with($report, 'obj_')) {
-//                            // Extract objection number after the dash
-//                            $objectionNumber = substr($report, strpos($report, '_') + 1);
-//                            // Filter tasks with objections having the extracted objection number
-//                            $query->orWhere('objection_number', $objectionNumber);
-//                        }
-//                    }
-//                });
-//            }
-
             // Get the filtered tasks
             $filteredTasks = $tasksQuery->get();
-
-
 
             // Determine the return array based on user roles
             $tasks = $user->hasRole('se')

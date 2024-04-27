@@ -228,8 +228,11 @@ const userIsAdmin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
 const userIsQciAqci = {{$user->hasRole('qci') || $user->hasRole('qci') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
+const users = {!! json_encode($users) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
+
+console.log(users);
 
 async function generateReportOptions() {
     let reportOptions = `<select class="form-select" multiple="multiple" name="qc_reports[]" id="taskReport">`;
@@ -489,6 +492,44 @@ async function isLocalTasksLatest(timeStamp) {
     }
 }
 
+async function getTasksData() {
+    let tasksData = JSON.parse(localStorage.getItem('tasksData'));
+    let tasks, incharges, juniors;
+
+    if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
+        (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
+        (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
+        (userIsQciAqci && tasksData.tasks)
+    )) {
+        return tasksData; // Return the data if no AJAX call is made
+    } else {
+        try {
+            const response = await $.ajax({
+                url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
+                method: 'GET',
+                dataType: 'json'
+            });
+
+            tasks = response.tasks ? response.tasks : null;
+            incharges = response.incharges ? response.incharges : null;
+            juniors = response.juniors ? response.juniors : null;
+
+            // Update existing tasksData in localStorage
+            tasksData = {
+                tasks: tasks,
+                incharges: incharges,
+                juniors: juniors,
+                timestamp: new Date().getTime() // Store current timestamp
+            };
+            localStorage.setItem('tasksData', JSON.stringify(tasksData));
+
+            return tasksData; // Return the data
+        } catch (error) {
+            throw error; // Throw error if AJAX call fails
+        }
+    }
+}
+
 async function updateTaskList() {
     var header = `
         <tr>
@@ -522,52 +563,17 @@ async function updateTaskList() {
         `;
 
     $('#taskListHead').html(header).css('text-align', 'center');
-        let tasksData = JSON.parse(localStorage.getItem('tasksData'));
-        let tasks, incharges, juniors;
 
-        if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
-            (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
-            (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
-            (userIsQciAqci && tasksData.tasks)
-        )) {
-            tasks = tasksData.tasks;
-            incharges = tasksData.incharges;
-            juniors = tasksData.juniors;
-        } else {
-            await $.ajax({
-                url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
-                method: 'GET',
-                dataType: 'json',
-                success: async function (response) {
-                    console.log(response);
-                    tasks = response.tasks ? response.tasks : null;
-                    incharges = response.incharges ? response.incharges : null ;
-                    juniors = response.juniors ? response.juniors : null ;
-
-                    // Update existing tasksData in localStorage
-                    tasksData = {
-                        tasks: tasks,
-                        incharges: incharges,
-                        juniors: juniors,
-                        timestamp: new Date().getTime() // Store current timestamp
-                    };
-
-                    localStorage.setItem('tasksData', JSON.stringify(tasksData));
-                },
-                error: function(xhr, status, error) {
-                    return error;
-                }
-            });
-        }
+        const tasksData = await getTasksData();
 
         // Extracting dates from tasks
-        const dates = tasks.map(task => new Date(task.date));
+        const dates = tasksData.tasks.map(task => new Date(task.date));
 
         // Finding the first and last dates
         const firstDate = new Date(Math.min(...dates));
         const lastDate = new Date(Math.max(...dates));
 
-        await updateTaskListBody(tasks, incharges, juniors);
+        await updateTaskListBody(tasksData.tasks, tasksData.incharges, tasksData.juniors);
 
         flatpickr("#dateRangePicker", {
             minDate: new Date(firstDate),
@@ -581,39 +587,42 @@ async function updateTaskList() {
 async function filterTaskList() {
     try {
         // Get start and end dates from the date range picker
-        var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-        var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
-        var taskStatus = document.getElementById('taskStatus').value;
-        var taskIncharge = userIsAdmin? document.getElementById('taskIncharge').value : null;
-        var taskReports = $('#taskReport').val();
-        await $.ajax({
-            url : userIsAdmin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
-            type:"POST",
-            data: {
-                start: startDate,
-                end: endDate,
-                status: taskStatus,
-                incharge: taskIncharge,
-                reports: taskReports,
-            },
-            success:async function (response) {
-                var preloader = document.getElementById('preloader');
-                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'visible'; // Set visibility to visible
-                toastr.success(response.message);
+        const startDate = new Date(document.getElementById('dateRangePicker').value.split(" to ")[0]);
+        const endDate = new Date(document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate);
+        const taskStatus = document.getElementById('taskStatus').value;
+        const taskIncharge = userIsAdmin? document.getElementById('taskIncharge').value : null;
+        const taskReports = $('#taskReport').val();
 
-                const tasks = response.tasks ? response.tasks : null;
-                const incharges = response.incharges ? response.incharges : null ;
-                const juniors = response.juniors ? response.juniors : null ;
+        let tasksData = await getTasksData();
+        let filteredTasks = tasksData.tasks;
 
-                await updateTaskListBody(tasks, incharges, juniors);
-                preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
-                preloader.style.visibility = 'hidden'; // Set visibility to visible
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+        // Query tasks based on date range
+        filteredTasks = filteredTasks.filter(task => (!startDate || !endDate || new Date(task.date) >= startDate && new Date(task.date) <= endDate));
+
+        // Query tasks based on status
+        filteredTasks = filteredTasks.filter(task => !taskStatus || task.status === taskStatus);
+
+        // Query tasks based on incharge
+        filteredTasks = filteredTasks.filter(task => !taskIncharge || task.incharge === taskIncharge);
+
+        // Query tasks based on reports and date range
+        filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
+            if (report.startsWith('ncr_')) {
+                const ncrNumber = report.split('_')[1];
+                return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
+            } else if (report.startsWith('obj_')) {
+                const objectionNumber = report.split('_')[1];
+                return task.obj_no === objectionNumber;
             }
-        });
+        }));
+
+        // Assign tasksData based on user role
+        tasksData.tasks = userIsSe ? filteredTasks : (userIsQciAqci || userIsAdmin ? filteredTasks : []);
+        tasksData.juniors = userIsSe ? users.filter(user => user.incharge === user.user_name) : [];
+        tasksData.incharges = userIsAdmin ? users.filter(user => user.role === 'se') : [];
+
+        await updateTaskListBody(tasksData.tasks, tasksData.incharges, tasksData.juniors);
+
     } finally {
         // Change the button to a reset button
         $('#filterTasks').html('<i class="ri-refresh-line me-1 align-bottom"></i> Reset');
@@ -843,7 +852,7 @@ async function assignTask(taskId, userName) {
 // Function to handle status update
 async function assignIncharge(taskId, userName) {
     $.ajax({
-        url : "{{ route('assignTask') }}",
+        url : "{{ route('assignIncharge') }}",
         type:"POST",
         data: {
             task_id: taskId,
