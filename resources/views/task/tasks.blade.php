@@ -501,37 +501,61 @@ async function updateTaskList() {
 
     var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
-    await $.ajax({
-        url: url,
-        method: 'GET',
-        dataType: 'json',
-        success: async function (response) {
-            const tasks = response.tasks ? response.tasks : null;
-            const incharges = response.incharges ? response.incharges : null ;
-            const juniors = response.juniors ? response.juniors : null ;
+    try {
+        const tasksData  = JSON.parse(localStorage.getItem('tasksData'));
+        let tasks = tasksData.tasks;
+        let incharges = tasksData.incharges;
+        let juniors = tasksData.juniors;
+        if (!tasks) {
+            console.log("Tasks not found in local storage");
+            await $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: async function (response) {
+                    tasks = response.tasks ? response.tasks : null;
+                    incharges = response.incharges ? response.incharges : null ;
+                    juniors = response.juniors ? response.juniors : null ;
 
-            // Extracting dates from tasks
-            const dates = tasks.map(task => new Date(task.date));
-
-            // Finding the first and last dates
-            const firstDate = new Date(Math.min(...dates));
-            const lastDate = new Date(Math.max(...dates));
-
-            await updateTaskListBody(tasks, incharges, juniors);
-
-            flatpickr("#dateRangePicker", {
-                minDate: new Date(firstDate),
-                maxDate: new Date(lastDate),
-                mode: 'range', // Specify 'range' mode as a string
+                    const tasksData = {
+                        tasks: tasks,
+                        incharges: incharges,
+                        juniors: juniors,
+                        timestamp: new Date().getTime() // Store current timestamp
+                    };
+                    localStorage.setItem('tasksData', JSON.stringify(tasksData));
+                },
+                error: function(xhr, status, error) {
+                    return error;
+                }
             });
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-
-        },
-        error: function(xhr, status, error) {
-            return error;
         }
-    });
+
+        // Extracting dates from tasks
+        const dates = tasks.map(task => new Date(task.date));
+
+        // Finding the first and last dates
+        const firstDate = new Date(Math.min(...dates));
+        const lastDate = new Date(Math.max(...dates));
+
+        await updateTaskListBody(tasks, incharges, juniors);
+
+        flatpickr("#dateRangePicker", {
+            minDate: new Date(firstDate),
+            maxDate: new Date(lastDate),
+            mode: 'range', // Specify 'range' mode as a string
+        });
+        preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+        preloader.style.visibility = 'hidden'; // Set visibility to visible
+
+
+        // Use tasks data
+        console.log(tasks);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+    }
+
+
 
 }
 
