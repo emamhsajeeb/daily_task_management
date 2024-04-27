@@ -573,11 +573,14 @@ async function filterTaskList() {
                 console.error(xhr.responseText);
             }
         });
-    } finally {
-        // Once filtering is done, restore the button
-        $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-        $('#filterTasks').prop('disabled', false);
     }
+}
+
+async function resetTaskList() {
+    await updateTaskList();
+    // Once filtering is done, restore the button
+    $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+    $('#filterTasks').prop('disabled', false);
 }
 
 // Function to handle form submission via AJAX
@@ -922,7 +925,18 @@ $( document ).ready(async function () {
         $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $('#filterTasks').prop('disabled', true);
         await filterTaskList();
+
+        // Change the button to a reset button
+        $('#filterTasks').html('<i class="ri-refresh-line me-1 align-bottom"></i> Reset');
+        $('#filterTasks').off('click'); // Remove previous click event handler
+        $('#filterTasks').click(async function (e) {
+            e.preventDefault();
+            $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resetting...');
+            $('#filterTasks').prop('disabled', true);
+            await resetTaskList();
+        });
     });
+
 
     await $('#exportToExcel').click(async function (e) {
         e.preventDefault();
