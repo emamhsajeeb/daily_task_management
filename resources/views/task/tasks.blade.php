@@ -224,8 +224,9 @@
 <script>
 
 // Function to get the tasks dynamically
-const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
+const userIsAdmin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const userIsSe = {{$user->hasRole('se') ? 'true' : 'false'}};
+const userIsQciAqci = {{$user->hasRole('se') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
@@ -353,7 +354,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 </span>
             `;
                         var statusOptions = `
-                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${admin ? 'disabled' : ''}>
+                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${userIsAdmin ? 'disabled' : ''}>
                     <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
                     <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
                     <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
@@ -385,7 +386,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     data: 'inspection_details',
                     render: function(data, type, row) {
                         return `
-                            <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${admin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
+                            <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${userIsAdmin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
                                 <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
                                 <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
                                 <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
@@ -395,7 +396,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 { data: 'side', className: 'dataTables-center' },
                 { data: 'qty_layer', className: 'dataTables-center' },
                 { data: 'planned_time', className: 'dataTables-center' },
-                admin ?
+                userIsAdmin ?
                     {
                         data: 'incharge',
                         render: function(data, type, row) {
@@ -426,21 +427,21 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     },
                     className: 'dataTables-center'
                 },
-                admin ?
+                userIsAdmin ?
                 {
                     data: 'rfi_submission_date',
                     render: function(data, type, row) {
-                        return `<input ${admin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" data-task-status="${row.status}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
+                        return `<input ${userIsAdmin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" data-task-status="${row.status}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
                     },
                     className: 'dataTables-center'
                 } : '',
-                admin ?
+                userIsAdmin ?
                 {
                     data: null,
                     className: 'dataTables-center',
                     defaultContent: ''
                 } : '',
-                admin ?
+                userIsAdmin ?
                 {
                     data: null,
                     className: 'dataTables-center',
@@ -481,17 +482,17 @@ async function updateTaskList() {
         <th class="dataTables-center">Road Type</th>
         <th class="dataTables-center">Quantity/Layer No.</th>
         <th class="dataTables-center">Planned Time</th>
-        ${admin ? `
+        ${userIsAdmin ? `
         <th class="dataTables-center">In-charge</th>
         ` : ''}
         <th class="dataTables-center">Completion Date/Time</th>
         <th class="dataTables-center">Resubmitted</th>
-        ${admin ? `
+        ${userIsAdmin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
-        ${admin ? `
+        ${userIsAdmin ? `
         <th class="dataTables-center">Attach/Detach NCR</th>
         ` : ''}
-        ${admin ? `
+        ${userIsAdmin ? `
         <th class="dataTables-center">Actions</th>
         ` : ''}
         </tr>
@@ -499,16 +500,17 @@ async function updateTaskList() {
 
     $('#taskListHead').html(header).css('text-align', 'center');
 
-    var url = admin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
+    var url = userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}';
 
 
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
+        console.log(tasksData);
         let tasks, incharges, juniors;
-        if (tasksData) {
+        if (userIsSe && (!tasksData.tasks && !tasksData.juniors) || (userIsAdmin && (!tasksData.tasks && !tasksData.incharges)) || (userIsQciAqci && !tasksData.tasks)) {
             console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;
-            juniors = tasksData.juniors;
+            juniors = tasksData.incharges;
         } else {
             console.log("Tasks not found in local storage");
             await $.ajax({
@@ -558,10 +560,10 @@ async function filterTaskList() {
         var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
         var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
         var taskStatus = document.getElementById('taskStatus').value;
-        var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
+        var taskIncharge = userIsAdmin? document.getElementById('taskIncharge').value : null;
         var taskReports = $('#taskReport').val();
         await $.ajax({
-            url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
+            url : userIsAdmin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
             type:"POST",
             data: {
                 start: startDate,
@@ -618,7 +620,7 @@ async function addTask() {
 
     // AJAX request
     await $.ajax({
-        url: admin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
+        url: userIsAdmin ? '{{ route('addTask') }}' : '{{ route('addTaskSE') }}',
         type: 'POST',
         data: formData,
         processData: false,
@@ -860,7 +862,7 @@ async function updateRfiSubmissionDate(taskId, date, status) {
 
 async function updateCompletionDateTime(taskId, dateTime) {
     $.ajax({
-        url:admin ? "{{ route('updateCompletionDateTime') }}" : "{{ route('updateCompletionDateTimeSE') }}",
+        url: userIsAdmin ? "{{ route('updateCompletionDateTime') }}" : "{{ route('updateCompletionDateTimeSE') }}",
         type:"POST",
         data: {
             id: taskId,
