@@ -599,12 +599,15 @@ async function filterTaskList() {
 
         // Query tasks based on date range
         filteredTasks = filteredTasks.filter(task => (!startDate || !endDate || new Date(task.date) >= startDate && new Date(task.date) <= endDate));
+        console.log('Date filtered: ', filteredTasks);
 
         // Query tasks based on status
         filteredTasks = filteredTasks.filter(task => !taskStatus || task.status === taskStatus);
+        console.log('Status filtered: ', filteredTasks);
 
         // Query tasks based on incharge
         filteredTasks = filteredTasks.filter(task => !taskIncharge || task.incharge === taskIncharge);
+        console.log('Incharge filtered: ', filteredTasks);
 
         // Query tasks based on reports and date range
         filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
@@ -616,11 +619,14 @@ async function filterTaskList() {
                 return task.obj_no === objectionNumber;
             }
         }));
+        console.log('Report filtered: ', filteredTasks);
 
         // Assign tasksData based on user role
         tasksData.tasks = userIsSe ? filteredTasks : (userIsQciAqci || userIsAdmin ? filteredTasks : []);
         tasksData.juniors = userIsSe ? users.filter(user => user.incharge === user.user_name) : [];
         tasksData.incharges = userIsAdmin ? users.filter(user => user.role === 'se') : [];
+
+        console.log('Report filtered: ', filteredTasks);
 
         await updateTaskListBody(tasksData.tasks, tasksData.incharges, tasksData.juniors);
 
