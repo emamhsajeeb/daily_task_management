@@ -594,6 +594,13 @@ async function filterTaskList() {
         const taskIncharge = userIsAdmin? document.getElementById('taskIncharge').value : null;
         const taskReports = $('#taskReport').val();
 
+        console.log("Start Date:", startDate);
+        console.log("End Date:", endDate);
+        console.log("Task Status:", taskStatus);
+        console.log("Task Incharge:", taskIncharge);
+        console.log("Task Reports:", taskReports);
+
+
         let tasksData = await getTasksData();
         let filteredTasks = tasksData.tasks;
 
