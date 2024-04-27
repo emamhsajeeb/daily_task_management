@@ -56,7 +56,7 @@
                                     <!--end col-->
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
-                                            <select name="status" class="form-select form-select-sm" id="taskStatus">
+                                            <select name="status" class="form-select" id="taskStatus">
                                                 <option value="" disabled selected>Select Status</option>
                                                 <option value="all">All</option>
                                                 <option value="completed">Completed</option>
@@ -70,7 +70,7 @@
                                     @role('admin')
                                     <div class="col-xxl-3 col-sm-4">
                                         <div class="input-light">
-                                            <select name="incharge" class="form-select form-select-sm" id="taskIncharge">
+                                            <select name="incharge" class="form-select" id="taskIncharge">
                                                 <option value="" disabled selected>Select Incharge</option>
                                                 <option value="all">All</option>
                                                 @foreach($incharges as $incharge)
@@ -231,7 +231,7 @@ const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
 
 async function generateReportOptions() {
-    let reportOptions = `<select class="form-select form-select-sm" multiple="multiple" name="qc_reports[]" id="taskReport">`;
+    let reportOptions = `<select class="form-select" multiple="multiple" name="qc_reports[]" id="taskReport">`;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
     ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
