@@ -480,10 +480,8 @@ async function isLocalTasksLatest(timeStamp) {
         console.log("Server Time Stamp: ",new Date(response.timestamp));
 
         if (new Date(response.timestamp) > localTimeStamp) {
-            console.log("Local storage has the expired data");
             return false;
         } else if (new Date(response.timestamp) < localTimeStamp) {
-            console.log("Local storage has the latest data");
             return true;
         }
     } catch (error) {
@@ -525,7 +523,6 @@ async function updateTaskList() {
 
     $('#taskListHead').html(header).css('text-align', 'center');
         let tasksData = JSON.parse(localStorage.getItem('tasksData'));
-
         let tasks, incharges, juniors;
 
         if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
@@ -533,12 +530,10 @@ async function updateTaskList() {
             (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
             (userIsQciAqci && tasksData.tasks)
         )) {
-            console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;
             juniors = tasksData.juniors;
         } else {
-            console.log("Tasks not found in local storage");
             await $.ajax({
                 url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
                 method: 'GET',
