@@ -505,6 +505,7 @@ async function updateTaskList() {
         const tasksData = JSON.parse(localStorage.getItem('tasksData'));
         let tasks, incharges, juniors;
         if (tasksData) {
+            console.log("Tasks found in local storage");
             tasks = tasksData.tasks;
             incharges = tasksData.incharges;
             juniors = tasksData.juniors;
@@ -549,14 +550,6 @@ async function updateTaskList() {
         });
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
-
-
-        // Use tasks data
-        console.log(tasks);
-
-
-
-
 }
 
 async function filterTaskList() {
