@@ -543,37 +543,34 @@ async function filterTaskList() {
     var taskStatus = document.getElementById('taskStatus').value;
     var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
     var taskReports = $('#taskReport').val();
+    await $.ajax({
+        url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
+        type:"POST",
+        data: {
+            start: startDate,
+            end: endDate,
+            status: taskStatus,
+            incharge: taskIncharge,
+            reports: taskReports,
+        },
+        success:async function (response) {
+            var preloader = document.getElementById('preloader');
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            toastr.success(response.message);
 
-    try {
-        await $.ajax({
-            url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
-            type:"POST",
-            data: {
-                start: startDate,
-                end: endDate,
-                status: taskStatus,
-                incharge: taskIncharge,
-                reports: taskReports,
-            },
-            success:async function (response) {
-                var preloader = document.getElementById('preloader');
-                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-                preloader.style.visibility = 'visible'; // Set visibility to visible
-                toastr.success(response.message);
+            const tasks = response.tasks ? response.tasks : null;
+            const incharges = response.incharges ? response.incharges : null ;
+            const juniors = response.juniors ? response.juniors : null ;
 
-                const tasks = response.tasks ? response.tasks : null;
-                const incharges = response.incharges ? response.incharges : null ;
-                const juniors = response.juniors ? response.juniors : null ;
-
-                await updateTaskListBody(tasks, incharges, juniors);
-                preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
-                preloader.style.visibility = 'hidden'; // Set visibility to visible
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
+            await updateTaskListBody(tasks, incharges, juniors);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 }
 
 async function resetTaskList() {
