@@ -536,41 +536,55 @@ async function updateTaskList() {
 }
 
 async function filterTaskList() {
+    try {
+        // Get start and end dates from the date range picker
+        var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
+        var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
+        var taskStatus = document.getElementById('taskStatus').value;
+        var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
+        var taskReports = $('#taskReport').val();
+        await $.ajax({
+            url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
+            type:"POST",
+            data: {
+                start: startDate,
+                end: endDate,
+                status: taskStatus,
+                incharge: taskIncharge,
+                reports: taskReports,
+            },
+            success:async function (response) {
+                var preloader = document.getElementById('preloader');
+                preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+                preloader.style.visibility = 'visible'; // Set visibility to visible
+                toastr.success(response.message);
 
-    // Get start and end dates from the date range picker
-    var startDate = document.getElementById('dateRangePicker').value.split(" to ")[0];
-    var endDate = document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate;
-    var taskStatus = document.getElementById('taskStatus').value;
-    var taskIncharge = admin? document.getElementById('taskIncharge').value : null;
-    var taskReports = $('#taskReport').val();
-    await $.ajax({
-        url : admin? "{{ route('filterTasks') }}" : "{{ route('filterTasksSE') }}",
-        type:"POST",
-        data: {
-            start: startDate,
-            end: endDate,
-            status: taskStatus,
-            incharge: taskIncharge,
-            reports: taskReports,
-        },
-        success:async function (response) {
-            var preloader = document.getElementById('preloader');
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            toastr.success(response.message);
+                const tasks = response.tasks ? response.tasks : null;
+                const incharges = response.incharges ? response.incharges : null ;
+                const juniors = response.juniors ? response.juniors : null ;
 
-            const tasks = response.tasks ? response.tasks : null;
-            const incharges = response.incharges ? response.incharges : null ;
-            const juniors = response.juniors ? response.juniors : null ;
+                await updateTaskListBody(tasks, incharges, juniors);
+                preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
+                preloader.style.visibility = 'hidden'; // Set visibility to visible
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    } finally {
+        // Change the button to a reset button
+        $('#filterTasks').html('<i class="ri-refresh-line me-1 align-bottom"></i> Reset');
+        $('#filterTasks').prop('disabled', false);
+        $('#filterTasks').off('click'); // Remove previous click event handler
+        $('#filterTasks').click(async function (e) {
+            e.preventDefault();
+            $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resetting...');
+            $('#filterTasks').prop('disabled', true);
+            await resetTaskList();
+        });
+    }
 
-            await updateTaskListBody(tasks, incharges, juniors);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visibl
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
+
 }
 
 async function resetTaskList() {
@@ -922,16 +936,6 @@ $( document ).ready(async function () {
         $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
         $('#filterTasks').prop('disabled', true);
         await filterTaskList();
-
-        // Change the button to a reset button
-        $('#filterTasks').html('<i class="ri-refresh-line me-1 align-bottom"></i> Reset');
-        $('#filterTasks').off('click'); // Remove previous click event handler
-        $('#filterTasks').click(async function (e) {
-            e.preventDefault();
-            $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resetting...');
-            $('#filterTasks').prop('disabled', true);
-            await resetTaskList();
-        });
     });
 
 
