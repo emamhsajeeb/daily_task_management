@@ -590,11 +590,14 @@ async function updateTaskList() {
 
 async function filterTaskList() {
     try {
-        // Get start and end dates from the date range picker
-        const startDate = new Date(document.getElementById('dateRangePicker').value.split(" to ")[0]);
-        const endDate = new Date(document.getElementById('dateRangePicker').value.split(" to ")[1] ? document.getElementById('dateRangePicker').value.split(" to ")[1] : startDate);
+        const dateRangeValue = document.getElementById('dateRangePicker').value;
+        const startDateValue = dateRangeValue.split(" to ")[0];
+        const endDateValue = dateRangeValue.split(" to ")[1] || startDateValue; // Use startDateValue if endDate is null
+
+        const startDate = startDateValue ? new Date(startDateValue) : null;
+        const endDate = endDateValue ? new Date(endDateValue) : null;
         const taskStatus = document.getElementById('taskStatus').value;
-        const taskIncharge = userIsAdmin? document.getElementById('taskIncharge').value : null;
+        const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
         const taskReports = $('#taskReport').val();
 
         console.log("Start Date:", startDate);
