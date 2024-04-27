@@ -244,7 +244,7 @@ async function generateReportOptions() {
     reportOptions += `</select>`;
 
     $('#ncrObjectionDropdown').html(reportOptions);
-    $('#ncrObjectionDropdown').select2();
+    $('#taskReport').select2();
 }
 
 async function updateTaskListBody(tasks, incharges, juniors) {
