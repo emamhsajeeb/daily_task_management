@@ -231,7 +231,7 @@ const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
 
 async function generateReportOptions() {
-    let reportOptions = `<select multiple name="qc_reports[]" class="form-control" id="taskReport">`;
+    let reportOptions = `<select class="form-control" multiple name="qc_reports[]" class="form-control" id="taskReport">`;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
     ncrs.forEach(ncr => reportOptions += `<option value="${ncr.ncr_no}">${ncr.ncr_no}</option>`);
