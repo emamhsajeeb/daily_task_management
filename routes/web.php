@@ -102,9 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/task/update-completion-date-time-se', [TaskController::class, 'updateCompletionDateTime'])->name('updateCompletionDateTimeSE');
     Route::get('/tasks/daily-summary-se', [DailySummaryController::class, 'showDailySummary','title' => 'Daily Summary'])->name('showDailySummarySE');
     Route::post('/tasks/daily-summary-filtered-se', [DailySummaryController::class, 'filterSummary'])->name('filterSummarySE');
-});
-
-Route::middleware('auth')->group(function () {
+    Route::get('/get-latest-timestamp', [TaskController::class, 'getLatestTimestamp'])->name('getLatestTimestamp');
     Route::get('/tasks/daily-summary-json', [DailySummaryController::class, 'dailySummary'])->name('dailySummaryJSON');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('viewProfile');
 });
