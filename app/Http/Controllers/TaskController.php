@@ -39,9 +39,9 @@ class TaskController extends Controller
         $user = Auth::user();
         $title = "Task List";
         $ncrs = NCR::all();
-        $obejctions = Objection::all();
+        $obejections = Objection::all();
         $incharges = User::role('se');
-        return view('task/tasks', compact('user','incharges','title','ncrs','obejctions'));
+        return view('task/tasks', compact('user','incharges','title','ncrs','obejections'));
     }
 
     public function allTasks(Request $request)
