@@ -420,7 +420,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         }
     });
     // Prepend the filter form to the DataTable search area
-    $('.dataTables_filter').prepend(`
+    $('.dt-search').prepend(`
         <form id="filterTaskForm">
             @csrf
     <div class="row g-3">
