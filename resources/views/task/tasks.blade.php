@@ -56,7 +56,7 @@
                                     <!--end col-->
                                     <div class="col-xxl-1 col-sm-2">
                                         <div class="input-light">
-                                            <select name="status" class="form-select" id="taskStatus">
+                                            <select style="appearance: none;" name="status" class="form-select" id="taskStatus">
                                                 <option value="" disabled selected>Select Status</option>
                                                 <option value="all">All</option>
                                                 <option value="completed">Completed</option>
@@ -70,7 +70,7 @@
                                     @role('admin')
                                     <div class="col-xxl-1 col-sm-2">
                                         <div class="input-light">
-                                            <select name="incharge" class="form-select" id="taskIncharge">
+                                            <select style="appearance: none;" name="incharge" class="form-select" id="taskIncharge">
                                                 <option value="" disabled selected>Select Incharge</option>
                                                 <option value="all">All</option>
                                                 @foreach($incharges as $incharge)
