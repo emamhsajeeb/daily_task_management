@@ -466,7 +466,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 async function isLocalTasksLatest(timeStamp) {
     try {
         // Convert timeStamp to a Date object
-        const localTimeStamp = new Date(timeStamp - (6 * 60 * 60 * 1000));
+        const localTimeStamp = new Date(timeStamp);
         console.log("Local Time Stamp: ",localTimeStamp);
         const response = await $.ajax({
             url: '{{ route("getLatestTimestamp") }}',
