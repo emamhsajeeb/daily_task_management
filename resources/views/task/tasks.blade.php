@@ -268,22 +268,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 
     $('#taskTable').DataTable({
         dom: 'Pfrtip',
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Task Status',
-                    column: 2, // Index of the column for task status (zero-based index)
-                    options: [
-                        { label: 'All', value: '' },
-                        { label: 'Completed', value: 'completed' },
-                        { label: 'New', value: 'new' },
-                        { label: 'Resubmission', value: 'resubmission' },
-                        { label: 'Emergency', value: 'emergency' }
-                    ]
-                },
-                // Add more custom search panes for other columns if needed
-            ]
-        },
+        searchPanes: true,
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
