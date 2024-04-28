@@ -46,6 +46,57 @@
 
                             </div>
                         </div>
+                        <div class="card-body border-end-0 border-start-0">
+                            <form id="filterTaskForm">
+                                @csrf
+                                <div class="row g-3">
+                                    <div class="col-xxl-3 col-sm-3">
+                                        <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-2 col-sm-2">
+                                        <div class="input-light">
+                                            <select name="status" class="form-select" id="taskStatus">
+                                                <option value="" disabled selected>Select Status</option>
+                                                <option value="all">All</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="new">New</option>
+                                                <option value="resubmission">Resubmission</option>
+                                                <option value="emergency">Emergency</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    @role('admin')
+                                    <div class="col-xxl-2 col-sm-2">
+                                        <div class="input-light">
+                                            <select name="incharge" class="form-select" id="taskIncharge">
+                                                <option value="" disabled selected>Select Incharge</option>
+                                                <option value="all">All</option>
+                                                @foreach($incharges as $incharge)
+                                                <option value="{{$incharge->user_name}}">{{$incharge->first_name.' '.$incharge->last_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    @endrole
+                                    <div class="col-xxl-3 col-sm-3">
+                                        <div class="input-light" id="ncrObjectionDropdown">
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-1 col-sm-1">
+                                        <button type="button" class="btn btn-primary w-100" id="filterTasks">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                            Filter
+                                        </button>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
                         <!--end card-body-->
                         <div class="card-body" style="{{ $user->hasRole('se') ? 'padding-top: 0 !important;' : '' }}">
                             <div class="table-responsive">
@@ -197,7 +248,7 @@ async function generateReportOptions() {
 
     reportOptions += `</select>`;
 
-    $('#ncrObjectionDropdown').html(reportOptions);
+    $('.dt-search').prepend(`<label for="dt-search-0">Search:</label>` + reportOptions);
     $('#taskReport').select2({
         placeholder: "Select NCR/Obj"
     });
@@ -416,58 +467,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             }
         }
     });
-    // Prepend the filter form to the DataTable search area
-    $('.dt-search').prepend(`
-    <div class="card-body border border-dashed border-end-0 border-start-0">
-        <form id="filterTaskForm">
-        @csrf
-            <div class="row g-3">
-                <div class="col-xxl-3 col-sm-3">
-                    <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
-                </div>
-                <!--end col-->
-                <div class="col-xxl-2 col-sm-2">
-                    <div class="input-light">
-                        <select name="status" class="form-select form-select-sm" id="taskStatus">
-                            <option value="" disabled selected>Select Status</option>
-                            <option value="all">All</option>
-                            <option value="completed">Completed</option>
-                            <option value="new">New</option>
-                            <option value="resubmission">Resubmission</option>
-                            <option value="emergency">Emergency</option>
-                        </select>
-                    </div>
-                </div>
-                <!--end col-->
-                @role('admin')
-                <div class="col-xxl-2 col-sm-2">
-                    <div class="input-light">
-                        <select name="incharge" class="form-select form-select-sm" id="taskIncharge">
-                            <option value="" disabled selected>Select Incharge</option>
-                            <option value="all">All</option>
-                            @foreach($incharges as $incharge)
-                            <option value="{{$incharge->user_name}}">{{$incharge->first_name.' '.$incharge->last_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <!--end col-->
-                @endrole
-                <div class="col-xxl-2 col-sm-4">
-                    <div class="input-light" id="ncrObjectionDropdown"></div>
-                 </div>
-                <!--end col-->
-                <div class="col-xxl-1 col-sm-2">
-                    <button type="button" class="btn btn-primary w-100" id="filterTasks">
-                        <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                        Filter
-                    </button>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-        </form>
-    </div>`);
 }
 
 async function isLocalTasksLatest(timeStamp) {
