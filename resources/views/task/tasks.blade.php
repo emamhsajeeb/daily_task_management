@@ -285,7 +285,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         columnDefs: [
             {
                 targets: [0, 1], // Target the date and number columns
-                searchable: true,
+                
                 render: function(data, type, row, meta) {
                     // Check if NCRs exist for the current row
                     if (meta.col === 1 && row.ncrs && row.ncrs.length > 0) {
