@@ -271,17 +271,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         searchPanes: {
             panes: [
                 {
-                    header: 'Date Range',
-                    options: [
-                        { label: 'Today', value: function() { return moment().startOf('day'); }},
-                        { label: 'Yesterday', value: function() { return moment().subtract(1, 'days').startOf('day'); }},
-                        { label: 'Last 7 Days', value: function() { return moment().subtract(6, 'days').startOf('day'); }},
-                        { label: 'Last 30 Days', value: function() { return moment().subtract(29, 'days').startOf('day'); }},
-                        { label: 'This Month', value: function() { return moment().startOf('month'); }},
-                        { label: 'Last Month', value: function() { return moment().subtract(1, 'month').startOf('month'); }}
-                    ]
-                },
-                {
                     header: 'Task Status',
                     options: [
                         { label: 'All', value: '' },
