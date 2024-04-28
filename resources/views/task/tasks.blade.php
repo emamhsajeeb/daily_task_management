@@ -428,7 +428,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 <!--end col-->
                 <div class="col-xxl-2 col-sm-2">
                     <div class="input-light">
-                        <select name="status" class="form-select" id="taskStatus">
+                        <select name="status" class="form-select form-select-sm" id="taskStatus">
                             <option value="" disabled selected>Select Status</option>
                             <option value="all">All</option>
                             <option value="completed">Completed</option>
@@ -442,7 +442,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 @role('admin')
                 <div class="col-xxl-2 col-sm-2">
                     <div class="input-light">
-                        <select name="incharge" class="form-select" id="taskIncharge">
+                        <select name="incharge" class="form-select form-select-sm" id="taskIncharge">
                             <option value="" disabled selected>Select Incharge</option>
                             <option value="all">All</option>
                             @foreach($incharges as $incharge)
