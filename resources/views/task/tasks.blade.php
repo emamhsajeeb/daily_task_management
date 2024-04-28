@@ -477,10 +477,10 @@ async function isLocalTasksLatest(timeStamp) {
 
         console.log("Server Time Stamp: ",new Date(response.timestamp));
 
-        if (new Date(response.timestamp) > localTimeStamp) {
+        if (new Date(response.timestamp + (6 * 60 * 60 * 1000)) > localTimeStamp) {
             console.info("Local storage data is expired");
             return false;
-        } else if (new Date(response.timestamp) < localTimeStamp) {
+        } else if (new Date(response.timestamp + (6 * 60 * 60 * 1000)) < localTimeStamp) {
             console.info("Local storage data is latest");
             return true;
         }
@@ -499,7 +499,7 @@ async function getTasksData() {
         (userIsQciAqci && tasksData.tasks)
     )) {
         console.info("Got tasks data from local storage");
-        return tasksData; // Return the data if no AJAX call is made
+        return tasksData;
     } else {
         try {
             const response = await $.ajax({
