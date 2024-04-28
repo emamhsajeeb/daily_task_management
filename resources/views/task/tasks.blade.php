@@ -262,22 +262,10 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 
 
     $('#taskTable').DataTable({
-        dom: 'Pfrtip',
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
-            search: '',
-        },
-        drawCallback: function () {
-            // Customize the search button
-            var searchButton = $('<button type="button" class="btn btn-primary"><i class="ri-search-line"></i> Search</button>');
-            $(searchButton).on('click', function () {
-                // Custom search logic here
-                var searchValue = $('#dt-search-0').val(); // Target the search input by its ID
-                alert('You searched for: ' + searchValue);
-            });
-
-            $('#dt-search-0').parent().append(searchButton);
+            search: '<i class="ri-search-line"></i>',
         },
         destroy: true,
         order: [[0,'desc']],
