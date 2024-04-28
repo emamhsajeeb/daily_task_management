@@ -159,8 +159,6 @@ class TaskController extends Controller
 
             // Save the task to the database
             $task->save();
-            $userId = Auth::user()->id;
-            $task->authors()->attach($userId);
 
             $tasks = $user->hasRole('se')
                 ? [
