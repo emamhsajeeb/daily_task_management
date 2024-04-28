@@ -270,7 +270,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         drawCallback: function () {
             $('#dt-search-0').parent().append('<span class="mdi mdi-magnify search-widget-icon"></span>'); // Append the custom search button next to the search input
         },
-        dt-search-0
         destroy: true,
         order: [[0,'desc']],
         scroller: true,
