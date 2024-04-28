@@ -50,11 +50,11 @@
                             <form id="filterTaskForm">
                                 @csrf
                                 <div class="row g-3">
-                                    <div class="col-xxl-3 col-sm-3">
-                                        <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
+                                    <div class="col-xxl-2 col-sm-3">
+                                        <input type="text" name="dateRange" class="form-control" id="dateRangePicker"  placeholder="Select date range" />
                                     </div>
                                     <!--end col-->
-                                    <div class="col-xxl-2 col-sm-2">
+                                    <div class="col-xxl-1 col-sm-2">
                                         <div class="input-light">
                                             <select name="status" class="form-select" id="taskStatus">
                                                 <option value="" disabled selected>Select Status</option>
@@ -68,7 +68,7 @@
                                     </div>
                                     <!--end col-->
                                     @role('admin')
-                                    <div class="col-xxl-2 col-sm-2">
+                                    <div class="col-xxl-1 col-sm-2">
                                         <div class="input-light">
                                             <select name="incharge" class="form-select" id="taskIncharge">
                                                 <option value="" disabled selected>Select Incharge</option>
@@ -81,12 +81,7 @@
                                     </div>
                                     <!--end col-->
                                     @endrole
-                                    <div class="col-xxl-3 col-sm-3">
-                                        <div class="input-light" id="ncrObjectionDropdown">
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-xxl-1 col-sm-1">
+                                    <div class="col-xxl-1 col-sm-2">
                                         <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filter
@@ -271,6 +266,18 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
+            search: '',
+        },
+        initComplete: function () {
+            // Customize the search button
+            var searchButton = $('<button type="button" class="btn btn-primary"><i class="ri-search-line"></i> Search</button>');
+            $(searchButton).on('click', function () {
+                // Custom search logic here
+                var searchValue = $('#example_filter input[type="search"]').val();
+                alert('You searched for: ' + searchValue);
+            });
+
+            $('#example_filter').append(searchButton); // Append the custom search button
         },
         destroy: true,
         order: [[0,'desc']],
