@@ -498,6 +498,7 @@ async function getTasksData() {
         (userIsQciAqci && tasksData.tasks)
     )) {
         console.info("Got tasks data from local storage");
+toastr.success("Got tasks data from local storage"); 
         return tasksData;
     } else {
         try {
@@ -520,6 +521,7 @@ async function getTasksData() {
             };
             localStorage.setItem('tasksData', JSON.stringify(tasksData));
             console.info("Got tasks data from server side");
+toastr.success("Got tasks data from server side"); 
             return tasksData; // Return the data
         } catch (error) {
             throw error; // Throw error if AJAX call fails
