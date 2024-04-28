@@ -268,16 +268,16 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
             search: '',
         },
-        initComplete: function () {
+        drawCallback: function () {
             // Customize the search button
             var searchButton = $('<button type="button" class="btn btn-primary"><i class="ri-search-line"></i> Search</button>');
             $(searchButton).on('click', function () {
                 // Custom search logic here
-                var searchValue = $('#taskTable_filter input[type="search"]').val();
+                var searchValue = $('#dt-search-0').val(); // Target the search input by its ID
                 alert('You searched for: ' + searchValue);
             });
 
-            $('#taskTable_filter').append(searchButton); // Append the custom search button
+            $('#dt-search-0').parent().append(searchButton);
         },
         destroy: true,
         order: [[0,'desc']],
