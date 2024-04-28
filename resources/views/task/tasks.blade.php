@@ -265,7 +265,10 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
-            search: '<i class="ri-search-line"></i>',
+            search: '',
+        },
+        drawCallback: function () {
+            $('#dt-search-0').append('<i class="ri-search-line"></i>'); // Append the custom search button next to the search input
         },
         destroy: true,
         order: [[0,'desc']],
