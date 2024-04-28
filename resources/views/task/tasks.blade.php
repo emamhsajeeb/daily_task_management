@@ -82,7 +82,7 @@
                                     <!--end col-->
                                     @endrole
                                     <div class="col-xxl-1 col-sm-2">
-                                        <button type="button" class="btn btn-primary w-100" id="filterTasks">
+                                        <button disabled type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filter
                                         </button>
@@ -228,7 +228,6 @@ const incharges = {!! json_encode($incharges) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
 
-console.log(incharges);
 
 async function generateReportOptions() {
     let reportOptions = `<select class="form-select" multiple="multiple" name="qc_reports[]" id="taskReport">`;
@@ -657,7 +656,7 @@ async function resetTaskList() {
     $('#dateRangePicker, #taskStatus, #taskIncharge').val('');
     // Once inputs are cleared, restore the button
     $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
-    $('#filterTasks').prop('disabled', false);
+    $('#filterTasks').prop('disabled', true);
 }
 
 // Function to handle form submission via AJAX
