@@ -422,11 +422,11 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         <form id="filterTaskForm">
         @csrf
             <div class="row g-3">
-                <div class="col-xxl-3 col-sm-4">
+                <div class="col-xxl-3 col-sm-3">
                     <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
                 </div>
                 <!--end col-->
-                <div class="col-xxl-3 col-sm-2">
+                <div class="col-xxl-2 col-sm-2">
                     <div class="input-light">
                         <select name="status" class="form-select" id="taskStatus">
                             <option value="" disabled selected>Select Status</option>
@@ -440,7 +440,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 </div>
                 <!--end col-->
                 @role('admin')
-                <div class="col-xxl-3 col-sm-2">
+                <div class="col-xxl-2 col-sm-2">
                     <div class="input-light">
                         <select name="incharge" class="form-select" id="taskIncharge">
                             <option value="" disabled selected>Select Incharge</option>
@@ -453,7 +453,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 </div>
                 <!--end col-->
                 @endrole
-                <div class="col-xxl-3 col-sm-4">
+                <div class="col-xxl-2 col-sm-4">
                     <div class="input-light" id="ncrObjectionDropdown"></div>
                  </div>
                 <!--end col-->
