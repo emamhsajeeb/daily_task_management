@@ -592,13 +592,13 @@ async function filterTaskList() {
         const endDate = endDateValue ? new Date(endDateValue) : null;
         const taskStatus = document.getElementById('taskStatus').value;
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
-        const taskReports = $('#taskReport').val();
+        // const taskReports = $('#taskReport').val();
 
         console.log("Start Date:", startDate);
         console.log("End Date:", endDate);
         console.log("Task Status:", taskStatus);
         console.log("Task Incharge:", taskIncharge);
-        console.log("Task Reports:", taskReports);
+        // console.log("Task Reports:", taskReports);
 
 
         let tasksData = await getTasksData();
@@ -616,24 +616,22 @@ async function filterTaskList() {
         filteredTasks = filteredTasks.filter(task => !taskIncharge || task.incharge === taskIncharge);
         console.log('Incharge filtered: ', filteredTasks);
 
-        // Query tasks based on reports and date range
-        filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
-            if (report.startsWith('ncr_')) {
-                const ncrNumber = report.split('_')[1];
-                return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
-            } else if (report.startsWith('obj_')) {
-                const objectionNumber = report.split('_')[1];
-                return task.obj_no === objectionNumber;
-            }
-        }));
-        console.log('Report filtered: ', filteredTasks);
+        // // Query tasks based on reports and date range
+        // filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
+        //     if (report.startsWith('ncr_')) {
+        //         const ncrNumber = report.split('_')[1];
+        //         return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
+        //     } else if (report.startsWith('obj_')) {
+        //         const objectionNumber = report.split('_')[1];
+        //         return task.obj_no === objectionNumber;
+        //     }
+        // }));
+        // console.log('Report filtered: ', filteredTasks);
 
         // Assign tasksData based on user role
         tasksData.tasks = userIsSe ? filteredTasks : (userIsQciAqci || userIsAdmin ? filteredTasks : []);
         tasksData.juniors = userIsSe ? users.filter(user => user.incharge === user.user_name) : [];
         tasksData.incharges = userIsAdmin ? users.filter(user => user.role === 'se') : [];
-
-        console.log('Report filtered: ', filteredTasks);
 
         await updateTaskListBody(tasksData.tasks, tasksData.incharges, tasksData.juniors);
 
