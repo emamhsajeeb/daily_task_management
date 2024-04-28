@@ -273,7 +273,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         },
         destroy: true,
         order: [[0,'desc']],
-        scrollCollapse: true,
         scroller: true,
         scrollY: 500,
         deferRender: true,
@@ -661,7 +660,9 @@ async function filterTaskList() {
 
 async function resetTaskList() {
     await updateTaskList();
-    // Once filtering is done, restore the button
+    // Clear values of date range picker, task status, and task incharge
+    $('#dateRangePicker, #taskStatus, #taskIncharge').val('');
+    // Once inputs are cleared, restore the button
     $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
     $('#filterTasks').prop('disabled', false);
 }
@@ -1010,6 +1011,18 @@ $( document ).ready(async function () {
         $('#exportToExcel').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
         $('#exportToExcel').prop('disabled', true);
         await exportToExcel();
+    });
+});
+
+$('#dateRangePicker, #taskStatus, #taskIncharge').on('change', function() {
+    $('#filterTasks').off('click'); // Remove previous click event handler
+    $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
+    $('#filterTasks').prop('disabled', false);
+    $('#filterTasks').click(async function (e) {
+        e.preventDefault();
+        $('#filterTasks').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Filtering...');
+        $('#filterTasks').prop('disabled', true);
+        await filterTaskList();
     });
 });
 
