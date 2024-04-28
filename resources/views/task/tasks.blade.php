@@ -520,7 +520,7 @@ async function getTasksData() {
                 tasks: tasks,
                 incharges: incharges,
                 juniors: juniors,
-                timestamp: new Date().getTime() + (6 * 60 * 60 * 1000) // Store current timestamp
+                timestamp: new Date().getTime() // Store current timestamp
             };
             localStorage.setItem('tasksData', JSON.stringify(tasksData));
             console.info("Got tasks data from server side");
