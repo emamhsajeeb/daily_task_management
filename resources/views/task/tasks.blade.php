@@ -652,6 +652,7 @@ async function filterTaskList() {
 
 async function resetTaskList() {
     await updateTaskList();
+    flatpickr("#dateRangePicker").clear();
     // Clear values of date range picker, task status, and task incharge
     $('#dateRangePicker, #taskStatus, #taskIncharge').val('');
     // Once inputs are cleared, restore the button
