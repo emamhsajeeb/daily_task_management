@@ -54,7 +54,7 @@
                                         <input type="text" name="dateRange" class="form-control bg-light border-light" id="dateRangePicker"  placeholder="Select date range" />
                                     </div>
                                     <!--end col-->
-                                    <div class="col-xxl-3 col-sm-4">
+                                    <div class="col-xxl-3 col-sm-2">
                                         <div class="input-light">
                                             <select name="status" class="form-select" id="taskStatus">
                                                 <option value="" disabled selected>Select Status</option>
@@ -68,7 +68,7 @@
                                     </div>
                                     <!--end col-->
                                     @role('admin')
-                                    <div class="col-xxl-3 col-sm-4">
+                                    <div class="col-xxl-3 col-sm-2">
                                         <div class="input-light">
                                             <select name="incharge" class="form-select" id="taskIncharge">
                                                 <option value="" disabled selected>Select Incharge</option>
@@ -86,7 +86,7 @@
                                         </div>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-xxl-1 col-sm-4">
+                                    <div class="col-xxl-1 col-sm-2">
                                         <button type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filter
@@ -267,6 +267,33 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 
 
     $('#taskTable').DataTable({
+        dom: 'Pfrtip',
+        searchPanes: {
+            panes: [
+                {
+                    header: 'Date Range',
+                    options: [
+                        { label: 'Today', value: function() { return moment().startOf('day'); }},
+                        { label: 'Yesterday', value: function() { return moment().subtract(1, 'days').startOf('day'); }},
+                        { label: 'Last 7 Days', value: function() { return moment().subtract(6, 'days').startOf('day'); }},
+                        { label: 'Last 30 Days', value: function() { return moment().subtract(29, 'days').startOf('day'); }},
+                        { label: 'This Month', value: function() { return moment().startOf('month'); }},
+                        { label: 'Last Month', value: function() { return moment().subtract(1, 'month').startOf('month'); }}
+                    ]
+                },
+                {
+                    header: 'Task Status',
+                    options: [
+                        { label: 'All', value: '' },
+                        { label: 'Completed', value: 'completed' },
+                        { label: 'New', value: 'new' },
+                        { label: 'Resubmission', value: 'resubmission' },
+                        { label: 'Emergency', value: 'emergency' }
+                    ]
+                },
+                // Add more custom search panes as needed
+            ]
+        },
         processing: true,
         language: {
             processing: "<i class='fa fa-refresh fa-spin'></i>",
