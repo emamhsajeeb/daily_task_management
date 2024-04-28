@@ -282,6 +282,22 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             footer: true
         },
         data: tasks, // Pass tasks data to DataTable
+        searchPanes: {
+            panes: [
+                {
+                    header: 'Status',
+                    column: 2, // Index of the column for task status (zero-based index)
+                    options: [
+                        { label: 'All', value: '' },
+                        { label: 'Completed', value: 'completed' },
+                        { label: 'New', value: 'new' },
+                        { label: 'Resubmission', value: 'resubmission' },
+                        { label: 'Emergency', value: 'emergency' }
+                    ]
+                },
+                // Add more custom search panes for other columns if needed
+            ]
+        },
         columnDefs: [
             {
                 searchPanes: {
