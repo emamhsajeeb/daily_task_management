@@ -282,37 +282,9 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             footer: true
         },
         data: tasks, // Pass tasks data to DataTable
-        searchPanes: {
-            panes: [
-                {
-                    header: 'Status',
-                    column: 2, // Index of the column for task status (zero-based index)
-                    options: [
-                        { label: 'All', value: '' },
-                        { label: 'Completed', value: 'completed' },
-                        { label: 'New', value: 'new' },
-                        { label: 'Resubmission', value: 'resubmission' },
-                        { label: 'Emergency', value: 'emergency' }
-                    ]
-                },
-                // Add more custom search panes for other columns if needed
-            ]
-        },
         columnDefs: [
             {
-                searchPanes: {
-                    show: true,
-                },
-                targets: [0, 2, userIsAdmin ? 10 :'',]
-            },
-            {
-                searchPanes: {
-                    show: false
-                },
-                targets: [1, 3, 4,5, 6, 7, 8, 9, 11, 12, 13, 14]
-            },
-            {
-                targets: [0, 1], // Target the date and number columns
+                targets: 1, // Target the date and number columns
                 render: function(data, type, row, meta) {
                     // Check if NCRs exist for the current row
                     if (meta.col === 1 && row.ncrs && row.ncrs.length > 0) {
