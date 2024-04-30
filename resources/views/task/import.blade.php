@@ -10,11 +10,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Add Tasks</h4>
+                        <h4 class="mb-sm-0">{{ $title }}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Tasks</a></li>
-                                <li class="breadcrumb-item active">Add Tasks</li>
+                                <li class="breadcrumb-item active">{{ $title }}</li>
                             </ol>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title mb-0">Upload Excel</h4>
+                            <h4 class="card-title mb-0">Upload CSV</h4>
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -42,7 +42,7 @@
                                         <div class="border rounded">
                                             <div class="d-flex p-2">
                                                 <div class="flex-shrink-0 ms-3">
-                                                    <button id="submitBtn" type="button" class="btn btn-sm btn-danger">Add</button>
+                                                    <button id="submitBtn" type="button" class="btn btn-sm btn-danger"><i class="ri-upload-2-line align-bottom me-1"></i> Import</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,27 +68,28 @@
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
 
-        $('#submitBtn').click(function(e) {
+        $('#submitBtn').click(async function (e) {
             e.preventDefault();
+            $('#submitBtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Importing...');
+            $('#submitBtn').prop('disabled', true);
 
             // Get form data
-            var formData = new FormData(document.getElementById('importCSVForm'));
-            console.log(formData);
+            const formData = new FormData(document.getElementById('importCSVForm'));
 
             // Send AJAX request
-            $.ajax({
+            await $.ajax({
                 url: '{{ route('importCSV') }}',
                 method: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     // Handle success response
                     console.log(response.message);
                     // Redirect to tasks route
                     window.location.href = '{{ route("showTasks") }}';
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
