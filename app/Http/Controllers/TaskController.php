@@ -278,11 +278,9 @@ class TaskController extends Controller
 
     public function importTasks()
     {
-        $settings = [
-            'title' => 'Import Tasks',
-        ];
+        $title = 'Import Tasks';
         $user = Auth::user();
-        return view('task/import',compact('user', 'settings'));
+        return view('task/import',compact('user','title'));
     }
 
     /**
