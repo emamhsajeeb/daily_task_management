@@ -302,7 +302,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    let reportOptions = `<select class="js-example-basic-multiple" data-task-id="' + row.id + '" name="ncr_select[]" multiple="multiple">`;
+                    let reportOptions = `<select class="js-example-basic-multiple" data-task-id="${row.id}" name="ncr_select[]" multiple="multiple">`;
 
                     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
                     ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
