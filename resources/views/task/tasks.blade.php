@@ -304,13 +304,25 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 render: function(data, type, row, meta) {
                     let reportOptions = `<select class="js-example-basic-multiple" data-task-id="${row.id}" name="ncr_select[]" multiple="multiple">`;
 
-                    ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
-                    ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
-                    ncrs.length > 0 && (reportOptions += `</optgroup>`);
+                    if (ncrs.length > 0) {
+                        reportOptions += `<optgroup label="NCRs">`;
+                        ncrs.forEach(ncr => {
+                            // Check if the current NCR is selected for the current row
+                            let selected = row.ncrs && row.ncrs.some(rowNcr => rowNcr.ncr_no === ncr.ncr_no) ? 'selected="selected"' : '';
+                            reportOptions += `<option value="${'ncr_' + ncr.ncr_no}" ${selected}>${ncr.ncr_no}</option>`;
+                        });
+                        reportOptions += `</optgroup>`;
+                    }
 
-                    objections.length > 0 && (reportOptions += `<optgroup label="Objections">`);
-                    objections.forEach(objection => reportOptions += `<option value="${'obj_' + objection.obj_no}">${objection.obj_no}</option>`);
-                    objections.length > 0 && (reportOptions += `</optgroup>`);
+                    if (objections.length > 0) {
+                        reportOptions += `<optgroup label="Objections">`;
+                        objections.forEach(objection => {
+                            // Check if the current Objection is selected for the current row
+                            let selected = row.objections && row.objections.some(rowObjection => rowObjection.obj_no === objection.obj_no) ? 'selected="selected"' : '';
+                            reportOptions += `<option value="${'obj_' + objection.obj_no}" ${selected}>${objection.obj_no}</option>`;
+                        });
+                        reportOptions += `</optgroup>`;
+                    }
 
                     reportOptions += `</select>`;
                     return reportOptions;
