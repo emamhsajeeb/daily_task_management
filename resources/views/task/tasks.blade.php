@@ -281,14 +281,18 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 targets: 1, // Target the date and number columns
                 render: function(data, type, row, meta) {
                     // Check if NCRs exist for the current row
-                    if (meta.col === 1 && row.ncrs && row.ncrs.length > 0) {
-                        // Initialize an empty string to hold badge HTML
+                    if (meta.col === 1) {
                         var badgeHTML = '';
-                        // Iterate through each NCR
-                        row.ncrs.forEach(function(ncr) {
-                            badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> NCR ' + ncr.ncr_no + '</span></div>';
-
-                        });
+                        if (row.ncrs && row.ncrs.length > 0) {
+                            row.ncrs.forEach(function(ncr) {
+                                badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> NCR ' + ncr.ncr_no + '</span></div>';
+                            });
+                        }
+                        if (row.objections && row.objections.length > 0) {
+                            row.objections.forEach(function(objection) {
+                                badgeHTML += '<div><span class="badge badge-label bg-secondary"><i class="mdi mdi-circle-medium"></i> Objection ' + objection.obj_no + '</span></div>';
+                            });
+                        }
                         // Return the concatenated badge HTML
                         return data + badgeHTML;
                     }
@@ -498,7 +502,7 @@ async function getTasksData() {
         (userIsQciAqci && tasksData.tasks)
     )) {
         console.info("Got tasks data from local storage");
-toastr.success("Got tasks data from local storage"); 
+toastr.success("Got tasks data from local storage");
         return tasksData;
     } else {
         try {
@@ -521,7 +525,7 @@ toastr.success("Got tasks data from local storage");
             };
             localStorage.setItem('tasksData', JSON.stringify(tasksData));
             console.info("Got tasks data from server side");
-toastr.success("Got tasks data from server side"); 
+toastr.success("Got tasks data from server side");
             return tasksData; // Return the data
         } catch (error) {
             throw error; // Throw error if AJAX call fails
