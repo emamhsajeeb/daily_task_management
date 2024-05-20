@@ -65,8 +65,6 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/tasks/daily-summary-get', [DailySummaryController::class, 'dailySummary'])->name('dailySummary');
     Route::post('/tasks/daily-summary-filtered', [DailySummaryController::class, 'filterSummary'])->name('filterSummary');
     Route::get('/tasks/daily-summary-export', [DailySummaryController::class, 'exportDailySummary'])->name('exportDailySummary');
-    Route::post('/tasks/attach-ncr', [TaskController::class, 'attachNCR'])->name('attachNCR');
-    Route::post('/tasks/detach-ncr', [TaskController::class, 'detachNCR'])->name('detachNCR');
     Route::post('/task/incharge', [TaskController::class, 'assignIncharge'])->name('assignIncharge');
 
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
@@ -107,6 +105,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
     Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
     Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
+
+    Route::post('/tasks/attach-ncr', [TaskController::class, 'attachNCR'])->name('attachNCR');
+    Route::post('/tasks/detach-ncr', [TaskController::class, 'detachNCR'])->name('detachNCR');
 });
 
 
