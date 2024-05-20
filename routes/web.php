@@ -73,13 +73,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/team-members', [ProfileController::class, 'members'])->name('members');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
 
-    Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('showNCRs');
-    Route::get('/ncrs-json', [NCRController::class, 'allNCRs'])->name('allNCRs');
-    Route::post('/ncrs/add', [NCRController::class, 'addNCR'])->name('addNCR');
 
-    Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
-    Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
-    Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
 
     Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('showAttendance');
     Route::get('/attendance-json', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
@@ -105,6 +99,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/get-latest-timestamp', [TaskController::class, 'getLatestTimestamp'])->name('getLatestTimestamp');
     Route::get('/tasks/daily-summary-json', [DailySummaryController::class, 'dailySummary'])->name('dailySummaryJSON');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('viewProfile');
+
+    Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('showNCRs');
+    Route::get('/ncrs-json', [NCRController::class, 'allNCRs'])->name('allNCRs');
+    Route::post('/ncrs/add', [NCRController::class, 'addNCR'])->name('addNCR');
+
+    Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
+    Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
+    Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
 });
 
 
