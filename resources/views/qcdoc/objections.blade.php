@@ -172,6 +172,7 @@
     <script>
         const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
         var user = {!! json_encode($user) !!};
+        var objections;
 
 
         async function updateObjectionList() {
@@ -194,7 +195,7 @@
                 method: 'GET',
                 dataType: 'json',
                 success: async function (response) {
-                    var objections = response.objections;
+                    objections = response.objections;
 
                     // Initialize an empty string to store the HTML for rows
                     var rowsHTML = '';
