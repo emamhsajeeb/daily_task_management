@@ -135,31 +135,31 @@
     </div>
     <!--end modal-->
 
-    <div class="modal modal-lg zoomIn" id="ncrDetailsModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal modal-lg zoomIn" id="objDetailsModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ncrNumber"></h5><h5 class="modal-title" id="ncrDate"></h5>
+                    <h5 class="modal-title" id="objNumber"></h5><h5 class="modal-title" id="objDate"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
                 <div  class="modal-body">
-                    <h6 id="ncrDate" class="fs-15">Details:</h6>
+                    <h6 id="objDate" class="fs-15">Details:</h6>
                     <div class="d-flex mt-2">
                         <div class="flex-shrink-0">
                             <i class="ri-checkbox-circle-fill text-success"></i>
                         </div>
                         <div class="flex-grow-1 ms-2 ">
-                            <p id="ncrDetails" class="text-muted mb-0"></p>
+                            <p id="objDetails" class="text-muted mb-0"></p>
                         </div>
                     </div>
-                    <h6 id="ncrDate" class="fs-15">Chainages:</h6>
+                    <h6 id="objDate" class="fs-15">Chainages:</h6>
                     <div class="d-flex mt-2">
                         <div class="flex-shrink-0">
                             <i class="ri-checkbox-circle-fill text-success"></i>
                         </div>
                         <div class="flex-grow-1 ms-2 ">
-                            <p id="ncrChainages" class="text-muted mb-0"></p>
+                            <p id="objChainages" class="text-muted mb-0"></p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -351,11 +351,11 @@
         // Function to fetch and display NCR details
         async function objectionDetails(objection) {
             // Update modal body with NCR details
-            $('#ncrDetailsModal').find('#ncrNumber').text(objection.obj_no);
+            $('#objDetailsModal').find('#objNumber').text(objection.obj_no);
             // Apply inline CSS
-            $('#ncrDetailsModal').find('#ncrDetails').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + objection.details + '</pre>');
-            $('#ncrDetailsModal').find('#ncrChainages').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + objection.chainages + '</pre>');
-            $("#ncrDetailsModal").modal('show');
+            $('#objDetailsModal').find('#objDetails').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + objection.details + '</pre>');
+            $('#objDetailsModal').find('#objChainages').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + objection.chainages + '</pre>');
+            $("#objDetailsModal").modal('show');
         }
 
         $( document ).ready(async function () {
