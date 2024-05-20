@@ -555,7 +555,7 @@ async function updateTaskList() {
         <th class="dataTables-center">Resubmitted</th>
         ${userIsAdmin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
-        ${userIsAdmin ? `
+        ${userIsAdmin || userIsSe ? `
         <th class="dataTables-center">Attach/Detach NCR</th>
         ` : ''}
         ${userIsAdmin ? `
