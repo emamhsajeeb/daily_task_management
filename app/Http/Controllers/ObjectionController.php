@@ -56,7 +56,7 @@ class ObjectionController extends Controller
             $objection = new Objection();
             $objection->obj_no = $validatedData['obj_no'];
             $objection->ref_no = $validatedData['ref_no'];
-            $objection->obj_type = $validatedData['objection_type'];
+            $objection->obj_type = $validatedData['obj_type'];
             $objection->issue_date = $validatedData['issue_date'];
 //            $chainages = explode(' ', str_replace(',', ' ', $validatedData['chainages']));
 //            $objection->chainages = implode(', ', array_filter($chainages));
