@@ -634,7 +634,7 @@ class TaskController extends Controller
         $updatedTask = Tasks::with('ncrs','objections')->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => 'NCR/Objection attached to the task successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => $type." ".$id.' attached to '.$updatedTask->number.' successfully.', 'updatedRowData' => $updatedTask]);
     }
 
 
