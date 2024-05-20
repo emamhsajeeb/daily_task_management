@@ -556,7 +556,7 @@ async function updateTaskList() {
         ${userIsAdmin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
         ${userIsAdmin || userIsSe ? `
-        <th class="dataTables-center">Attach/Detach NCR</th>
+        <th class="dataTables-center">Attach/Detach NCR/Objection</th>
         ` : ''}
         ${userIsAdmin ? `
         <th class="dataTables-center">Actions</th>

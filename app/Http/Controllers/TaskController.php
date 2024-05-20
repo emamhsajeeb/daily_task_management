@@ -607,20 +607,34 @@ class TaskController extends Controller
         $task = Tasks::findOrFail($taskId);
 
         // Loop through the selected options (NCR numbers) and attach them to the task
-        foreach ($selectedOptions as $ncrNo) {
-            // Check if the NCR is already attached to the task
-            if (!$task->ncrs()->where('ncr_no', $ncrNo)->exists()) {
-                // Find the NCR by its ncr_no
-                $ncr = NCR::where('ncr_no', $ncrNo)->firstOrFail();
-                $task->ncrs()->attach($ncr->id);
+        // Loop through the selected options and attach them to the task
+        foreach ($selectedOptions as $option) {
+            // Split the option into type and id
+            list($type, $id) = explode('_', $option);
+
+            // Check the type and handle accordingly
+            if ($type === 'ncr') {
+                // Handle NCRs
+                $ncr = NCR::where('ncr_no', $id)->firstOrFail();
+                // Check if the NCR is already attached to the task
+                if (!$task->ncrs()->where('ncr_no', $ncr->ncr_no)->exists()) {
+                    $task->ncrs()->attach($ncr->id);
+                }
+            } elseif ($type === 'obj') {
+                // Handle Objections
+                $objection = Objection::where('obj_no', $id)->firstOrFail();
+                // Check if the Objection is already attached to the task
+                if (!$task->objections()->where('obj_no', $objection->obj_no)->exists()) {
+                    $task->objections()->attach($objection->id);
+                }
             }
         }
 
         // Retrieve the updated task data
-        $updatedTask = Tasks::with('ncrs')->findOrFail($taskId);
+        $updatedTask = Tasks::with('ncrs','objections')->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => 'NCRs attached to the task successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => 'NCR/Objection attached to the task successfully.', 'updatedRowData' => $updatedTask]);
     }
 
 
