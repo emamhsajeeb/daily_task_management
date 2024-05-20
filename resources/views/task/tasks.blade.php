@@ -242,7 +242,6 @@ async function generateReportOptions() {
 
     reportOptions += `</select>`;
 
-    $('.dt-search').prepend(`<label for="dt-search-0">Search:</label>` + reportOptions);
     $('#taskReport').select2({
         placeholder: "Select NCR/Obj"
     });
@@ -303,18 +302,18 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    // Construct the multi-select dropdown HTML
-                    var html = '<select class="js-example-basic-multiple" data-task-id="' + row.id + '" name="ncr_select[]" multiple="multiple">';
+                    let reportOptions = `<select class="js-example-basic-multiple" data-task-id="' + row.id + '" name="ncr_select[]" multiple="multiple">`;
 
-                    // Iterate over each NCR from the global variable $ncrs and create an option element
-                    @foreach($ncrs as $ncr)
-                    // Check if the current NCR is selected for the current row
-                    var selected = row.ncrs && row.ncrs.some(ncr => ncr.ncr_no === '{{ $ncr->ncr_no }}') ? 'selected="selected"' : '';
-                    html += '<option value="{{ $ncr->ncr_no }}" ' + selected + '>{{ $ncr->ncr_no }}</option>';
-                    @endforeach
+                    ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
+                    ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
+                    ncrs.length > 0 && (reportOptions += `</optgroup>`);
 
-                        html += '</select>';
-                    return html;
+                    objections.length > 0 && (reportOptions += `<optgroup label="Objections">`);
+                    objections.forEach(objection => reportOptions += `<option value="${'obj_' + objection.obj_no}">${objection.obj_no}</option>`);
+                    objections.length > 0 && (reportOptions += `</optgroup>`);
+
+                    reportOptions += `</select>`;
+                    return reportOptions;
                 },
                 createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
                     // Check if Select2 has already been initialized for the dropdown element
