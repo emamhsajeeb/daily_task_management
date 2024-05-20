@@ -1092,6 +1092,7 @@ $(document).on('input', '#completionDateTime', async function (e) {
 $('#taskTable').on('select2:select', '.js-example-basic-multiple', async function (e) {
     var selectedOptions = $(this).val();
     var taskId = e.target.getAttribute('data-task-id');
+    console.log("Selected task id: "+taskId+", selected options: "+selectedOptions);
     await updateTaskNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
         await updateRowData(taskId, response.updatedRowData);
         toastr.success(response.message, {
