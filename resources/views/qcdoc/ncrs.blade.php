@@ -29,11 +29,13 @@
                         <div class="card-header align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
 
+                            @role('admin')
                             <div class="flex-shrink-0">
                                 <div class="d-flex flex-wrap gap-2">
                                     <button title="Add NCR" class="btn btn-outline-primary btn-icon waves-effect waves-light" id="showAddModalBtn"><i class="ri-add-box-line align-bottom me-1"></i></button>
                                 </div>
                             </div>
+                            @endrole
 
                         </div><!-- end card header -->
 
@@ -227,7 +229,7 @@ async function updateNCRList() {
                     <td>${ncr.issue_date}</td>
                     <td>${ncr.ncr_type}</td>
                     <td>${ iconHtml + statusOptions}</td>
-                    <td>${ncr.remarks}</td>
+                    <td>${ncr.remarks ? ncr.remarks : "N/A" }</td>
                     <td>
                         <button type="button" ncr-id=${ncr.id} class="btn btn-sm btn-light ncr-details-btn">Details</button>
                     </td>

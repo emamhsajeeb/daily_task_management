@@ -294,7 +294,7 @@
                     <td>${objection.issue_date}</td>
                     <td>${objection.obj_type}</td>
                     <td>${ iconHtml + statusOptions}</td>
-                    <td>${objection.remarks}</td>
+                    <td>${objection.remarks ? objection.remarks : "N/A" }</td>
                     <td>
                         <button type="button" obj-id=${objection.id} id="objectionDetails" class="btn btn-sm btn-light">Details</button>
                     </td>
