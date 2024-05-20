@@ -78,6 +78,8 @@
                         </ul>
                     </div>
                 </li>
+                @endrole
+                @role('admin')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarQCReports" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="ri-survey-line"></i><span data-key="t-tasks">QC Reports</span>
@@ -95,6 +97,27 @@
                         </ul>
                     </div>
                 </li>
+                @endrole
+                @role('se')
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarQCReports" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-survey-line"></i><span data-key="t-tasks">QC Reports</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarQCReports">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('showNCRs') }}" class="nav-link"><i class="ri-file-warning-line"></i> All NCRs </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('showObjections') }}" class="nav-link"><i class=" ri-error-warning-line"></i> All Objections </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @endrole
+                @role('admin')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarPayroll" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="lab la-amazon-pay"></i><span data-key="t-tasks">Payroll</span>
