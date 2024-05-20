@@ -435,7 +435,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     },
                     className: 'dataTables-center'
                 } : '',
-                userIsAdmin ?
+                userIsAdmin || userIsSe ?
                 {
                     data: null,
                     className: 'dataTables-center',
