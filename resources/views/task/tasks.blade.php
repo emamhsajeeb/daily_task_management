@@ -300,7 +300,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 }
             },
             {
-                targets: -2, // Target the last column
+                targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
                     let reportOptions = `<select class="js-example-basic-multiple" data-task-id="' + row.id + '" name="ncr_select[]" multiple="multiple">`;
 
