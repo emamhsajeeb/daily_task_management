@@ -39,8 +39,8 @@ class ObjectionController extends Controller
                 'details' => 'required|string',
                 'status' => 'required|string',
             ],[
-                'obj_no.required' => 'objection No. is required.',
-                'obj_no.numeric' => 'objection No. must be a number.',
+                'obj_no.required' => 'Objection No. is required.',
+                'obj_no.numeric' => 'Objection No. must be a number.',
                 'obj_no.unique' => 'An Objection with the same Objection No. already exists.',
                 'ref_no.required' => 'Reference No. is required.',
                 'objection_type.required' => 'objection Type is required.',
@@ -54,7 +54,7 @@ class ObjectionController extends Controller
 
             // Create a new objection instance
             $objection = new Objection();
-            $objection->obj_no = $validatedData['objection_no'];
+            $objection->obj_no = $validatedData['obj_no'];
             $objection->ref_no = $validatedData['ref_no'];
             $objection->obj_type = $validatedData['objection_type'];
             $objection->issue_date = $validatedData['issue_date'];

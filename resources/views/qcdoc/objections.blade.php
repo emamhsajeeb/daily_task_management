@@ -348,34 +348,24 @@
 
                 },
                 error: function(xhr, status) {
-                    console.log(xhr.responseText)
-                    // Handle error
-                    var errorData = JSON.parse(xhr.responseText).error;
-                    var delay = 300;
-                    for (var error in errorData) {
-                        (function(error) { // Closure to capture the current value of 'error'
-                            setTimeout(function() {
-                                toastr.error(errorData[error], {
-                                    "closeButton": true,
-                                    "debug": false,
-                                    "newestOnTop": false,
-                                    "progressBar": false,
-                                    "positionClass": "toast-top-center",
-                                    "preventDuplicates": false,
-                                    "onclick": null,
-                                    "showDuration": "300",
-                                    "hideDuration": "1000",
-                                    "timeOut": "5000",
-                                    "extendedTimeOut": "1000",
-                                    "showEasing": "swing",
-                                    "hideEasing": "linear",
-                                    "showMethod": "fadeIn",
-                                    "hideMethod": "fadeOut"
-                                });
-                            }, delay);
-                        })(error); // Pass the current value of 'error' to the closure
-                        delay += 300;
-                    }
+                    console.error(xhr.responseText)
+                    toastr.error(xhr.responseText.error, {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    });
                 }
             });
             // Once filtering is done, restore the button
