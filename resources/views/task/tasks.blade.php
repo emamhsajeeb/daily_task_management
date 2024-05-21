@@ -303,6 +303,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
                     let reportOptions = `<select class="rounded-pill attachNCRObjDropdown" data-task-id="${row.id}">`;
+                    reportOptions += `<option value="" disabled selected>Select an option</option>`;
 
                     if (ncrs.length > 0) {
                         reportOptions += `<optgroup label="NCRs">`;
