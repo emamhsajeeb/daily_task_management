@@ -302,7 +302,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    let reportOptions = `<select class="js-example-basic-multiple" data-task-id="${row.id}" name="ncr_select[]" multiple="multiple">`;
+                    let reportOptions = `<select class="rounded-pill attachNCRObjDropdown" data-task-id="${row.id}">`;
 
                     if (ncrs.length > 0) {
                         reportOptions += `<optgroup label="NCRs">`;
@@ -326,15 +326,6 @@ async function updateTaskListBody(tasks, incharges, juniors) {
 
                     reportOptions += `</select>`;
                     return reportOptions;
-                },
-                createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
-                    // Check if Select2 has already been initialized for the dropdown element
-                    if (!$(cell).find('.js-example-basic-multiple').hasClass('select2-hidden-accessible')) {
-                        // Initialize Select2 for the created dropdown element with the dynamic data array
-                        $(cell).find('.js-example-basic-multiple').select2();
-                    } else {
-                        $(cell).find('.js-example-basic-multiple').select2('destroy').select2();
-                    }
                 }
             },
             {
@@ -970,7 +961,7 @@ async function reinitializeSelect2(rowNode) {
 }
 
 // AJAX request to update task_has_ncr table
-async function updateTaskNCR(taskId, selectedOptions, url, successCallback) {
+async function attachNCR(taskId, selectedOptions, url, successCallback) {
     $.ajax({
         url: url,
         type: 'POST',
@@ -1101,11 +1092,11 @@ $(document).on('input', '#completionDateTime', async function (e) {
 
 
 // Event listener for change event on multi-select dropdown
-$('#taskTable').on('select2:select', '.js-example-basic-multiple', async function (e) {
+$('#taskTable').on('select2:select', '.attachNCRObjDropdown', async function (e) {
     var selectedOptions = $(this).val();
     var taskId = e.target.getAttribute('data-task-id');
     console.log("Selected task id: "+taskId+", selected options: "+selectedOptions);
-    await updateTaskNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
+    await attachNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
         await updateRowData(taskId, response.updatedRowData);
         toastr.success(response.message, {
             "closeButton": true,
@@ -1132,7 +1123,7 @@ $('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async funct
     var deselectedOption = e.params.data.id;
     var taskId = $(this).data('task-id');
     console.log("Selected task id: "+taskId+", selected options: "+deselectedOption);
-    await updateTaskNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
+    await attachNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
         await updateRowData(taskId, response.updatedRowData);
         toastr.success(response.message, {
             "closeButton": true,
