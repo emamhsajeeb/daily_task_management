@@ -669,7 +669,7 @@ class TaskController extends Controller
         $updatedTask = Tasks::with(['ncrs', 'objections'])->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => 'NCRs and Objections detached from the task successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => $type." ".$id.' detached from '.$updatedTask->number.' successfully.', 'updatedRowData' => $updatedTask]);
     }
 
 
