@@ -1092,59 +1092,74 @@ $(document).on('input', '#completionDateTime', async function (e) {
 });
 
 
-// Event listener for change event on multi-select dropdown
-$('#taskTable').on('select2:select', '.attachNCRObjDropdown', async function (e) {
-    var selectedOptions = $(this).val();
-    var taskId = e.target.getAttribute('data-task-id');
-    console.log("Selected task id: "+taskId+", selected options: "+selectedOptions);
-    await attachNCR(taskId, selectedOptions, '{{ route('attachNCR') }}', async function (response) {
-        await updateRowData(taskId, response.updatedRowData);
-        toastr.success(response.message, {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    });
+// Store previous state of selected options
+$('#taskTable').on('focus', '.attachNCRObjDropdown', function () {
+    $(this).data('previous', $(this).val());
 });
 
-// Event listener for select2:unselect event on multi-select dropdown
-$('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async function (e) {
-    var deselectedOption = e.params.data.id;
-    var taskId = $(this).data('task-id');
-    console.log("Selected task id: "+taskId+", selected options: "+deselectedOption);
-    await attachNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
-        await updateRowData(taskId, response.updatedRowData);
-        toastr.success(response.message, {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-top-center",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
+// Event listener for change event on multi-select dropdown
+$('#taskTable').on('change', '.attachNCRObjDropdown', async function (e) {
+    var $this = $(this);
+    var previous = $this.data('previous') || [];
+    var selectedOptions = $this.val() || [];
+    var taskId = e.target.getAttribute('data-task-id');
+
+    // Determine added and removed options
+    var added = selectedOptions.filter(x => !previous.includes(x));
+    var removed = previous.filter(x => !selectedOptions.includes(x));
+
+    // Update previous state
+    $this.data('previous', selectedOptions);
+
+    if (added.length > 0) {
+        console.log("Selected task id: " + taskId + ", added options: " + added);
+        await attachNCR(taskId, added, '{{ route('attachNCR') }}', async function (response) {
+            await updateRowData(taskId, response.updatedRowData);
+            toastr.success(response.message, {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            });
         });
-    });
+    }
+
+    if (removed.length > 0) {
+        console.log("Selected task id: " + taskId + ", removed options: " + removed);
+        await attachNCR(taskId, removed, '{{ route('detachNCR') }}', async function (response) {
+            await updateRowData(taskId, response.updatedRowData);
+            toastr.success(response.message, {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            });
+        });
+    }
 });
+
 
 toastr.options = {
     "closeButton": true,
