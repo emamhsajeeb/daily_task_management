@@ -302,7 +302,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    let reportOptions = `<select class="rounded-pill attachNCRObjDropdown" data-task-id="${row.id}">`;
+                    let reportOptions = `<select style="margin-bottom: 0rem !important; background-color: transparent;text-align: center;" class="rounded-pill attachNCRObjDropdown" data-task-id="${row.id}">`;
                     reportOptions += `<option value="" disabled selected>Select an option</option>`;
 
                     if (ncrs.length > 0) {
@@ -949,17 +949,8 @@ async function updateRowAppearance(row) {
     } else {
         rowNode.style.color = '';
     }
-    await reinitializeSelect2(rowNode);
 }
 
-// Reinitialize Select2 for the updated row
-async function reinitializeSelect2(rowNode) {
-    if ($(rowNode).find('.js-example-basic-multiple').hasClass("select2-hidden-accessible")) {
-        // Select2 has been initialized
-        $(rowNode).find('.js-example-basic-multiple').select2("destroy");
-    }
-    $(rowNode).find('.js-example-basic-multiple').select2();
-}
 
 // AJAX request to update task_has_ncr table
 async function attachNCR(taskId, selectedOptions, url, successCallback) {
