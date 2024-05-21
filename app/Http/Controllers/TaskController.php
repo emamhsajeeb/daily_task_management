@@ -641,22 +641,35 @@ class TaskController extends Controller
     public function detachNCR(Request $request)
     {
         $taskId = $request->input('task_id');
-        $deselectedOption = $request->input('selected_options');
+        $deselectedOptions = $request->input('selected_options');
 
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
 
-        // Find the NCR by its ncr_no
-        $ncr = NCR::where('ncr_no', $deselectedOption)->firstOrFail();
+        // Loop through the deselected options and detach them from the task
+        foreach ($deselectedOptions as $option) {
+            // Split the option into type and id
+            list($type, $id) = explode('_', $option);
 
-        // Detach the NCR from the task
-        $task->ncrs()->detach($ncr->id);
+            // Check the type and handle accordingly
+            if ($type === 'ncr') {
+                // Handle NCRs
+                $ncr = NCR::where('ncr_no', $id)->firstOrFail();
+                // Detach the NCR from the task
+                $task->ncrs()->detach($ncr->id);
+            } elseif ($type === 'obj') {
+                // Handle Objections
+                $objection = Objection::where('obj_no', $id)->firstOrFail();
+                // Detach the Objection from the task
+                $task->objections()->detach($objection->id);
+            }
+        }
 
         // Retrieve the updated task data
-        $updatedTask = Tasks::with('ncrs')->findOrFail($taskId);
+        $updatedTask = Tasks::with(['ncrs', 'objections'])->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => 'NCR detached from the task successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => 'NCRs and Objections detached from the task successfully.', 'updatedRowData' => $updatedTask]);
     }
 
 

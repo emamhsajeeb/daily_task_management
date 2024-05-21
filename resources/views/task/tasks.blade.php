@@ -1131,6 +1131,7 @@ $('#taskTable').on('select2:select', '.js-example-basic-multiple', async functio
 $('#taskTable').on('select2:unselect', '.js-example-basic-multiple', async function (e) {
     var deselectedOption = e.params.data.id;
     var taskId = $(this).data('task-id');
+    console.log("Selected task id: "+taskId+", selected options: "+deselectedOption);
     await updateTaskNCR(taskId, [deselectedOption], '{{ route('detachNCR') }}', async function (response) {
         await updateRowData(taskId, response.updatedRowData);
         toastr.success(response.message, {
