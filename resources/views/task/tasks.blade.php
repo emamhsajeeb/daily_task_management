@@ -470,7 +470,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
         ].filter(Boolean),
         createdRow: function(row, data, dataIndex) {
             // Check if NCRs exist for the current row
-            if (data.ncrs && data.ncrs.length > 0) {
+            if ((data.ncrs && data.ncrs.length > 0) || (data.objections && data.objections.length > 0)) {
                 // Add red font color to the row
                 $(row).css('color', 'red');
             }
