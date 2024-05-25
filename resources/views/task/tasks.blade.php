@@ -310,7 +310,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         ncrs.forEach(ncr => {
                             // Check if the current NCR is selected for the current row
                             let selected = row.ncrs && row.ncrs.some(rowNcr => rowNcr.ncr_no === ncr.ncr_no) ? 'selected="selected"' : '';
-                            reportOptions += `<option value="${'ncr_' + ncr.ncr_no}" ${selected}>${ncr.ncr_no}</option>`;
+                            reportOptions += `<option value="${'ncr_' + ncr.ncr_no}" ${selected}>NCR ${ncr.ncr_no}</option>`;
                         });
                         reportOptions += `</optgroup>`;
                     }
@@ -320,7 +320,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         objections.forEach(objection => {
                             // Check if the current Objection is selected for the current row
                             let selected = row.objections && row.objections.some(rowObjection => rowObjection.obj_no === objection.obj_no) ? 'selected="selected"' : '';
-                            reportOptions += `<option value="${'obj_' + objection.obj_no}" ${selected}>${objection.obj_no}</option>`;
+                            reportOptions += `<option value="${'obj_' + objection.obj_no}" ${selected}>OBJ ${objection.obj_no}</option>`;
                         });
                         reportOptions += `</optgroup>`;
                     }
