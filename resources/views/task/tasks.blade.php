@@ -963,6 +963,20 @@ async function attachReport(taskId, selectedReport) {
         },
         success:function (response) {
             toastr.success(response.message);
+
+            // Update row data and appearance
+            var table = $('#taskTable').DataTable();
+            var index = table.row(function (idx, data, node) {
+                return data.id === taskId; // Assuming 'id' is the task ID property in your data
+            }).index();
+            table.row(index).data(response.updatedRowData).draw(false);
+            var rowData = table.row(index).data();
+            var rowNode = table.row(index).node();
+            if (rowData.ncrs && rowData.ncrs.length > 0) {
+                rowNode.style.color = 'red';
+            } else {
+                rowNode.style.color = '';
+            }
         },
         error: function(xhr, status, error) {
             // Handle error
@@ -970,6 +984,7 @@ async function attachReport(taskId, selectedReport) {
         }
     })
 }
+
 
 // AJAX request to update task_has_ncr table
 async function detachReport(taskId) {
@@ -981,6 +996,20 @@ async function detachReport(taskId) {
         },
         success:function (response) {
             toastr.success(response.message);
+
+            // Update row data and appearance
+            var table = $('#taskTable').DataTable();
+            var index = table.row(function (idx, data, node) {
+                return data.id === taskId; // Assuming 'id' is the task ID property in your data
+            }).index();
+            table.row(index).data(response.updatedRowData).draw(false);
+            var rowData = table.row(index).data();
+            var rowNode = table.row(index).node();
+            if (rowData.ncrs && rowData.ncrs.length > 0) {
+                rowNode.style.color = 'red';
+            } else {
+                rowNode.style.color = '';
+            }
         },
         error: function(xhr, status, error) {
             // Handle error
