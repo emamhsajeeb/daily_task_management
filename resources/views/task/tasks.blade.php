@@ -333,11 +333,19 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 "targets": userIsSe ? 5 : 4, // Targeting the fifth column (index 4)
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
-                    return type === 'display' && data.length > 30 ?
-                        `<span style="overflow-y: auto; max-height: 30px;" title="` + data + '">' + data.substr(0, 30) + '...</span>' :
-                        data;
+                    if (type === 'display' && data.length > 30) {
+                        return `<span style="overflow-y: auto; max-height: 30px;" title="${data}">
+                        ${data.substr(0, 30)}...
+                        <button type="button" class="btn btn-light" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content='${data}'>
+                            ..
+                        </button>
+                    </span>`;
+                    } else {
+                        return data;
+                    }
                 }
             }
+
         ],
         columns: [
                 { data: 'date', className: 'dataTables-center' },
@@ -951,7 +959,7 @@ async function attachReport(taskId, selectedReport) {
             table.row(index).data(response.updatedRowData).draw(false);
             var rowData = table.row(index).data();
             var rowNode = table.row(index).node();
-            if (rowData.ncrs && rowData.ncrs.length > 0) {
+            if ((rowData.ncrs && rowData.ncrs.length > 0) || (rowData.objections && rowData.objections.length > 0)) {
                 rowNode.style.color = 'red';
             } else {
                 rowNode.style.color = '';
