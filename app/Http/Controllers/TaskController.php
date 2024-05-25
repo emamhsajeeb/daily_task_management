@@ -601,13 +601,13 @@ class TaskController extends Controller
     public function attachReport(Request $request)
     {
         $taskId = $request->input('task_id');
-        $selectedOption = $request->input('selected_options');
+        $selectedReport = $request->input('selected_report');
 
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
 
         // Split the selected option into type and id
-        list($type, $id) = explode('_', $selectedOption);
+        list($type, $id) = explode('_', $selectedReport);
 
         // Check the type and handle accordingly
         if ($type === 'ncr') {
