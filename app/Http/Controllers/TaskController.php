@@ -626,6 +626,9 @@ class TaskController extends Controller
             }
         }
 
+        // Update the timestamp of the task
+        $task->touch();
+
         // Retrieve the updated task data
         $updatedTask = Tasks::with('ncrs', 'objections')->findOrFail($taskId);
 
@@ -656,6 +659,9 @@ class TaskController extends Controller
         else {
             return response()->json(['error' => 'Invalid selection format.']);
         }
+
+        // Update the timestamp of the task
+        $task->touch();
 
         // Retrieve the updated task data
         $updatedTask = Tasks::with('ncrs', 'objections')->findOrFail($taskId);
