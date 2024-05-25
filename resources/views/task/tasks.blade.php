@@ -336,7 +336,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     if (type === 'display' && data.length > 30) {
                         return `<span style="overflow-y: auto; max-height: 30px;" title="${data}">
                         ${data.substr(0, 30)}
-                        <button tabindex="0" role="button" class="btn btn-light" data-bs-toggle="popover" data-bs-trigger="focus" title="Descriptions" data-bs-placement="top" data-bs-content='${data}'>
+                        <button tabindex="0" role="button" class="btn btn-light" data-toggle="popover" data-trigger="focus" title="Descriptions" data-placement="top" data-content='${data}'>
                             ...
                         </button>
                     </span>`;
