@@ -930,27 +930,6 @@ async function updateCompletionDateTime(taskId, dateTime) {
     })
 }
 
-// Function to update a row in the DataTable
-async function updateRowData(taskId, newData) {
-    var table = $('#taskTable').DataTable();
-    var index = table.row(function (idx, data, node) {
-        return data.id === taskId; // Assuming 'id' is the task ID property in your data
-    }).index();
-    table.row(index).data(newData).draw(false);
-    await updateRowAppearance(table.row(index));
-}
-
-// Update appearance of a row based on its data
-async function updateRowAppearance(row) {
-    var rowData = row.data();
-    var rowNode = row.node();
-    if (rowData.ncrs && rowData.ncrs.length > 0) {
-        rowNode.style.color = 'red';
-    } else {
-        rowNode.style.color = '';
-    }
-}
-
 
 // AJAX request to update task_has_ncr table
 async function attachReport(taskId, selectedReport) {
@@ -1136,6 +1115,9 @@ $(document).on('input', '#completionDateTime', async function (e) {
 $(document).on('input', '.attachReportDropdown', async function (e) {
     const selectedReport = $(this).val();
     const taskId = e.target.getAttribute('data-task-id');
+
+    console.log("Selected Report: "+selectedReport);
+    console.log("Selected Task ID: "+taskId);
 
     selectedReport === "none" ? await detachReport(taskId) : await attachReport(taskId,selectedReport);
 });
