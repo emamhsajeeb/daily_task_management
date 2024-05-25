@@ -106,8 +106,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');
     Route::post('/objections/add', [ObjectionController::class, 'addObjection'])->name('addObjection');
 
-    Route::post('/tasks/attach-ncr', [TaskController::class, 'attachNCR'])->name('attachNCR');
-    Route::post('/tasks/detach-ncr', [TaskController::class, 'detachNCR'])->name('detachNCR');
+    Route::post('/tasks/attach-report', [TaskController::class, 'attachReport'])->name('attachReport');
+    Route::post('/tasks/detach-report', [TaskController::class, 'detachReport'])->name('detachReport');
 });
 
 

@@ -231,7 +231,7 @@ class TaskController extends Controller
                                 // Extract objection number after the dash
                                 $objectionNumber = substr($report, strpos($report, '_') + 1);
                                 // Filter tasks with objections having the extracted objection number
-                                $query->orWhere('objection_number', $objectionNumber);
+                                $query->orWhere('obj_no', $objectionNumber);
                             }
                         }
                     });
@@ -598,79 +598,72 @@ class TaskController extends Controller
         return $number . $suffix;
     }
 
-    public function attachNCR(Request $request)
+    public function attachReport(Request $request)
     {
         $taskId = $request->input('task_id');
-        $selectedOptions = $request->input('selected_options');
+        $selectedOption = $request->input('selected_options');
 
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
 
-        // Loop through the selected options (NCR numbers) and attach them to the task
-        // Loop through the selected options and attach them to the task
-        foreach ($selectedOptions as $option) {
-            // Split the option into type and id
-            list($type, $id) = explode('_', $option);
+        // Split the selected option into type and id
+        list($type, $id) = explode('_', $selectedOption);
 
-            // Check the type and handle accordingly
-            if ($type === 'ncr') {
-                // Handle NCRs
-                $ncr = NCR::where('ncr_no', $id)->firstOrFail();
-                // Check if the NCR is already attached to the task
-                if (!$task->ncrs()->where('ncr_no', $ncr->ncr_no)->exists()) {
-                    $task->ncrs()->attach($ncr->id);
-                }
-            } elseif ($type === 'obj') {
-                // Handle Objections
-                $objection = Objection::where('obj_no', $id)->firstOrFail();
-                // Check if the Objection is already attached to the task
-                if (!$task->objections()->where('obj_no', $objection->obj_no)->exists()) {
-                    $task->objections()->attach($objection->id);
-                }
+        // Check the type and handle accordingly
+        if ($type === 'ncr') {
+            // Handle NCRs
+            $ncr = NCR::where('ncr_no', $id)->firstOrFail();
+            // Check if the NCR is already attached to the task
+            if (!$task->ncrs()->where('ncr_no', $ncr->ncr_no)->exists()) {
+                $task->ncrs()->attach($ncr->id);
+            }
+        } elseif ($type === 'obj') {
+            // Handle Objections
+            $objection = Objection::where('obj_no', $id)->firstOrFail();
+            // Check if the Objection is already attached to the task
+            if (!$task->objections()->where('obj_no', $objection->obj_no)->exists()) {
+                $task->objections()->attach($objection->id);
             }
         }
 
         // Retrieve the updated task data
-        $updatedTask = Tasks::with('ncrs','objections')->findOrFail($taskId);
+        $updatedTask = Tasks::with('ncrs', 'objections')->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => $type." ".$id.' attached to '.$updatedTask->number.' successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => $type . " " . $id . ' attached to ' . $updatedTask->number . ' successfully.', 'updatedRowData' => $updatedTask]);
     }
 
 
-    public function detachNCR(Request $request)
+
+    public function detachReport(Request $request)
     {
         $taskId = $request->input('task_id');
-        $deselectedOptions = $request->input('selected_options');
 
         // Find the task by ID
         $task = Tasks::findOrFail($taskId);
 
-        // Loop through the deselected options and detach them from the task
-        foreach ($deselectedOptions as $option) {
-            // Split the option into type and id
-            list($type, $id) = explode('_', $option);
-
-            // Check the type and handle accordingly
-            if ($type === 'ncr') {
-                // Handle NCRs
-                $ncr = NCR::where('ncr_no', $id)->firstOrFail();
-                // Detach the NCR from the task
-                $task->ncrs()->detach($ncr->id);
-            } elseif ($type === 'obj') {
-                // Handle Objections
-                $objection = Objection::where('obj_no', $id)->firstOrFail();
-                // Detach the Objection from the task
-                $task->objections()->detach($objection->id);
-            }
+        // If selected option starts with 'ncr_', detach all NCRs
+        if ($task->ncrs->count() > 0) {
+            $detachedNCRs = $task->ncrs()->detach();
+            $message = $detachedNCRs > 0 ? 'NCR detached from task ' . $task->number . ' successfully.' : 'No NCRs were attached to task ' . $task->number . '.';
+        }
+        // If selected option starts with 'obj_', detach all Objections
+        elseif ($task->objections->count() > 0) {
+            $detachedObjections = $task->objections()->detach();
+            $message = $detachedObjections > 0 ? 'Objection detached from task ' . $task->number . ' successfully.' : 'No Objections were attached to task ' . $task->number . '.';
+        }
+        // Otherwise, handle as an invalid selection
+        else {
+            return response()->json(['error' => 'Invalid selection format.']);
         }
 
         // Retrieve the updated task data
-        $updatedTask = Tasks::with(['ncrs', 'objections'])->findOrFail($taskId);
+        $updatedTask = Tasks::with('ncrs', 'objections')->findOrFail($taskId);
 
         // Return response with success message and updated row data
-        return response()->json(['message' => $type." ".$id.' detached from '.$updatedTask->number.' successfully.', 'updatedRowData' => $updatedTask]);
+        return response()->json(['message' => $message, 'updatedRowData' => $updatedTask]);
     }
+
 
 
 }

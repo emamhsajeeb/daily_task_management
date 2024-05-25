@@ -302,8 +302,8 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    let reportOptions = `<select style="margin-bottom: 0rem !important; background-color: transparent;text-align: center;" class="rounded-pill attachNCRObjDropdown" data-task-id="${row.id}">`;
-                    reportOptions += `<option value="" disabled selected>Select an option</option>`;
+                    let reportOptions = `<select style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" class="attachReportDropdown" data-task-id="${row.id}">`;
+                    reportOptions += `<option value="none" selected>None</option>`;
 
                     if (ncrs.length > 0) {
                         reportOptions += `<optgroup label="NCRs">`;
@@ -560,7 +560,7 @@ async function updateTaskList() {
         ${userIsAdmin ? `
         <th class="dataTables-center">RFI Submission Date</th>` : ''}
         ${userIsAdmin || userIsSe ? `
-        <th class="dataTables-center">Attach/Detach NCR/Objection</th>
+        <th class="dataTables-center">Attach/Detach Report</th>
         ` : ''}
         ${userIsAdmin ? `
         <th class="dataTables-center">Actions</th>
@@ -953,20 +953,42 @@ async function updateRowAppearance(row) {
 
 
 // AJAX request to update task_has_ncr table
-async function attachNCR(taskId, selectedOptions, url, successCallback) {
+async function attachReport(taskId, selectedReport) {
     $.ajax({
-        url: url,
-        type: 'POST',
+        url : "{{ route('attachReport') }}",
+        type:"POST",
         data: {
             task_id: taskId,
-            selected_options: selectedOptions
+            selected_report: selectedReport
         },
-        success: successCallback,
+        success:function (response) {
+            toastr.success(response.message);
+        },
         error: function(xhr, status, error) {
+            // Handle error
             console.error(xhr.responseText);
         }
-    });
+    })
 }
+
+// AJAX request to update task_has_ncr table
+async function detachReport(taskId) {
+    $.ajax({
+        url : "{{ route('detachReport') }}",
+        type:"POST",
+        data: {
+            task_id: taskId
+        },
+        success:function (response) {
+            toastr.success(response.message);
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(xhr.responseText);
+        }
+    })
+}
+
 
 // Call the function when the page loads
 $( document ).ready(async function () {
@@ -1082,73 +1104,11 @@ $(document).on('input', '#completionDateTime', async function (e) {
     await updateCompletionDateTime(taskId, dateTime)
 });
 
+$(document).on('input', '.attachReportDropdown', async function (e) {
+    const selectedReport = $(this).val();
+    const taskId = e.target.getAttribute('data-task-id');
 
-// Store previous state of selected options
-$('#taskTable').on('focus', '.attachNCRObjDropdown', function () {
-    $(this).data('previous', $(this).val());
-});
-
-// Event listener for change event on multi-select dropdown
-$('#taskTable').on('change', '.attachNCRObjDropdown', async function (e) {
-    var $this = $(this);
-    var previous = $this.data('previous') || [];
-    var selectedOptions = $this.val() || [];
-    var taskId = e.target.getAttribute('data-task-id');
-
-    // Determine added and removed options
-    var added = selectedOptions.filter(x => !previous.includes(x));
-    var removed = previous.filter(x => !selectedOptions.includes(x));
-
-    // Update previous state
-    $this.data('previous', selectedOptions);
-
-    if (added.length > 0) {
-        console.log("Selected task id: " + taskId + ", added options: " + added);
-        await attachNCR(taskId, added, '{{ route('attachNCR') }}', async function (response) {
-            await updateRowData(taskId, response.updatedRowData);
-            toastr.success(response.message, {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            });
-        });
-    }
-
-    if (removed.length > 0) {
-        console.log("Selected task id: " + taskId + ", removed options: " + removed);
-        await attachNCR(taskId, removed, '{{ route('detachNCR') }}', async function (response) {
-            await updateRowData(taskId, response.updatedRowData);
-            toastr.success(response.message, {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            });
-        });
-    }
+    selectedReport === "none" ? await detachReport(taskId) : await attachReport(taskId,selectedReport);
 });
 
 
