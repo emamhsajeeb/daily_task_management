@@ -88,7 +88,7 @@ class ObjectionController extends Controller
         $objId = $request->id;
 
         // Retrieve the task from the database
-        $objection = Tasks::findOrFail($objId);
+        $objection = Objection::findOrFail($objId);
 
         // Perform any necessary logic before deleting the task
         // For example, you might check permissions or dependencies
