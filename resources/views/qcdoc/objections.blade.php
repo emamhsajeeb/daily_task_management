@@ -180,16 +180,16 @@
 
             async function updateObjectionList() {
                 var header = `
-    <tr>
-        <th scope="col">Objection No.</th>
-        <th scope="col">Reference No.</th>
-        <th scope="col">Date</th>
-        <th scope="col">Objection Type</th>
-        <th scope="col">Status</th>
-        <th scope="col">Remarks</th>
-        <th scope="col" style="width: 150px;">Action</th>
-    </tr>
-    `;
+                    <tr>
+                        <th scope="col">Objection No.</th>
+                        <th scope="col">Reference No.</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Objection Type</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col" style="width: 150px;">Action</th>
+                    </tr>
+                    `;
 
                 $('#objTableHead').html(header).css('text-align', 'center');
 
@@ -206,39 +206,39 @@
                         // Iterate over each Objection object and construct HTML for each row
                         objs.forEach(function (obj) {
                             var iconHtml = `
-                <span icon-task-id="${obj.id}">
-                    <i  style="${obj.status === 'Closed' ? 'color: green' :
-                                obj.status === 'Partially Closed' ? 'color: orange' :
-                                    obj.status === 'Open' ? 'color: red' : ''}"
-                        class="${obj.status === 'Closed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
-                                obj.status === 'Partially Closed' ? 'ri-timer-2-line fs-17 align-middle' :
-                                    obj.status === 'Open' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
-                </span>
-            `;
+                                    <span icon-task-id="${obj.id}">
+                                        <i  style="${obj.status === 'Closed' ? 'color: green' :
+                                                    obj.status === 'Partially Closed' ? 'color: orange' :
+                                                        obj.status === 'Open' ? 'color: red' : ''}"
+                                            class="${obj.status === 'Closed' ? 'ri-checkbox-circle-line fs-17 align-middle' :
+                                                    obj.status === 'Partially Closed' ? 'ri-timer-2-line fs-17 align-middle' :
+                                                        obj.status === 'Open' ? 'ri-close-circle-line fs-17 align-middle' : ''}"></i>
+                                    </span>
+                                `;
                             var statusOptions = `
-                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${obj.id}">
-                    <option value="Closed" ${obj.status === 'Closed' ? 'selected' : ''}>Closed</option>
-                    <option value="Partially Closed" ${obj.status === 'Partially Closed' ? 'selected' : ''}>Partially Closed</option>
-                    <option value="Open" ${obj.status === 'Open' ? 'selected' : ''}>Open</option>
-                </select>
-            `;
+                                    <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${obj.id}">
+                                        <option value="Closed" ${obj.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                                        <option value="Partially Closed" ${obj.status === 'Partially Closed' ? 'selected' : ''}>Partially Closed</option>
+                                        <option value="Open" ${obj.status === 'Open' ? 'selected' : ''}>Open</option>
+                                    </select>
+                                `;
                             rowsHTML += `
-                <tr>
-                    <td>${obj.obj_no}</td>
-                    <td>${obj.ref_no}</td>
-                    <td>${obj.issue_date}</td>
-                    <td>${obj.obj_type}</td>
-                    <td>${ iconHtml + statusOptions}</td>
-                    <td>${obj.remarks ? obj.remarks : "N/A" }</td>
-                    <td>
-                        <div class="hstack gap-3 flex-wrap">
-                            <button type="button" obj-id=${obj.id} class="btn btn-sm btn-light obj-details-btn">Details</button>
-                            <a href="javascript:void(0);" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
-                            <a href="javascript:void(0);" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            `;
+                                <tr>
+                                    <td>${obj.obj_no}</td>
+                                    <td>${obj.ref_no}</td>
+                                    <td>${obj.issue_date}</td>
+                                    <td>${obj.obj_type}</td>
+                                    <td>${ iconHtml + statusOptions}</td>
+                                    <td>${obj.remarks ? obj.remarks : "N/A" }</td>
+                                    <td>
+                                        <div class="hstack gap-3 flex-wrap">
+                                            <button type="button" obj-id="${obj.id}" class="btn btn-sm btn-light obj-details-btn">Details</button>
+                                            <a href="javascript:void(0);" onclick="editObjection(${obj.id})" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
+                                            <a href="javascript:void(0);" onclick="deleteObjection(${obj.id})" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
                         });
 
 
@@ -366,6 +366,51 @@
                         console.error(xhr.responseText);
                     }
                 })
+            }
+
+            // Function to handle editing a task
+            async function editObjection(objId) {
+                // Implement your logic here for editing the task
+                // For example, you can use AJAX to send a request to the server to edit the task
+                // Replace the URL with your actual endpoint for editing a task
+                $.ajax({
+                    url: "{{ route('editTask') }}",
+                    type: "POST",
+                    data: {
+                        id: objId
+                    },
+                    success: function(data) {
+                        // Handle success response
+                        console.log("Task edited successfully");
+                        // You can add further actions as needed after editing the task
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            // Function to handle deleting a task
+            async function deleteObjection(objId) {
+                $.ajax({
+                    url: "{{ route('deleteObjection') }}",
+                    type: "POST",
+                    data: {
+                        id: objId
+                    },
+                    success: async function (response) {
+                        await updateObjectionList();
+                        // Handle success response
+                        console.log(response.message);
+                        // You can add further actions as needed after deleting the task
+                        toastr.success(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
             }
 
             // Function to fetch and display Objection details

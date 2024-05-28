@@ -193,6 +193,8 @@ class TaskController extends Controller
         }
     }
 
+
+
     public function filterTasks(Request $request)
     {
         // Get the authenticated user

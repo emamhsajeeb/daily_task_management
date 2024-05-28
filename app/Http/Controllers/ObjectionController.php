@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Objection;
+use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -80,5 +81,22 @@ class ObjectionController extends Controller
             // Other exceptions occurred, return error response
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function deleteObjection(Request $request)
+    {
+        $objId = $request->id;
+
+        // Retrieve the task from the database
+        $objection = Tasks::findOrFail($objId);
+
+        // Perform any necessary logic before deleting the task
+        // For example, you might check permissions or dependencies
+
+        // Delete the task
+        $objection->delete();
+
+        // You can return a response if needed
+        return response()->json(['message' => 'Objection deleted successfully']);
     }
 }
