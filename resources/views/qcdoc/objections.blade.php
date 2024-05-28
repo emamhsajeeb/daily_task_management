@@ -374,14 +374,14 @@
                 // For example, you can use AJAX to send a request to the server to edit the task
                 // Replace the URL with your actual endpoint for editing a task
                 $.ajax({
-                    url: "{{ route('editObjection') }}",
+                    url: "{{ route('updateObjection') }}",
                     type: "POST",
                     data: {
                         id: objId
                     },
                     success: function(data) {
                         // Handle success response
-                        console.log("Objection edited successfully");
+                        console.log("Objection updated successfully");
                         // You can add further actions as needed after editing the task
                     },
                     error: function(xhr, status, error) {
