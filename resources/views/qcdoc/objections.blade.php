@@ -231,8 +231,8 @@
                     <td>${ iconHtml + statusOptions}</td>
                     <td>${obj.remarks ? obj.remarks : "N/A" }</td>
                     <td>
-                        <button type="button" obj-id=${obj.id} class="btn btn-sm btn-light obj-details-btn">Details</button>
                         <div class="hstack gap-3 flex-wrap">
+                            <button type="button" obj-id=${obj.id} class="btn btn-sm btn-light obj-details-btn">Details</button>
                             <a href="javascript:void(0);" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
                             <a href="javascript:void(0);" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
                         </div>
