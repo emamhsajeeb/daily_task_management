@@ -599,6 +599,7 @@ async function updateTaskList() {
 }
 
 async function filterTaskList() {
+    let tasksData = await getTasksData();
     try {
         const dateRangeValue = document.getElementById('dateRangePicker').value;
         const startDateValue = dateRangeValue.split(" to ")[0];
@@ -610,8 +611,6 @@ async function filterTaskList() {
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
         // const taskReports = $('#taskReport').val();
 
-
-        let tasksData = await getTasksData();
         let filteredTasks = tasksData.tasks;
 
         // Query tasks based on date range
