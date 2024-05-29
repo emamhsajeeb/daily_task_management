@@ -610,12 +610,6 @@ async function filterTaskList() {
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
         // const taskReports = $('#taskReport').val();
 
-        console.log("Start Date:", startDate);
-        console.log("End Date:", endDate);
-        console.log("Task Status:", taskStatus);
-        console.log("Task Incharge:", taskIncharge);
-        // console.log("Task Reports:", taskReports);
-
 
         let tasksData = await getTasksData();
         let filteredTasks = tasksData.tasks;
@@ -653,7 +647,7 @@ async function filterTaskList() {
 
     } finally {
         // Change the button to a reset button
-        $('#filterTasks').html('<i class="ri-refresh-line me-1 align-bottom"></i> Reset');
+        $('#filterTasks').html(`<i class="ri-refresh-line me-1 align-bottom"></i> Reset <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">${tasksData.tasks.length} <span class="visually-hidden">tasks filtered</span></span>`);
         $('#filterTasks').prop('disabled', false);
         $('#filterTasks').off('click'); // Remove previous click event handler
         $('#filterTasks').click(async function (e) {
