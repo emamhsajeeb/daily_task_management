@@ -130,6 +130,7 @@ class AttendanceController extends Controller
 
     public function clockIn(Request $request)
     {
+        dd($request);
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $request->user_id, 'date' => $request->date],
             ['clockin' => $request->time, 'clockin_location' => $request->location, 'symbol' => '√']
