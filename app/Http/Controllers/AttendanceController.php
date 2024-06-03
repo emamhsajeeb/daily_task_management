@@ -128,4 +128,31 @@ class AttendanceController extends Controller
         }
     }
 
+    public function clockIn(Request $request)
+    {
+        $attendance = Attendance::firstOrCreate(
+            ['user_id' => $request->user_id, 'date' => $request->date],
+            ['clockin' => $request->time, 'location' => $request->location]
+        );
+
+        $attendance->clockin = $request->time;
+        $attendance->clockin_location = $request->location;
+        $attendance->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function clockOut(Request $request)
+    {
+        $attendance = Attendance::where('user_id', $request->user_id)
+            ->where('date', $request->date)
+            ->firstOrFail();
+
+        $attendance->clockout = $request->time;
+        $attendance->clockout_location = $request->location;
+        $attendance->save();
+
+        return response()->json(['success' => true]);
+    }
+
 }
