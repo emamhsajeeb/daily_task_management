@@ -1,5 +1,4 @@
 import './bootstrap';
-// main.js
 import axios from 'axios';
 import geolib from 'geolib';
 // Include other dependencies here
