@@ -130,30 +130,67 @@ class AttendanceController extends Controller
 
     public function clockIn(Request $request)
     {
-        dd($request);
-        $attendance = Attendance::firstOrCreate(
-            ['user_id' => $request->user_id, 'date' => $request->date],
-            ['clockin' => $request->time, 'clockin_location' => $request->location, 'symbol' => '√']
-        );
+        try {
+            // Validate incoming request data
+            $request->validate([
+                'user_id' => 'required|integer', // Assuming user_id should be an integer
+                'date' => 'required|date_format:Y-m-d',
+                'time' => 'required', // Add any validation rules for time if needed
+                'location' => 'required', // Add any validation rules for location if needed
+            ]);
 
-        $attendance->clockin = $request->time;
-        $attendance->clockin_location = $request->location;
-        $attendance->save();
+            // Attempt to create or update the attendance record
+            $attendance = Attendance::updateOrCreate(
+                ['user_id' => $request->user_id, 'date' => $request->date],
+                ['clockin' => $request->time, 'clockin_location' => $request->location, 'symbol' => '√']
+            );
 
-        return response()->json(['success' => true]);
+            // Update clockin and clockin_location in case they were not set during creation
+            $attendance->clockin = $request->time;
+            $attendance->clockin_location = $request->location;
+            $attendance->save();
+
+            // Return success response
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            // You can log the error, return a custom error message, or handle it in any other way you prefer
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
     public function clockOut(Request $request)
     {
-        $attendance = Attendance::where('user_id', $request->user_id)
-            ->where('date', $request->date)
-            ->firstOrFail();
+        try {
+            // Validate incoming request data
+            $request->validate([
+                'user_id' => 'required|integer', // Assuming user_id should be an integer
+                'date' => 'required|date_format:Y-m-d',
+                'time' => 'required', // Add any validation rules for time if needed
+                'location' => 'required', // Add any validation rules for location if needed
+            ]);
 
-        $attendance->clockout = $request->time;
-        $attendance->clockout_location = $request->location;
-        $attendance->save();
+            // Find the attendance record for the user and date
+            $attendance = Attendance::where('user_id', $request->user_id)
+                ->where('date', $request->date)
+                ->firstOrFail();
 
-        return response()->json(['success' => true]);
+            // Update clockout and clockout_location fields
+            $attendance->clockout = $request->time;
+            $attendance->clockout_location = $request->location;
+            $attendance->save();
+
+            // Return success response
+            return response()->json(['success' => true]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the case where the attendance record is not found
+            return response()->json(['error' => 'Attendance record not found.'], 404);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
 }
