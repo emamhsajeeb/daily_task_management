@@ -31,8 +31,8 @@
                                 <div>
                                     <p class="fw-medium text-50 mb-0">Clock In / Clock Out</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
                                     <p id="clock-in-location" class="text-50"></p>
+                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
                                     <p id="clock-out-location" class="text-50"></p>
                                     <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
                                     <button id="clock-out-button" class="btn btn-danger mt-3">Clock Out</button>
@@ -141,7 +141,15 @@
     <!-- End Page-content -->
 </div>
 <script>
+    const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
+    const user = {!! json_encode($user) !!};
+
     $( document ).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         var preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -158,36 +166,31 @@
         document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
     }
 
-    function sendClockData(url, time, latitude, longitude) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const userId = 1; // Assuming you have user ID available
+    function sendClockData(route, time, latitude, longitude) {
         const date = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify({
-                user_id: userId,
+        $.ajax({
+            url: route,
+            type: 'POST',
+            data: {
+                user_id: user.id,
                 date: date,
                 time: time,
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
-            })
-        })
-            .then(response => {
+            },
+            processData: false,
+            contentType: false,
+            success: async function (response) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
+
+            },
+            error: function(xhr, status) {
                 console.error('There was a problem with your fetch operation:', error);
-            });
+            }
+        });
     }
 
     document.getElementById('clock-in-button').addEventListener('click', function() {
@@ -201,7 +204,7 @@
             setLocation('clock-in-location', latitude, longitude);
 
             // Send clock-in data to Laravel backend
-            sendClockData('/clock-in', time, latitude, longitude);
+            sendClockData('{{ route('clockin') }}', time, latitude, longitude);
         });
     });
 
@@ -216,7 +219,7 @@
             setLocation('clock-out-location', latitude, longitude);
 
             // Send clock-out data to Laravel backend
-            sendClockData('/clock-out', time, latitude, longitude);
+            sendClockData('{{ route('clockout') }}', time, latitude, longitude);
         });
     });
 
