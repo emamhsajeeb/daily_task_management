@@ -29,9 +29,9 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-white-50 mb-0">Clock In / Clock Out</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
-                                    <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
+                                    <p class="fw-medium mb-0">Clock In / Clock Out</p>
+                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
+                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
                                     <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
                                     <button id="clock-out-button" class="btn btn-danger mt-3">Clock Out</button>
                                 </div>
@@ -144,7 +144,7 @@
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
-    
+
     document.getElementById('clock-in-button').addEventListener('click', function() {
         let now = new Date();
         let hours = now.getHours() > 12 ? now.getHours() - 12 : now.getHours();
