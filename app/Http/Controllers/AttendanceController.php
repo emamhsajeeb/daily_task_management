@@ -132,7 +132,7 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $request->user_id, 'date' => $request->date],
-            ['clockin' => $request->time, 'location' => $request->location]
+            ['clockin' => $request->time, 'clockin_location' => $request->location, 'symbol' => '√']
         );
 
         $attendance->clockin = $request->time;
