@@ -133,16 +133,19 @@ class AttendanceController extends Controller
         try {
             // Validate incoming request data
             $request->validate([
-                'user_id' => 'required|integer', // Assuming user_id should be an integer
+                'user_id' => 'required|integer',
                 'date' => 'required|date_format:Y-m-d',
-                'time' => 'required', // Add any validation rules for time if needed
-                'location' => 'required', // Add any validation rules for location if needed
+                'time' => 'required|date_format:h:i A', // Assuming time is in 12-hour format with AM/PM suffix
+                'location' => 'required',
             ]);
+
+            // Convert time value to 24-hour format
+            $time = date('H:i:s', strtotime($request->time));
 
             // Attempt to create or update the attendance record
             $attendance = Attendance::updateOrCreate(
                 ['user_id' => $request->user_id, 'date' => $request->date],
-                ['clockin' => $request->time, 'clockin_location' => $request->location, 'symbol' => '√']
+                ['clockin' => $time, 'clockin_location' => $request->location, 'symbol' => '√']
             );
 
             // Update clockin and clockin_location in case they were not set during creation
