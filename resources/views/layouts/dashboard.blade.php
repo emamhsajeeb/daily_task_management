@@ -174,18 +174,11 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}`;
+        const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startLocation.join(',')}&end=${endLocation.join(',')}`;
         const response = await $.ajax({
             url: url,
             type: 'GET',
             contentType: 'application/json',
-            headers: {
-                'Authorization': apiKey
-            },
-            data: JSON.stringify({
-                coordinates: [startLocation, endLocation],
-                format: 'geojson'
-            })
         });
         return response.data.features[0].geometry.coordinates.map(coord => ({
             latitude: coord[1],
