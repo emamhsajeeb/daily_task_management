@@ -174,7 +174,7 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        fetch(`http://localhost:3000/directions?origin=${origin}&destination=${destination}&apiKey=${apiKey}`)
+        fetch(`http://localhost:3000/directions?origin=${startLocation}&destination=${endLocation}&apiKey=${apiKey}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
