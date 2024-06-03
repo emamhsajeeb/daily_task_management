@@ -174,17 +174,13 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Handle data
-            })
-            .catch(error => {
-                console.error(error);
-                // Handle errors
-            });
-        const response = await axios.get(``);
+        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
+        const response = await $.ajax({
+            mode: 'no-cors',
+            url: url,
+            type: 'GET',
+            contentType: 'application/json',
+        });
         return response.data.features[0].geometry.coordinates.map(coord => ({
             latitude: coord[1],
             longitude: coord[0]
@@ -289,7 +285,6 @@
             }
         });
     });
-
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
         let now = new Date();
