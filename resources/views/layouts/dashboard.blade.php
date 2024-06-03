@@ -188,7 +188,7 @@
 
             },
             error: function(xhr, status) {
-                console.error('There was a problem with your fetch operation:', error);
+                console.error(xhr.responseText);
             }
         });
     }
