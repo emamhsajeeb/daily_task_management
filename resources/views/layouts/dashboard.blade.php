@@ -174,7 +174,7 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        import express from 'express';
+        import express from '/../express';
         import fetch from 'node-fetch';
         const app = express();
         const PORT = 3000;
