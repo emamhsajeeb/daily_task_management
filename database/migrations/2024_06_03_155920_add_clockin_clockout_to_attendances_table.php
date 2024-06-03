@@ -29,7 +29,7 @@ class AddClockinClockoutLocationToAttendancesTable extends Migration
     public function down(): void
     {
         Schema::table('attendances', function (Blueprint $table) {
-            $table->dropColumn(['clockin', 'clockout', 'location']);
+            $table->dropColumn(['clockin', 'clockout', 'clockin_location','clockout_location']);
         });
     }
 }
