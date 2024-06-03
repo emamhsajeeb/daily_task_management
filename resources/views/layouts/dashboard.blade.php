@@ -174,12 +174,34 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
-        const response = await $.ajax({
-            url: url,
-            type: 'GET',
-            contentType: 'application/json',
+        const express = require('express');
+        const fetch = require('node-fetch');
+        const app = express();
+        const PORT = 3000;
+
+        app.use(express.json());
+
+        app.get('/directions', async (req, res) => {
+            const { origin, destination, apiKey } = req.query;
+            const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                res.json(data);
+            } catch (error) {
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
         });
+
+        app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`);
+        });
+        // const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
+        // const response = await $.ajax({
+        //     url: url,
+        //     type: 'GET',
+        //     contentType: 'application/json',
+        // });
         return response.data.features[0].geometry.coordinates.map(coord => ({
             latitude: coord[1],
             longitude: coord[0]
