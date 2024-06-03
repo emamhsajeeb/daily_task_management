@@ -177,7 +177,7 @@
         const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}`;
         const response = await $.ajax({
             url: url,
-            type: 'POST',
+            type: 'GET',
             contentType: 'application/json',
             headers: {
                 'Authorization': apiKey
