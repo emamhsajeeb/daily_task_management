@@ -24,25 +24,29 @@
 
 
             <div class="row">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="fw-medium text-white-50 mb-0">Clock In / Clock Out</p>
-                            <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
-                            <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
-                            <p id="clock-in-location" class="text-white-50"></p>
-                            <p id="clock-out-location" class="text-white-50"></p>
-                            <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
-                            <button id="clock-out-button" class="btn btn-danger mt-3">Clock Out</button>
-                        </div>
-                        <div>
-                            <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-white bg-opacity-25 rounded-circle fs-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock text-white"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            </span>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="fw-medium text-white-50 mb-0">Clock In / Clock Out</p>
+                                    <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
+                                    <h2 class="mt-4 ff-secondary fw-semibold text-white"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
+                                    <p id="clock-in-location" class="text-white-50"></p>
+                                    <p id="clock-out-location" class="text-white-50"></p>
+                                    <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
+                                    <button id="clock-out-button" class="btn btn-danger mt-3">Clock Out</button>
+                                </div>
+                                <div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-white bg-opacity-25 rounded-circle fs-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock text-white"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </div><!-- end card-->
                 </div>
                 <div class="col-xxl-3 col-sm-6">
                     <div class="card card-animate">
