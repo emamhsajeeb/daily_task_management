@@ -179,8 +179,6 @@
                 time: time,
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
             },
-            processData: false,
-            contentType: false,
             success: async function (response) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
