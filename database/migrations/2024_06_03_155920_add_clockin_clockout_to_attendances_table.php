@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddClockinClockoutLocationToAttendancesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -32,4 +32,4 @@ class AddClockinClockoutLocationToAttendancesTable extends Migration
             $table->dropColumn(['clockin', 'clockout', 'clockin_location','clockout_location']);
         });
     }
-}
+};
