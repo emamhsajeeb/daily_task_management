@@ -16,7 +16,8 @@ class AddClockinClockoutLocationToAttendancesTable extends Migration
         Schema::table('attendances', function (Blueprint $table) {
             $table->time('clockin')->nullable();
             $table->time('clockout')->nullable();
-            $table->string('location')->nullable();
+            $table->string('clockin_location')->nullable();
+            $table->string('clockout_location')->nullable();
         });
     }
 
