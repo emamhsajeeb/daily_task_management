@@ -289,24 +289,7 @@
             }
         });
     });
-
-
-
-
-    document.getElementById('clock-in-button').addEventListener('click', function() {
-        let now = new Date();
-        let time = formatTime(now);
-        document.getElementById('clock-in-time').textContent = time;
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            setLocation('clock-in-location', latitude, longitude);
-
-            // Send clock-in data to Laravel backend
-            sendClockData('{{ route('clockin') }}', time, latitude, longitude);
-        });
-    });
+    
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
         let now = new Date();
