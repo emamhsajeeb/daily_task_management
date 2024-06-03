@@ -76,8 +76,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('showAttendance');
     Route::get('/attendance-json', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
     Route::post('/attendance-update', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
-    Route::post('/clock-in', [AttendanceController::class, 'clockIn'])->name('clockin');
-    Route::post('/clock-out', [AttendanceController::class, 'clockOut'])->name('clockout');
+
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('updateProfile');
@@ -114,6 +113,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/tasks/attach-report', [TaskController::class, 'attachReport'])->name('attachReport');
     Route::post('/tasks/detach-report', [TaskController::class, 'detachReport'])->name('detachReport');
+
+    Route::post('/clock-in', [AttendanceController::class, 'clockIn'])->name('clockin');
+    Route::post('/clock-out', [AttendanceController::class, 'clockOut'])->name('clockout');
 });
 
 
