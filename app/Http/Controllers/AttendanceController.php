@@ -140,7 +140,7 @@ class AttendanceController extends Controller
             ]);
 
             // Convert time value to 24-hour format
-            $time = date('H:i:s', strtotime($request->time));
+            $time = Carbon::createFromFormat('h:i A', $request->time)->format('H:i:s');
 
             // Attempt to create or update the attendance record
             $attendance = Attendance::updateOrCreate(
