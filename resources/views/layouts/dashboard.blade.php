@@ -169,7 +169,7 @@
     function sendClockData(route, time, latitude, longitude) {
         const date = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
 
-        console.log(user);
+        console.log(user.id);
         $.ajax({
             url: route,
             type: 'POST',
