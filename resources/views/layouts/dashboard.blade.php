@@ -175,7 +175,11 @@
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
-        const response = await fetch(url);
+        const response = await $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json',
+        });
         return response.data.features[0].geometry.coordinates.map(coord => ({
             latitude: coord[1],
             longitude: coord[0]
