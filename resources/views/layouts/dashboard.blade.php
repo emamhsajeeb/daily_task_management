@@ -171,13 +171,11 @@
     // Start and end locations (longitude and latitude)
     const startLocation = [23.98669,90.36241]; // San Francisco (longitude, latitude)
     const endLocation = [23.69046,90.54668]; // Los Angeles (longitude, latitude)
-    23.8846, 90.4298
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
         const response = await $.ajax({
-            mode: 'no-cors',
             url: url,
             type: 'GET',
             contentType: 'application/json',
