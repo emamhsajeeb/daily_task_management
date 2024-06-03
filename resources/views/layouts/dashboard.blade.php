@@ -140,7 +140,7 @@
     </div>
     <!-- End Page-content -->
 </div>
-<script>
+<script type="module">
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
 
@@ -174,8 +174,8 @@
 
     // Function to get the detailed path from OpenRouteService API
     async function getHighwayPath(startLocation, endLocation, apiKey) {
-        const express = require('express');
-        const fetch = require('node-fetch');
+        import express from 'express';
+        import fetch from 'node-fetch';
         const app = express();
         const PORT = 3000;
 
