@@ -180,7 +180,7 @@
     });
 
     async function initMap() {
-        const position = { lat: 23.867943, lng: 90.512088 };
+        const position = { lat: 23.879132, lng: 90.502617 };
 
         // Import needed libraries
         //@ts-ignore
@@ -188,7 +188,7 @@
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
         // Initialize the map
-        const map = new Map(document.getElementById("map"), {
+        const map = new Map(document.getElementById("gmaps-markers"), {
             zoom: 4,
             center: position,
             mapId: "DEMO_MAP_ID",
