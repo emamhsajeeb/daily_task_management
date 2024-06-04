@@ -309,7 +309,7 @@
             data.forEach(user => {
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new google.maps.Marker({
-                    position: { lat: latitude, lng: longitude },
+                    position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
                 });
