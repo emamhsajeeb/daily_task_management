@@ -173,6 +173,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        initMap();
+        fetchClockin();
 
         const preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
@@ -187,7 +189,7 @@
             const data = await response.json();
             const [latitude, longitude] = data.clockin_location.split(',');
             document.getElementById('clock-in-time').textContent = data.time;
-            document.getElementById('clock-out-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+            document.getElementById('clock-in-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
 
 
         } catch (error) {
@@ -286,7 +288,7 @@
         // Implement marker clearing logic if needed
     }
 
-    initMap();
+
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
