@@ -201,7 +201,7 @@ class AttendanceController extends Controller
     {
         $today = Carbon::today();
 
-        $userLocations = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
+        $userLocations = Attendance::with('user:id,user_name,first_name')  // Include user data, specifically the first_name
         ->whereNotNull('clockin')
             ->whereDate('date', $today)
             ->get()
