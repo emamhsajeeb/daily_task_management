@@ -173,7 +173,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        initMap();
+
         const preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -234,6 +234,8 @@
     function clearMarkers() {
         // Implement marker clearing logic if needed
     }
+
+    initMap();
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
