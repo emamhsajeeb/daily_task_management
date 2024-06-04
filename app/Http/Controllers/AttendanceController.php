@@ -229,9 +229,8 @@ class AttendanceController extends Controller
 
         if ($userClockin) {
             return response()->json([
-                'user_id' => $userClockin->user_id,
-                'name' => $userClockin->user->first_name,
-                'clockin_location' => $userClockin->clockin_location,
+                'time' => $userClockin->clockin,
+                'location' => $userClockin->clockin_location,
             ]);
         } else {
             // Handle the case where no clock-in data is found for the current user on today's date
@@ -256,10 +255,8 @@ class AttendanceController extends Controller
 
         if ($userClockout) {
             return response()->json([
-                'user_id' => $userClockout->user_id,
-                'name' => $userClockout->user->first_name,
-                // Assuming there's a 'clockout_location' field:
-                'clockout_location' => $userClockout->clockout_location,
+                'time' => $userClockout->clockout,
+                'location' => $userClockout->clockout_location,
             ]);
         } else {
             // Handle the case where no clockout data is found for the current user on today's date
