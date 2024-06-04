@@ -38,7 +38,7 @@
                                         <span id="clock-out-time" class="counter-value" style="display: none;">05:00 PM</span>
                                     </h2>
                                     <p id="clock-out-location" class="text-50" style="display: none;"></p>
-                                    <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
+                                    <button id="clock-in-button" class="btn btn-success mt-3" style="display: none;">Clock In</button>
                                     <button id="clock-out-button" class="btn btn-danger mt-3" style="display: none;">Clock Out</button>
                                 </div>
                                 <div>
@@ -208,6 +208,8 @@
                 });
                 document.getElementById('clock-in-location').style.display = '';
                 document.getElementById('clock-in-location').textContent = `Location: ${clockin_latitude}, ${clockin_longitude}`;
+            } else {
+                document.getElementById('clock-in-button').style.display = '';
             }
             if (attendance.clockout_time) {
                 document.getElementById('clock-in-time').style.display = '';
