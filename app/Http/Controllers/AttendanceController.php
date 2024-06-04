@@ -162,7 +162,6 @@ class AttendanceController extends Controller
         }
     }
 
-
     public function clockOut(Request $request)
     {
         try {
