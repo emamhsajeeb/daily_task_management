@@ -305,43 +305,12 @@
             // Clear existing markers
             clearMarkers();
 
-
-            const borderWidth = 2; // Adjust border width
-
-            function createMarkerIcon(userImage) {
-                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                svg.setAttribute('width', 40);
-                svg.setAttribute('height', 40);
-
-                // Create a circle element for the border
-                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute('cx', 20); // Adjust center coordinates
-                circle.setAttribute('cy', 20); // Adjust center coordinates
-                circle.setAttribute('r', 18); // Adjust circle radius (considering border width)
-                circle.setAttribute('fill', 'transparent'); // Transparent fill for border
-                circle.setAttribute('stroke', 'blue'); // Adjust stroke color
-                circle.setAttribute('stroke-width', borderWidth); // Set border width
-                svg.appendChild(circle);
-
-                // Create an image element for the user avatar with padding
-                const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-                image.setAttribute('href', userImage);
-                image.setAttribute('x', borderWidth); // Adjust image position within circle (considering border)
-                image.setAttribute('y', borderWidth); // Adjust image position within circle (considering border)
-                image.setAttribute('width', 40 - 2 * borderWidth); // Adjust image size considering border width
-                image.setAttribute('height', 40 - 2 * borderWidth); // Adjust image size considering border width
-                svg.appendChild(image);
-
-                return svg;
-            }
-
-
             // Add new markers for each user
             data.forEach(user => {
                 const userImage = "assets/images/users/" + user.user_name + ".jpg";
                 const icon = {
-                    url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(createMarkerIcon(userImage)),
-                    scaledSize: new google.maps.Size(40, 40),
+                    url: userImage,
+                    scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
                 };
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new google.maps.Marker({
