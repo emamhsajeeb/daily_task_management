@@ -43,7 +43,7 @@
                                 </div>
                                 <div>
                                     <div class="avatar-sm flex-shrink-0">
-                                    <span class="avatar-title bg-danger-subtle text-info rounded-circle fs-4">
+                                    <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-4">
                                         <i class=" ri-map-pin-time-line"></i>
                                     </span>
                                     </div>
