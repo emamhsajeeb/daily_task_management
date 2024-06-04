@@ -309,7 +309,7 @@
 
             // Add new markers for each user
             data.forEach(user => {
-                const userImage = user.avatar_url;
+                const userImage = "assets/images/users/" + user.user_name + ".jpg";
                 const icon = {
                     url: userImage,
                     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed

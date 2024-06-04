@@ -208,6 +208,7 @@ class AttendanceController extends Controller
             ->map(function ($location) {
                 return [
                     'user_id' => $location->user_id,
+                    'user_name' => $location->user->user_name,
                     'name' => $location->user->first_name,
                     'clockin_location' => $location->clockin_location,
                 ];
