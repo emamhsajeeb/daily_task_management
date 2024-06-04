@@ -308,9 +308,6 @@
         } catch (error) {
             console.error('Error fetching user locations:', error);
         }
-
-        // Fetch locations every 10 seconds
-        setTimeout(() => fetchLocations(map), 10000);
     }
 
     function clearMarkers() {
@@ -328,6 +325,7 @@
 
     // Set location text
     function setLocation(elementId, latitude, longitude) {
+        document.getElementById(elementId).style.display = '';
         document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
     }
 
