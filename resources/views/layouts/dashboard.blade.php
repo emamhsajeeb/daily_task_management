@@ -234,7 +234,7 @@
         const startLocation = { lat: 23.987057, lng: 90.361908 };
         const endLocation = { lat: 23.690618, lng: 90.546729 };
         const waypoints = [
-            { location: { lat: 23.972456, lng: 90.396180 }, stopover: false },
+            { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
             { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
             { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
             { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
@@ -261,7 +261,6 @@
         new AdvancedMarkerElement({
             map: map,
             position: position,
-            zoom: 14,
             content: priceTag,
         });
 
