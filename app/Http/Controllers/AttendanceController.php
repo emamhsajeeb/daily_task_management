@@ -195,5 +195,24 @@ class AttendanceController extends Controller
         }
     }
 
+    public function getUserLocationsForToday()
+    {
+        $today = Carbon::today();
+
+        $userLocations = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
+        ->whereNotNull('clockin')
+            ->whereDate('date', $today)
+            ->get()
+            ->map(function ($location) {
+                return [
+                    'user_id' => $location->user_id,
+                    'name' => $location->user->first_name,
+                    'clockin_location' => $location->clockin_location,
+                ];
+            });
+
+        return response()->json($userLocations);
+    }
+
 
 }

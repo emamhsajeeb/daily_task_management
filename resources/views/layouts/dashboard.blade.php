@@ -216,8 +216,8 @@
         // Calculate and display the route
         await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints);
 
-        // // Fetch and update user locations periodically
-        // await fetchLocations(map);
+        // Fetch and update user locations periodically
+        await fetchLocations(map);
     }
 
     async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints) {
@@ -240,7 +240,7 @@
     }
 
     async function fetchLocations(map) {
-        const endpoint = 'https://yourapi.com/getUserLocations'; // Replace with your endpoint
+        const endpoint = '{{ route('getUserLocationsForToday') }}'; // Replace with your endpoint
 
         try {
             const response = await fetch(endpoint);
@@ -251,8 +251,9 @@
 
             // Add new markers for each user
             data.forEach(user => {
+                const [latitude, longitude] = user.clockin_location.split(',');
                 new google.maps.Marker({
-                    position: { lat: user.latitude, lng: user.longitude },
+                    position: { lat: latitude, lng: longitude },
                     map: map,
                     title: user.name,
                 });
