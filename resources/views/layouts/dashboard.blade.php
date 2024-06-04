@@ -189,7 +189,7 @@
             const data = await response.json();
             const [latitude, longitude] = data.clockin_location.split(',');
             document.getElementById('clock-in-time').textContent = data.time;
-            document.getElementById('clock-in-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+            document.getElementById('clock-in-location').textContent = `Location: ${latitude}, ${longitude}`;
 
 
         } catch (error) {
