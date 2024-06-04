@@ -30,12 +30,12 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <p class="fw-medium text-50 mb-0">Clock In / Clock Out</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold" style="display: none;">
-                                        <span id="clock-in-time" class="counter-value">08:00 AM</span>
+                                    <h2 class="mt-4 ff-secondary fw-semibold">
+                                        <span id="clock-in-time" class="counter-value" style="display: none;">08:00 AM</span>
                                     </h2>
                                     <p id="clock-in-location" class="text-50" style="display: none;"></p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold" style="display: none;">
-                                        <span id="clock-out-time" class="counter-value">05:00 PM</span>
+                                    <h2 class="mt-4 ff-secondary fw-semibold">
+                                        <span id="clock-out-time" class="counter-value" style="display: none;">05:00 PM</span>
                                     </h2>
                                     <p id="clock-out-location" class="text-50" style="display: none;"></p>
                                     <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
