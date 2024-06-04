@@ -170,9 +170,11 @@ class AttendanceController extends Controller
             $request->validate([
                 'user_id' => 'required|integer', // Assuming user_id should be an integer
                 'date' => 'required|date_format:Y-m-d',
-                'time' => 'required', // Add any validation rules for time if needed
+                'time' => 'required|date_format:h:i A', // Add any validation rules for time if needed
                 'location' => 'required', // Add any validation rules for location if needed
             ]);
+            // Convert time value to 24-hour format
+            $time = Carbon::createFromFormat('h:i A', $request->time)->format('H:i:s');
 
             // Find the attendance record for the user and date
             $attendance = Attendance::where('user_id', $request->user_id)
@@ -180,7 +182,7 @@ class AttendanceController extends Controller
                 ->firstOrFail();
 
             // Update clockout and clockout_location fields
-            $attendance->clockout = $request->time;
+            $attendance->clockout = $time;
             $attendance->clockout_location = $request->location;
             $attendance->save();
 
