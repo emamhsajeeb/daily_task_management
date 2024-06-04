@@ -197,7 +197,7 @@
                 document.getElementById('clock-in-time').classList.remove('hidden');
                 document.getElementById('clock-in-button').classList.add('hidden');
                 document.getElementById('clock-out-button').classList.remove('hidden');
-                document.getElementById('clock-in-time').textContent = new Date(`2024-06-04T${attendance.clockin_time}:00`).toLocaleTimeString('en-US', {
+                document.getElementById('clock-in-time').textContent = new Date(`2024-06-04T${attendance.clockin_time}`).toLocaleTimeString('en-US', {
                     hour: 'numeric',
                     minute: '2-digit',
                     hour12: true,
@@ -208,7 +208,7 @@
             if (attendance.clockout_time) {
                 document.getElementById('clock-out-time').classList.remove('hidden');
                 document.getElementById('clock-out-button').classList.add('hidden');
-                document.getElementById('clock-out-time').textContent = new Date(`2024-06-04T${attendance.clockout_time}:00`).toLocaleTimeString('en-US', {
+                document.getElementById('clock-out-time').textContent = new Date(`2024-06-04T${attendance.clockout_time}`).toLocaleTimeString('en-US', {
                     hour: 'numeric',
                     minute: '2-digit',
                     hour12: true,
