@@ -30,12 +30,12 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <p class="fw-medium text-50 mb-0">Clock In / Clock Out</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-in-time" class="counter-value">08:00 AM</span></h2>
-                                    <p id="clock-in-location" class="text-50"></p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-out-time" class="counter-value">05:00 PM</span></h2>
-                                    <p id="clock-out-location" class="text-50"></p>
+                                    <h2 class="mt-4 ff-secondary fw-semibold"><span id="clock-in-time" class="counter-value hidden">08:00 AM</span></h2>
+                                    <p id="clock-in-location" class="text-50 hidden"></p>
+                                    <h2 class="mt-4 ff-secondary fw-semibold "><span id="clock-out-time" class="counter-value hidden">05:00 PM</span></h2>
+                                    <p id="clock-out-location" class="text-50 hidden"></p>
                                     <button id="clock-in-button" class="btn btn-success mt-3">Clock In</button>
-                                    <button id="clock-out-button" class="btn btn-danger mt-3">Clock Out</button>
+                                    <button id="clock-out-button" class="btn btn-danger mt-3 hidden">Clock Out</button>
                                 </div>
                                 <div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -194,11 +194,26 @@
             const clockout_longitude = attendance.clockout_location?.split(',')[1];
 
             if (attendance.clockin_time) {
-                document.getElementById('clock-in-time').textContent = attendance.clockin_time;
+                document.getElementById('clock-in-time').classList.remove('hidden');
+                document.getElementById('clock-in-button').classList.add('hidden');
+                document.getElementById('clock-out-button').classList.remove('hidden');
+                document.getElementById('clock-in-time').textContent = new Date(`2024-06-04T${attendance.clockin_time}:00`).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                });
+                document.getElementById('clock-in-location').classList.remove('hidden');
                 document.getElementById('clock-in-location').textContent = `Location: ${clockin_latitude}, ${clockin_longitude}`;
             }
             if (attendance.clockout_time) {
-                document.getElementById('clock-out-time').textContent = attendance.clockout_time;
+                document.getElementById('clock-out-time').classList.remove('hidden');
+                document.getElementById('clock-out-button').classList.add('hidden');
+                document.getElementById('clock-out-time').textContent = new Date(`2024-06-04T${attendance.clockout_time}:00`).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                });
+                document.getElementById('clock-out-location').classList.remove('hidden');
                 document.getElementById('clock-out-location').textContent = `Location: ${clockout_latitude}, ${clockout_longitude}`;
             }
 
