@@ -227,7 +227,18 @@ class AttendanceController extends Controller
             ->where('user_id', $currentUser->id)  // Filter for current user
             ->first();  // Retrieve only the first matching record (assuming there's only one)
 
+        if ($userClockin) {
+            return response()->json([
+                'user_id' => $userClockin->user_id,
+                'name' => $userClockin->user->first_name,
+                'clockin_location' => $userClockin->clockin_location,
+            ]);
+        } else {
+            // Handle the case where no clock-in data is found for the current user on today's date
+            return response()->json([], 404); // Example: Return a 404 Not Found response
+        }
     }
+
 
 
     public function getCurrentUserClockoutForToday()
