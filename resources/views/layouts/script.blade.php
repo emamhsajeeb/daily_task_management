@@ -29,12 +29,6 @@
 <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
 <!--datatable js-->
 
-<!-- google maps api -->
-<script src="https://maps.google.com/maps/api/js?key=AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ"></script>
-
-<!-- gmaps plugins -->
-<script src="assets/libs/gmaps/gmaps.min.js"></script>
-
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
