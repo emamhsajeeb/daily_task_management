@@ -186,7 +186,6 @@
 
         const { Map } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("directions");
 
         // Initialize the map
         const map = new Map(document.getElementById("gmaps-markers"), {
@@ -202,8 +201,8 @@
             title: "Dhaka Bypass Expressway",
         });
 
-        const directionsService = new DirectionsService();
-        const directionsRenderer = new DirectionsRenderer({
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer({
             map: map,
         });
 
