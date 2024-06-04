@@ -190,6 +190,7 @@
         document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
     }
 
+    let map;
     document.getElementById("gmaps-markers") &&
     (map = new GMaps({ div: "#gmaps-markers", lat: 23.8613258, lng: 90.4439983 })).addMarker({
         lat: 23.8613258,
