@@ -192,9 +192,9 @@
 
     let map;
     document.getElementById("gmaps-markers") &&
-    (map = new GMaps({ div: "#gmaps-markers", lat: 23.8613258, lng: 90.4439983 })).addMarker({
-        lat: 23.8613258,
-        lng: 90.4439983,
+    (map = new GMaps({ div: "#gmaps-markers", lat: 23.867943, lng: 90.512088 })).addMarker({
+        lat: 23.867943,
+        lng: 90.512088,
         title: "Lima",
         details: { database_id: 42, author: "HPNeo" },
         click: function (e) {
