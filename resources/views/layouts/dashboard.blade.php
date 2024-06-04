@@ -306,45 +306,43 @@
             clearMarkers();
 
 
-            // Assuming the pin SVG has a circle element with id="avatar-placeholder"
-            function getPinIconWithAvatar(userImage) {
-                const svgString = fetch('assets/pin.svg') // Fetch the pin SVG content
-                    .then(response => response.text())
-                    .then(svgData => {
-                        const parser = new DOMParser();
-                        const svgDoc = parser.parseFromString(svgData, "text/html");
-                        const avatarPlaceholder = svgDoc.getElementById("avatar-placeholder");
-                        avatarPlaceholder.setAttribute('fill', 'url(#user-avatar)'); // Assuming a defined pattern for the avatar
+            const borderWidth = 2; // Adjust border width
 
-                        // Create a pattern element to hold the user's avatar image
-                        const defs = svgDoc.createElementNS("http://www.w3.org/2000/svg", "defs");
-                        const avatarPattern = svgDoc.createElementNS("http://www.w3.org/2000/svg", "pattern");
-                        avatarPattern.setAttribute('id', 'user-avatar');
-                        avatarPattern.setAttribute('width', '100%'); // Adjust pattern size
-                        avatarPattern.setAttribute('height', '100%'); // Adjust pattern size
+            function createMarkerIcon(userImage) {
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute('width', 40);
+                svg.setAttribute('height', 40);
 
-                        const avatarImage = svgDoc.createElementNS("http://www.w3.org/2000/svg", "image");
-                        avatarImage.setAttribute('href', userImage);
-                        avatarImage.setAttribute('width', '100%'); // Adjust image size within pattern
-                        avatarImage.setAttribute('height', '100%'); // Adjust image size within pattern
-                        avatarPattern.appendChild(avatarImage);
-                        defs.appendChild(avatarPattern);
-                        svgDoc.documentElement.appendChild(defs);
+                // Create a circle element for the border
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute('cx', 20); // Adjust center coordinates
+                circle.setAttribute('cy', 20); // Adjust center coordinates
+                circle.setAttribute('r', 18); // Adjust circle radius (considering border width)
+                circle.setAttribute('fill', 'transparent'); // Transparent fill for border
+                circle.setAttribute('stroke', 'blue'); // Adjust stroke color
+                circle.setAttribute('stroke-width', borderWidth); // Set border width
+                svg.appendChild(circle);
 
-                        return svgDoc.documentElement.outerHTML;
-                    });
+                // Create an image element for the user avatar with padding
+                const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+                image.setAttribute('href', userImage);
+                image.setAttribute('x', borderWidth); // Adjust image position within circle (considering border)
+                image.setAttribute('y', borderWidth); // Adjust image position within circle (considering border)
+                image.setAttribute('width', 40 - 2 * borderWidth); // Adjust image size considering border width
+                image.setAttribute('height', 40 - 2 * borderWidth); // Adjust image size considering border width
+                svg.appendChild(image);
 
-                return {
-                    url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString),
-                    scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
-                };
+                return svg;
             }
+
 
             // Add new markers for each user
             data.forEach(user => {
-                console.log(user);
                 const userImage = "assets/images/users/" + user.user_name + ".jpg";
-                const icon = getPinIconWithAvatar(userImage);
+                const icon = {
+                    url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(createMarkerIcon(userImage)),
+                    scaledSize: new google.maps.Size(40, 40),
+                };
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new google.maps.Marker({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
