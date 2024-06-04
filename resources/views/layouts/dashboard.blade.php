@@ -152,10 +152,12 @@
     </div>
     <!-- End Page-content -->
 </div>
+<!-- Load the Google Maps JavaScript API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ" async defer></script>
 <script type="module">
+    const apiKey = 'AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ';
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
-
 
 
     $( document ).ready(function() {
@@ -164,10 +166,67 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        var preloader = document.getElementById('preloader');
+        initMap();
+        const preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
+
+    async function initMap() {
+        const position = { lat: 23.867943, lng: 90.512088 };
+
+        // Import needed libraries
+        //@ts-ignore
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+        // Initialize the map
+        const map = new Map(document.getElementById("map"), {
+            zoom: 4,
+            center: position,
+            mapId: "DEMO_MAP_ID",
+        });
+
+        // Add the marker
+        new AdvancedMarkerElement({
+            map: map,
+            position: position,
+            title: "Uluru",
+        });
+
+        // // Fetch and update user locations periodically
+        // await fetchLocations(map);
+    }
+
+    async function fetchLocations(map) {
+        const endpoint = 'https://yourapi.com/getUserLocations'; // Replace with your endpoint
+
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+
+            // Clear existing markers
+            clearMarkers();
+
+            // Add new markers for each user
+            data.forEach(user => {
+                new google.maps.Marker({
+                    position: { lat: user.latitude, lng: user.longitude },
+                    map: map,
+                    title: user.name,
+                });
+            });
+        } catch (error) {
+            console.error('Error fetching user locations:', error);
+        }
+
+        // Fetch locations every 10 seconds
+        setTimeout(() => fetchLocations(map), 10000);
+    }
+
+    function clearMarkers() {
+        // Implement marker clearing logic if needed
+    }
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
@@ -176,31 +235,12 @@
         return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + ampm;
     }
 
-
-    // Replace with your OpenRouteService API key
-    const apiKey = 'AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ';
-
-    // Start and end locations (longitude and latitude)
-    const startLocation = [23.98669,90.36241]; // San Francisco (longitude, latitude)
-    const endLocation = [23.69046,90.54668]; // Los Angeles (longitude, latitude)
-
-
     // Set location text
     function setLocation(elementId, latitude, longitude) {
         document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
     }
 
-    let map;
-    document.getElementById("gmaps-markers") &&
-    (map = new GMaps({ div: "#gmaps-markers", lat: 23.867943, lng: 90.512088 })).addMarker({
-        lat: 23.867943,
-        lng: 90.512088,
-        title: "Lima",
-        details: { database_id: 42, author: "HPNeo" },
-        click: function (e) {
-            console.log && console.log(e), alert("You clicked in this marker");
-        },
-    })
+
 
     // Send clock data via AJAX
     function sendClockData(route, time, latitude, longitude, userId) {
