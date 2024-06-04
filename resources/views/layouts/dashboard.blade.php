@@ -212,7 +212,7 @@
                 document.getElementById('clock-in-button').style.display = '';
             }
             if (attendance.clockout_time) {
-                document.getElementById('clock-in-time').style.display = '';
+                document.getElementById('clock-out-time').style.display = '';
                 document.getElementById('clock-out-button').style.display = 'none';
                 document.getElementById('clock-out-time').textContent = new Date(`2024-06-04T${attendance.clockout_time}`).toLocaleTimeString('en-US', {
                     hour: 'numeric',
