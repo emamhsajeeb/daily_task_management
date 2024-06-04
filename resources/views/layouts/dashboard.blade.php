@@ -398,7 +398,7 @@
             background-color: #4285F4;
             border-radius: 8px;
             color: #FFFFFF;
-            font-size: 8px;
+            font-size: 10px;
             padding: 5px 10px;
             position: relative;
         }
