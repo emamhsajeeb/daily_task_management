@@ -184,8 +184,11 @@
         const startLocation = { lat: 23.987057, lng: 90.361908 };
         const endLocation = { lat: 23.690618, lng: 90.546729 };
         const waypoints = [
-            { location: { lat: 23.8103, lng: 90.4125 }, stopover: false }, // Example waypoint
-            // Add more waypoints as needed
+            { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
+            { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
+            { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
+            { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
+            { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
         ];
 
         const { Map } = await google.maps.importLibrary("maps");
