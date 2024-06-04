@@ -245,20 +245,28 @@ class AttendanceController extends Controller
     {
         $today = Carbon::today();
 
-        $userLocations = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
-        ->whereNotNull('clockin')
-            ->whereDate('date', $today)
-            ->get()
-            ->map(function ($location) {
-                return [
-                    'user_id' => $location->user_id,
-                    'name' => $location->user->first_name,
-                    'clockin_location' => $location->clockin_location,
-                ];
-            });
+        // Get the currently authenticated user (replace with your authentication method)
+        $currentUser = Auth::user();
 
-        return response()->json($userLocations);
+        $userClockout = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
+        ->whereNotNull('clockout')  // Look for non-null clockout field (assuming separate fields)
+        ->whereDate('date', $today)
+            ->where('user_id', $currentUser->id)  // Filter for current user
+            ->first();  // Retrieve only the first matching record (assuming there's only one)
+
+        if ($userClockout) {
+            return response()->json([
+                'user_id' => $userClockout->user_id,
+                'name' => $userClockout->user->first_name,
+                // Assuming there's a 'clockout_location' field:
+                'clockout_location' => $userClockout->clockout_location,
+            ]);
+        } else {
+            // Handle the case where no clockout data is found for the current user on today's date
+            return response()->json([], 404); // Example: Return a 404 Not Found response
+        }
     }
+
 
 
 }
