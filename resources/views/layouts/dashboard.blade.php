@@ -144,7 +144,7 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <div id="gmaps-markers" style="height: 100%" class="gmaps"></div>
+                            <div id="gmaps-markers" style="height: 80vh" class="gmaps"></div>
                         </div><!-- end card-body -->
                     </div><!-- end card -->
                 </div>
