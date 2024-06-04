@@ -116,7 +116,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/clock-in', [AttendanceController::class, 'clockIn'])->name('clockin');
     Route::post('/clock-out', [AttendanceController::class, 'clockOut'])->name('clockout');
-    Route::get('/attendance/today', [AttendanceController::class, 'getUserLocationsForToday']);
+    Route::get('/attendance/locations-today', [AttendanceController::class, 'getUserLocationsForToday'])->name('getUserLocationsForToday');
+    Route::get('/attendance/clockin-today', [AttendanceController::class, 'getCurrentUserClockinForToday'])->name('getCurrentUserClockinForToday');
+    Route::get('/attendance/clockout-today', [AttendanceController::class, 'getCurrentUserClockoutForToday'])->name('getCurrentUserClockoutForToday');
 });
 
 

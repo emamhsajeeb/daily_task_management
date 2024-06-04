@@ -179,6 +179,22 @@
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
+    async function fetchClockin() {
+        const endpoint = '{{ route('getUserClockinForToday') }}'; // Replace with your endpoint
+
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            const [latitude, longitude] = data.clockin_location.split(',');
+            document.getElementById('clock-in-time').textContent = data.time;
+            document.getElementById('clock-out-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+
+
+        } catch (error) {
+            console.error('Error fetching user locations:', error);
+        }
+    }
+
     async function initMap() {
         const position = { lat: 23.879132, lng: 90.502617 };
         const startLocation = { lat: 23.987057, lng: 90.361908 };
