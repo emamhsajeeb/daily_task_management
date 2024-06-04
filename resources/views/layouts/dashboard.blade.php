@@ -181,11 +181,12 @@
 
     async function initMap() {
         const position = { lat: 23.879132, lng: 90.502617 };
+        const startLocation = { lat: 23.987057, lng: 90.361908 };
+        const endLocation = { lat: 23.690618, lng: 90.546729 };
 
-        // Import needed libraries
-        //@ts-ignore
         const { Map } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("directions");
 
         // Initialize the map
         const map = new Map(document.getElementById("gmaps-markers"), {
@@ -198,11 +199,36 @@
         new AdvancedMarkerElement({
             map: map,
             position: position,
-            title: "Uluru",
+            title: "Dhaka Bypass Expressway",
         });
+
+        const directionsService = new DirectionsService();
+        const directionsRenderer = new DirectionsRenderer({
+            map: map,
+        });
+
+        // Calculate and display the route
+        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation);
 
         // // Fetch and update user locations periodically
         // await fetchLocations(map);
+    }
+
+    async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end) {
+        directionsService.route(
+            {
+                origin: start,
+                destination: end,
+                travelMode: 'DRIVING',  // You can change this to WALKING, BICYCLING, etc.
+            },
+            (response, status) => {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(response);
+                } else {
+                    console.error('Directions request failed due to ' + status);
+                }
+            }
+        );
     }
 
     async function fetchLocations(map) {
