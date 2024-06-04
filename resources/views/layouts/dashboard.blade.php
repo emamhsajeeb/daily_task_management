@@ -144,7 +144,7 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <div id="gmaps-markers" style="height: 100vh" class="gmaps"></div>
+                            <div id="gmaps-markers" style="height: 100%" class="gmaps"></div>
                         </div><!-- end card-body -->
                     </div><!-- end card -->
                 </div>
@@ -252,11 +252,16 @@
             mapId: "DEMO_MAP_ID",
         });
 
+        const priceTag = document.createElement("div");
+
+        priceTag.className = "project-name";
+        priceTag.textContent = "Dhaka Bypass Expressway";
+
         // Add the marker
         new AdvancedMarkerElement({
             map: map,
             position: position,
-            title: "Dhaka Bypass Expressway",
+            content: priceTag,
         });
 
         const directionsService = new google.maps.DirectionsService();
@@ -388,5 +393,28 @@
     });
 
 </script>
+    <style>
+        .project-name {
+            background-color: #4285F4;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 14px;
+            padding: 10px 15px;
+            position: relative;
+        }
+
+        .project-name::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translate(-50%, 0);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #4285F4;
+        }
+    </style>
 @endsection
 
