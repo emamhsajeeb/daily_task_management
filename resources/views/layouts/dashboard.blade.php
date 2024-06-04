@@ -136,6 +136,7 @@
                     </div>
                 </div>
                 <!--end col-->
+
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
@@ -143,7 +144,7 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <div id="gmaps-markers" class="gmaps"></div>
+                            <div id="gmaps-markers" style="height: 100vh" class="gmaps"></div>
                         </div><!-- end card-body -->
                     </div><!-- end card -->
                 </div>
