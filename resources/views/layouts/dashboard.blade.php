@@ -180,7 +180,7 @@
     });
 
     async function fetchClockin() {
-        const endpoint = '{{ route('getUserClockinForToday') }}'; // Replace with your endpoint
+        const endpoint = '{{ route('getCurrentUserClockinForToday') }}'; // Replace with your endpoint
 
         try {
             const response = await fetch(endpoint);
