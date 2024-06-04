@@ -309,6 +309,7 @@
 
             // Add new markers for each user
             data.forEach(user => {
+                console.log(user);
                 const userImage = "assets/images/users/" + user.user_name + ".jpg";
                 const icon = {
                     url: userImage,
