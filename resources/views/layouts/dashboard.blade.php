@@ -261,6 +261,7 @@
         new AdvancedMarkerElement({
             map: map,
             position: position,
+            zoom: 14,
             content: priceTag,
         });
 
