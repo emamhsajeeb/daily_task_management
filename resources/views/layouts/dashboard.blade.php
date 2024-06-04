@@ -183,6 +183,10 @@
         const position = { lat: 23.879132, lng: 90.502617 };
         const startLocation = { lat: 23.987057, lng: 90.361908 };
         const endLocation = { lat: 23.690618, lng: 90.546729 };
+        const waypoints = [
+            { location: { lat: 23.8103, lng: 90.4125 }, stopover: false }, // Example waypoint
+            // Add more waypoints as needed
+        ];
 
         const { Map } = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -207,17 +211,19 @@
         });
 
         // Calculate and display the route
-        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation);
+        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints);
 
         // // Fetch and update user locations periodically
         // await fetchLocations(map);
     }
 
-    async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end) {
+    async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints) {
         directionsService.route(
             {
                 origin: start,
                 destination: end,
+                waypoints: waypoints,
+                optimizeWaypoints: false,
                 travelMode: 'DRIVING',  // You can change this to WALKING, BICYCLING, etc.
             },
             (response, status) => {
