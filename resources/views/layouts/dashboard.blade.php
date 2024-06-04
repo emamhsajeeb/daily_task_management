@@ -398,8 +398,8 @@
             background-color: #4285F4;
             border-radius: 8px;
             color: #FFFFFF;
-            font-size: 14px;
-            padding: 10px 15px;
+            font-size: 8px;
+            padding: 5px 10px;
             position: relative;
         }
 
