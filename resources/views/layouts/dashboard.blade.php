@@ -147,11 +147,11 @@
 
 
     $( document ).ready(function() {
-        // $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
-        // });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         var preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -171,63 +171,6 @@
     // Start and end locations (longitude and latitude)
     const startLocation = [23.98669,90.36241]; // San Francisco (longitude, latitude)
     const endLocation = [23.69046,90.54668]; // Los Angeles (longitude, latitude)
-
-    // Function to get the detailed path from OpenRouteService API
-    async function getHighwayPath(startLocation, endLocation, apiKey) {
-
-        // const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startLocation}&destination=${endLocation}&key=${apiKey}`;
-        // const response = await $.ajax({
-        //     url: url,
-        //     type: 'GET',
-        //     contentType: 'application/json',
-        // });
-        // return response.data.features[0].geometry.coordinates.map(coord => ({
-        //     latitude: coord[1],
-        //     longitude: coord[0]
-        // }));
-    }
-
-    // Generate geolocation points for each km marker
-    function generateKmMarkers(polylinePoints, intervalMeters) {
-        const markers = [];
-        let distanceAccumulator = 0;
-        let lastPoint = polylinePoints[0];
-
-        for (let i = 1; i < polylinePoints.length; i++) {
-            const point = polylinePoints[i];
-            const distance = geolib.getDistance(lastPoint, point);
-
-            if (distanceAccumulator + distance >= intervalMeters) {
-                markers.push(point);
-                distanceAccumulator = 0;
-            } else {
-                distanceAccumulator += distance;
-            }
-
-            lastPoint = point;
-        }
-
-        return markers;
-    }
-
-    // Check if the user's location is within 500 meters of any km marker
-    function isValidLocation(userLocation, kmMarkers, maxDistanceMeters) {
-        return kmMarkers.some(marker => geolib.getDistance(userLocation, marker) <= maxDistanceMeters);
-    }
-
-    // Find the nearest km marker to the user's location
-    function findNearestKmMarker(userLocation, kmMarkers) {
-        let nearestKm = null;
-        let shortestDistance = Infinity;
-        kmMarkers.forEach((marker, index) => {
-            const distance = geolib.getDistance(userLocation, marker);
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                nearestKm = index;
-            }
-        });
-        return nearestKm;
-    }
 
 
     // Set location text
@@ -268,21 +211,7 @@
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
             setLocation('clock-in-location', latitude, longitude);
-
-            const polylinePoints = await getHighwayPath(startLocation, endLocation, apiKey);
-            const kmMarkers = generateKmMarkers(polylinePoints, 1000); // 1 km interval
-
-            const userLocation = { latitude: latitude, longitude: longitude };
-            const maxDistanceMeters = 500;
-
-            if (isValidLocation(userLocation, kmMarkers, maxDistanceMeters)) {
-                const nearestKm = findNearestKmMarker(userLocation, kmMarkers);
-                console.log(`The user is nearest to km marker: ${nearestKm}`);
-                sendClockData('{{ route('clockin') }}', time, latitude, longitude, user.id);
-            } else {
-                console.log('User location is invalid (more than 500 meters from the road).');
-                sendClockData('{{ route('clockin') }}', time, latitude, longitude, user.id);
-            }
+            sendClockData('{{ route('clockin') }}', time, latitude, longitude, user.id);
         });
     });
 
@@ -297,7 +226,7 @@
             setLocation('clock-out-location', latitude, longitude);
 
             // Send clock-out data to Laravel backend
-            sendClockData('{{ route('clockout') }}', time, latitude, longitude);
+            sendClockData('{{ route('clockout') }}', time, latitude, longitude, user.id);
         });
     });
 
