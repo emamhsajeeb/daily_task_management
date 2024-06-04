@@ -214,56 +214,29 @@ class AttendanceController extends Controller
         return response()->json($userLocations);
     }
 
-    public function getCurrentUserClockinForToday()
+    public function getCurrentUserAttendanceForToday()
     {
         $today = Carbon::today();
 
         // Get the currently authenticated user (replace with your authentication method)
         $currentUser = Auth::user();
 
-        $userClockin = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
+        $userAttendance = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
         ->whereNotNull('clockin')
             ->whereDate('date', $today)
             ->where('user_id', $currentUser->id)  // Filter for current user
             ->first();  // Retrieve only the first matching record (assuming there's only one)
 
-        if ($userClockin) {
+        if ($userAttendance) {
             return response()->json([
-                'time' => $userClockin->clockin,
-                'location' => $userClockin->clockin_location,
+                'clockin_time' => $userAttendance->clockin,
+                'clockin_location' => $userAttendance->clockin_location,
+                'clockout_time' => $userAttendance->clockout,
+                'clockout_location' => $userAttendance->clockout_location,
             ]);
         } else {
             // Handle the case where no clock-in data is found for the current user on today's date
             return response()->json([], 404); // Example: Return a 404 Not Found response
         }
     }
-
-
-
-    public function getCurrentUserClockoutForToday()
-    {
-        $today = Carbon::today();
-
-        // Get the currently authenticated user (replace with your authentication method)
-        $currentUser = Auth::user();
-
-        $userClockout = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
-        ->whereNotNull('clockout')  // Look for non-null clockout field (assuming separate fields)
-        ->whereDate('date', $today)
-            ->where('user_id', $currentUser->id)  // Filter for current user
-            ->first();  // Retrieve only the first matching record (assuming there's only one)
-
-        if ($userClockout) {
-            return response()->json([
-                'time' => $userClockout->clockout,
-                'location' => $userClockout->clockout_location,
-            ]);
-        } else {
-            // Handle the case where no clockout data is found for the current user on today's date
-            return response()->json([], 404); // Example: Return a 404 Not Found response
-        }
-    }
-
-
-
 }

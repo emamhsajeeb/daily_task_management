@@ -174,26 +174,29 @@
             }
         });
         initMap();
-        fetchClockin();
+        fetchAttendance();
 
         const preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
-    async function fetchClockin() {
-        const endpoint = '{{ route('getCurrentUserClockinForToday') }}'; // Replace with your endpoint
+    async function fetchAttendance() {
+        const endpoint = '{{ route('getCurrentUserAttendanceForToday') }}'; // Replace with your endpoint
 
         try {
             const response = await fetch(endpoint);
-            const data = await response.json();
-            const [latitude, longitude] = data.clockin_location.split(',');
-            document.getElementById('clock-in-time').textContent = data.time;
-            document.getElementById('clock-in-location').textContent = `Location: ${latitude}, ${longitude}`;
+            const attendance = await response.json();
+            const [clockin_latitude, clockin_longitude] = attendance.clockin_location.split(',');
+            const [clockout_latitude, clockout_longitude] = attendance.clockout_location.split(',');
+            document.getElementById('clock-in-time').textContent = data.clockin_time;
+            document.getElementById('clock-in-location').textContent = `Location: ${clockin_latitude}, ${clockin_longitude}`;
+            document.getElementById('clock-out-time').textContent = data.clockout_time;
+            document.getElementById('clock-out-location').textContent = `Location: ${clockout_latitude}, ${clockout_longitude}`;
 
 
         } catch (error) {
-            console.error('Error fetching user locations:', error);
+            console.error('Error fetching user attendance:', error);
         }
     }
 
