@@ -188,8 +188,11 @@
             const response = await fetch(endpoint);
             const attendance = await response.json();
             console.log(attendance);
-            const [clockin_latitude, clockin_longitude] = attendance.clockin_location.split(',');
-            const [clockout_latitude, clockout_longitude] = attendance.clockout_location.split(',');
+            const clockin_latitude = attendance.clockin_location?.split(',')[0];
+            const clockin_longitude = attendance.clockin_location?.split(',')[1];
+
+            const clockout_latitude = attendance.clockout_location?.split(',')[0];
+            const clockout_longitude = attendance.clockout_location?.split(',')[1];
             document.getElementById('clock-in-time').textContent = attendance.clockin_time;
             document.getElementById('clock-in-location').textContent = `Location: ${clockin_latitude}, ${clockin_longitude}`;
             document.getElementById('clock-out-time').textContent = attendance.clockout_time;
