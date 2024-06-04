@@ -305,13 +305,21 @@
             // Clear existing markers
             clearMarkers();
 
+
+
             // Add new markers for each user
             data.forEach(user => {
+                const userImage = user.avatar_url;
+                const icon = {
+                    url: userImage,
+                    scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
+                };
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new google.maps.Marker({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
+                    icon: icon,
                 });
             });
         } catch (error) {
