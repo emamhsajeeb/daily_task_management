@@ -132,6 +132,18 @@
                     </div>
                 </div>
                 <!--end col-->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Users Locations</h4>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <div id="gmaps-markers" class="gmaps"></div>
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
+                </div>
+                <!-- end col -->
             </div>
             <!--end row-->
 
@@ -177,6 +189,17 @@
     function setLocation(elementId, latitude, longitude) {
         document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
     }
+
+    document.getElementById("gmaps-markers") &&
+    (map = new GMaps({ div: "#gmaps-markers", lat: 23.8613258, lng: 90.4439983 })).addMarker({
+        lat: 23.8613258,
+        lng: 90.4439983,
+        title: "Lima",
+        details: { database_id: 42, author: "HPNeo" },
+        click: function (e) {
+            console.log && console.log(e), alert("You clicked in this marker");
+        },
+    })
 
     // Send clock data via AJAX
     function sendClockData(route, time, latitude, longitude, userId) {
