@@ -348,8 +348,6 @@
         document.getElementById(elementId === 'clock-in' ? 'clock-out-button' : '').style.display = '';
     }
 
-
-
     // Send clock data via AJAX
     function sendClockData(route, time, latitude, longitude, userId) {
         const date = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
@@ -389,14 +387,11 @@
     document.getElementById('clock-out-button').addEventListener('click', function() {
         let now = new Date();
         let time = formatTime(now);
-        document.getElementById('clock-out-time').textContent = time;
 
         navigator.geolocation.getCurrentPosition(function(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
-            setLocation('clock-out-location', latitude, longitude);
-
-            // Send clock-out data to Laravel backend
+            setAttendance('clock-out', latitude, longitude, time);
             sendClockData('{{ route('clockout') }}', time, latitude, longitude, user.id);
         });
     });
