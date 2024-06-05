@@ -335,9 +335,6 @@
             const response = await fetch(endpoint);
             const data = await response.json();
 
-            // Clear existing markers
-            clearMarkers();
-
             // Add new markers for each user
             data.forEach(user => {
                 const userImage = document.createElement("img");
