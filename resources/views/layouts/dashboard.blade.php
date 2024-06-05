@@ -328,7 +328,7 @@
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
-                    // icon: icon,
+                    content: icon,
                 });
             });
         } catch (error) {
