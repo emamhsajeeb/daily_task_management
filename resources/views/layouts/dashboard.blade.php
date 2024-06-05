@@ -29,11 +29,14 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-50 mb-0">Clock In / Clock Out</p>
+                                    <p class="fw-medium text-50 mb-0">Clock In</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold">
                                         <span id="clock-in-time" class="counter-value" style="display: none;">08:00 AM</span>
                                     </h2>
                                     <p id="clock-in-location" class="text-50" style="display: none;"></p>
+                                </div>
+                                <div>
+                                    <p class="fw-medium text-50 mb-0">Clock Out</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold">
                                         <span id="clock-out-time" class="counter-value" style="display: none;">05:00 PM</span>
                                     </h2>
@@ -170,6 +173,7 @@
     const apiKey = 'AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ';
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
+    let map;
 
 
     $( document ).ready(function() {
@@ -186,7 +190,7 @@
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
-    let map;
+
     async function fetchAttendance() {
         const endpoint = '{{ route('getCurrentUserAttendanceForToday') }}'; // Replace with your endpoint
 
