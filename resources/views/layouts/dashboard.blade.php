@@ -322,11 +322,9 @@
                 userImage.src = "assets/images/users/" + user.user_name + ".jpg";
                 userImage.height = 30;
                 userImage.style.borderRadius = "15px";
-                userImage.style.border = "2px solid blue"; // Use quotes for color
-                // const icon = {
-                //     url: userImage,
-                //     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
-                // };
+                userImage.style.boxShadow = "2px 2px 5px rgba(0, 0, 0, 0.2)";
+                userImage.style.border = "2px solid blue";
+
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
