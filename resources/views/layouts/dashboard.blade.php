@@ -287,13 +287,12 @@
             map: map,
             position: startLocation,
             content: startMarker,
-            anchor: new google.maps.Point(0.5, 0.1),
         });
         new AdvancedMarkerElement({
             map: map,
             position: endLocation,
             content: endMarker,
-            anchor: new google.maps.Point(0.5, 0.1),
+            // anchor: new google.maps.Point(0.5, 0.1),
         });
 
         const directionsService = new google.maps.DirectionsService();
