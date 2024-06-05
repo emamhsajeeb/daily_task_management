@@ -320,7 +320,8 @@
             data.forEach(user => {
                 const userImage = document.createElement("img");
                 userImage.src = "assets/images/users/" + user.user_name + ".jpg";
-                userImage.height = 20;
+                userImage.height = 30;
+                userImage.style.borderRadius = "15px";
                 userImage.style.border = "2px solid blue"; // Use quotes for color
                 // const icon = {
                 //     url: userImage,
