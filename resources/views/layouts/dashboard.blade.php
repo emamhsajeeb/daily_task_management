@@ -287,6 +287,7 @@
             map: map,
             position: startLocation,
             content: startMarker,
+            anchor: new google.maps.Point(0.5, 0.1),
         });
         new AdvancedMarkerElement({
             map: map,
@@ -484,7 +485,7 @@
     }
 
     .start-end-marker {
-        background-color: #8B0000;
+        background-color: #FF3131;
         border-radius: 12px;
         color: #FFFFFF;
         font-size: 12px;
@@ -502,7 +503,7 @@
         height: 0;
         border-left: 12px solid transparent;
         border-right: 12px solid transparent;
-        border-top: 12px solid #8B0000;
+        border-top: 12px solid #FF3131;
     }
 </style>
 @endsection
