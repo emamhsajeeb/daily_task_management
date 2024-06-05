@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class AttendanceController extends Controller
 {
@@ -220,25 +221,32 @@ class AttendanceController extends Controller
     {
         $today = Carbon::today();
 
-        // Get the currently authenticated user (replace with your authentication method)
-        $currentUser = Auth::user();
+        try {
+            // Get the currently authenticated user (replace with your authentication method)
+            $currentUser = Auth::user();
 
-        $userAttendance = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
-        ->whereNotNull('clockin')
-            ->whereDate('date', $today)
-            ->where('user_id', $currentUser->id)  // Filter for current user
-            ->first();  // Retrieve only the first matching record (assuming there's only one)
+            $userAttendance = Attendance::with('user:id,first_name')  // Include user data, specifically the first_name
+            ->whereNotNull('clockin')
+                ->whereDate('date', $today)
+                ->where('user_id', $currentUser->id)  // Filter for current user
+                ->first();  // Retrieve only the first matching record (assuming there's only one)
 
-        if ($userAttendance) {
-            return response()->json([
-                'clockin_time' => $userAttendance->clockin,
-                'clockin_location' => $userAttendance->clockin_location,
-                'clockout_time' => $userAttendance->clockout,
-                'clockout_location' => $userAttendance->clockout_location,
-            ]);
-        } else {
-            // Handle the case where no clock-in data is found for the current user on today's date
-            return response()->json('Not clocked in yet'); // Example: Return a 404 Not Found response
+            if ($userAttendance) {
+                return response()->json([
+                    'clockin_time' => $userAttendance->clockin,
+                    'clockin_location' => $userAttendance->clockin_location,
+                    'clockout_time' => $userAttendance->clockout,
+                    'clockout_location' => $userAttendance->clockout_location,
+                ]);
+            } else {
+                // Handle the case where no clock-in data is found for the current user on today's date
+                return response()->json('Not clocked in yet'); // Example: Return a 404 Not Found response
+            }
+        } catch (Throwable $exception) {
+            // Handle unexpected exceptions during data retrieval
+            report($exception);  // Report the exception for debugging or logging
+            return response()->json('An error occurred while retrieving attendance data.', 500);  // Example: Return a 500 Internal Server Error response
         }
     }
+
 }
