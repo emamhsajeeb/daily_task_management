@@ -386,7 +386,6 @@
 
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
-        document.getElementById('clock-in-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
         Swal.fire({
             title: "Are you sure you want to clock in?",
             text: "This will record your clock in time and location.",
@@ -404,6 +403,7 @@
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
+                document.getElementById('clock-in-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
                 navigator.geolocation.getCurrentPosition(async function(position) {
                     setAttendance('{{ route('clockin') }}', 'clock-in', position);
                 });
@@ -412,7 +412,6 @@
     });
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
-        document.getElementById('clock-out-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
         Swal.fire({
             title: "Are you sure you want to clock out?",
             text: "This will record your clock out time and location.",
@@ -430,6 +429,7 @@
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
+                document.getElementById('clock-out-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
                 navigator.geolocation.getCurrentPosition(async function(position) {
                     setAttendance('{{ route('clockout') }}', 'clock-out', position);
                 });
