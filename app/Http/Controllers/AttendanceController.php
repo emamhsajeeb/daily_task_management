@@ -238,7 +238,7 @@ class AttendanceController extends Controller
             ]);
         } else {
             // Handle the case where no clock-in data is found for the current user on today's date
-            return response()->json([], 404); // Example: Return a 404 Not Found response
+            return response()->json('Not clocked in yet'); // Example: Return a 404 Not Found response
         }
     }
 }
