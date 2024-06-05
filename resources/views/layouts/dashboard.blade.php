@@ -374,14 +374,52 @@
 
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
-        navigator.geolocation.getCurrentPosition(async function(position) {
-            setAttendance('{{ route('clockin') }}', 'clock-in', position);
+        Swal.fire({
+            title: "Are you sure you want to clock in?",
+            text: "This will record your clock in time and location.",
+            showCancelButton: true,
+            confirmButtonColor: '#28a745', // Green for Yes
+            cancelButtonColor: '#dc3545', // Red for No
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            customClass: {
+                confirmButton: 'btn btn-primary w-xs me-2',
+                cancelButton: 'btn btn-danger w-xs'
+            },
+            buttonsStyling: false,
+            showCloseButton: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigator.geolocation.getCurrentPosition(async function(position) {
+                    setAttendance('{{ route('clockin') }}', 'clock-in', position);
+                });
+            }
         });
     });
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
-        navigator.geolocation.getCurrentPosition(async function(position) {
-            setAttendance('{{ route('clockout') }}', 'clock-out', position);
+        Swal.fire({
+            title: "Are you sure you want to clock out?",
+            text: "This will record your clock out time and location.",
+            showCancelButton: true,
+            confirmButtonColor: '#28a745', // Green for Yes
+            cancelButtonColor: '#dc3545', // Red for No
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            customClass: {
+                confirmButton: 'btn btn-primary w-xs me-2',
+                cancelButton: 'btn btn-danger w-xs'
+            },
+            buttonsStyling: false,
+            showCloseButton: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigator.geolocation.getCurrentPosition(async function(position) {
+                    setAttendance('{{ route('clockout') }}', 'clock-out', position);
+                });
+            }
         });
     });
 
