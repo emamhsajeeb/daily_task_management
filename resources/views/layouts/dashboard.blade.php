@@ -320,6 +320,8 @@
             data.forEach(user => {
                 const userImage = document.createElement("img");
                 userImage.src = "assets/images/users/" + user.user_name + ".jpg";
+                userImage.height = 20;
+                userImage.style.border = "2px solid blue"; // Use quotes for color
                 // const icon = {
                 //     url: userImage,
                 //     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
