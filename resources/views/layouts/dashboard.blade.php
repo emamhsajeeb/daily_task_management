@@ -197,7 +197,6 @@
         try {
             const response = await fetch(endpoint);
             const attendance = await response.json();
-            console.log(attendance);
             const clockin_latitude = attendance.clockin_location?.split(',')[0];
             const clockin_longitude = attendance.clockin_location?.split(',')[1];
             const clockout_latitude = attendance.clockout_location?.split(',')[0];
@@ -365,6 +364,7 @@
                 document.getElementById(elementId + '-location').style.display = '';
                 document.getElementById(elementId + '-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
                 document.getElementById(elementId + '-button').style.display = 'none';
+                document.getElementById(elementId + '-button').textContent = elementId === 'clock-in' ? 'Clock In' : elementId === 'clock-out' ? 'Clock Out' :'';
                 elementId === 'clock-in' ? (document.getElementById('clock-out-button').style.display = '') : '';
                 toastr.success(elementId === 'clock-in' ? "Clocked in successfully" : elementId === 'clock-out' ? "Clocked out successfully" : '');
                 await fetchLocations(map);
@@ -378,6 +378,7 @@
 
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
+        document.getElementById('clock-in-button').textContent = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
         Swal.fire({
             title: "Are you sure you want to clock in?",
             text: "This will record your clock in time and location.",
@@ -403,6 +404,7 @@
     });
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
+        document.getElementById('clock-out-button').textContent = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
         Swal.fire({
             title: "Are you sure you want to clock out?",
             text: "This will record your clock out time and location.",
