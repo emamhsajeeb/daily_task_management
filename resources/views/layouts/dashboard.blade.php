@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <!--end col-->
-                @role('admin')
+{{--                @role('admin')--}}
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
@@ -159,7 +159,7 @@
                     </div><!-- end card -->
                 </div>
                 <!-- end col -->
-                @role('admin')
+{{--                @role('admin')--}}
             </div>
             <!--end row-->
 
