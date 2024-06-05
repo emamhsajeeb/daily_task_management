@@ -186,6 +186,7 @@
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
+    let map;
     async function fetchAttendance() {
         const endpoint = '{{ route('getCurrentUserAttendanceForToday') }}'; // Replace with your endpoint
 
@@ -246,7 +247,7 @@
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
         // Initialize the map
-        const map = new Map(document.getElementById("gmaps-markers"), {
+        map = new Map(document.getElementById("gmaps-markers"), {
             zoom: 4,
             center: position,
             mapId: "DEMO_MAP_ID",
@@ -338,31 +339,31 @@
         return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + ampm;
     }
 
-    // Set location text
-    function setAttendance(elementId, latitude, longitude, time) {
-        document.getElementById(elementId + '-time').style.display = '';
-        document.getElementById(elementId + '-time').textContent = time;
-        document.getElementById(elementId + '-location').style.display = '';
-        document.getElementById(elementId + '-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
-        document.getElementById(elementId + '-button').style.display = 'none';
-        elementId === 'clock-in' ? (document.getElementById('clock-out-button').style.display = '') : '';
-    }
-
     // Send clock data via AJAX
-    function sendClockData(route, time, latitude, longitude, userId) {
-        const date = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
+    function setAttendance(route, elementId, position) {
+        let time = formatTime(new Date());
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        const date = new Date().toISOString().split('T')[0];
 
         $.ajax({
             url: route,
             type: 'POST',
             data: {
-                user_id: userId,
+                user_id: user.id,
                 date: date,
                 time: time,
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
             },
-            success: function(response) {
-                console.log('Clock data sent successfully');
+            success: async function (response) {
+                document.getElementById(elementId + '-time').style.display = '';
+                document.getElementById(elementId + '-time').textContent = time;
+                document.getElementById(elementId + '-location').style.display = '';
+                document.getElementById(elementId + '-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+                document.getElementById(elementId + '-button').style.display = 'none';
+                elementId === 'clock-in' ? (document.getElementById('clock-out-button').style.display = '') : '';
+                toastr.success(elementId === 'clock-in' ? "Clocked in successfully" : elementId === 'clock-out' ? "Clocked out successfully" : '');
+                await fetchLocations(map);
             },
             error: function(xhr, status) {
                 console.error(xhr.responseText);
@@ -373,26 +374,14 @@
 
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
-        let now = new Date();
-        let time = formatTime(now);
-
         navigator.geolocation.getCurrentPosition(async function(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            setAttendance('clock-in', latitude, longitude, time);
-            sendClockData('{{ route('clockin') }}', time, latitude, longitude, user.id);
+            setAttendance('{{ route('clockin') }}', 'clock-in', position);
         });
     });
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
-        let now = new Date();
-        let time = formatTime(now);
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            setAttendance('clock-out', latitude, longitude, time);
-            sendClockData('{{ route('clockout') }}', time, latitude, longitude, user.id);
+        navigator.geolocation.getCurrentPosition(async function(position) {
+            setAttendance('{{ route('clockout') }}', 'clock-out', position);
         });
     });
 
