@@ -339,9 +339,13 @@
     }
 
     // Set location text
-    function setLocation(elementId, latitude, longitude) {
-        document.getElementById(elementId).style.display = '';
-        document.getElementById(elementId).textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+    function setAttendance(elementId, latitude, longitude, time) {
+        document.getElementById(elementId + '-time').style.display = '';
+        document.getElementById(elementId + '-time').textContent = time;
+        document.getElementById(elementId + '-location').style.display = '';
+        document.getElementById(elementId + '-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+        document.getElementById(elementId + '-button').style.display = 'none';
+        document.getElementById(elementId === 'clock-in' ? 'clock-out-button' : '').style.display = '';
     }
 
 
@@ -373,12 +377,11 @@
     document.getElementById('clock-in-button').addEventListener('click', async function() {
         let now = new Date();
         let time = formatTime(now);
-        document.getElementById('clock-in-time').textContent = time;
 
         navigator.geolocation.getCurrentPosition(async function(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
-            setLocation('clock-in-location', latitude, longitude);
+            setAttendance('clock-in', latitude, longitude, time);
             sendClockData('{{ route('clockin') }}', time, latitude, longitude, user.id);
         });
     });
