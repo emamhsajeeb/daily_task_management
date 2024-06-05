@@ -318,17 +318,18 @@
 
             // Add new markers for each user
             data.forEach(user => {
-                const userImage = "assets/images/users/" + user.user_name + ".jpg";
-                const icon = {
-                    url: userImage,
-                    scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
-                };
+                const userImage = document.createElement("img");
+                userImage.src = "assets/images/users/" + user.user_name + ".jpg";
+                // const icon = {
+                //     url: userImage,
+                //     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
+                // };
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
-                    content: icon,
+                    content: userImage,
                 });
             });
         } catch (error) {
