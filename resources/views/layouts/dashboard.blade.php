@@ -182,6 +182,8 @@
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
     let map;
+    const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
     $( document ).ready(function() {
         $.ajaxSetup({
@@ -254,9 +256,6 @@
             { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
         ];
 
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
         // Initialize the map
         map = new Map(document.getElementById("gmaps-markers"), {
             zoom: 4,
@@ -325,7 +324,7 @@
                     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
                 };
                 const [latitude, longitude] = user.clockin_location.split(',');
-                new google.maps.marker.AdvancedMarkerElement({
+                new AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
