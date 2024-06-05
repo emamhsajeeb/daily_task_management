@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <!--end col-->
-
+                @role('admin')
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
@@ -159,6 +159,7 @@
                     </div><!-- end card -->
                 </div>
                 <!-- end col -->
+                @role('admin')
             </div>
             <!--end row-->
 
@@ -182,7 +183,6 @@
     const user = {!! json_encode($user) !!};
     let map;
 
-
     $( document ).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -196,7 +196,6 @@
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
-
 
     async function fetchAttendance() {
         const endpoint = '{{ route('getCurrentUserAttendanceForToday') }}'; // Replace with your endpoint
