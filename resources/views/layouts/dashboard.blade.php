@@ -345,7 +345,7 @@
         document.getElementById(elementId + '-location').style.display = '';
         document.getElementById(elementId + '-location').textContent = `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
         document.getElementById(elementId + '-button').style.display = 'none';
-        document.getElementById(elementId === 'clock-in' ? 'clock-out-button' : '').style.display = '';
+        elementId === 'clock-in' ? (document.getElementById('clock-out-button').style.display = '') : '';
     }
 
     // Send clock data via AJAX
