@@ -29,6 +29,8 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <p class="fw-medium text-muted mb-0">Clock In/Clock Out</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
                                 <div>
                                     <p id="clock-in" class="fw-medium text-50 mb-0" style="display: none;">Clock In</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold">
