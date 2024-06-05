@@ -191,7 +191,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        initMap();
+
+        admin ? initMap() : '' ;
         fetchAttendance();
 
         const preloader = document.getElementById('preloader');
@@ -358,12 +359,6 @@
             console.error('Error fetching user locations:', error);
         }
     }
-
-    function clearMarkers() {
-        // Implement marker clearing logic if needed
-    }
-
-
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
