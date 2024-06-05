@@ -159,7 +159,7 @@
                     </div><!-- end card -->
                 </div>
                 <!-- end col -->
-                @role('admin')
+                @endrole
             </div>
             <!--end row-->
 
