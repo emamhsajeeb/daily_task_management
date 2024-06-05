@@ -24,7 +24,7 @@
 
 
             <div class="row">
-                <div class="col-xxl-3 col-sm-6">
+                <div class="col-xxl-3 col-sm-12">
                     <div class="card card-animate">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -55,8 +55,8 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <button id="clock-in-button" class="btn btn-success mt-3" style="display: none;">Clock In</button>
-                                    <button id="clock-out-button" class="btn btn-danger mt-3" style="display: none;">Clock Out</button>
+                                    <button id="clock-in-button" class="btn btn-success mt-2" style="display: none;">Clock In</button>
+                                    <button id="clock-out-button" class="btn btn-danger mt-2" style="display: none;">Clock Out</button>
                                 </div>
                             </div>
                         </div>
