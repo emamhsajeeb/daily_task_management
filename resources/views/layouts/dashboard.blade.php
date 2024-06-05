@@ -210,6 +210,7 @@
             const clockout_longitude = attendance.clockout_location?.split(',')[1];
 
             if (attendance.clockin_time) {
+                document.getElementById('clock-in').style.display = '';
                 document.getElementById('clock-in-time').style.display = '';
                 document.getElementById('clock-in-button').style.display = 'none';
                 document.getElementById('clock-out-button').style.display = '';
@@ -224,6 +225,7 @@
                 document.getElementById('clock-in-button').style.display = '';
             }
             if (attendance.clockout_time) {
+                document.getElementById('clock-out').style.display = '';
                 document.getElementById('clock-out-time').style.display = '';
                 document.getElementById('clock-out-button').style.display = 'none';
                 document.getElementById('clock-out-time').textContent = new Date(`2024-06-04T${attendance.clockout_time}`).toLocaleTimeString('en-US', {
