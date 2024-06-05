@@ -325,7 +325,7 @@
                     scaledSize: new google.maps.Size(40, 40), // Adjust size as needed
                 };
                 const [latitude, longitude] = user.clockin_location.split(',');
-                new google.maps.Marker({
+                new google.maps.marker.AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
