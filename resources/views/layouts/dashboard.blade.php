@@ -293,6 +293,7 @@
             map: map,
             position: endLocation,
             content: endMarker,
+            anchor: new google.maps.Point(0.5, 0.1),
         });
 
         const directionsService = new google.maps.DirectionsService();
