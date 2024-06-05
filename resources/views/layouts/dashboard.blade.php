@@ -244,7 +244,7 @@
     }
 
     async function initMap() {
-        const position = { lat: 23.879132, lng: 90.502617 };
+        const projectLocation = { lat: 23.879132, lng: 90.502617 };
         const startLocation = { lat: 23.987057, lng: 90.361908 };
         const endLocation = { lat: 23.690618, lng: 90.546729 };
         const waypoints = [
@@ -255,28 +255,48 @@
             { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
             { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
         ];
+        const projectName = document.createElement("div");
+        const startMarker = document.createElement("div");
+        const endMarker = document.createElement("div");
+
+        projectName.className = "project-name";
+        projectName.textContent = "Dhaka Bypass Expressway";
+
+        startMarker.className = "start-end-marker";
+        startMarker.textContent = "KM-1";
+
+        endMarker.className = "start-end-marker";
+        endMarker.textContent = "KM-48";
 
         // Initialize the map
         map = new Map(document.getElementById("gmaps-markers"), {
             zoom: 4,
-            center: position,
+            center: projectLocation,
             mapId: "DEMO_MAP_ID",
         });
 
-        const priceTag = document.createElement("div");
 
-        priceTag.className = "project-name";
-        priceTag.textContent = "Dhaka Bypass Expressway";
 
         // Add the marker
         new AdvancedMarkerElement({
             map: map,
-            position: position,
-            content: priceTag,
+            position: projectLocation,
+            content: projectName,
+        });
+        new AdvancedMarkerElement({
+            map: map,
+            position: startLocation,
+            content: startMarker,
+        });
+        new AdvancedMarkerElement({
+            map: map,
+            position: endLocation,
+            content: endMarker,
         });
 
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
             map: map,
         });
 
@@ -322,8 +342,8 @@
                 userImage.src = "assets/images/users/" + user.user_name + ".jpg";
                 userImage.height = 30;
                 userImage.style.borderRadius = "15px";
-                userImage.style.boxShadow = "2px 2px 5px rgba(0, 0, 0, 0.2)";
-                userImage.style.border = "2px solid blue";
+                userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
+                userImage.style.border = "3px solid green";
 
                 const [latitude, longitude] = user.clockin_location.split(',');
                 new AdvancedMarkerElement({
@@ -440,28 +460,50 @@
     });
 
 </script>
-    <style>
-        .project-name {
-            background-color: #4285F4;
-            border-radius: 8px;
-            color: #FFFFFF;
-            font-size: 10px;
-            padding: 5px 10px;
-            position: relative;
-        }
+<style>
+    .project-name {
+        background-color: #4285F4;
+        border-radius: 8px;
+        color: #FFFFFF;
+        font-size: 10px;
+        padding: 5px 10px;
+        position: relative;
+    }
 
-        .project-name::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 100%;
-            transform: translate(-50%, 0);
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid #4285F4;
-        }
-    </style>
+    .project-name::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        transform: translate(-50%, 0);
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #4285F4;
+    }
+
+    .start-end-marker {
+        background-color: #8B0000;
+        border-radius: 12px;
+        color: #FFFFFF;
+        font-size: 12px;
+        padding: 5px 10px;
+        position: relative;
+    }
+
+    .start-end-marker::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        transform: translate(-50%, 0);
+        width: 0;
+        height: 0;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 12px solid #8B0000;
+    }
+</style>
 @endsection
 
