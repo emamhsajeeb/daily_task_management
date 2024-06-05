@@ -28,21 +28,20 @@
                     <div class="card card-animate">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
+                                <p class="fw-medium text-muted mb-0">Clock In/Clock Out</p>
                                 <div>
-                                    <p class="fw-medium text-50 mb-0">Clock In</p>
+                                    <p id="clock-in" class="fw-medium text-50 mb-0" style="display: none;">Clock In</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold">
                                         <span id="clock-in-time" class="counter-value" style="display: none;">08:00 AM</span>
                                     </h2>
                                     <p id="clock-in-location" class="text-50" style="display: none;"></p>
                                 </div>
                                 <div>
-                                    <p class="fw-medium text-50 mb-0">Clock Out</p>
+                                    <p id="clock-out" class="fw-medium text-50 mb-0" style="display: none;">Clock Out</p>
                                     <h2 class="mt-4 ff-secondary fw-semibold">
                                         <span id="clock-out-time" class="counter-value" style="display: none;">05:00 PM</span>
                                     </h2>
                                     <p id="clock-out-location" class="text-50" style="display: none;"></p>
-                                    <button id="clock-in-button" class="btn btn-success mt-3" style="display: none;">Clock In</button>
-                                    <button id="clock-out-button" class="btn btn-danger mt-3" style="display: none;">Clock Out</button>
                                 </div>
                                 <div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -50,6 +49,12 @@
                                         <i class=" ri-map-pin-time-line"></i>
                                     </span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button id="clock-in-button" class="btn btn-success mt-3" style="display: none;">Clock In</button>
+                                    <button id="clock-out-button" class="btn btn-danger mt-3" style="display: none;">Clock Out</button>
                                 </div>
                             </div>
                         </div>
@@ -359,6 +364,7 @@
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
             },
             success: async function (response) {
+                document.getElementById(elementId).style.display = '';
                 document.getElementById(elementId + '-time').style.display = '';
                 document.getElementById(elementId + '-time').textContent = time;
                 document.getElementById(elementId + '-location').style.display = '';
@@ -378,7 +384,7 @@
 
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
-        document.getElementById('clock-in-button').textContent = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
+        document.getElementById('clock-in-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
         Swal.fire({
             title: "Are you sure you want to clock in?",
             text: "This will record your clock in time and location.",
@@ -404,7 +410,7 @@
     });
 
     document.getElementById('clock-out-button').addEventListener('click', function() {
-        document.getElementById('clock-out-button').textContent = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
+        document.getElementById('clock-out-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
         Swal.fire({
             title: "Are you sure you want to clock out?",
             text: "This will record your clock out time and location.",
