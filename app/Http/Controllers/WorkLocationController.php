@@ -21,12 +21,23 @@ class WorkLocationController extends Controller
 
     public function allWorkLocations(Request $request)
     {
-        $workLocations = WorkLocation::all();
+        try {
+            // Attempt to retrieve all work locations
+            $workLocations = WorkLocation::all();
 
-        return response()->json([
-            'work_locations' => $workLocations
-        ]);
+            // Return a successful response with the work locations
+            return response()->json([
+                'work_locations' => $workLocations
+            ], 200); // 200 is the HTTP status code for OK
+        } catch (\Exception $e) {
+            // Catch any exceptions that occur and return an error response
+            return response()->json([
+                'error' => 'Failed to retrieve work locations',
+                'message' => $e->getMessage()
+            ], 500); // 500 is the HTTP status code for Internal Server Error
+        }
     }
+
 
     public function addWorkLocation(Request $request)
     {
