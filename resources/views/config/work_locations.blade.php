@@ -152,6 +152,7 @@
             const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
             var user = {!! json_encode($user) !!};
             var work_locations;
+            var preloader = document.getElementById('preloader');
 
 
             async function updateWorkLocationList() {
