@@ -64,7 +64,7 @@ class WorkLocationController extends Controller
 
             // Create a new NCR instance
             $workLocation = new WorkLocation();
-            $workLocation->location = $validatedData['work_location_name'];
+            $workLocation->location = $validatedData['location'];
             $workLocation->start_chainage = $validatedData['start_chainage'];
             $workLocation->end_chainage = $validatedData['end_chainage'];
             $workLocation->incharge = $validatedData['incharge'];
