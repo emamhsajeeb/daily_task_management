@@ -67,6 +67,7 @@
     @yield('objections')
 
     @yield('attendance')
+    @yield('work_locations')
 
 
 
