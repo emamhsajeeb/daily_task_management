@@ -204,9 +204,9 @@
                                     <td>${workLocation.incharge}</td>
                                     <td>
                                         <div class="hstack gap-3 flex-wrap">
-                                            <button type="button" obj-id="${obj.id}" class="btn btn-sm btn-light obj-details-btn">Details</button>
-                                            <a href="javascript:void(0);" onclick="editObjection(${obj.id})" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
-                                            <a href="javascript:void(0);" onclick="deleteObjection(${obj.id})" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
+
+                                            <a href="javascript:void(0);" onclick="editWorkLocation(${workLocation.id})" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
+                                            <a href="javascript:void(0);" onclick="deleteWorkLocation(${workLocation.id})" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
                                         </div>
                                     </td>
                                 </tr>
