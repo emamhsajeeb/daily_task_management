@@ -100,7 +100,7 @@
                 @endrole
                 @role('se')
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarQCReports" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <a class="nav-link menu-link" href="#sidebarQCReports" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarQCReports">
                         <i class="ri-survey-line"></i><span data-key="t-tasks">QC Reports</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarQCReports">
@@ -119,13 +119,27 @@
                 @endrole
                 @role('admin')
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarPayroll" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <a class="nav-link menu-link" href="#sidebarPayroll" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPayroll">
                         <i class="lab la-amazon-pay"></i><span data-key="t-tasks">Payroll</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarPayroll">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('showAttendance') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Attendance </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @endrole
+                @role('admin')
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarSettings" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSettings">
+                        <i class="lab la-amazon-pay"></i><span data-key="t-tasks">Settings</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarSettings">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('showWorkLocations') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Work Locations </a>
                             </li>
                         </ul>
                     </div>

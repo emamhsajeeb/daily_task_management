@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DailySummaryController;
 use App\Http\Controllers\MyBotController;
 use App\Http\Controllers\NCRController;
+use App\Http\Controllers\WorkLocationController;
 use App\Http\Controllers\ObjectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
@@ -76,6 +77,12 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('showAttendance');
     Route::get('/attendance-json', [AttendanceController::class, 'allAttendance'])->name('allAttendance');
     Route::post('/attendance-update', [AttendanceController::class, 'updateAttendance'])->name('updateAttendance');
+
+    Route::get('/work-location', [WorkLocationController::class, 'showWorkLocations'])->name('showWorkLocations');
+    Route::get('/work-location-json', [WorkLocationController::class, 'allWorkLocations'])->name('allWorkLocations');
+    Route::post('/work-locations/add', [WorkLocationController::class, 'addWorkLocation'])->name('addWorkLocation');
+    Route::post('/work-locations/delete', [WorkLocationController::class, 'deleteWorkLocation'])->name('deleteWorkLocation');
+    Route::post('/work-locations/update', [WorkLocationController::class, 'updateWorkLocation'])->name('updateWorkLocation');
 
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('editProfile');
