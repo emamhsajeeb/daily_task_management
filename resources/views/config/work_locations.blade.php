@@ -113,40 +113,6 @@
     </div>
     <!--end modal-->
 
-    <div class="modal modal-lg zoomIn" id="workLocationDetailsModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="workLocationNumber"></h5><h5 class="modal-title" id="workLocationDate"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div  class="modal-body">
-                    <h6 id="workLocationDate" class="fs-15">Details:</h6>
-                    <div class="d-flex mt-2">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2 ">
-                            <p id="workLocationDetails" class="text-muted mb-0"></p>
-                        </div>
-                    </div>
-                    <h6 id="workLocationDate" class="fs-15">Chainages:</h6>
-                    <div class="d-flex mt-2">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2 ">
-                            <p id="workLocationChainages" class="text-muted mb-0"></p>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
 
         <script>
             const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
