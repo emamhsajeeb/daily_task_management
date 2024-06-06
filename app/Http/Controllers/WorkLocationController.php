@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NCR;
 use App\Models\Tasks;
+use App\Models\User;
 use App\Models\WorkLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +15,10 @@ class WorkLocationController extends Controller
 {
     public function showWorkLocations()
     {
+        $incharges = User::role('se')->get();
         $user = Auth::user();
         $title = "Work Locations";
-        return view('config/work_locations', compact( 'user','title'));
+        return view('config/work_locations', compact( 'user','title','incharges'));
     }
 
     public function allWorkLocations(Request $request)

@@ -90,11 +90,13 @@
                             </div>
                             <!--end col-->
                             <div class="col-lg-6">
-                                <label for="incharge" class="form-label">WorkLocation Type</label>
+                                <label for="incharge" class="form-label">Incharge</label>
                                 <select name="incharge" class="form-control" id="incharge" required>
-                                    <option selected value="Structure">Structure</option>
-                                    <option value="Embankment">Embankment</option>
-                                    <option value="Pavement">Pavement</option>
+                                    @foreach($incharges as $index => $incharge)
+                                        <option value="{{ $incharge->user_name }}" @if($index === 0) selected @endif>
+                                            {{ $incharge->first_name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <!--end col-->
