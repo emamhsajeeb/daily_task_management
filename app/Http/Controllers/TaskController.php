@@ -11,6 +11,7 @@ use App\Models\NCR;
 use App\Models\Objection;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming team authentication)
+use App\Models\WorkLocation;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not found models
@@ -127,20 +128,11 @@ class TaskController extends Controller
 
             $k = intval(substr($validatedData['location'], 1)); // Extracting the numeric part after 'K'
 
-            switch (true) {
-                case ($k > -1 && $k <= 12):
-                    $inchargeName = 'habibur';
-                    break;
-                case ($k >= 13 && $k <= 21):
-                    $inchargeName = 'prodip';
-                    break;
-                case ($k >= 22 && $k <= 33):
-                    $inchargeName = 'debashis';
-                    break;
-                case ($k >= 34 && $k <= 48):
-                    $inchargeName = 'rabbi';
-                    break;
-            }
+            $workLocation = WorkLocation::where('start_chainage', '<=', $k)
+                ->where('end_chainage', '>=', $k)
+                ->first();
+
+            $inchargeName = $workLocation->incharge;
 
             // Create a new Task instance
             $task = new Tasks();
@@ -331,23 +323,14 @@ class TaskController extends Controller
             $inchargeSummary = [];
 
             foreach ($importedTasks as $importedTask) {
-                $inchargeName = '';
+
                 $k = intval(substr($importedTask[4], 1)); // Extracting the numeric part after 'K'
 
-                switch (true) {
-                    case ($k > -1 && $k <= 12):
-                        $inchargeName = 'habibur';
-                        break;
-                    case ($k >= 13 && $k <= 21):
-                        $inchargeName = 'prodip';
-                        break;
-                    case ($k >= 22 && $k <= 33):
-                        $inchargeName = 'debashis';
-                        break;
-                    case ($k >= 34 && $k <= 48):
-                        $inchargeName = 'rabbi';
-                        break;
-                }
+                $workLocation = WorkLocation::where('start_chainage', '<=', $k)
+                    ->where('end_chainage', '>=', $k)
+                    ->first();
+
+                $inchargeName = $workLocation->incharge;
 
                 // Initialize incharge summary if not exists
                 if (!isset($inchargeSummary[$inchargeName])) {
