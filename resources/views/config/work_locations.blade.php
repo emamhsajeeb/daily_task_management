@@ -75,8 +75,8 @@
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-lg-6">
-                                <label for="work_location_name" class="form-label">Location Name</label>
-                                <input type="text" name="work_location_name" id="work_location_no" class="form-control" placeholder="Enter Work Location Name..." required />
+                                <label for="location" class="form-label">Location Name</label>
+                                <input type="text" name="location" id="location" class="form-control" placeholder="Enter Work Location Name..." required />
                             </div>
                             <!--end col-->
                             <div class="col-lg-6">

@@ -47,12 +47,12 @@ class WorkLocationController extends Controller
         try {
             // Validate incoming request data
             $validatedData = $request->validate([
-                'work_location_name' => 'required|string|unique:work_locations',
+                'location' => 'required|string|unique:work_locations',
                 'start_chainage' => 'required|string|unique:work_locations',
                 'end_chainage' => 'required|string|unique:work_locations',
                 'incharge' => 'required|string|unique:work_locations',
             ],[
-                'work_location_name.required' => 'Work location name is required.',
+                'location.required' => 'Work location name is required.',
                 'start_chainage.unique' => 'A work location with same start chainage is already exists.',
                 'start_chainage.required' => 'Start Chainage is required.',
                 'end_chainage.unique' => 'A work location with same start chainage is already exists.',
