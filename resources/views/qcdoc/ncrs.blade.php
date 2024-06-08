@@ -124,6 +124,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
+                            <div><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -204,7 +205,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
-                            <div><img src="" class="img-fluid img-thumbnail rounded-circle" style="max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/></div>
+                            <div ><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto; display: none;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -253,7 +254,7 @@
                 <h6 id="ncrDate" class="fs-15">Image:</h6>
                 <div class="d-flex mt-2">
                     <div class="flex-grow-1 ms-2 ">
-                        <img src="" class="img-fluid img-thumbnail rounded-circle" style="max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/>
+                        <img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/>
                     </div>
                 </div>
             <div class="modal-footer">
@@ -585,6 +586,17 @@ $( document ).ready(async function () {
 
     $("#showAddModalBtn").click(function () {
         $("#showAddModal").modal('show');
+        $('#addNcrForm #image').change(function(event) {
+            const image = event.target.files[0];
+            if (image) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#addNcrForm #ncrImage').attr('src', e.target.result);
+                    $('#addNcrForm #ncrImage').style.display = '';
+                };
+                reader.readAsDataURL(image);
+            }
+        });
     });
 
     $('#addNcr').click(async function (e) {
