@@ -20,7 +20,10 @@ class NCRController extends Controller
 
     public function allNCRs(Request $request)
     {
-        $ncrs = NCR::all();
+        $ncrs = NCR::all()->map(function ($ncr) {
+            $ncr->image = $ncr->getFirstMediaUrl('ncr_images', 'thumb'); // Replace 'thumb' with conversion name (optional)
+            return $ncr;
+        });
 
         return response()->json([
             'ncrs' => $ncrs
