@@ -227,7 +227,8 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ncrNumber"></h5><h5 class="modal-title text-end" id="ncrDate"></h5>
+                <h1> <a href="">align me right</a></h1>
+                <h5 class="modal-title" ><span style="text-align: left;" id="ncrNumber"></span><span style="text-align: right;" id="ncrDate"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
