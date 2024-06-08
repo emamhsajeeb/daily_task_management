@@ -40,6 +40,7 @@ class NCRController extends Controller
                 'chainages' => 'required|string',
                 'details' => 'required|string',
                 'status' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ],[
                 'ncr_no.required' => 'NCR No. is required.',
                 'ncr_no.numeric' => 'NCR No. must be a number.',
@@ -51,6 +52,10 @@ class NCRController extends Controller
                 'chainages.required' => 'Chainages are required.',
                 'details.required' => 'Details is required.',
                 'status.required' => 'Status is required.',
+                'image.required' => 'NCR Image is required.',
+                'image.image' => 'The uploaded file must be an image.',
+                'image.mimes' => 'The uploaded image must be a jpeg, png, jpg, or gif file.',
+                'image.max' => 'The image size must be less than 2048 KB.',
             ]);
 
 
@@ -60,12 +65,16 @@ class NCRController extends Controller
             $ncr->ref_no = $validatedData['ref_no'];
             $ncr->ncr_type = $validatedData['ncr_type'];
             $ncr->issue_date = $validatedData['issue_date'];
-//            $chainages = explode(' ', str_replace(',', ' ', $validatedData['chainages']));
-//            $ncr->chainages = implode(', ', array_filter($chainages));
             $ncr->chainages = $validatedData['chainages'];
             $ncr->details = $validatedData['details'];
             $ncr->status = $validatedData['status'];
             $ncr->remarks = $request->input('remarks');
+
+            // Upload and save the image using Spatie Media Library
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $ncr->addMedia($image)->toMediaCollection('ncr_images'); // Customize collection name
+            }
 
             // Save the NCR to the database
             $ncr->save();

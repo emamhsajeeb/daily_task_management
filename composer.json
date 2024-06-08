@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "ext-pdo": "*",
         "botman/botman": "*",
         "guzzlehttp/guzzle": "^7.2",
         "kreait/firebase-php": "^5.26",
@@ -16,8 +17,9 @@
         "maatwebsite/excel": "^3.1.48",
         "phpoffice/phpspreadsheet": "^1.18.0",
         "pusher/pusher-php-server": "^7.2",
-        "spatie/laravel-permission": "^6.4",
-      "ext-pdo": "*"
+        "spatie/image": "^3.6",
+        "spatie/laravel-medialibrary": "^11.5",
+        "spatie/laravel-permission": "^6.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

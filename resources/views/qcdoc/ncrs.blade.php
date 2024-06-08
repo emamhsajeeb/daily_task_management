@@ -70,7 +70,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Add NCR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
-            <form class="tablelist-form" autocomplete="off" id="addNcrForm">
+            <form class="tablelist-form" autocomplete="off" id="addNcrForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="row g-3">
@@ -123,7 +123,7 @@
                         </div>
                         <!--end col-->
                         <div class="col-lg-12">
-                            <label for="remarks" class="form-label">NCR Image</label>
+                            <label for="image" class="form-label">NCR Image</label>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -181,11 +181,6 @@
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 var ncrs;
-
-new window.Dropzone("#addNcrForm", {
-    maxFilesize: 2, // MB
-    acceptedFiles: ".jpeg,.jpg,.png,.gif"
-});
 
 
 async function updateNCRList() {

@@ -162,6 +162,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         BotMan\BotMan\BotManServiceProvider::class,
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
 
 
