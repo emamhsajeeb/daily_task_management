@@ -373,6 +373,10 @@ async function addNCR() {
             const ncrs = response.ncrs;
 
             await updateNCRList(ncrs);
+            // Once filtering is done, restore the button
+            $('#addNcr').html('Add NCR');
+            $('#addNcr').prop('disabled', false);
+            $('#showAddModal').modal('hide');
 
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -409,10 +413,7 @@ async function addNCR() {
             }
         }
     });
-    // Once filtering is done, restore the button
-    $('#addNcr').html('Add NCR');
-    $('#addNcr').prop('disabled', false);
-    $('#showAddModal').modal('hide');
+
 }
 
 async function editNCR(ncrId) {
@@ -474,6 +475,10 @@ async function updateNCR() {
             const ncrs = response.ncrs;
 
             await updateNCRList(ncrs);
+            // Once filtering is done, restore the button
+            $('#updateNcr').html('Update NCR');
+            $('#updateNcr').prop('disabled', false);
+            $('#editNcrModal').modal('hide');
 
             preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
@@ -510,10 +515,6 @@ async function updateNCR() {
             }
         }
     });
-    // Once filtering is done, restore the button
-    $('#updateNcr').html('Update NCR');
-    $('#updateNcr').prop('disabled', false);
-    $('#editNcrModal').modal('hide');
 }
 
 async function editNCRRemarks(element) {
