@@ -386,7 +386,7 @@ async function ncrDetails(ncr) {
     // Apply inline CSS
     $('#ncrDetailsModal').find('#ncrDetails').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.details + '</pre>');
     $('#ncrDetailsModal').find('#ncrChainages').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.chainages + '</pre>');
-    $('#ncrDetailsModal').find('#ncrImage').attr('src', ncr.getFirstMediaUrl('ncr_images', 'thumb'));
+    $('#ncrDetailsModal').find('#ncrImage').attr('src', ncr.image);
 
     $("#ncrDetailsModal").modal('show');
 }
