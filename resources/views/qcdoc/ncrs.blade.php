@@ -457,7 +457,7 @@ async function updateNCR() {
 
     // AJAX request
     $.ajax({
-        url: '{{ route('updateNcr') }}',
+        url: '{{ route('updateNCR') }}',
         type: 'POST',
         data: formData,
         processData: false,
