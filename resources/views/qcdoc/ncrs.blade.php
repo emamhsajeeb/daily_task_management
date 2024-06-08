@@ -414,20 +414,25 @@ async function addNCR() {
 }
 
 async function editNCR(ncrId) {
-    // Fetch NCR details based on ID
-    const ncr = ncrs.ncrId;
-
+    // Find NCR data by ID (assuming ncrs is an array of NCR objects)
+    const ncr = ncrs.find(item => item.id === ncrId);
     // Populate form fields with fetched data
     $('#editNcrForm #ncr_no').val(ncr.ncr_no);
     $('#editNcrForm #ref_no').val(ncr.ref_no);
     $('#editNcrForm #ncr_type').val(ncr.ncr_type);
     $('#editNcrForm #status').val(ncr.status);
-    $('#editNcrForm #issue_date').val(ncr.ncr_no);
+    $('#editNcrForm #issue_date').val(ncr.issue_date); // Assuming issue_date exists
     $('#editNcrForm #chainages').val(ncr.chainages);
     $('#editNcrForm #details').val(ncr.details);
     $('#editNcrForm #remarks').val(ncr.remarks);
-    $('#editNcrForm #image').attr('src', ncr.image);
-    // ... fill other form fields with corresponding data from ncrData
+
+    // Handle image if available (assuming image is a URL or stored path)
+    if (ncr.image) {
+        $('#editNcrForm #image').attr('src', ncr.image);
+    } else {
+        // Optional: Set a default image or handle the case where no image exists
+    }
+
     $('#editNcrId').val(ncr.id); // Set the hidden NCR ID field
     // Show the edit modal
     $('#editNcrModal').modal('show');
