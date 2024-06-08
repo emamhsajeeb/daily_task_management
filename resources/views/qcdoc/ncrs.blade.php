@@ -210,7 +210,6 @@ async function updateNCRList() {
         dataType: 'json',
         success: async function (response) {
             ncrs = response.ncrs;
-            console.log(ncrs);
 
             // Initialize an empty string to store the HTML for rows
             var rowsHTML = '';
@@ -412,9 +411,7 @@ $( document ).ready(async function () {
 
     $(document).on('click', '.ncr-details-btn', async function () {
         const ncrId = parseInt($(this).attr('ncr-id'));
-        console.log("ncr-id attribute value:", ncrId); // Debugging
         const ncr = ncrs.find(item => item.id === ncrId);
-        console.log("ncr found:", ncr); // Debugging
         await ncrDetails(ncr);
     });
 
