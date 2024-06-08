@@ -592,7 +592,7 @@ $( document ).ready(async function () {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     $('#addNcrForm #ncrImage').attr('src', e.target.result);
-                    $('#addNcrForm #ncrImage').style.display = '';
+                    $('#addNcrForm #ncrImage').css('display','');
                 };
                 reader.readAsDataURL(image);
             }
