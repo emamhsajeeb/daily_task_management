@@ -142,6 +142,86 @@
 </div>
 <!--end modal-->
 
+<div class="modal fade zoomIn" id="editNcrModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-info-subtle">
+                <h5 class="modal-title" id="exampleModalLabel">Add NCR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+            </div>
+            <form class="tablelist-form" autocomplete="off" id="editNcrForm" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <input type="hidden" name="id" id="editNcrId">
+                        <div class="col-lg-6">
+                            <label for="ncr_no" class="form-label">NCR Number</label>
+                            <input type="text" name="ncr_no" id="ncr_no" class="form-control" placeholder="Enter NCR Number..." required />
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-6">
+                            <label for="ref_no" class="form-label">Reference Number</label>
+                            <input type="text" name="ref_no" id="ref_no" class="form-control" placeholder="Enter Reference Number..." required />
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-6">
+                            <label for="ncr_type" class="form-label">NCR Type</label>
+                            <select name="ncr_type" class="form-control" id="ncr_type" required>
+                                <option selected value="Structure">Structure</option>
+                                <option value="Embankment">Embankment</option>
+                                <option value="Pavement">Pavement</option>
+                            </select>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-6">
+                            <label for="ncrStatus" class="form-label">Status</label>
+                            <select name="status" class="form-control" id="ncrStatus" required>
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Partially Closed">Partially Closed</option>
+                            </select>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-6">
+                            <label for="issue_date" class="form-label">Issue Date</label>
+                            <input type="date" name="issue_date" id="issue_date" class="form-control" required />
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-12">
+                            <label for="chainages" class="form-label">Chainages</label>
+                            <textarea class="form-control" name="chainages" id="chainages" rows="4" placeholder="Enter Chainages..."></textarea>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-12">
+                            <label for="details" class="form-label">Details</label>
+                            <textarea class="form-control" name="details" id="details" rows="4" placeholder="Enter details..."></textarea>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-12">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <input type="text" name="remarks" id="remarks" class="form-control" placeholder="Enter Remarks..." />
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-12">
+                            <label for="image" class="form-label">NCR Image</label>
+                            <input type="file" name="image" id="image" class="form-control" />
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" id="close-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" id="updateNcr">Update NCR</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
 <div class="modal modal-lg zoomIn" id="ncrDetailsModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -331,6 +411,47 @@ async function addNCR() {
     // Once filtering is done, restore the button
     $('#addNcr').html('Add NCR');
     $('#addNcr').prop('disabled', false);
+}
+
+async function editNCR(ncrId) {
+    // Fetch NCR details based on ID
+    const ncr = ncrs.ncrId;
+
+    // Populate form fields with fetched data
+    $('#editNcrForm #ncr_no').val(ncr.ncr_no);
+    $('#editNcrForm #ref_no').val(ncr.ref_no);
+    $('#editNcrForm #ncr_type').val(ncr.ncr_type);
+    $('#editNcrForm #status').val(ncr.status);
+    $('#editNcrForm #issue_date').val(ncr.ncr_no);
+    $('#editNcrForm #chainages').val(ncr.chainages);
+    $('#editNcrForm #details').val(ncr.details);
+    $('#editNcrForm #remarks').val(ncr.remarks);
+    $('#editNcrForm #image').attr('src', ncr.image);
+    // ... fill other form fields with corresponding data from ncrData
+    $('#editNcrId').val(ncr.id); // Set the hidden NCR ID field
+    // Show the edit modal
+    $('#editNcrModal').modal('show');
+}
+
+// Update function (assuming you have a separate updateNCR function)
+async function updateNCR() {
+    // Get form data with updated values
+    var formData = new FormData(document.getElementById('editNcrForm'));
+
+    // Update request with NCR ID and data
+    $.ajax({
+        url: `/api/ncrs/${$('#editNcrId').val()}`, // Update URL with retrieved NCR ID
+        type: 'PUT', // Update request type for editing
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: async function (response) {
+            // Handle success similar to addNCR
+        },
+        error: function(xhr, status) {
+            // Handle errors similar to addNCR
+        }
+    });
 }
 
 async function editNCRRemarks(element) {
