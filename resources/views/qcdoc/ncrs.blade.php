@@ -204,6 +204,7 @@ async function updateNCRList() {
         dataType: 'json',
         success: async function (response) {
             ncrs = response.ncrs;
+            console.log(ncrs);
 
             // Initialize an empty string to store the HTML for rows
             var rowsHTML = '';
