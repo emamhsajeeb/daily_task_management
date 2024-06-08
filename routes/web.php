@@ -109,8 +109,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/ncrs', [NCRController::class, 'showNCRs'])->name('showNCRs');
     Route::get('/ncrs-json', [NCRController::class, 'allNCRs'])->name('allNCRs');
     Route::post('/ncrs/add', [NCRController::class, 'addNCR'])->name('addNCR');
-    Route::post('/ncrs/delete', [ObjectionController::class, 'deleteNCR'])->name('deleteNCR');
-    Route::post('/ncrs/update', [ObjectionController::class, 'updateNCR'])->name('updateNCR');
+    Route::post('/ncrs/delete', [NCRController::class, 'deleteNCR'])->name('deleteNCR');
+    Route::post('/ncrs/update', [NCRController::class, 'updateNCR'])->name('updateNCR');
 
     Route::get('/objections', [ObjectionController::class, 'showObjections'])->name('showObjections');
     Route::get('/objections-json', [ObjectionController::class, 'allObjections'])->name('allObjections');

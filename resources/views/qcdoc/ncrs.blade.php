@@ -452,23 +452,66 @@ async function editNCR(ncrId) {
 
 // Update function (assuming you have a separate updateNCR function)
 async function updateNCR() {
-    // Get form data with updated values
-    var formData = new FormData(document.getElementById('editNcrForm'));
+    // Get form data
+    var formData = new FormData(document.getElementById('addNcrForm'));
 
-    // Update request with NCR ID and data
+    // AJAX request
     $.ajax({
-        url: `/api/ncrs/${$('#editNcrId').val()}`, // Update URL with retrieved NCR ID
-        type: 'PUT', // Update request type for editing
+        url: '{{ route('updateNcr') }}',
+        type: 'POST',
         data: formData,
         processData: false,
         contentType: false,
         success: async function (response) {
-            // Handle success similar to addNCR
+            var preloader = document.getElementById('preloader');
+            toastr.success(response.message);
+            $("#showAddModal").modal('hide');
+
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
+            console.log(response.ncrs);
+            const ncrs = response.ncrs;
+
+            await updateNCRList(ncrs);
+
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
+
         },
         error: function(xhr, status) {
-            // Handle errors similar to addNCR
+            console.log(xhr.responseText)
+            // Handle error
+            var errorData = JSON.parse(xhr.responseText).error;
+            var delay = 300;
+            for (var error in errorData) {
+                (function(error) { // Closure to capture the current value of 'error'
+                    setTimeout(function() {
+                        toastr.error(errorData[error], {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        });
+                    }, delay);
+                })(error); // Pass the current value of 'error' to the closure
+                delay += 300;
+            }
         }
     });
+    // Once filtering is done, restore the button
+    $('#updateNcr').html('Update NCR');
+    $('#updateNcr').prop('disabled', false);
 }
 
 async function editNCRRemarks(element) {
