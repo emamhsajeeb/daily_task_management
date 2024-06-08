@@ -28,7 +28,8 @@
 <!-- prismjs plugin -->
 <script src="{{ asset('assets/libs/prismjs/prism.js') }}"></script>
 <!--datatable js-->
-
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>

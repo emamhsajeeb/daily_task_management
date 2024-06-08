@@ -177,6 +177,11 @@ const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 var user = {!! json_encode($user) !!};
 var ncrs;
 
+window.Dropzone.options.addNcrForm = {
+    maxFilesize: 2, // MB
+    acceptedFiles: ".jpeg,.jpg,.png,.gif"
+};
+
 
 async function updateNCRList() {
     var header = `
