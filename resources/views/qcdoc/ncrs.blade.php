@@ -122,6 +122,11 @@
                             <input type="text" name="remarks" id="remarks" class="form-control" placeholder="Enter Remarks..." />
                         </div>
                         <!--end col-->
+                        <div class="col-lg-12">
+                            <label for="remarks" class="form-label">NCR Image</label>
+                            <input type="file" name="image" id="image" class="form-control" />
+                        </div>
+                        <!--end col-->
                     </div>
                     <!--end row-->
                 </div>
