@@ -431,7 +431,7 @@ async function editNCR(ncrId) {
     if (ncr.image) {
         $('#editNcrForm #ncrImage').attr('src', ncr.image);
     } else {
-        // Optional: Set a default image or handle the case where no image exists
+        $('#editNcrForm #ncrImage').attr('src', '');
     }
     $('#editNcrForm #image').change(function(event) {
         const image = event.target.files[0];
