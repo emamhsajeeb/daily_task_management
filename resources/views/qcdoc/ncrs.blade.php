@@ -146,7 +146,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-info-subtle">
-                <h5 class="modal-title" id="exampleModalLabel">Add NCR</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit NCR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
             </div>
             <form class="tablelist-form" autocomplete="off" id="editNcrForm" enctype="multipart/form-data">
@@ -563,6 +563,7 @@ async function updateNCRStatus(taskId, status) {
 async function ncrDetails(ncr) {
     // Update modal body with NCR details
     $('#ncrDetailsModal').find('#ncrNumber').text(ncr.ncr_no);
+    $('#ncrDetailsModal').find('#ncrDate').text(ncr.issue_date);
     // Apply inline CSS
     $('#ncrDetailsModal').find('#ncrDetails').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.details + '</pre>');
     $('#ncrDetailsModal').find('#ncrChainages').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.chainages + '</pre>');
