@@ -440,6 +440,7 @@ async function editNCR(ncrId) {
             reader.onload = function(e) {
                 $('#editNcrForm #ncrImage').attr('src', e.target.result);
             };
+            reader.readAsDataURL(image);
         }
     });
 
