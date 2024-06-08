@@ -204,6 +204,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
+                            <img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -428,10 +429,14 @@ async function editNCR(ncrId) {
 
     // Handle image if available (assuming image is a URL or stored path)
     if (ncr.image) {
-        $('#editNcrForm #image').attr('src', ncr.image);
+        $('#editNcrForm #ncrImage').attr('src', ncr.image);
     } else {
         // Optional: Set a default image or handle the case where no image exists
     }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        $('#editNcrForm #ncrImage').attr('src', e.target.result);
+    };
 
     $('#editNcrId').val(ncr.id); // Set the hidden NCR ID field
     // Show the edit modal
