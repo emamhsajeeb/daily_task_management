@@ -453,7 +453,7 @@ async function editNCR(ncrId) {
 // Update function (assuming you have a separate updateNCR function)
 async function updateNCR() {
     // Get form data
-    var formData = new FormData(document.getElementById('addNcrForm'));
+    var formData = new FormData(document.getElementById('editNcrForm'));
 
     // AJAX request
     $.ajax({
@@ -588,6 +588,13 @@ $( document ).ready(async function () {
         $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...');
         $(this).prop('disabled', true);
         await addNCR();
+    });
+
+    $('#updateNcr').click(async function (e) {
+        e.preventDefault();
+        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...');
+        $(this).prop('disabled', true);
+        await updateNCR();
     });
 
     $(document).on('click', '.ncr-details-btn', async function () {
