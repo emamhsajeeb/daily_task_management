@@ -204,7 +204,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
-                            <div><img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/></div>
+                            <div><img src="" class="img-fluid img-thumbnail rounded-circle" style="max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -227,7 +227,6 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1> <a href="">align me right</a></h1>
                 <h5 class="modal-title" ><span style="text-align: left;" id="ncrNumber"></span><span style="text-align: right;" id="ncrDate"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </button>
@@ -254,7 +253,7 @@
                 <h6 id="ncrDate" class="fs-15">Image:</h6>
                 <div class="d-flex mt-2">
                     <div class="flex-grow-1 ms-2 ">
-                        <img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/>
+                        <img src="" class="img-fluid img-thumbnail rounded-circle" style="max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/>
                     </div>
                 </div>
             <div class="modal-footer">
