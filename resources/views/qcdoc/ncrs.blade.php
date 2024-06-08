@@ -124,7 +124,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
-                            <div><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/></div>
+                            <div><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto; display: none;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
@@ -205,7 +205,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
-                            <div ><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto; display: none;" id="ncrImage" alt="NCR Image"/></div>
+                            <div ><img src="" class="img-fluid img-thumbnail rounded" style="border-radius: 20px !important; max-width: 100%; height: auto;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
