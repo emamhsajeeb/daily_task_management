@@ -172,7 +172,7 @@
                 <h6 id="ncrDate" class="fs-15">Image:</h6>
                 <div class="d-flex mt-2">
                     <div class="flex-grow-1 ms-2 ">
-                        <img src="" id="ncrImage" alt="NCR Image"/>
+                        <img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/>
                     </div>
                 </div>
             <div class="modal-footer">
