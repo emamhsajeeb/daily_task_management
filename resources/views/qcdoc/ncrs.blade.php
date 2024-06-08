@@ -169,6 +169,12 @@
                         <p id="ncrChainages" class="text-muted mb-0"></p>
                     </div>
                 </div>
+                <h6 id="ncrDate" class="fs-15">Image:</h6>
+                <div class="d-flex mt-2">
+                    <div class="flex-grow-1 ms-2 ">
+                        <img src="" id="ncrImage" alt="NCR Image"/>
+                    </div>
+                </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
@@ -380,6 +386,8 @@ async function ncrDetails(ncr) {
     // Apply inline CSS
     $('#ncrDetailsModal').find('#ncrDetails').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.details + '</pre>');
     $('#ncrDetailsModal').find('#ncrChainages').html('<pre style="font-family: Arial, sans-serif; font-size: 14px; color: #333; text-wrap: wrap;">' + ncr.chainages + '</pre>');
+    $('#ncrDetailsModal').find('#ncrImage').attr('src', ncr.getFirstMediaUrl('ncr_images', 'thumb'));
+
     $("#ncrDetailsModal").modal('show');
 }
 
