@@ -71,9 +71,10 @@ class NCRController extends Controller
             $ncr->remarks = $request->input('remarks');
 
             // Upload and save the image using Spatie Media Library
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $ncr->addMedia($image)->toMediaCollection('ncr_images'); // Customize collection name
+            if($request->hasFile('image') && $request->file('image')->isValid())
+            {
+//                $image = $request->file();
+                $ncr->addMediaFromRequest('image')->toMediaCollection('ncr_images'); // Customize collection name
             }
 
             // Save the NCR to the database
