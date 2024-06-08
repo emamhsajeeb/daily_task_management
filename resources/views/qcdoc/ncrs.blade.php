@@ -412,6 +412,7 @@ async function addNCR() {
     // Once filtering is done, restore the button
     $('#addNcr').html('Add NCR');
     $('#addNcr').prop('disabled', false);
+    $('#showAddModal').modal('hide');
 }
 
 async function editNCR(ncrId) {
@@ -512,6 +513,7 @@ async function updateNCR() {
     // Once filtering is done, restore the button
     $('#updateNcr').html('Update NCR');
     $('#updateNcr').prop('disabled', false);
+    $('#editNcrModal').modal('hide');
 }
 
 async function editNCRRemarks(element) {
