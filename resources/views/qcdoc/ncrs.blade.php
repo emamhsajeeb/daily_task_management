@@ -433,10 +433,16 @@ async function editNCR(ncrId) {
     } else {
         // Optional: Set a default image or handle the case where no image exists
     }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        $('#editNcrForm #ncrImage').attr('src', e.target.result);
-    };
+    $('#editNcrForm #image').change(function(event) {
+        const image = event.target.files[0];
+        if (image) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#editNcrForm #ncrImage').attr('src', e.target.result);
+            };
+        }
+    });
+
 
     $('#editNcrId').val(ncr.id); // Set the hidden NCR ID field
     // Show the edit modal
