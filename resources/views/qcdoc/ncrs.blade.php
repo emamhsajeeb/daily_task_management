@@ -204,7 +204,7 @@
                         <!--end col-->
                         <div class="col-lg-12">
                             <label for="image" class="form-label">NCR Image</label>
-                            <img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/>
+                            <div><img src="" style="max-width: 100%;" id="ncrImage" alt="NCR Image"/></div>
                             <input type="file" name="image" id="image" class="form-control" />
                         </div>
                         <!--end col-->
