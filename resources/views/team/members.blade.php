@@ -270,6 +270,7 @@ async function loadTeamData() {
         dataType: 'json',
         success: function(response) {
             let users = response.users;
+            let incharges = response.incharges;
             let roles = response.roles;
             let teamMemberList = $('#team-member-list');
 
@@ -277,6 +278,7 @@ async function loadTeamData() {
 
             users.forEach(function(user) {
                 let roleOptions = '<option disabled selected>Select role</option>';
+                let inchargeOptions = '<option disabled selected>Select Incharge</option>';
 
                 roles.forEach(role => {
                     roleOptions += `<option data-role="${role}" ${user.role === role ? 'selected' : ''}>
@@ -288,6 +290,10 @@ async function loadTeamData() {
                                         role === 'aqci' ? 'Assistant QCI' :
                                             ''}
                                 </option>`;
+                });
+
+                incharges.forEach(incharge => {
+                    inchargeOptions += `<option data-incharge="${incharge.user_name}" ${user.incharge === incharge.user_name ? 'selected' : ''}>${incharge.first_name}</option>`;
                 });
 
                 let memberImage = user.userImg ? `<img src="${user.userImg}" alt="" class="member-img img-fluid d-block rounded-circle" />` :
@@ -332,8 +338,19 @@ async function loadTeamData() {
                                     <div class="row text-muted text-center">
                                         ${admin ? `
                                         <div class="col-12">
-                                            <select class="form-select rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
+                                            <select class="form-select user-role rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
                                                 ${roleOptions}
+                                            </select>
+                                        </div>
+                                          ` : ''}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col">
+                                    <div class="row text-muted text-center">
+                                        ${admin ? `
+                                        <div class="col-12">
+                                            <select class="form-select user-incharge rounded-pill mb-3" aria-label="Default select example" data-user-id="${user.id}">
+                                                ${inchargeOptions}
                                             </select>
                                         </div>
                                           ` : ''}
@@ -575,6 +592,20 @@ async function updateUserRole(userId, selectedRole) {
     });
 }
 
+async function updateUserIncharge(userId, selectedIncharge) {
+    $.ajax({
+        url: '{{ route('updateUserIncharge') }}',
+        method: 'POST',
+        data: { userId: userId, selectedIncharge: selectedIncharge },
+        success: function(response) {
+            toastr.success(response.message);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating user incharge:', xhr.responseText);
+        }
+    });
+}
+
 $(document).ready(async function () {
     $.ajaxSetup({
         headers: {
@@ -583,10 +614,16 @@ $(document).ready(async function () {
     });
     await loadTeamData();
 
-    $(document).on('change', '.form-select', async function () {
+    $(document).on('change', '.user-role', async function () {
         var selectedRole = $(this).find(':selected').data('role'); // Get the selected role
         var userId = $(this).data('user-id'); // Get the user id from data attribute
         await updateUserRole(userId, selectedRole);
+    });
+
+    $(document).on('change', '.user-incharge', async function () {
+        var selectedIncharge = $(this).find(':selected').data('incharge'); // Get the selected role
+        var userId = $(this).data('user-id'); // Get the user id from data attribute
+        await updateUserIncharge(userId, selectedIncharge);
     });
 
     $("#addEditModal").click(function () {

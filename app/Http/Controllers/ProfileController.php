@@ -35,6 +35,7 @@ class ProfileController extends Controller
         $users = User::with('roles')->get();
 
         $roles = Role::pluck('name');
+        $incharges = User::role('se')->get();
 
         $users->transform(function ($user) {
             $tasksCount = Tasks::where('incharge', $user->user_name)->count();
@@ -58,6 +59,7 @@ class ProfileController extends Controller
                 'firstName' => $user->first_name,
                 'lastName' => $user->last_name,
                 'position' => $user->position,
+                'incharge' => $user->incharge,
                 'userImg' => $userImg,
                 'coverImg' => $coverImg,
                 'tasksCount' => $tasksCount,
@@ -66,7 +68,7 @@ class ProfileController extends Controller
             ];
         });
 
-        return response()->json(['users' => $users, 'roles' => $roles]);
+        return response()->json(['users' => $users, 'roles' => $roles, 'incharges' => $incharges]);
     }
     /**
      * Display the team's profile form.
@@ -138,6 +140,31 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             // If an exception occurs, return an error response
             return response()->json(['message' => 'Failed to update user role'], 500);
+        }
+    }
+
+    public function updateUserIncharge(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'userId' => 'required|exists:users,id', // Ensure userId exists in the users table
+                'selectedIncharge' => 'required|in:admin,manager,visitor,se,qci,aqci' // Validate selected role
+            ]);
+
+            // Update the user role
+            $user = User::findOrFail($validatedData['userId']);
+
+            // Sync user's roles
+            $user->syncRoles($validatedData['selectedIncharge']);
+
+            return response()->json(['message' => 'User incharge updated successfully'], 200);
+        } catch (ValidationException $e) {
+            // If validation fails, return validation errors
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // If an exception occurs, return an error response
+            return response()->json(['message' => 'Failed to update user incharge'], 500);
         }
     }
 }

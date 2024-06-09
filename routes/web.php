@@ -71,6 +71,7 @@ Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(funct
     Route::get('/team', [ProfileController::class, 'team'])->name('team');
     Route::get('/team-members', [ProfileController::class, 'members'])->name('members');
     Route::post('/user/update-role', [ProfileController::class, 'updateUserRole'])->name('updateUserRole');
+    Route::post('/user/update-incharge', [ProfileController::class, 'updateUserIncharge'])->name('updateUserIncharge');
 
 
 
