@@ -236,7 +236,7 @@ const objections = {!! json_encode($objections) !!};
 
 
 async function generateReportOptions() {
-    let reportOptions = ``;
+    let reportOptions = `<option selected disabled value="">Select Report</option>`;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
     ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
@@ -1040,7 +1040,7 @@ $( document ).ready(async function () {
     });
 });
 
-$('#dateRangePicker, #taskStatus, #taskIncharge').on('change', function() {
+$('#dateRangePicker, #taskStatus, #taskIncharge, #taskReport').on('change', function() {
     $('#filterTasks').off('click'); // Remove previous click event handler
     $('#filterTasks').html('<i class="ri-equalizer-fill me-1 align-bottom"></i>Filter');
     $('#filterTasks').prop('disabled', false);
