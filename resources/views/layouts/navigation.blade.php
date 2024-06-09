@@ -76,6 +76,11 @@
                                 <a href="{{ route('team') }}" class="nav-link" data-key="t-all-users"><i class="ri-team-line"></i> All Members </a>
                             </li>
                         </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('showWorkLocations') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Jurisdiction Area </a>
+                            </li>
+                        </ul>
                     </div>
                 </li>
                 @endrole
@@ -137,11 +142,7 @@
                         <i class="lab la-amazon-pay"></i><span data-key="t-tasks">Settings</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSettings">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('showWorkLocations') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Work Locations </a>
-                            </li>
-                        </ul>
+
                     </div>
                 </li>
                 @endrole
