@@ -644,7 +644,7 @@ async function filterTaskList() {
             if (reportType === 'ncr') {
                 return task.ncrs.some(ncr => ncr.ncr_no === reportNumber);
             } else if (reportType === 'obj') {
-                return task.obj_no === reportNumber;
+                return task.objections.some(objection => objection.obj_no === reportNumber);
             } else {
                 console.warn('Unsupported report type:', reportType);
                 return false; // Exclude task if report type is not supported
