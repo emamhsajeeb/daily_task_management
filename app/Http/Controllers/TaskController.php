@@ -39,8 +39,8 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         $title = "Task List";
-        $ncrs = NCR::with('tasks')->get();
-        $objections = Objection::with('tasks')->get();
+        $ncrs = NCR::with('tasks')->has('tasks')->get();
+        $objections = Objection::with('tasks')->has('tasks')->get();
         $incharges = User::role('se')->get();
         $users = User::with('roles')->get();
 
