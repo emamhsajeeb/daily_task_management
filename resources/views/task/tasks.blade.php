@@ -611,33 +611,45 @@ async function filterTaskList() {
         const endDate = endDateValue ? new Date(endDateValue) : null;
         const taskStatus = document.getElementById('taskStatus').value;
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
-        const taskReports = $('#taskReport').val();
-        console.log(taskReports);
+        const taskReport = $('#taskReport').val();
+        console.log(taskReport);
 
         let filteredTasks = tasksData.tasks;
 
         // Query tasks based on date range
         filteredTasks = filteredTasks.filter(task => (!startDate || !endDate || new Date(task.date) >= startDate && new Date(task.date) <= endDate));
-        console.log('Date filtered: ', filteredTasks);
-
         // Query tasks based on status
         filteredTasks = filteredTasks.filter(task => !taskStatus || task.status === taskStatus);
-        console.log('Status filtered: ', filteredTasks);
-
         // Query tasks based on incharge
         filteredTasks = filteredTasks.filter(task => !taskIncharge || task.incharge === taskIncharge);
-        console.log('Incharge filtered: ', filteredTasks);
-
         // Query tasks based on reports and date range
-        filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
-            if (report.startsWith('ncr_')) {
-                const ncrNumber = report.split('_')[1];
-                return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
-            } else if (report.startsWith('obj_')) {
-                const objectionNumber = report.split('_')[1];
-                return task.obj_no === objectionNumber;
+        filteredTasks = filteredTasks.filter(task => {
+            // Handle cases where taskReport might be empty or undefined
+            if (!taskReport) {
+                return true; // Include all tasks if no report selected
             }
-        }));
+
+            // Split taskReport into an array (assuming format "ncr_123" or "obj_456")
+            const reportParts = taskReport.split('_');
+
+            if (reportParts.length !== 2) {
+                console.warn('Invalid taskReport format. Expected "ncr_" or "obj_" followed by number.');
+                return false; // Exclude task if format is invalid
+            }
+
+            const reportType = reportParts[0];
+            const reportNumber = reportParts[1];
+
+            // Filter based on report type and number
+            if (reportType === 'ncr') {
+                return task.ncrs.some(ncr => ncr.ncr_no === reportNumber);
+            } else if (reportType === 'obj') {
+                return task.obj_no === reportNumber;
+            } else {
+                console.warn('Unsupported report type:', reportType);
+                return false; // Exclude task if report type is not supported
+            }
+        });
         console.log('Report filtered: ', filteredTasks);
 
         // Assign tasksData based on user role
