@@ -612,6 +612,7 @@ async function filterTaskList() {
         const taskStatus = document.getElementById('taskStatus').value;
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
         const taskReports = $('#taskReport').val();
+        console.log(taskReports);
 
         let filteredTasks = tasksData.tasks;
 
