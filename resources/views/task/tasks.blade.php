@@ -82,6 +82,12 @@
                                     <!--end col-->
                                     @endrole
                                     <div class="col-xxl-1 col-sm-2">
+                                        <div class="input-light">
+                                            <select style="appearance: none;" name="qc_report" class="form-select" id="taskReport">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-1 col-sm-2">
                                         <button disabled type="button" class="btn btn-primary w-100" id="filterTasks">
                                             <i class="ri-equalizer-fill me-1 align-bottom"></i>
                                             Filter
@@ -230,7 +236,7 @@ const objections = {!! json_encode($objections) !!};
 
 
 async function generateReportOptions() {
-    let reportOptions = `<select class="form-select" multiple="multiple" name="qc_reports[]" id="taskReport">`;
+    let reportOptions = ``;
 
     ncrs.length > 0 && (reportOptions += `<optgroup label="NCRs">`);
     ncrs.forEach(ncr => reportOptions += `<option value="${'ncr_' + ncr.ncr_no}">${ncr.ncr_no}</option>`);
@@ -240,11 +246,7 @@ async function generateReportOptions() {
     objections.forEach(objection => reportOptions += `<option value="${'obj_' + objection.obj_no}">${objection.obj_no}</option>`);
     objections.length > 0 && (reportOptions += `</optgroup>`);
 
-    reportOptions += `</select>`;
-
-    $('#taskReport').select2({
-        placeholder: "Select NCR/Obj"
-    });
+    $('#taskReport').html(reportOptions);
 }
 
 async function updateTaskListBody(tasks, incharges, juniors) {
@@ -609,7 +611,7 @@ async function filterTaskList() {
         const endDate = endDateValue ? new Date(endDateValue) : null;
         const taskStatus = document.getElementById('taskStatus').value;
         const taskIncharge = userIsAdmin ? (document.getElementById('taskIncharge').value || null) : null;
-        // const taskReports = $('#taskReport').val();
+        const taskReports = $('#taskReport').val();
 
         let filteredTasks = tasksData.tasks;
 
@@ -625,17 +627,17 @@ async function filterTaskList() {
         filteredTasks = filteredTasks.filter(task => !taskIncharge || task.incharge === taskIncharge);
         console.log('Incharge filtered: ', filteredTasks);
 
-        // // Query tasks based on reports and date range
-        // filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
-        //     if (report.startsWith('ncr_')) {
-        //         const ncrNumber = report.split('_')[1];
-        //         return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
-        //     } else if (report.startsWith('obj_')) {
-        //         const objectionNumber = report.split('_')[1];
-        //         return task.obj_no === objectionNumber;
-        //     }
-        // }));
-        // console.log('Report filtered: ', filteredTasks);
+        // Query tasks based on reports and date range
+        filteredTasks = filteredTasks.filter(task => taskReports.length === 0 || taskReports.some(report => {
+            if (report.startsWith('ncr_')) {
+                const ncrNumber = report.split('_')[1];
+                return task.ncrs.some(ncr => ncr.ncr_no === ncrNumber);
+            } else if (report.startsWith('obj_')) {
+                const objectionNumber = report.split('_')[1];
+                return task.obj_no === objectionNumber;
+            }
+        }));
+        console.log('Report filtered: ', filteredTasks);
 
         // Assign tasksData based on user role
         tasksData.tasks = userIsSe ? filteredTasks : (userIsQciAqci || userIsAdmin ? filteredTasks : []);

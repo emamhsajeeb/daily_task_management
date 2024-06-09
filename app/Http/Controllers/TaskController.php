@@ -40,6 +40,8 @@ class TaskController extends Controller
         $user = Auth::user();
         $title = "Task List";
         $ncrs = NCR::all();
+        $objections = Objection::all();
+        $incharges = User::role('se')->get();
         $users = User::with('roles')->get();
 
         // Loop through each user and add a new field 'role' with the role name
@@ -48,8 +50,7 @@ class TaskController extends Controller
             return $user;
         });
 
-        $objections = Objection::all();
-        $incharges = User::role('se')->get();
+
         return view('task/tasks', compact('user','users','incharges','title','ncrs','objections'));
     }
 
