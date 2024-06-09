@@ -352,12 +352,12 @@ async function loadTeamData() {
                                 <div class="col-lg-2 col">
                                     <div class="text-end dropdown">
                                         <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill fs-17"></i>
+                                        <i class="ri-menu-3-fill fs-17"></i>
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <button class="dropdown-item remove-list" data-remove-id="${user.id}">
-                                                <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>View
+                                                <button class="dropdown-item remove-list" data-view-id="${user.id}">
+                                                <i class="ri-eye-line me-2 align-bottom text-muted"></i>View
                                                 </button>
                                             </li>
                                             <li>
