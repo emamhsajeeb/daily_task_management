@@ -9,6 +9,7 @@ File: Main Css File
 */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 @font-face {
   font-family: "hkgrotesk";
   src: url("../fonts/hkgrotesk-light.eot");
@@ -515,7 +516,7 @@ File: Main Css File
   padding: 0.625rem 1.5rem;
   color: var(--vz-vertical-menu-item-color);
   font-size: 0.9375rem;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .navbar-menu .navbar-nav .nav-link.active {
   color: var(--vz-vertical-menu-item-active-color);
@@ -589,7 +590,7 @@ File: Main Css File
   white-space: none;
   position: relative;
   font-size: 0.875rem;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .navbar-menu .navbar-nav .nav-sm .nav-link:before {
   content: "";
@@ -2593,7 +2594,7 @@ File: Main Css File
 }
 
 .ff-secondary {
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .bg-pattern {
@@ -4071,7 +4072,7 @@ h3,
 h4,
 h5,
 h6) {
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 label {
@@ -10438,7 +10439,7 @@ button.gridjs-sort-asc, button.gridjs-sort-desc {
 }
 .leaflet-map.leaflet-container {
   z-index: 0;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 :root {
@@ -10591,7 +10592,7 @@ button.gridjs-sort-asc, button.gridjs-sort-desc {
   float: none;
   padding: 1px;
   font-weight: 500;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .fc-state-down,
@@ -14523,7 +14524,7 @@ span.flatpickr-weekday {
   color: var(--vz-body-color);
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 500;
   font-size: 0.875rem;
 }
@@ -14582,7 +14583,7 @@ span.flatpickr-weekday {
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
   color: var(--vz-body-color);
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 500;
   font-size: 0.875rem;
 }
@@ -15591,7 +15592,7 @@ span.flatpickr-weekday {
   font-weight: 500;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
-  font-family: "Public Sans", sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: var(--vz-body-color);
   padding: 14px;
 }
