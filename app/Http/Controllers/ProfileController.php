@@ -156,7 +156,8 @@ class ProfileController extends Controller
             $user = User::findOrFail($validatedData['userId']);
 
             // Sync user's roles
-            $user->syncRoles($validatedData['selectedIncharge']);
+            $user->incharge = $validatedData['selectedIncharge'];
+            $user->save();
 
             return response()->json(['message' => 'User incharge updated successfully'], 200);
         } catch (ValidationException $e) {
