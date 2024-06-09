@@ -461,7 +461,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                     className: 'dataTables-center',
                     render: function(data, type, row, meta) {
                         return '<td class="dataTables-center" style="text-align: center;">' +
-                            '<div style="display: flex; justify-content: space-around;">' +
+                            '<div class="hstack gap-3 flex-wrap justify-content-center">' +
                             '<a style="text-align: center" href="javascript:void(0);" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>' +
                             '<a style="text-align: center" href="javascript:void(0);" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>' +
                             '</div>' +
