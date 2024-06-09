@@ -17,7 +17,7 @@ class WorkLocationController extends Controller
     {
         $incharges = User::role('se')->get();
         $user = Auth::user();
-        $title = "Work Locations";
+        $title = "Jurisdiction Areas";
         return view('team/work_locations', compact( 'user','title','incharges'));
     }
 

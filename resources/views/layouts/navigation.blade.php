@@ -78,7 +78,7 @@
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('showWorkLocations') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Jurisdiction Area </a>
+                                <a href="{{ route('showWorkLocations') }}" class="nav-link" data-key="t-all-users"><i class="bx bx-user-check"></i> Jurisdiction Areas </a>
                             </li>
                         </ul>
                     </div>
