@@ -304,27 +304,7 @@ async function loadTeamData() {
                     <div class="card team-box">
                         <div class="card-body p-4">
                             <div class="row align-items-center team-row">
-                                <div class="col team-settings">
-                                    <div class="row">
-                                        <div class="col text-end dropdown">
-                                            <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="ri-more-fill fs-17"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <button class="dropdown-item edit-list" id="addEditModal" data-bs-toggle="modal" data-edit-id="${user.id}">
-                                                    <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item remove-list" data-remove-id="${user.id}">
-                                                    <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-lg-3 col">
                                     <div class="team-profile-img">
                                         <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">${memberImage}</div>
@@ -370,8 +350,27 @@ async function loadTeamData() {
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col">
-                                    <div class="text-end">
-                                        <a href="{{ route('viewProfile') }}" class="btn btn-light view-btn">View Profile</a>
+                                    <div class="text-end dropdown">
+                                        <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="ri-more-fill fs-17"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <button class="dropdown-item remove-list" data-remove-id="${user.id}">
+                                                <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>View
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item edit-list" id="addEditModal" data-bs-toggle="modal" data-edit-id="${user.id}">
+                                                <i class="ri-pencil-line me-2 align-bottom text-muted"></i>Edit
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item remove-list" data-remove-id="${user.id}">
+                                                <i class="ri-delete-bin-5-line me-2 align-bottom text-muted"></i>Remove
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
