@@ -334,7 +334,7 @@ async function loadTeamData() {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col">
+                                <div class="col-lg-2 col">
                                     <div class="row text-muted text-center">
                                         ${admin ? `
                                         <div class="col-12">
@@ -345,7 +345,7 @@ async function loadTeamData() {
                                           ` : ''}
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col">
+                                <div class="col-lg-2 col">
                                     <div class="row text-muted text-center">
                                         ${admin ? `
                                         <div class="col-12">
