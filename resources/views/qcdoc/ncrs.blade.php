@@ -325,7 +325,7 @@ async function updateNCRList() {
                     <td>${ncr.remarks ? ncr.remarks : "N/A" }</td>
                     <td>
                         <div class="hstack gap-3 flex-wrap">
-                            <a href="javascript:void(0);" ncr-id=${ncr.id} class="link-success ncr-details-btn fs-15"><i class="ri-information-line"></i></a>
+                            <a href="javascript:void(0);" ncr-id=${ncr.id} class="link-info ncr-details-btn fs-15"><i class="ri-information-line"></i></a>
                             <a href="javascript:void(0);" onclick="editNCR(${ncr.id})" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
                             <a href="javascript:void(0);" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
                         </div>
