@@ -149,7 +149,7 @@ class ProfileController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'userId' => 'required|exists:users,id', // Ensure userId exists in the users table
-                'selectedIncharge' => 'required|in:admin,manager,visitor,se,qci,aqci' // Validate selected role
+                'selectedIncharge' => 'required' // Validate selected role
             ]);
 
             // Update the user role
