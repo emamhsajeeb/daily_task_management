@@ -399,6 +399,7 @@
     }
 
 
+    let intervalId;
     // Event listener for the clock-in button
     document.getElementById('clock-in-button').addEventListener('click', async function() {
         Swal.fire({
@@ -419,9 +420,11 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 document.getElementById('clock-in-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking in..';
-                navigator.geolocation.getCurrentPosition(async function(position) {
-                    setAttendance('{{ route('clockin') }}', 'clock-in', position);
-                });
+                intervalId = setInterval(async function() {
+                    navigator.geolocation.watchPosition(async function(position) {
+                        setAttendance('{{ route('clockin') }}', 'clock-in', position);
+                    });
+                }, 10000);
             }
         });
     });
@@ -445,6 +448,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 document.getElementById('clock-out-button').innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Clocking out..';
+                clearInterval(intervalId);
                 navigator.geolocation.getCurrentPosition(async function(position) {
                     setAttendance('{{ route('clockout') }}', 'clock-out', position);
                 });
