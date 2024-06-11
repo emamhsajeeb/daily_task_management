@@ -48,9 +48,6 @@ Route::get('/', function () {
     return view('layouts/dashboard',['title' => 'Dashboard', 'user' => $user,'statistics' => $statistics]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::post('/update-device-token', [PushNotificationController::class, 'updateDeviceToken'])->name('updateDeviceToken');
-Route::match(['get', 'post'], '/botman', [MyBotController::class, 'handle']);
-
 Route::middleware([CheckRole::class . ':admin','auth', 'verified'])->group(function () {
     // Routes accessible only to users with the 'admin' role
     Route::get('/tasks-all', [TaskController::class, 'allTasks'])->name('allTasks');
