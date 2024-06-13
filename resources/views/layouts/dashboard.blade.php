@@ -416,22 +416,25 @@
     }
 
     async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints, travelMode) {
-        directionsService.route(
-            {
-                origin: start,
-                destination: end,
-                waypoints: waypoints,
-                optimizeWaypoints: false,
-                travelMode: travelMode,  // You can change this to WALKING, BICYCLING, etc.
-            },
-            (response, status) => {
-                if (status === 'OK') {
-                    directionsRenderer.setDirections(response);
-                } else {
-                    console.error('Directions request failed due to ' + status);
-                }
+        const request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode[travelMode.toUpperCase()]
+        };
+
+        // Include waypoints only if they are provided and are not empty
+        if (waypoints.length > 0) {
+            request.waypoints = waypoints;
+            request.optimizeWaypoints = true; // optional: optimize the waypoints order
+        }
+
+        directionsService.route(request, (response, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            } else {
+                console.error('Directions request failed due to ' + status);
             }
-        );
+        });
     }
 
     async function fetchLocations(map) {
