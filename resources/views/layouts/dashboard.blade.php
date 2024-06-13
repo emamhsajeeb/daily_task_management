@@ -216,6 +216,11 @@
     let map;
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true,
+        map: map,
+    });
 
     $( document ).ready(function() {
         $.ajaxSetup({
@@ -272,11 +277,9 @@
 
                 // Populate the cells with data
                 dateCell.textContent = new Date(date).toLocaleString('en-US', {
-                    month: 'short',
+                    month: 'long',
                     day: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true,
+                    year: 'numeric',
                 });
                 employeeCell.innerHTML = `
                 <div class="d-flex gap-2 align-items-center">
@@ -403,27 +406,23 @@
             // anchor: new google.maps.Point(0.5, 0.1),
         });
 
-        const directionsService = new google.maps.DirectionsService();
-        const directionsRenderer = new google.maps.DirectionsRenderer({
-            suppressMarkers: true,
-            map: map,
-        });
+
 
         // Calculate and display the route
-        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints);
+        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
 
         // Fetch and update user locations periodically
         await fetchLocations(map);
     }
 
-    async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints) {
+    async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints, travelMode) {
         directionsService.route(
             {
                 origin: start,
                 destination: end,
                 waypoints: waypoints,
                 optimizeWaypoints: false,
-                travelMode: 'DRIVING',  // You can change this to WALKING, BICYCLING, etc.
+                travelMode: travelMode,  // You can change this to WALKING, BICYCLING, etc.
             },
             (response, status) => {
                 if (status === 'OK') {
@@ -451,14 +450,17 @@
                 userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
                 userImage.style.border = "3px solid green";
 
-                const [latitude, longitude] = user.clockin_location.split(',');
+                const [latitude, longitude] = user.clockout_location ? user.clockout_location.split(',') : user.clockin_location.split(',');
                 new AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
                     title: user.name,
                     content: userImage,
                 });
+
+                calculateAndDisplayRoute(directionsService, directionsRenderer, { lat: parseFloat(user.clockin_location.split(',')[0]), lng: parseFloat(user.clockin_location.split(',')[1]) }, { lat: parseFloat(user.clockout_location.split(',')[0]), lng: parseFloat(user.clockout_location.split(',')[1]) }, {}, 'WALKING');
             });
+
         } catch (error) {
             console.error('Error fetching user locations:', error);
         }
