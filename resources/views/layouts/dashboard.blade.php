@@ -430,7 +430,10 @@
 
         directionsService.route(request, (response, status) => {
             if (status === 'OK') {
-                directionsRenderer.setDirections(response);
+                new google.maps.DirectionsRenderer({
+                    suppressMarkers: true,
+                    map: map,
+                }).setDirections(response);
             } else {
                 console.error('Directions request failed due to ' + status);
             }
