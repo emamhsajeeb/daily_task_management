@@ -257,7 +257,7 @@
             // Iterate through the list of attendance records
             attendances.forEach(attendance => {
                 // Destructure the required fields from attendance
-                const { date, employee, clockin_time, clockin_location, clockout_time, clockout_location } = attendance;
+                const { date, user_name, first_name, clockin_time, clockin_location, clockout_time, clockout_location } = attendance;
 
                 // Format clock-in and clock-out locations
                 const clockinLat = clockin_location?.split(',')[0] || 'N/A';
@@ -287,10 +287,10 @@
                 employeeCell.innerHTML = `
                 <div class="d-flex gap-2 align-items-center">
                     <div class="flex-shrink-0">
-                        <img src="${employee.avatar || 'assets/images/users/default-avatar.jpg'}" alt="" class="avatar-xs rounded-circle" />
+                        <img src="${"assets/images/users/" + user_name + ".jpg"}" alt="${first_name}" class="avatar-xs rounded-circle" />
                     </div>
                     <div class="flex-grow-1">
-                        ${employee.name}
+                        ${first_name}
                     </div>
                 </div>
             `;

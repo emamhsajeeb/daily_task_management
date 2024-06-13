@@ -249,4 +249,43 @@ class AttendanceController extends Controller
         }
     }
 
+    public function getAllUserAttendanceForToday()
+    {
+        $today = Carbon::today();
+
+        try {
+            // Get attendance records for all users for today's date
+            $attendanceRecords = Attendance::with('user:id,user_name,first_name')  // Include user data with first_name and avatar
+            ->whereNotNull('clockin')
+                ->whereDate('date', $today)
+                ->get();  // Retrieve all matching records
+
+            if ($attendanceRecords->isEmpty()) {
+                // Handle the case where no clock-in data is found for any user on today's date
+                return response()->json(['message' => 'No attendance records found for today.'], 404);
+            }
+
+            // Transform the attendance records into a response-friendly format
+            $formattedRecords = $attendanceRecords->map(function ($record) {
+                return [
+                    'date' => $record->date->toIso8601String(),
+                    'user_name' => $record->user->user_name,
+                    'first_name' => $record->user->first_name,
+                    'clockin_time' => $record->clockin,
+                    'clockin_location' => $record->clockin_location,
+                    'clockout_time' => $record->clockout,
+                    'clockout_location' => $record->clockout_location,
+                ];
+            });
+
+            return response()->json($formattedRecords);
+
+        } catch (Throwable $exception) {
+            // Handle unexpected exceptions during data retrieval
+            report($exception);  // Report the exception for debugging or logging
+            return response()->json(['error' => 'An error occurred while retrieving attendance data.'], 500);
+        }
+    }
+
+
 }
