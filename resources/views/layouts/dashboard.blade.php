@@ -443,6 +443,7 @@
 
             // Add new markers for each user
             data.forEach(user => {
+                console.log(user);
                 const userImage = document.createElement("img");
                 userImage.src = "assets/images/users/" + user.user_name + ".jpg";
                 userImage.height = 30;
