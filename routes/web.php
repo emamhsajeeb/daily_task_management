@@ -124,7 +124,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/clock-out', [AttendanceController::class, 'clockOut'])->name('clockout');
     Route::get('/attendance/locations-today', [AttendanceController::class, 'getUserLocationsForToday'])->name('getUserLocationsForToday');
     Route::get('/attendance/attendance-today', [AttendanceController::class, 'getCurrentUserAttendanceForToday'])->name('getCurrentUserAttendanceForToday');
-    Route::get('/attendance/attendance-today', [AttendanceController::class, 'getAllUsersAttendanceForToday'])->name('getAllUsersAttendanceForToday');
+    Route::get('/attendance/attendances-today', [AttendanceController::class, 'getAllUsersAttendanceForToday'])->name('getAllUsersAttendanceForToday');
 });
 
 
