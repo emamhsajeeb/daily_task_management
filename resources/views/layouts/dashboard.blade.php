@@ -455,11 +455,11 @@
                 new AdvancedMarkerElement({
                     position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
                     map: map,
-                    title: user.name,
+                    title: user.first_name,
                     content: userImage,
                 });
 
-                calculateAndDisplayRoute(directionsService, directionsRenderer, { lat: parseFloat(user.clockin_location.split(',')[0]), lng: parseFloat(user.clockin_location.split(',')[1]) }, { lat: parseFloat(user.clockout_location.split(',')[0]), lng: parseFloat(user.clockout_location.split(',')[1]) }, {}, 'WALKING');
+                user.clockout_location ? calculateAndDisplayRoute(directionsService, directionsRenderer, { lat: parseFloat(user.clockin_location.split(',')[0]), lng: parseFloat(user.clockin_location.split(',')[1]) }, { lat: parseFloat(user.clockout_location.split(',')[0]), lng: parseFloat(user.clockout_location.split(',')[1]) }, {}, 'WALKING') : '';
             });
 
         } catch (error) {

@@ -209,8 +209,9 @@ class AttendanceController extends Controller
                 return [
                     'user_id' => $location->user_id,
                     'user_name' => $location->user->user_name,
-                    'name' => $location->user->first_name,
+                    'first_name' => $location->user->first_name,
                     'clockin_location' => $location->clockin_location,
+                    'clockout_location' => $location->clockout_location,
                 ];
             });
 
