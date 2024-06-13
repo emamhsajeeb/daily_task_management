@@ -283,7 +283,10 @@ class AttendanceController extends Controller
         } catch (Throwable $exception) {
             // Handle unexpected exceptions during data retrieval
             report($exception);  // Report the exception for debugging or logging
-            return response()->json(['error' => 'An error occurred while retrieving attendance data.'], 500);
+            return response()->json([
+                'error' => 'An error occurred while retrieving attendance data.',
+                'details' => $exception->getMessage() // Return the error message for debugging
+            ], 500);
         }
     }
 
