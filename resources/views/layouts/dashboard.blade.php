@@ -162,39 +162,31 @@
                 @endrole
                 @role('admin')
                 <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Users Locations</h4>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <table class="table align-middle mb-0" id="timeSheetTable">
+                                <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Employee</th>
+                                    <th scope="col">Clockin Time</th>
+                                    <th scope="col">Clockin Location</th>
+                                    <th scope="col">Clockout Time</th>
+                                    <th scope="col">Clockout Location</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <!-- end table -->
+                        </div><!-- end card-body -->
+                    </div><!-- end card -->
                     <div class="table-responsive">
-                        <table class="table align-middle mb-0" id="timeSheetTable">
-                            <thead class="table-light">
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Employee</th>
-                                <th scope="col">Clockin Time</th>
-                                <th scope="col">Clockin Location</th>
-                                <th scope="col">Clockout Time</th>
-                                <th scope="col">Clockout Location</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-{{--                            <tr>--}}
-{{--                                <td>10 Oct, 14:47</td>--}}
-{{--                                <td>--}}
-{{--                                    <div class="d-flex gap-2 align-items-center">--}}
-{{--                                        <div class="flex-shrink-0">--}}
-{{--                                            <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />--}}
-{{--                                        </div>--}}
-{{--                                        <div class="flex-grow-1">--}}
-{{--                                            Jordan Kennedy--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </td>--}}
-{{--                                <td>Clockin Time</td>--}}
-{{--                                <td>Clockin Location</td>--}}
-{{--                                <td>Clockout Time</td>--}}
-{{--                                <td>Clockout Location</td>--}}
-{{--                            </tr>--}}
-                            </tbody>
-                        </table>
-                        <!-- end table -->
+
                     </div>
                     <!-- end table responsive -->
                 </div>
