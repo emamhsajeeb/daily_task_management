@@ -160,6 +160,46 @@
                 </div>
                 <!-- end col -->
                 @endrole
+                @role('admin')
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" id="timeSheetTable">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Employee</th>
+                                <th scope="col">Clockin Time</th>
+                                <th scope="col">Clockin Location</th>
+                                <th scope="col">Clockout Time</th>
+                                <th scope="col">Clockout Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+{{--                            <tr>--}}
+{{--                                <td>10 Oct, 14:47</td>--}}
+{{--                                <td>--}}
+{{--                                    <div class="d-flex gap-2 align-items-center">--}}
+{{--                                        <div class="flex-shrink-0">--}}
+{{--                                            <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />--}}
+{{--                                        </div>--}}
+{{--                                        <div class="flex-grow-1">--}}
+{{--                                            Jordan Kennedy--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
+{{--                                <td>Clockin Time</td>--}}
+{{--                                <td>Clockin Location</td>--}}
+{{--                                <td>Clockout Time</td>--}}
+{{--                                <td>Clockout Location</td>--}}
+{{--                            </tr>--}}
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+                    <!-- end table responsive -->
+                </div>
+                <!-- end col -->
+                @endrole
             </div>
             <!--end row-->
 
@@ -192,15 +232,88 @@
             }
         });
 
+        displayCurrentUserAttendanceForToday();
         admin ? initMap() : '' ;
-        fetchAttendance();
+        admin ? displayAllUserAttendanceForToday() : '' ;
 
         const preloader = document.getElementById('preloader');
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
-    async function fetchAttendance() {
+    async function displayAllUserAttendanceForToday() {
+        const endpoint = '{{ route('getAllUsersAttendanceForToday') }}'; // Replace with your endpoint
+
+        try {
+            const response = await fetch(endpoint);
+            const attendances = await response.json();
+
+            // Find the table body element
+            const tbody = document.getElementById('timeSheetTable').getElementsByTagName('tbody')[0];
+
+            // Clear existing rows
+            tbody.innerHTML = '';
+
+            // Iterate through the list of attendance records
+            attendances.forEach(attendance => {
+                // Destructure the required fields from attendance
+                const { date, employee, clockin_time, clockin_location, clockout_time, clockout_location } = attendance;
+
+                // Format clock-in and clock-out locations
+                const clockinLat = clockin_location?.split(',')[0] || 'N/A';
+                const clockinLng = clockin_location?.split(',')[1] || 'N/A';
+                const clockoutLat = clockout_location?.split(',')[0] || 'N/A';
+                const clockoutLng = clockout_location?.split(',')[1] || 'N/A';
+
+                // Create a new row and cells
+                const newRow = tbody.insertRow();
+
+                // Add cells for each piece of data
+                const dateCell = newRow.insertCell();
+                const employeeCell = newRow.insertCell();
+                const clockinTimeCell = newRow.insertCell();
+                const clockinLocationCell = newRow.insertCell();
+                const clockoutTimeCell = newRow.insertCell();
+                const clockoutLocationCell = newRow.insertCell();
+
+                // Populate the cells with data
+                dateCell.textContent = new Date(date).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                });
+                employeeCell.innerHTML = `
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="flex-shrink-0">
+                        <img src="${employee.avatar || 'assets/images/users/default-avatar.jpg'}" alt="" class="avatar-xs rounded-circle" />
+                    </div>
+                    <div class="flex-grow-1">
+                        ${employee.name}
+                    </div>
+                </div>
+            `;
+                clockinTimeCell.textContent = clockin_time ? new Date(`2024-06-04T${clockin_time}`).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                }) : 'N/A';
+                clockinLocationCell.textContent = `Location: ${clockinLat}, ${clockinLng}`;
+                clockoutTimeCell.textContent = clockout_time ? new Date(`2024-06-04T${clockout_time}`).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                }) : 'N/A';
+                clockoutLocationCell.textContent = `Location: ${clockoutLat}, ${clockoutLng}`;
+            });
+
+        } catch (error) {
+            console.error('Error fetching attendance data:', error);
+        }
+    }
+
+    async function displayCurrentUserAttendanceForToday() {
         const endpoint = '{{ route('getCurrentUserAttendanceForToday') }}'; // Replace with your endpoint
 
         try {
