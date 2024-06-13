@@ -249,7 +249,7 @@ class AttendanceController extends Controller
         }
     }
 
-    public function getAllUserAttendanceForToday()
+    public function getAllUsersAttendanceForToday()
     {
         $today = Carbon::today();
 
