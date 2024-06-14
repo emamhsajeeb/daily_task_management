@@ -168,21 +168,23 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <table class="table align-middle mb-0" id="timeSheetTable">
-                                <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Employee</th>
-                                    <th scope="col">Clockin Time</th>
-                                    <th scope="col">Clockin Location</th>
-                                    <th scope="col">Clockout Time</th>
-                                    <th scope="col">Clockout Location</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <!-- end table -->
+                            <div class="table-responsive table-card">
+                                <table class="table table-sm align-middle table-nowrap table-hover mb-0" id="timeSheetTable">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Employee</th>
+                                        <th scope="col">Clockin Time</th>
+                                        <th scope="col">Clockin Location</th>
+                                        <th scope="col">Clockout Time</th>
+                                        <th scope="col">Clockout Location</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <!-- end table -->
+                            </div>
                         </div><!-- end card-body -->
                     </div><!-- end card -->
                     <div class="table-responsive">
