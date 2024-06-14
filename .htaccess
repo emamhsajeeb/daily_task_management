@@ -14,9 +14,7 @@ Options -Indexes
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-      Header set Pragma "no-cache"
-      Header set Expires 0
+
 </IfModule>
 
 # Redirect all requests to the public folder
