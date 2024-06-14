@@ -218,11 +218,67 @@
     let map;
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer({
-        suppressMarkers: true,
-        map: map,
-    });
+
+    async function initMap() {
+        const projectLocation = { lat: 23.879132, lng: 90.502617 };
+        const startLocation = { lat: 23.987057, lng: 90.361908 };
+        const endLocation = { lat: 23.690618, lng: 90.546729 };
+        const waypoints = [
+            { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
+            { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
+            { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
+            { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
+            { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
+            { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
+        ];
+        const projectName = document.createElement("div");
+        const startMarker = document.createElement("div");
+        const endMarker = document.createElement("div");
+
+        projectName.className = "project-name";
+        projectName.textContent = "Dhaka Bypass Expressway";
+
+        startMarker.className = "start-end-marker";
+        startMarker.textContent = "KM-1";
+
+        endMarker.className = "start-end-marker";
+        endMarker.textContent = "KM-48";
+
+        // Initialize the map
+        map = new Map(document.getElementById("gmaps-markers"), {
+            zoom: 4,
+            center: projectLocation,
+            mapId: "DEMO_MAP_ID",
+        });
+
+
+
+        // Add the marker
+        new AdvancedMarkerElement({
+            map: map,
+            position: projectLocation,
+            content: projectName,
+        });
+        new AdvancedMarkerElement({
+            map: map,
+            position: startLocation,
+            content: startMarker,
+        });
+        new AdvancedMarkerElement({
+            map: map,
+            position: endLocation,
+            content: endMarker,
+            // anchor: new google.maps.Point(0.5, 0.1),
+        });
+
+
+
+        // Calculate and display the route
+        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
+
+        // Fetch and update user locations periodically
+        await fetchLocations(map);
+    }
 
     $( document ).ready(function() {
         $.ajaxSetup({
@@ -239,6 +295,14 @@
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
+
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true,
+        map: map,
+    });
+
+
 
     async function displayAllUserAttendanceForToday() {
         const endpoint = '{{ route('getAllUsersAttendanceForToday') }}'; // Replace with your endpoint
@@ -356,66 +420,7 @@
         }
     }
 
-    async function initMap() {
-        const projectLocation = { lat: 23.879132, lng: 90.502617 };
-        const startLocation = { lat: 23.987057, lng: 90.361908 };
-        const endLocation = { lat: 23.690618, lng: 90.546729 };
-        const waypoints = [
-            { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
-            { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
-            { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
-            { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
-            { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
-            { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
-        ];
-        const projectName = document.createElement("div");
-        const startMarker = document.createElement("div");
-        const endMarker = document.createElement("div");
 
-        projectName.className = "project-name";
-        projectName.textContent = "Dhaka Bypass Expressway";
-
-        startMarker.className = "start-end-marker";
-        startMarker.textContent = "KM-1";
-
-        endMarker.className = "start-end-marker";
-        endMarker.textContent = "KM-48";
-
-        // Initialize the map
-        map = new Map(document.getElementById("gmaps-markers"), {
-            zoom: 4,
-            center: projectLocation,
-            mapId: "DEMO_MAP_ID",
-        });
-
-
-
-        // Add the marker
-        new AdvancedMarkerElement({
-            map: map,
-            position: projectLocation,
-            content: projectName,
-        });
-        new AdvancedMarkerElement({
-            map: map,
-            position: startLocation,
-            content: startMarker,
-        });
-        new AdvancedMarkerElement({
-            map: map,
-            position: endLocation,
-            content: endMarker,
-            // anchor: new google.maps.Point(0.5, 0.1),
-        });
-
-
-
-        // Calculate and display the route
-        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
-
-        // Fetch and update user locations periodically
-        await fetchLocations(map);
-    }
 
     async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints, travelMode) {
         const request = {
