@@ -459,15 +459,32 @@
                 userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
                 userImage.style.border = "3px solid green";
 
-                const [latitude, longitude] = user.clockout_location ? user.clockout_location.split(',') : user.clockin_location.split(',');
-                new AdvancedMarkerElement({
-                    position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
+                const clockinPosition = user.clockin_location ? {
+                    lat: parseFloat(user.clockin_location.split(',')[0]),
+                    lng: parseFloat(user.clockin_location.split(',')[1]),
+                } : null;
+
+                const clockoutPosition = user.clockout_location ? {
+                    lat: parseFloat(user.clockout_location.split(',')[0]),
+                    lng: parseFloat(user.clockout_location.split(',')[1]),
+                } : null;
+
+                clockoutPosition && new AdvancedMarkerElement({
+                    position: clockoutPosition,
                     map: map,
                     title: user.first_name,
                     content: userImage,
                 });
 
-                user.clockout_location ? calculateAndDisplayRoute(directionsService, directionsRenderer, { lat: parseFloat(user.clockin_location.split(',')[0]), lng: parseFloat(user.clockin_location.split(',')[1]) }, { lat: parseFloat(user.clockout_location.split(',')[0]), lng: parseFloat(user.clockout_location.split(',')[1]) }, {}, 'WALKING') : '';
+                clockinPosition && new AdvancedMarkerElement({
+                    position: clockinPosition,
+                    map: map,
+                    title: user.first_name,
+                    content: userImage,
+                });
+
+                clockoutPosition && calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING');
+
             });
 
         } catch (error) {
