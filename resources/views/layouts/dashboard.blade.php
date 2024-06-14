@@ -251,8 +251,6 @@
             mapId: "DEMO_MAP_ID",
         });
 
-
-
         // Add the marker
         new AdvancedMarkerElement({
             map: map,
@@ -268,7 +266,6 @@
             map: map,
             position: endLocation,
             content: endMarker,
-            // anchor: new google.maps.Point(0.5, 0.1),
         });
 
 
@@ -474,21 +471,21 @@
                     lng: parseFloat(user.clockout_location.split(',')[1]),
                 } : null;
 
-                clockoutPosition && new AdvancedMarkerElement({
+                clockoutPosition ? new AdvancedMarkerElement({
                     position: clockoutPosition,
                     map: map,
                     title: user.first_name,
                     content: userImage,
-                });
+                }) : '';
 
-                clockinPosition && new AdvancedMarkerElement({
+                clockinPosition ? new AdvancedMarkerElement({
                     position: clockinPosition,
                     map: map,
                     title: user.first_name,
                     content: userImage,
-                });
+                }) : '';
 
-                clockoutPosition && calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING');
+                clockoutPosition ? calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING') : '';
 
             });
 
