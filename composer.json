@@ -10,6 +10,7 @@
         "botman/botman": "*",
         "guzzlehttp/guzzle": "^7.2",
         "kreait/firebase-php": "^5.26",
+        "laravel-notification-channels/webpush": "^8.0",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",

@@ -19,6 +19,7 @@ use Illuminate\Http\Request; // Represents the incoming HTTP request
 use Illuminate\Support\Facades\Auth; // Facade for team authentication
 use Illuminate\Support\Facades\DB; // Facade for interacting with the database
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -393,6 +394,20 @@ class TaskController extends Controller
                     'pavementTasks' => $summaryData['pavementTasks'],
                 ]);
             }
+
+
+            // Prepare notification data
+            $title = 'Daily Task Updated';
+            $message = "Daily task updated for " . date('Y-m-d', strtotime($date)); // Use a formatted date
+            $buttonText = $request->button_text ?? 'View Tasks'; // Set default button text
+            $buttonURL = $request->button_url ?? 'https://qcd.dhakabypass.com/tasks'; // Set default button URL
+
+            // Send push notification
+            Notification::send(User::all(), new PushDemo($title, $message, $buttonText, $buttonURL));
+
+
+
+
 
             // Redirect to tasks route with success message
             return response()->json(['message' => 'Data imported successfully.'], 200);
