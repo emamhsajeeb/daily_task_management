@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\BasicExtra;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -51,10 +50,9 @@ class PushNotification extends Notification
      */
     public function toWebPush($notifiable, $notification)
     {
-        $bex = BasicExtra::firstOrFail();
         $push = (new WebPushMessage)
             ->title($this->title)
-            ->icon('assets/front/img/' . $bex->push_notification_icon)
+            ->icon('assets/images/logo.png')
             ->action($this->buttonText, $this->buttonURL);
 
         if (!empty($this->message)) {
