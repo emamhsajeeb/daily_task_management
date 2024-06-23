@@ -12,6 +12,7 @@ use App\Models\Objection;
 use App\Models\Tasks; // Model representing the tasks table
 use App\Models\User; // Model representing the users table (assuming team authentication)
 use App\Models\WorkLocation;
+use App\Notifications\PushNotification;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not found models
@@ -289,7 +290,7 @@ class TaskController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:xlsx,csv,ods',
+                'file' => 'required|file',
             ]);
 
             $path = $request->file('file')->store('temp'); // Store uploaded file temporarily
@@ -403,7 +404,7 @@ class TaskController extends Controller
             $buttonURL = $request->button_url ?? 'https://qcd.dhakabypass.com/tasks'; // Set default button URL
 
             // Send push notification
-            Notification::send(User::all(), new PushDemo($title, $message, $buttonText, $buttonURL));
+            Notification::send(User::all(), new PushNotification($title, $message, $buttonText, $buttonURL));
 
 
 
