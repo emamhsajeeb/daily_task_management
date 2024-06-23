@@ -1,14 +1,26 @@
-console.log("This message is for the service worker");
-// This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
+self.addEventListener('push', function (e) {
+    if (!(self.Notification && self.Notification.permission === 'granted')) {
+        //notifications aren't supported or permission not granted!
+        return;
+    }
 
-
-
-self.addEventListener('push', function(event) {
-    const data = event.data.json();
-    event.waitUntil(
-        self.registration.showNotification(data.title, {
-            body: data.message
-        })
-    );
+    if (e.data) {
+        var msg = e.data.json();
+        console.log(msg)
+        var options = {
+            body: msg.body,
+            icon: msg.icon
+        };
+        if (msg.actions && msg.actions.length > 0) {
+            options.actions = msg.actions;
+        }
+        e.waitUntil(self.registration.showNotification(msg.title, options));
+    }
 });
 
+
+self.addEventListener('notificationclick', function (e) {
+    if (e.action.length > 0) {
+        self.clients.openWindow(e.action);
+    }
+});
