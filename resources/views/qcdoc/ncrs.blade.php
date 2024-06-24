@@ -272,6 +272,7 @@ var ncrs;
 
 
 async function updateNCRList() {
+    var preloader = document.getElementById('preloader');
     var header = `
     <tr>
         <th scope="col">NCR No.</th>

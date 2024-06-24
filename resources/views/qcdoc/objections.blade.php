@@ -183,10 +183,11 @@
             const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
             const user = {!! json_encode($user) !!};
             let objections;
-            const preloader = document.getElementById('preloader');
+
 
 
             async function updateObjectionList() {
+                var preloader = document.getElementById('preloader');
                 var header = `
                     <tr>
                         <th scope="col">Objection No.</th>

@@ -108,7 +108,7 @@
 // Function to get the tasks dynamically
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
 const user = {!! json_encode($user) !!};
-const preloader = document.getElementById('preloader');
+
 
 function updateDailySummaryBody(summaries) {
 
@@ -210,6 +210,7 @@ async function filterDailySummary() {
 
 
 async function updateDailySummary(month = null) {
+    var preloader = document.getElementById('preloader');
     var url = '{{ route("dailySummaryJSON") }}';
     var header = `
         <tr>
@@ -236,6 +237,8 @@ async function updateDailySummary(month = null) {
         success: async function (response) {
             var summaries = response.data;
             await updateDailySummaryBody(summaries);
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
