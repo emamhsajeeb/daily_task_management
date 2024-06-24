@@ -233,6 +233,7 @@ const users = {!! json_encode($users) !!};
 const incharges = {!! json_encode($incharges) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
+const preloader = document.getElementById('preloader');
 
 
 async function generateReportOptions() {

@@ -181,8 +181,9 @@
 
         <script>
             const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
-            var user = {!! json_encode($user) !!};
-            var objections;
+            const user = {!! json_encode($user) !!};
+            let objections;
+            const preloader = document.getElementById('preloader');
 
 
             async function updateObjectionList() {

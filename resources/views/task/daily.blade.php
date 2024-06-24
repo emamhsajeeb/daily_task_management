@@ -107,10 +107,11 @@
 
 // Function to get the tasks dynamically
 const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
-var user = {!! json_encode($user) !!};
+const user = {!! json_encode($user) !!};
+const preloader = document.getElementById('preloader');
 
 function updateDailySummaryBody(summaries) {
-    var preloader = document.getElementById('preloader');
+
 
     preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
     preloader.style.visibility = 'hidden'; // Set visibility to visible
