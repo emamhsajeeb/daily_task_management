@@ -336,7 +336,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
                     if (type === 'display' && data.length > 30) {
-                        return `<span style="overflow-x: auto; white-space: nowrap; max-width: 100px; display: inline-block;" title="${data}">${data}</span>`;
+                        return `<span style="${userIsSe ? 'overflow-x: auto;' : ''} white-space: nowrap; max-width: 30ch; display: inline-block;" title="${data}">${data}</span>`;
                     } else {
                         return data;
                     }
