@@ -304,7 +304,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
             {
                 targets: userIsAdmin ? -2 : userIsSe? -1 : -2, // Target the last column
                 render: function(data, type, row, meta) {
-                    let reportOptions = `<select style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" class="attachReportDropdown" data-task-id="${row.id}">`;
+                    let reportOptions = `<select style="margin-bottom: 0rem !important; border: none; outline: none; text-align: center" class="attachReportDropdown" data-task-id="${row.id}">`;
                     reportOptions += `<option value="none" selected>None</option>`;
 
                     if (ncrs.length > 0) {
@@ -365,7 +365,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 </span>
             `;
                         var statusOptions = `
-                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${userIsAdmin ? 'disabled' : ''}>
+                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; text-align: center" data-task-id="${row.id}" ${userIsAdmin ? 'disabled' : ''}>
                     <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
                     <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
                     <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
@@ -385,7 +385,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         juniors.forEach(function (junior) {
                             assignOptions += '<option value="' + junior.user_name + '" ' + (data === junior.user_name ? 'selected' : '') + '>' + junior.first_name + '</option>';
                         });
-                        const assignJunior = '<select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + assignOptions + '</select>';
+                        const assignJunior = '<select id="assign-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; text-align: center" data-task-id="' + row.id + '">' + assignOptions + '</select>';
                         return '<div class="avatar-container">' + avatar + assignJunior + '</div>';
                     },
                     className: 'dataTables-center'
@@ -399,7 +399,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                         return `
                             <div style="cursor: pointer; width: 200px; ${data ? '' : 'text-align: center;'}" class="inspection-details" id= "inspectionDetails" ${userIsAdmin ? '' : 'onclick="editInspectionDetails(this)"'}  data-task-id="${row.id}">
                                 <span class="inspection-text" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; line-clamp: 2; " >${data ? data : 'N/A'}</span>
-                                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent;"></textarea>
+                                <textarea class="inspection-input" style="display: none; margin-bottom: 0rem !important; border: none; outline: none;"></textarea>
                                 <button style="display: none;" type="button" class="save-btn btn btn-light btn-sm">Save</button>
                             </div>`;
                     }
@@ -416,7 +416,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                             incharges.forEach(function (incharge) {
                                 inchargeOptions += '<option value="' + incharge.user_name + '" ' + (data === incharge.user_name ? 'selected' : '') + '>' + incharge.first_name + '</option>';
                             });
-                            const assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
+                            const assignIncharge = '<select id="incharge-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; text-align: center" data-task-id="' + row.id + '">' + inchargeOptions + '</select>';
                             return '<div class="avatar-container">' + avatar + assignIncharge + '</div>';
                         },
                         className: 'dataTables-center'
@@ -424,7 +424,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 {
                     data: 'completion_time',
                     render: function(data, type, row) {
-                        return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none; background-color: transparent;" type="datetime-local" id="completionDateTime" name="completion_time">`;
+                        return `<input data-task-id="${row.id}" value="${data ? data : ''}" style="border: none; outline: none;" type="datetime-local" id="completionDateTime" name="completion_time">`;
                     },
                     className: 'dataTables-center'
                 },
@@ -442,7 +442,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 {
                     data: 'rfi_submission_date',
                     render: function(data, type, row) {
-                        return `<input ${userIsAdmin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" data-task-status="${row.status}" style="border: none; outline: none; background-color: transparent;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
+                        return `<input ${userIsAdmin ? '' : 'disabled'} value="${data ? data : ''}" data-task-id="${row.id}" data-task-status="${row.status}" style="border: none; outline: none;" type="date" id="rfiSubmissionDate" name="rfi_submission_date">`;
                     },
                     className: 'dataTables-center'
                 } : '',
