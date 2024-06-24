@@ -335,11 +335,13 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 "targets": userIsSe ? 5 : 4, // Targeting the fifth column (index 4)
                 "className": "description-column", // Apply custom CSS class
                 "render": function(data, type, row) {
-                    if (type === 'display' && data.length > 30) {
-                        return `<span style="${userIsSe ? 'overflow-x: auto;' : ''} white-space: nowrap; max-width: 30ch; display: inline-block;" title="${data}">${data}</span>`;
-                    } else {
-                        return data;
-                    }
+                    return type === 'display' && data.length > 30
+                        ? userIsSe || userIsQciAqci
+                            ? `<span style="overflow-x: auto; white-space: nowrap; max-width: 30ch; display: inline-block;" title="${data}">${data}</span>`
+                            : userIsAdmin
+                                ? `<span style="overflow-y: auto; max-height: 30px;" title="${data}">${data.substr(0, 30)}...</span>`
+                                : ''
+                        : data;
                 }
             }
 
