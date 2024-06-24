@@ -233,7 +233,7 @@ const users = {!! json_encode($users) !!};
 const incharges = {!! json_encode($incharges) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
-const preloader = document.getElementById('preloader');
+
 
 
 async function generateReportOptions() {
@@ -251,7 +251,7 @@ async function generateReportOptions() {
 }
 
 async function updateTaskListBody(tasks, incharges, juniors) {
-    var preloader = document.getElementById('preloader');
+
     if ($.fn.DataTable.isDataTable('#taskTable')) {
         $('#taskTable').DataTable().destroy();
     }
@@ -545,6 +545,7 @@ toastr.success("Got tasks data from server side");
 }
 
 async function updateTaskList() {
+    var preloader = document.getElementById('preloader');
     var header = `
         <tr>
         <th class="dataTables-center">Date</th>
