@@ -36,6 +36,13 @@
                                     </div>
                                 </div>
                                 @endrole
+                                @role('se')
+                                <div class="flex-shrink-0">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button title="Add Objection" class="btn btn-outline-primary btn-icon waves-effect waves-light" id="showAddModalBtn"><i class="ri-add-box-line align-bottom me-1"></i></button>
+                                    </div>
+                                </div>
+                                @endrole
 
                             </div><!-- end card header -->
 
