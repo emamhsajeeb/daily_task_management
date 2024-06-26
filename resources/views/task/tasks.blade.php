@@ -545,7 +545,7 @@ toastr.success("Got tasks data from server side");
 }
 
 async function updateTaskList() {
-    var preloader = document.getElementById('preloader');
+    // var preloader = document.getElementById('preloader');
     var header = `
         <tr>
         <th class="dataTables-center">Date</th>
@@ -595,8 +595,8 @@ async function updateTaskList() {
             maxDate: new Date(lastDate),
             mode: 'range', // Specify 'range' mode as a string
         });
-        preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-        preloader.style.visibility = 'hidden'; // Set visibility to visible
+        // preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+        // preloader.style.visibility = 'hidden'; // Set visibility to visible
 }
 
 async function filterTaskList() {
@@ -697,12 +697,12 @@ async function addTask() {
         processData: false,
         contentType: false,
         success: async function (response) {
-            var preloader = document.getElementById('preloader');
+            // var preloader = document.getElementById('preloader');
             toastr.success(response.message);
             $("#showAddModal").modal('hide');
             $('#taskTable').DataTable().clear().destroy();
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
+            // preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            // preloader.style.visibility = 'visible'; // Set visibility to visible
             const tasks = response.tasks;
 
             // Extracting dates from tasks
@@ -720,8 +720,8 @@ async function addTask() {
             });
 
             await updateTaskListBody(tasks);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'hidden'; // Set visibility to visible
+            // preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            // preloader.style.visibility = 'hidden'; // Set visibility to visible
 
         },
         error: function(xhr, status) {
