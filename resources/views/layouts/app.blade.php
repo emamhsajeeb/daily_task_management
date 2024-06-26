@@ -84,13 +84,13 @@
 <!--end back-to-top-->
 
 <!--preloader-->
-{{--<div id="preloader" style="opacity: 1; visibility: visible;">--}}
-{{--    <div id="status">--}}
-{{--        <div class="spinner-border text-primary avatar-sm" role="status">--}}
-{{--            <span class="visually-hidden">Loading...</span>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
+<div id="preloader" style="opacity: 1; visibility: visible;">
+    <div id="status">
+        <div class="spinner-border text-primary avatar-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
 
 <div class="customizer-setting d-none d-md-block">
     <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
