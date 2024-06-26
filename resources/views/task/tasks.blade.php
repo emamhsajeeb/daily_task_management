@@ -507,45 +507,45 @@ async function getTasksData() {
     let tasksData = JSON.parse(localStorage.getItem('tasksData'));
     let tasks, incharges, juniors;
 
-    if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
-        (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
-        (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
-        (userIsQciAqci && tasksData.tasks)
-    )) {
-        console.info("Got tasks data from local storage");
-toastr.success("Got tasks data from local storage");
-        return tasksData;
-    } else {
-        try {
-            const response = await $.ajax({
-                url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
-                method: 'GET',
-                dataType: 'json'
-            });
+//     if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
+//         (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
+//         (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
+//         (userIsQciAqci && tasksData.tasks)
+//     )) {
+//         console.info("Got tasks data from local storage");
+// toastr.success("Got tasks data from local storage");
+//         return tasksData;
+//     } else {
+    try {
+        const response = await $.ajax({
+            url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
+            method: 'GET',
+            dataType: 'json'
+        });
 
-            tasks = response.tasks ? response.tasks : null;
-            incharges = response.incharges ? response.incharges : null;
-            juniors = response.juniors ? response.juniors : null;
+        tasks = response.tasks ? response.tasks : null;
+        incharges = response.incharges ? response.incharges : null;
+        juniors = response.juniors ? response.juniors : null;
 
-            // Update existing tasksData in localStorage
-            tasksData = {
-                tasks: tasks,
-                incharges: incharges,
-                juniors: juniors,
-                timestamp: new Date().getTime() // Store current timestamp
-            };
-            localStorage.setItem('tasksData', JSON.stringify(tasksData));
-            console.info("Got tasks data from server side");
-toastr.success("Got tasks data from server side");
-            return tasksData; // Return the data
-        } catch (error) {
-            throw error; // Throw error if AJAX call fails
-        }
+        // Update existing tasksData in localStorage
+        tasksData = {
+            tasks: tasks,
+            incharges: incharges,
+            juniors: juniors,
+            timestamp: new Date().getTime() // Store current timestamp
+        };
+        localStorage.setItem('tasksData', JSON.stringify(tasksData));
+        console.info("Got tasks data from server side");
+        toastr.success("Got tasks data from server side");
+        return tasksData; // Return the data
+    } catch (error) {
+        throw error; // Throw error if AJAX call fails
     }
+    // }
 }
 
 async function updateTaskList() {
-    // var preloader = document.getElementById('preloader');
+    var preloader = document.getElementById('preloader');
     var header = `
         <tr>
         <th class="dataTables-center">Date</th>
@@ -595,8 +595,8 @@ async function updateTaskList() {
             maxDate: new Date(lastDate),
             mode: 'range', // Specify 'range' mode as a string
         });
-        // preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-        // preloader.style.visibility = 'hidden'; // Set visibility to visible
+        preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+        preloader.style.visibility = 'hidden'; // Set visibility to visible
 }
 
 async function filterTaskList() {
@@ -697,12 +697,12 @@ async function addTask() {
         processData: false,
         contentType: false,
         success: async function (response) {
-            // var preloader = document.getElementById('preloader');
+            var preloader = document.getElementById('preloader');
             toastr.success(response.message);
             $("#showAddModal").modal('hide');
             $('#taskTable').DataTable().clear().destroy();
-            // preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
-            // preloader.style.visibility = 'visible'; // Set visibility to visible
+            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'visible'; // Set visibility to visible
             const tasks = response.tasks;
 
             // Extracting dates from tasks
@@ -720,8 +720,8 @@ async function addTask() {
             });
 
             await updateTaskListBody(tasks);
-            // preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
-            // preloader.style.visibility = 'hidden'; // Set visibility to visible
+            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.visibility = 'hidden'; // Set visibility to visible
 
         },
         error: function(xhr, status) {
