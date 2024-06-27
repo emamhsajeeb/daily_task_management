@@ -182,6 +182,16 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/web-token/jwt-signature" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/web-token/jwt-signature-algorithm-ecdsa" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/web-token/jwt-util-ecc" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/fractal" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/livewire/livewire" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/openspout/openspout" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-buttons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-editor" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-export" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-fractal" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-html" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-oracle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

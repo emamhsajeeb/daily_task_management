@@ -701,7 +701,7 @@ async function addTask() {
             toastr.success(response.message);
             $("#showAddModal").modal('hide');
             $('#taskTable').DataTable().clear().destroy();
-            preloader.style.opacity = '1'; // Set opacity to 1 to make it visible
+            preloader.style.opacity = '0.4'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'visible'; // Set visibility to visible
             const tasks = response.tasks;
 
@@ -720,7 +720,7 @@ async function addTask() {
             });
 
             await updateTaskListBody(tasks);
-            preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
+            preloader.style.opacity = '0.4'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
 
         },

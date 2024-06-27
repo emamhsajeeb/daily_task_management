@@ -163,6 +163,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         BotMan\BotMan\BotManServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
 
 

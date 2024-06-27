@@ -84,7 +84,7 @@
 <!--end back-to-top-->
 
 <!--preloader-->
-<div id="preloader" style="opacity: 1; visibility: visible;">
+<div id="preloader" style="opacity: 0.4; visibility: visible;">
     <div id="status">
         <div class="spinner-border text-primary avatar-sm" role="status">
             <span class="visually-hidden">Loading...</span>
