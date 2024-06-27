@@ -507,15 +507,15 @@ async function getTasksData() {
     let tasksData = JSON.parse(localStorage.getItem('tasksData'));
     let tasks, incharges, juniors;
 
-//     if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
-//         (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
-//         (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
-//         (userIsQciAqci && tasksData.tasks)
-//     )) {
-//         console.info("Got tasks data from local storage");
-// toastr.success("Got tasks data from local storage");
-//         return tasksData;
-//     } else {
+    if (tasksData != null && await isLocalTasksLatest(tasksData.timestamp) && (
+        (userIsSe && (tasksData.tasks && tasksData.juniors)) ||
+        (userIsAdmin && (tasksData.tasks && tasksData.incharges)) ||
+        (userIsQciAqci && tasksData.tasks)
+    )) {
+        console.info("Got tasks data from local storage");
+toastr.success("Got tasks data from local storage");
+        return tasksData;
+    } else {
     try {
         const response = await $.ajax({
             url: userIsAdmin ? '{{ route("allTasks") }}' : '{{ route("allTasksSE") }}',
@@ -541,7 +541,7 @@ async function getTasksData() {
     } catch (error) {
         throw error; // Throw error if AJAX call fails
     }
-    // }
+    }
 }
 
 async function updateTaskList() {
