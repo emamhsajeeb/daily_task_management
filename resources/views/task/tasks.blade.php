@@ -937,8 +937,9 @@ async function updateCompletionDateTime(taskId, dateTime) {
             id: taskId,
             dateTime: dateTime
         },
-        success:function (data) {
-            toastr.success(data.message+dateTime);
+        success:async function (data) {
+            toastr.success(data.message + dateTime);
+            await updateTaskStatus(taskId, 'completed');
         }
     })
 }
