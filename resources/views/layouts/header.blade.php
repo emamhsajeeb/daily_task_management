@@ -24,7 +24,7 @@
                         </div>
 
                         <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
-                            <span class="ri-menu-2-line">
+                            <span class="las la-angle-double-right">
                                 <span></span>
                                 <span></span>
                                 <span></span>
