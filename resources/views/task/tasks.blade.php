@@ -233,6 +233,8 @@ const users = {!! json_encode($users) !!};
 const incharges = {!! json_encode($incharges) !!};
 const ncrs = {!! json_encode($ncrs) !!};
 const objections = {!! json_encode($objections) !!};
+const ncrs_with_tasks = {!! json_encode($ncrs_with_tasks) !!};
+const objections_with_tasks = {!! json_encode($objections_with_tasks) !!};
 
 
 

@@ -41,8 +41,10 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         $title = "Task List";
-        $ncrs = NCR::with('tasks')->has('tasks')->get();
-        $objections = Objection::with('tasks')->has('tasks')->get();
+        $ncrs = NCR::all();
+        $objections = Objection::all();
+        $ncrs_with_tasks = NCR::with('tasks')->has('tasks')->get();
+        $objections_with_tasks = Objection::with('tasks')->has('tasks')->get();
         $incharges = User::role('se')->get();
         $users = User::with('roles')->get();
 
@@ -53,7 +55,7 @@ class TaskController extends Controller
         });
 
 
-        return view('task/tasks', compact('user','users','incharges','title','ncrs','objections'));
+        return view('task/tasks', compact('user','users','incharges','title','ncrs','objections', 'ncrs_with_tasks','objections_with_tasks'));
     }
 
     public function getLatestTimestamp()
