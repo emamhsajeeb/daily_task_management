@@ -368,7 +368,7 @@ async function updateTaskListBody(tasks, incharges, juniors) {
                 </span>
             `;
                         var statusOptions = `
-                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}" ${userIsAdmin ? 'disabled' : ''}>
+                <select id="status-dropdown" style="margin-bottom: 0rem !important; border: none; outline: none; background-color: transparent; text-align: center" data-task-id="${row.id}">
                     <option value="new" ${data === 'new' ? 'selected' : ''}>New</option>
                     <option value="resubmission" ${data === 'resubmission' ? 'selected' : ''}>Resubmission</option>
                     <option value="completed" ${data === 'completed' ? 'selected' : ''}>Completed</option>
