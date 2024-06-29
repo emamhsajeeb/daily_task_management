@@ -686,6 +686,7 @@ async function resetTaskList() {
 
 // Function to handle form submission via AJAX
 async function addTask() {
+    var preloader = document.getElementById('preloader');
     // Get form data
     var formData = new FormData(document.getElementById('addTaskForm'));
 
@@ -699,11 +700,7 @@ async function addTask() {
         success: async function (response) {
             var preloader = document.getElementById('preloader');
             toastr.success(response.message);
-            $("#showAddModal").modal('hide');
-            $('#taskTable').DataTable().clear().destroy();
-            preloader.style.opacity = '0.4'; // Set opacity to 1 to make it visible
-            preloader.style.visibility = 'visible'; // Set visibility to visible
-            const tasks = response.tasks;
+            await updateTaskList();
 
             // Extracting dates from tasks
             const dates = tasks.map(task => new Date(task.date));
@@ -719,7 +716,6 @@ async function addTask() {
                 mode: 'range', // Specify 'range' mode as a string
             });
 
-            await updateTaskListBody(tasks);
             preloader.style.opacity = '0.4'; // Set opacity to 1 to make it visible
             preloader.style.visibility = 'hidden'; // Set visibility to visible
 
