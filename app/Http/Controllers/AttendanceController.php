@@ -132,22 +132,16 @@ class AttendanceController extends Controller
             // Validate incoming request data
             $request->validate([
                 'user_id' => 'required|integer',
-                'date' => 'required|date_format:Y-m-d',
-                'time' => 'required|date_format:h:i A', // Assuming time is in 12-hour format with AM/PM suffix
                 'location' => 'required',
             ]);
 
-            // Convert time value to 24-hour format
-            $time = Carbon::createFromFormat('h:i A', $request->time)->format('H:i:s');
-
             // Attempt to create or update the attendance record
             $attendance = Attendance::updateOrCreate(
-                ['user_id' => $request->user_id, 'date' => $request->date],
-                ['clockin' => $time, 'clockin_location' => $request->location, 'symbol' => '√']
+                ['user_id' => $request->user_id, 'date' => Carbon::today()],
+                ['clockin' => Carbon::now(), 'clockin_location' => $request->location, 'symbol' => '√']
             );
 
             // Update clockin and clockin_location in case they were not set during creation
-            $attendance->clockin = $time;
             $attendance->clockin_location = $request->location;
             $attendance->save();
 
@@ -166,20 +160,16 @@ class AttendanceController extends Controller
             // Validate incoming request data
             $request->validate([
                 'user_id' => 'required|integer', // Assuming user_id should be an integer
-                'date' => 'required|date_format:Y-m-d',
-                'time' => 'required|date_format:h:i A', // Add any validation rules for time if needed
                 'location' => 'required', // Add any validation rules for location if needed
             ]);
-            // Convert time value to 24-hour format
-            $time = Carbon::createFromFormat('h:i A', $request->time)->format('H:i:s');
 
             // Find the attendance record for the user and date
             $attendance = Attendance::where('user_id', $request->user_id)
-                ->where('date', $request->date)
+                ->where('date', Carbon::today())
                 ->firstOrFail();
 
             // Update clockout and clockout_location fields
-            $attendance->clockout = $time;
+            $attendance->clockout = Carbon::now();
             $attendance->clockout_location = $request->location;
             $attendance->save();
 

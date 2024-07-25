@@ -482,23 +482,20 @@
 
     // Send clock data via AJAX
     function setAttendance(route, elementId, position) {
-        let time = new Date().toLocaleTimeString('en-US', {
+        let time = new Date().toLocaleString('en-US', {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
         });
-        console.log(time);
+
         let latitude = position.coords.latitude;
         let longitude = position.coords.longitude;
-        const date = new Date().toISOString().split('T')[0];
 
         $.ajax({
             url: route,
             type: 'POST',
             data: {
                 user_id: user.id,
-                date: date,
-                time: time,
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
             },
             success: async function (response) {
