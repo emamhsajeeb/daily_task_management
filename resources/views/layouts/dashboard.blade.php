@@ -203,78 +203,176 @@
     <!-- End Page-content -->
 </div>
 <!-- Load the Google Maps JavaScript API -->
-<script>
-    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-        key: "AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ",
-        v: "weekly",
-        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-        // Add other bootstrap parameters as needed, using camel case.
-    });
-</script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 <script type="module">
     const apiKey = 'AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ';
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
+
     let map;
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+    // async function initMap() {
+    //     const projectLocation = { lat: 23.879132, lng: 90.502617 };
+    //     const startLocation = { lat: 23.987057, lng: 90.361908 };
+    //     const endLocation = { lat: 23.690618, lng: 90.546729 };
+    //     const waypoints = [
+    //         { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
+    //         { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
+    //         { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
+    //         { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
+    //         { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
+    //         { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
+    //     ];
+    //     const projectName = document.createElement("div");
+    //     const startMarker = document.createElement("div");
+    //     const endMarker = document.createElement("div");
+    //
+    //     projectName.className = "project-name";
+    //     projectName.textContent = "Dhaka Bypass Expressway";
+    //
+    //     startMarker.className = "start-end-marker";
+    //     startMarker.textContent = "KM-1";
+    //
+    //     endMarker.className = "start-end-marker";
+    //     endMarker.textContent = "KM-48";
+    //
+    //     // Initialize the map
+    //     map = new Map(document.getElementById("gmaps-markers"), {
+    //         zoom: 4,
+    //         center: projectLocation,
+    //         mapId: "DEMO_MAP_ID",
+    //     });
+    //
+    //     // Add the marker
+    //     new AdvancedMarkerElement({
+    //         map: map,
+    //         position: projectLocation,
+    //         content: projectName,
+    //     });
+    //     new AdvancedMarkerElement({
+    //         map: map,
+    //         position: startLocation,
+    //         content: startMarker,
+    //     });
+    //     new AdvancedMarkerElement({
+    //         map: map,
+    //         position: endLocation,
+    //         content: endMarker,
+    //     });
+    //
+    //
+    //
+    //     // Calculate and display the route
+    //     await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
+    //
+    //     // Fetch and update user locations periodically
+    //     await fetchLocations(map);
+    // }
 
     async function initMap() {
         const projectLocation = { lat: 23.879132, lng: 90.502617 };
         const startLocation = { lat: 23.987057, lng: 90.361908 };
         const endLocation = { lat: 23.690618, lng: 90.546729 };
         const waypoints = [
-            { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
-            { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
-            { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
-            { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
-            { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
-            { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
+            { lat: 23.972761457544667, lng: 90.39590756824155 },
+            { lat: 23.939769103462904, lng: 90.43984602831715 },
+            { lat: 23.84609091993803, lng: 90.52989931509055 },
+            { lat: 23.804620469092963, lng: 90.57015326006785 },
+            { lat: 23.751565684297116, lng: 90.58184461650606 },
+            { lat: 23.695471102776942, lng: 90.5494454346598 }
         ];
-        const projectName = document.createElement("div");
-        const startMarker = document.createElement("div");
-        const endMarker = document.createElement("div");
 
-        projectName.className = "project-name";
-        projectName.textContent = "Dhaka Bypass Expressway";
+        map = L.map('map').setView(projectLocation, 12);
 
-        startMarker.className = "start-end-marker";
-        startMarker.textContent = "KM-1";
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
 
-        endMarker.className = "start-end-marker";
-        endMarker.textContent = "KM-48";
+        // Add project marker
+        L.marker(projectLocation)
+            .addTo(map)
+            .bindPopup("<div class='project-name'>Dhaka Bypass Expressway</div>")
+            .openPopup();
 
-        // Initialize the map
-        map = new Map(document.getElementById("gmaps-markers"), {
-            zoom: 4,
-            center: projectLocation,
-            mapId: "DEMO_MAP_ID",
-        });
+        // Add start and end markers
+        L.marker(startLocation)
+            .addTo(map)
+            .bindPopup("<div class='start-end-marker'>KM-1</div>");
 
-        // Add the marker
-        new AdvancedMarkerElement({
-            map: map,
-            position: projectLocation,
-            content: projectName,
-        });
-        new AdvancedMarkerElement({
-            map: map,
-            position: startLocation,
-            content: startMarker,
-        });
-        new AdvancedMarkerElement({
-            map: map,
-            position: endLocation,
-            content: endMarker,
-        });
-
-
+        L.marker(endLocation)
+            .addTo(map)
+            .bindPopup("<div class='start-end-marker'>KM-48</div>");
 
         // Calculate and display the route
-        await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
+        L.Routing.control({
+            waypoints: [
+                L.latLng(startLocation),
+                ...waypoints.map(point => L.latLng(point)),
+                L.latLng(endLocation)
+            ],
+            routeWhileDragging: true
+        }).addTo(map);
 
         // Fetch and update user locations periodically
         await fetchLocations(map);
+    }
+
+    async function fetchLocations(map) {
+        const endpoint = '{{ route('getUserLocationsForToday') }}'; // Replace with your endpoint
+
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+
+            // Add new markers for each user
+            data.forEach(user => {
+                console.log(user);
+                const userImage = document.createElement("img");
+                userImage.src = "assets/images/users/" + user.user_name + ".jpg";
+                userImage.height = 30;
+                userImage.style.borderRadius = "15px";
+                userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
+                userImage.style.border = "3px solid green";
+
+                const clockinPosition = user.clockin_location ? {
+                    lat: parseFloat(user.clockin_location.split(',')[0]),
+                    lng: parseFloat(user.clockin_location.split(',')[1]),
+                } : null;
+
+                const clockoutPosition = user.clockout_location ? {
+                    lat: parseFloat(user.clockout_location.split(',')[0]),
+                    lng: parseFloat(user.clockout_location.split(',')[1]),
+                } : null;
+
+                if (clockinPosition) {
+                    L.marker(clockinPosition)
+                        .addTo(map)
+                        .bindPopup(`<img src="${userImage.src}" style="width:30px; height:30px; border-radius:15px; border:3px solid green;">`)
+                        .openPopup();
+                }
+
+                if (clockoutPosition) {
+                    L.marker(clockoutPosition)
+                        .addTo(map)
+                        .bindPopup(`<img src="${userImage.src}" style="width:30px; height:30px; border-radius:15px; border:3px solid green;">`)
+                        .openPopup();
+
+                    // Calculate and display the route for user
+                    L.Routing.control({
+                        waypoints: [
+                            L.latLng(clockinPosition),
+                            L.latLng(clockoutPosition)
+                        ],
+                        routeWhileDragging: true
+                    }).addTo(map);
+                }
+            });
+        } catch (error) {
+            console.error('Error fetching user locations:', error);
+        }
     }
 
     $( document ).ready(function() {
@@ -417,8 +515,6 @@
         }
     }
 
-
-
     async function calculateAndDisplayRoute(directionsService, directionsRenderer, start, end, waypoints, travelMode) {
         const request = {
             origin: start,
@@ -444,55 +540,55 @@
         });
     }
 
-    async function fetchLocations(map) {
-        const endpoint = '{{ route('getUserLocationsForToday') }}'; // Replace with your endpoint
+    {{--async function fetchLocations(map) {--}}
+    {{--    const endpoint = '{{ route('getUserLocationsForToday') }}'; // Replace with your endpoint--}}
 
-        try {
-            const response = await fetch(endpoint);
-            const data = await response.json();
+    {{--    try {--}}
+    {{--        const response = await fetch(endpoint);--}}
+    {{--        const data = await response.json();--}}
 
-            // Add new markers for each user
-            data.forEach(user => {
-                console.log(user);
-                const userImage = document.createElement("img");
-                userImage.src = "assets/images/users/" + user.user_name + ".jpg";
-                userImage.height = 30;
-                userImage.style.borderRadius = "15px";
-                userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
-                userImage.style.border = "3px solid green";
+    {{--        // Add new markers for each user--}}
+    {{--        data.forEach(user => {--}}
+    {{--            console.log(user);--}}
+    {{--            const userImage = document.createElement("img");--}}
+    {{--            userImage.src = "assets/images/users/" + user.user_name + ".jpg";--}}
+    {{--            userImage.height = 30;--}}
+    {{--            userImage.style.borderRadius = "15px";--}}
+    {{--            userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";--}}
+    {{--            userImage.style.border = "3px solid green";--}}
 
-                const clockinPosition = user.clockin_location ? {
-                    lat: parseFloat(user.clockin_location.split(',')[0]),
-                    lng: parseFloat(user.clockin_location.split(',')[1]),
-                } : null;
+    {{--            const clockinPosition = user.clockin_location ? {--}}
+    {{--                lat: parseFloat(user.clockin_location.split(',')[0]),--}}
+    {{--                lng: parseFloat(user.clockin_location.split(',')[1]),--}}
+    {{--            } : null;--}}
 
-                const clockoutPosition = user.clockout_location ? {
-                    lat: parseFloat(user.clockout_location.split(',')[0]),
-                    lng: parseFloat(user.clockout_location.split(',')[1]),
-                } : null;
+    {{--            const clockoutPosition = user.clockout_location ? {--}}
+    {{--                lat: parseFloat(user.clockout_location.split(',')[0]),--}}
+    {{--                lng: parseFloat(user.clockout_location.split(',')[1]),--}}
+    {{--            } : null;--}}
 
-                clockoutPosition ? new AdvancedMarkerElement({
-                    position: clockoutPosition,
-                    map: map,
-                    title: user.first_name,
-                    content: userImage,
-                }) : '';
+    {{--            clockoutPosition ? new AdvancedMarkerElement({--}}
+    {{--                position: clockoutPosition,--}}
+    {{--                map: map,--}}
+    {{--                title: user.first_name,--}}
+    {{--                content: userImage,--}}
+    {{--            }) : '';--}}
 
-                clockinPosition ? new AdvancedMarkerElement({
-                    position: clockinPosition,
-                    map: map,
-                    title: user.first_name,
-                    content: userImage,
-                }) : '';
+    {{--            clockinPosition ? new AdvancedMarkerElement({--}}
+    {{--                position: clockinPosition,--}}
+    {{--                map: map,--}}
+    {{--                title: user.first_name,--}}
+    {{--                content: userImage,--}}
+    {{--            }) : '';--}}
 
-                clockoutPosition ? calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING') : '';
+    {{--            clockoutPosition ? calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING') : '';--}}
 
-            });
+    {{--        });--}}
 
-        } catch (error) {
-            console.error('Error fetching user locations:', error);
-        }
-    }
+    {{--    } catch (error) {--}}
+    {{--        console.error('Error fetching user locations:', error);--}}
+    {{--    }--}}
+    {{--}--}}
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
