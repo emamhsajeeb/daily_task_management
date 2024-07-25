@@ -5,7 +5,7 @@ namespace Spatie\MediaLibrary\MediaCollections\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Filesystem\Factory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Conversions\Conversion;
 use Spatie\MediaLibrary\Conversions\ConversionCollection;
@@ -68,8 +68,8 @@ class CleanCommand extends Command
         $this->info('All done!');
     }
 
-    /** @return Collection<int, Media> */
-    public function getMediaItems(): Collection
+    /** @return LazyCollection<int, Media> */
+    public function getMediaItems(): LazyCollection
     {
         $modelType = $this->argument('modelType');
         $collectionName = $this->argument('collectionName');
@@ -111,8 +111,8 @@ class CleanCommand extends Command
         });
     }
 
-    /** @return Collection<int, Media> */
-    protected function getOrphanedMediaItems(): Collection
+    /** @return LazyCollection<int, Media> */
+    protected function getOrphanedMediaItems(): LazyCollection
     {
         $collectionName = $this->argument('collectionName');
 
@@ -186,11 +186,8 @@ class CleanCommand extends Command
         if (is_null(config("filesystems.disks.{$diskName}"))) {
             throw DiskDoesNotExist::create($diskName);
         }
-        $mediaClass = config('media-library.media_model');
-        $mediaInstance = new $mediaClass();
-        $keyName = $mediaInstance->getKeyName();
 
-        $mediaIds = collect($this->mediaRepository->all()->pluck($keyName)->toArray());
+        $mediaIds = $this->mediaRepository->allIds();
 
         /** @var array<int, string> */
         $directories = $this->fileSystem->disk($diskName)->directories();

@@ -35,8 +35,8 @@ trait InstallsInertiaStacks
         if ($this->option('typescript')) {
             $this->updateNodePackages(function ($packages) {
                 return [
-                    'typescript' => '^5.0.2',
-                    'vue-tsc' => '^1.8.27',
+                    'typescript' => '^5.5.3',
+                    'vue-tsc' => '^2.0.24',
                 ] + $packages;
             });
         }
@@ -190,7 +190,7 @@ trait InstallsInertiaStacks
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@headlessui/react' => '^1.4.2',
+                '@headlessui/react' => '^2.0.0',
                 '@inertiajs/react' => '^1.0.0',
                 '@tailwindcss/forms' => '^0.5.3',
                 '@vitejs/plugin-react' => '^4.2.0',

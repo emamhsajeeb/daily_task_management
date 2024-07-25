@@ -481,7 +481,7 @@
 
 
     function formatTime(date) {
-        let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+        let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours() === 0 ? date.getHours() + 12 : date.getHours();
         let minutes = date.getMinutes();
         let ampm = date.getHours() >= 12 ? 'PM' : 'AM';
         return (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ' ' + ampm;
@@ -490,6 +490,7 @@
     // Send clock data via AJAX
     function setAttendance(route, elementId, position) {
         let time = formatTime(new Date());
+        console.log(time);
         let latitude = position.coords.latitude;
         let longitude = position.coords.longitude;
         const date = new Date().toISOString().split('T')[0];
