@@ -211,8 +211,8 @@
     const user = {!! json_encode($user) !!};
 
     let map;
-    const { Map } = await google.maps.importLibrary("maps");
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    // const { Map } = await google.maps.importLibrary("maps");
+    // const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
     // async function initMap() {
     //     const projectLocation = { lat: 23.879132, lng: 90.502617 };
@@ -285,26 +285,22 @@
             { lat: 23.695471102776942, lng: 90.5494454346598 }
         ];
 
-        map = L.map('map').setView(projectLocation, 12);
+        map = L.map('gmaps-markers').setView(projectLocation, 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(map);
 
-        // Add project marker
-        L.marker(projectLocation)
-            .addTo(map)
-            .bindPopup("<div class='project-name'>Dhaka Bypass Expressway</div>")
-            .openPopup();
-
         // Add start and end markers
         L.marker(startLocation)
             .addTo(map)
-            .bindPopup("<div class='start-end-marker'>KM-1</div>");
+            .bindPopup("<div class='start-end-marker'>KM-1</div>")
+            .openPopup();
 
         L.marker(endLocation)
             .addTo(map)
-            .bindPopup("<div class='start-end-marker'>KM-48</div>");
+            .bindPopup("<div class='start-end-marker'>KM-48</div>")
+            .openPopup();
 
         // Calculate and display the route
         L.Routing.control({
@@ -329,13 +325,22 @@
 
             // Add new markers for each user
             data.forEach(user => {
-                console.log(user);
-                const userImage = document.createElement("img");
-                userImage.src = "assets/images/users/" + user.user_name + ".jpg";
-                userImage.height = 30;
-                userImage.style.borderRadius = "15px";
-                userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";
-                userImage.style.border = "3px solid green";
+
+                const userIcon = L.icon({
+                    shadowUrl: 'data:image/svg+xml;base64,' + btoa(`
+                        <svg fill="#000000" width="36px" height="36px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>map-marker-solid</title>
+                            <path class="clr-i-solid clr-i-solid-path-1" d="M18,2A11.79,11.79,0,0,0,6.22,13.73c0,4.67,2.62,8.58,4.54,11.43l.35.52a99.61,99.61,0,0,0,6.14,8l.76.89.76-.89a99.82,99.82,0,0,0,6.14-8l.35-.53c1.91-2.85,4.53-6.75,4.53-11.42A11.79,11.79,0,0,0,18,2Zm0,17a6.56,6.56,0,1,1,6.56-6.56A6.56,6.56,0,0,1,18,19Z"></path>
+                        </svg>
+                    `),
+                    iconUrl: "assets/images/users/" + user.user_name + ".jpg",
+                    shadowSize:   [56, 56], // size of the shadow
+                    shadowAnchor: [28, 56],  // the same for the shadow
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 50],
+                    popupAnchor: [0, -40],
+                    className: 'user-icon'
+                });
 
                 const clockinPosition = user.clockin_location ? {
                     lat: parseFloat(user.clockin_location.split(',')[0]),
@@ -348,17 +353,13 @@
                 } : null;
 
                 if (clockinPosition) {
-                    L.marker(clockinPosition)
-                        .addTo(map)
-                        .bindPopup(`<img src="${userImage.src}" style="width:30px; height:30px; border-radius:15px; border:3px solid green;">`)
-                        .openPopup();
+                    L.marker(clockinPosition, { icon: userIcon })
+                        .addTo(map);
                 }
 
                 if (clockoutPosition) {
-                    L.marker(clockoutPosition)
-                        .addTo(map)
-                        .bindPopup(`<img src="${userImage.src}" style="width:30px; height:30px; border-radius:15px; border:3px solid green;">`)
-                        .openPopup();
+                    L.marker(clockinPosition, { icon: userIcon })
+                        .addTo(map);
 
                     // Calculate and display the route for user
                     L.Routing.control({
@@ -391,11 +392,11 @@
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
 
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer({
-        suppressMarkers: true,
-        map: map,
-    });
+    // const directionsService = new google.maps.DirectionsService();
+    // const directionsRenderer = new google.maps.DirectionsRenderer({
+    //     suppressMarkers: true,
+    //     map: map,
+    // });
 
 
 
@@ -729,6 +730,10 @@
         border-left: 12px solid transparent;
         border-right: 12px solid transparent;
         border-top: 12px solid #FF3131;
+    }
+
+    .user-icon {
+        border-radius:15px;
     }
 </style>
 @endsection
