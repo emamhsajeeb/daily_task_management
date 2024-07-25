@@ -577,9 +577,12 @@
 
 </script>
 <style>
-
     .user-icon {
         border-radius:15px;
+    }
+
+    .leaflet-routing-alternatives-container {
+        display: none;
     }
 </style>
 @endsection
