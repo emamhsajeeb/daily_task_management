@@ -4,7 +4,7 @@
  * (c) 2023 Chart.js Contributors
  * Released under the MIT License
  */
-import { Color } from '@kurkle/color';
+import {Color} from '@kurkle/color';
 
 /**
  * @namespace Chart.helpers

@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import general, { defaultState } from './loading';
+import {expect} from 'chai';
+import general, {defaultState} from './loading';
 
 describe('reducers/loading', () => {
   it('should return same state when no action matches', () => {

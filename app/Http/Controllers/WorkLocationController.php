@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NCR;
-use App\Models\Tasks;
 use App\Models\User;
 use App\Models\WorkLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class WorkLocationController extends Controller

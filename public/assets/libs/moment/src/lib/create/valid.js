@@ -1,5 +1,5 @@
 import extend from '../utils/extend';
-import { createUTC } from './utc';
+import {createUTC} from './utc';
 import getParsingFlags from '../create/parsing-flags';
 import some from '../utils/some';
 

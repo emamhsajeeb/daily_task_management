@@ -1,7 +1,7 @@
-import { AddGroupAction } from '../actions/groups';
-import { ClearChoicesAction } from '../actions/choices';
-import { Group } from '../interfaces/group';
-import { State } from '../interfaces/state';
+import {AddGroupAction} from '../actions/groups';
+import {ClearChoicesAction} from '../actions/choices';
+import {Group} from '../interfaces/group';
+import {State} from '../interfaces/state';
 
 export const defaultState = [];
 

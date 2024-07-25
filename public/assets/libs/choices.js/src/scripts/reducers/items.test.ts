@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import items, { defaultState } from './items';
-import { RemoveItemAction } from '../actions/items';
+import {expect} from 'chai';
+import items, {defaultState} from './items';
+import {RemoveItemAction} from '../actions/items';
 
 describe('reducers/items', () => {
   it('should return same state when no action matches', () => {

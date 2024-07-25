@@ -1,5 +1,6 @@
 import type Chart from '../core/core.controller.js';
-import type { ChartEvent } from '../types.js';
+import type {ChartEvent} from '../types.js';
+
 /**
  * Note: typedefs are auto-exported, so use a made-up `dom` namespace where
  * necessary to avoid duplicates with `export * from './helpers`; see

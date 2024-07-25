@@ -1,4 +1,5 @@
-import { h } from 'preact';
+import {h} from 'preact';
+
 export declare function ShadowTable(props: {
     tableRef: HTMLTableElement;
 }): h.JSX.Element;

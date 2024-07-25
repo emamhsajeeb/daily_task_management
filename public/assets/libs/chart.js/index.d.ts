@@ -8,5 +8,6 @@ import * as controllers from './controllers/index.js';
 import * as elements from './elements/index.js';
 import * as plugins from './plugins/index.js';
 import * as scales from './scales/index.js';
+
 export { controllers, elements, plugins, scales, };
 export declare const registerables: (typeof controllers | typeof elements | typeof plugins | typeof scales)[];

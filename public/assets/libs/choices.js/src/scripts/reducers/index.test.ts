@@ -1,5 +1,5 @@
-import { createStore } from 'redux';
-import { expect } from 'chai';
+import {createStore} from 'redux';
+import {expect} from 'chai';
 import rootReducer from '.';
 import groups from './groups';
 import choices from './choices';

@@ -1,4 +1,5 @@
-import { h } from 'preact';
+import {h} from 'preact';
+
 export interface PaginationConfig {
     limit?: number;
     page?: number;

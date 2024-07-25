@@ -1,11 +1,6 @@
-import {
-  AddChoiceAction,
-  FilterChoicesAction,
-  ActivateChoicesAction,
-  ClearChoicesAction,
-} from '../actions/choices';
-import { AddItemAction, RemoveItemAction } from '../actions/items';
-import { Choice } from '../interfaces/choice';
+import {ActivateChoicesAction, AddChoiceAction, ClearChoicesAction, FilterChoicesAction,} from '../actions/choices';
+import {AddItemAction, RemoveItemAction} from '../actions/items';
+import {Choice} from '../interfaces/choice';
 
 export const defaultState = [];
 

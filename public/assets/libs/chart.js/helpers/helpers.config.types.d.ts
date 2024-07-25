@@ -1,5 +1,6 @@
-import type { AnyObject } from '../types/basic.js';
-import type { Merge } from '../types/utils.js';
+import type {AnyObject} from '../types/basic.js';
+import type {Merge} from '../types/utils.js';
+
 export type ResolverObjectKey = string | boolean;
 export interface ResolverCache<T extends AnyObject[] = AnyObject[], R extends AnyObject[] = T> {
     [Symbol.toStringTag]: 'Object';

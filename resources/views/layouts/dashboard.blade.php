@@ -206,71 +206,10 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 <script type="module">
-    const apiKey = 'AIzaSyD35-Jeo7nF8vCB4qqWVstbQJpQQALh4KQ';
     const admin = {{$user->hasRole('admin') ? 'true' : 'false'}};
     const user = {!! json_encode($user) !!};
 
     let map;
-    // const { Map } = await google.maps.importLibrary("maps");
-    // const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-    // async function initMap() {
-    //     const projectLocation = { lat: 23.879132, lng: 90.502617 };
-    //     const startLocation = { lat: 23.987057, lng: 90.361908 };
-    //     const endLocation = { lat: 23.690618, lng: 90.546729 };
-    //     const waypoints = [
-    //         { location: { lat: 23.972761457544667,  lng: 90.39590756824155 }, stopover: false },
-    //         { location: { lat: 23.939769103462904, lng: 90.43984602831715 }, stopover: false },
-    //         { location: { lat: 23.84609091993803, lng: 90.52989931509055 }, stopover: false },
-    //         { location: { lat: 23.804620469092963, lng: 90.57015326006785 }, stopover: false },
-    //         { location: { lat: 23.751565684297116, lng: 90.58184461650606 }, stopover: false },
-    //         { location: { lat: 23.695471102776942, lng: 90.5494454346598 }, stopover: false }
-    //     ];
-    //     const projectName = document.createElement("div");
-    //     const startMarker = document.createElement("div");
-    //     const endMarker = document.createElement("div");
-    //
-    //     projectName.className = "project-name";
-    //     projectName.textContent = "Dhaka Bypass Expressway";
-    //
-    //     startMarker.className = "start-end-marker";
-    //     startMarker.textContent = "KM-1";
-    //
-    //     endMarker.className = "start-end-marker";
-    //     endMarker.textContent = "KM-48";
-    //
-    //     // Initialize the map
-    //     map = new Map(document.getElementById("gmaps-markers"), {
-    //         zoom: 4,
-    //         center: projectLocation,
-    //         mapId: "DEMO_MAP_ID",
-    //     });
-    //
-    //     // Add the marker
-    //     new AdvancedMarkerElement({
-    //         map: map,
-    //         position: projectLocation,
-    //         content: projectName,
-    //     });
-    //     new AdvancedMarkerElement({
-    //         map: map,
-    //         position: startLocation,
-    //         content: startMarker,
-    //     });
-    //     new AdvancedMarkerElement({
-    //         map: map,
-    //         position: endLocation,
-    //         content: endMarker,
-    //     });
-    //
-    //
-    //
-    //     // Calculate and display the route
-    //     await calculateAndDisplayRoute(directionsService, directionsRenderer, startLocation, endLocation, waypoints, 'DRIVING');
-    //
-    //     // Fetch and update user locations periodically
-    //     await fetchLocations(map);
-    // }
 
     async function initMap() {
         const projectLocation = { lat: 23.879132, lng: 90.502617 };
@@ -294,19 +233,17 @@
         // Add start and end markers
         L.marker(startLocation)
             .addTo(map)
-            .bindPopup("<div class='start-end-marker'>KM-1</div>")
-            .openPopup();
+            .bindPopup("KM-0");
 
         L.marker(endLocation)
             .addTo(map)
-            .bindPopup("<div class='start-end-marker'>KM-48</div>")
-            .openPopup();
+            .bindPopup("KM-48");
 
         // Calculate and display the route
         L.Routing.control({
             waypoints: [
                 L.latLng(startLocation),
-                ...waypoints.map(point => L.latLng(point)),
+                // ...waypoints.map(point => L.latLng(point)),
                 L.latLng(endLocation)
             ],
             routeWhileDragging: true
@@ -325,6 +262,7 @@
 
             // Add new markers for each user
             data.forEach(user => {
+                console.log(user);
 
                 const userIcon = L.icon({
                     shadowUrl: 'data:image/svg+xml;base64,' + btoa(`
@@ -353,22 +291,30 @@
                 } : null;
 
                 if (clockinPosition) {
+                    const clockInTime = new Date(`2024-06-04T${user.clockin_time}`).toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
                     L.marker(clockinPosition, { icon: userIcon })
-                        .addTo(map);
+                        .addTo(map)
+                        .bindPopup("Name: " + user.first_name + "<br>Designation: " + user.position + "<br>Clockin Time: " + (user.clockin_time ? clockInTime : "Not clocked in yet") + "<br>Clockout Time: " + (user.clockout_time ? user.clockout_time : "Not clocked out yet"));
                 }
 
                 if (clockoutPosition) {
-                    L.marker(clockinPosition, { icon: userIcon })
-                        .addTo(map);
-
-                    // Calculate and display the route for user
-                    L.Routing.control({
-                        waypoints: [
-                            L.latLng(clockinPosition),
-                            L.latLng(clockoutPosition)
-                        ],
-                        routeWhileDragging: true
-                    }).addTo(map);
+                    const clockInTime = new Date(`2024-06-04T${user.clockin_time}`).toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
+                    const clockOutTime = new Date(`2024-06-04T${user.clockout_time}`).toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
+                    L.marker(clockoutPosition, { icon: userIcon })
+                        .addTo(map)
+                        .bindPopup("Name: " + user.first_name + "<br>Designation: " + user.position + "<br>Clockin Time: " + (user.clockin_time ? clockInTime : "Not clocked in yet") + "<br>Clockout Time: " + (user.clockout_time ? clockOutTime : "Not clocked out yet"));
                 }
             });
         } catch (error) {
@@ -391,14 +337,6 @@
         preloader.style.opacity = '0'; // Set opacity to 1 to make it visible
         preloader.style.visibility = 'hidden'; // Set visibility to visible
     });
-
-    // const directionsService = new google.maps.DirectionsService();
-    // const directionsRenderer = new google.maps.DirectionsRenderer({
-    //     suppressMarkers: true,
-    //     map: map,
-    // });
-
-
 
     async function displayAllUserAttendanceForToday() {
         const endpoint = '{{ route('getAllUsersAttendanceForToday') }}'; // Replace with your endpoint
@@ -541,55 +479,6 @@
         });
     }
 
-    {{--async function fetchLocations(map) {--}}
-    {{--    const endpoint = '{{ route('getUserLocationsForToday') }}'; // Replace with your endpoint--}}
-
-    {{--    try {--}}
-    {{--        const response = await fetch(endpoint);--}}
-    {{--        const data = await response.json();--}}
-
-    {{--        // Add new markers for each user--}}
-    {{--        data.forEach(user => {--}}
-    {{--            console.log(user);--}}
-    {{--            const userImage = document.createElement("img");--}}
-    {{--            userImage.src = "assets/images/users/" + user.user_name + ".jpg";--}}
-    {{--            userImage.height = 30;--}}
-    {{--            userImage.style.borderRadius = "15px";--}}
-    {{--            userImage.style.boxShadow = "2px 2px 6px rgba(0, 0, 0, 0.5)";--}}
-    {{--            userImage.style.border = "3px solid green";--}}
-
-    {{--            const clockinPosition = user.clockin_location ? {--}}
-    {{--                lat: parseFloat(user.clockin_location.split(',')[0]),--}}
-    {{--                lng: parseFloat(user.clockin_location.split(',')[1]),--}}
-    {{--            } : null;--}}
-
-    {{--            const clockoutPosition = user.clockout_location ? {--}}
-    {{--                lat: parseFloat(user.clockout_location.split(',')[0]),--}}
-    {{--                lng: parseFloat(user.clockout_location.split(',')[1]),--}}
-    {{--            } : null;--}}
-
-    {{--            clockoutPosition ? new AdvancedMarkerElement({--}}
-    {{--                position: clockoutPosition,--}}
-    {{--                map: map,--}}
-    {{--                title: user.first_name,--}}
-    {{--                content: userImage,--}}
-    {{--            }) : '';--}}
-
-    {{--            clockinPosition ? new AdvancedMarkerElement({--}}
-    {{--                position: clockinPosition,--}}
-    {{--                map: map,--}}
-    {{--                title: user.first_name,--}}
-    {{--                content: userImage,--}}
-    {{--            }) : '';--}}
-
-    {{--            clockoutPosition ? calculateAndDisplayRoute(directionsService, directionsRenderer, clockinPosition, clockoutPosition, {}, 'WALKING') : '';--}}
-
-    {{--        });--}}
-
-    {{--    } catch (error) {--}}
-    {{--        console.error('Error fetching user locations:', error);--}}
-    {{--    }--}}
-    {{--}--}}
 
     function formatTime(date) {
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
@@ -688,49 +577,6 @@
 
 </script>
 <style>
-    .project-name {
-        background-color: #4285F4;
-        border-radius: 8px;
-        color: #FFFFFF;
-        font-size: 10px;
-        padding: 5px 10px;
-        position: relative;
-    }
-
-    .project-name::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 100%;
-        transform: translate(-50%, 0);
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid #4285F4;
-    }
-
-    .start-end-marker {
-        background-color: #FF3131;
-        border-radius: 12px;
-        color: #FFFFFF;
-        font-size: 12px;
-        padding: 5px 10px;
-        position: relative;
-    }
-
-    .start-end-marker::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 100%;
-        transform: translate(-50%, 0);
-        width: 0;
-        height: 0;
-        border-left: 12px solid transparent;
-        border-right: 12px solid transparent;
-        border-top: 12px solid #FF3131;
-    }
 
     .user-icon {
         border-radius:15px;

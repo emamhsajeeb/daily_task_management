@@ -1,6 +1,7 @@
-import type { AnyObject } from '../types/basic.js';
-import type { Point } from '../types/geometric.js';
-import type { Animation } from '../types/animation.js';
+import type {AnyObject} from '../types/basic.js';
+import type {Point} from '../types/geometric.js';
+import type {Animation} from '../types/animation.js';
+
 export default class Element<T = AnyObject, O = AnyObject> {
     static defaults: {};
     static defaultRoutes: any;

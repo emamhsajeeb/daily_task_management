@@ -1,5 +1,6 @@
 import Element from '../core/core.element.js';
-import type { ArcOptions, Point } from '../types/index.js';
+import type {ArcOptions, Point} from '../types/index.js';
+
 export interface ArcProps extends Point {
     startAngle: number;
     endAngle: number;

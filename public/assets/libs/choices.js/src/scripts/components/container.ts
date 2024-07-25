@@ -1,8 +1,8 @@
-import { wrap } from '../lib/utils';
-import { SELECT_ONE_TYPE } from '../constants';
-import { ClassNames } from '../interfaces/class-names';
-import { PositionOptionsType } from '../interfaces/position-options-type';
-import { PassedElementType } from '../interfaces/passed-element-type';
+import {wrap} from '../lib/utils';
+import {SELECT_ONE_TYPE} from '../constants';
+import {ClassNames} from '../interfaces/class-names';
+import {PositionOptionsType} from '../interfaces/position-options-type';
+import {PassedElementType} from '../interfaces/passed-element-type';
 
 export default class Container {
   element: HTMLElement;

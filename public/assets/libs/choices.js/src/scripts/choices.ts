@@ -2,53 +2,34 @@ import merge from 'deepmerge';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Fuse from 'fuse.js';
 
-import {
-  activateChoices,
-  addChoice,
-  clearChoices,
-  filterChoices,
-  Result,
-} from './actions/choices';
-import { addGroup } from './actions/groups';
-import { addItem, highlightItem, removeItem } from './actions/items';
-import { clearAll, resetTo, setIsLoading } from './actions/misc';
-import {
-  Container,
-  Dropdown,
-  Input,
-  List,
-  WrappedInput,
-  WrappedSelect,
-} from './components';
-import {
-  EVENTS,
-  KEY_CODES,
-  SELECT_MULTIPLE_TYPE,
-  SELECT_ONE_TYPE,
-  TEXT_TYPE,
-} from './constants';
-import { DEFAULT_CONFIG } from './defaults';
-import { Choice } from './interfaces/choice';
-import { Group } from './interfaces/group';
-import { Item } from './interfaces/item';
-import { Notice } from './interfaces/notice';
-import { Options } from './interfaces/options';
-import { PassedElement } from './interfaces/passed-element';
-import { State } from './interfaces/state';
+import {activateChoices, addChoice, clearChoices, filterChoices, Result,} from './actions/choices';
+import {addGroup} from './actions/groups';
+import {addItem, highlightItem, removeItem} from './actions/items';
+import {clearAll, resetTo, setIsLoading} from './actions/misc';
+import {Container, Dropdown, Input, List, WrappedInput, WrappedSelect,} from './components';
+import {EVENTS, KEY_CODES, SELECT_MULTIPLE_TYPE, SELECT_ONE_TYPE, TEXT_TYPE,} from './constants';
+import {DEFAULT_CONFIG} from './defaults';
+import {Choice} from './interfaces/choice';
+import {Group} from './interfaces/group';
+import {Item} from './interfaces/item';
+import {Notice} from './interfaces/notice';
+import {Options} from './interfaces/options';
+import {PassedElement} from './interfaces/passed-element';
+import {State} from './interfaces/state';
 
 import {
-  diff,
-  existsInArray,
-  generateId,
-  getAdjacentEl,
-  getType,
-  isScrolledIntoView,
-  isType,
-  sortByScore,
-  strToEl,
-  parseCustomProperties,
+    diff,
+    existsInArray,
+    generateId,
+    getAdjacentEl,
+    getType,
+    isScrolledIntoView,
+    isType,
+    parseCustomProperties,
+    sortByScore,
+    strToEl,
 } from './lib/utils';
-import { defaultState } from './reducers';
+import {defaultState} from './reducers';
 import Store from './store/store';
 import templates from './templates';
 

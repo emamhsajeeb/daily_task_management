@@ -1,10 +1,8 @@
-import { addFormatToken } from '../format/format';
-import { addUnitAlias } from './aliases';
-import { addUnitPriority } from './priorities';
-import { addRegexToken, match3, match1to3 } from '../parse/regex';
-import { daysInYear } from './year';
-import { createUTCDate } from '../create/date-from-array';
-import { addParseToken } from '../parse/token';
+import {addFormatToken} from '../format/format';
+import {addUnitAlias} from './aliases';
+import {addUnitPriority} from './priorities';
+import {addRegexToken, match1to3, match3} from '../parse/regex';
+import {addParseToken} from '../parse/token';
 import toInt from '../utils/to-int';
 
 // FORMATTING

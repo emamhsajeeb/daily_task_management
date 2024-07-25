@@ -1,5 +1,5 @@
 import './prototype';
-import { getSetGlobalLocale } from './locales';
+import {getSetGlobalLocale} from './locales';
 import toInt from '../utils/to-int';
 
 getSetGlobalLocale('en', {

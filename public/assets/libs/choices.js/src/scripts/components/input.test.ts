@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { stub } from 'sinon';
-import { DEFAULT_CLASSNAMES } from '../defaults';
+import {expect} from 'chai';
+import {stub} from 'sinon';
+import {DEFAULT_CLASSNAMES} from '../defaults';
 import Input from './input';
 
 describe('components/input', () => {

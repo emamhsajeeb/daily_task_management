@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import groups, { defaultState } from './groups';
+import {expect} from 'chai';
+import groups, {defaultState} from './groups';
 
 describe('reducers/groups', () => {
   it('should return same state when no action matches', () => {

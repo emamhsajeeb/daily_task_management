@@ -1,21 +1,21 @@
 /* eslint-disable no-new-wrappers */
-import { expect } from 'chai';
-import { stub } from 'sinon';
+import {expect} from 'chai';
+import {stub} from 'sinon';
 
 import {
-  cloneObject,
-  diff,
-  dispatchEvent,
-  existsInArray,
-  generateChars,
-  generateId,
-  getRandomNumber,
-  getType,
-  isType,
-  sanitise,
-  sortByAlpha,
-  sortByScore,
-  parseCustomProperties,
+    cloneObject,
+    diff,
+    dispatchEvent,
+    existsInArray,
+    generateChars,
+    generateId,
+    getRandomNumber,
+    getType,
+    isType,
+    parseCustomProperties,
+    sanitise,
+    sortByAlpha,
+    sortByScore,
 } from './utils';
 
 describe('utils', () => {

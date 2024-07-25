@@ -1,4 +1,4 @@
-import { SCROLLING_SPEED } from '../constants';
+import {SCROLLING_SPEED} from '../constants';
 
 export default class List {
   element: HTMLElement;

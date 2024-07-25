@@ -1,7 +1,7 @@
-import { sanitise } from '../lib/utils';
-import { SELECT_ONE_TYPE } from '../constants';
-import { ClassNames } from '../interfaces/class-names';
-import { PassedElementType } from '../interfaces/passed-element-type';
+import {sanitise} from '../lib/utils';
+import {SELECT_ONE_TYPE} from '../constants';
+import {ClassNames} from '../interfaces/class-names';
+import {PassedElementType} from '../interfaces/passed-element-type';
 
 export default class Input {
   element: HTMLInputElement;

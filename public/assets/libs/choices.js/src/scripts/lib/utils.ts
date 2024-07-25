@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Choice } from '../interfaces/choice';
-import { EventType } from '../interfaces/event-type';
+import {Choice} from '../interfaces/choice';
+import {EventType} from '../interfaces/event-type';
 
 export const getRandomNumber = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min) + min);

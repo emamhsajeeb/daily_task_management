@@ -1,13 +1,12 @@
-import { addFormatToken } from '../format/format';
-import { addUnitAlias } from './aliases';
-import { addUnitPriority } from './priorities';
-import { addRegexToken, match1to2, match1to4, match1to6, match2, match4, match6, matchSigned } from '../parse/regex';
-import { addWeekParseToken } from '../parse/token';
-import { weekOfYear, weeksInYear, dayOfYearFromWeeks } from './week-calendar-utils';
+import {addFormatToken} from '../format/format';
+import {addUnitAlias} from './aliases';
+import {addUnitPriority} from './priorities';
+import {addRegexToken, match1to2, match1to4, match1to6, match2, match4, match6, matchSigned} from '../parse/regex';
+import {addWeekParseToken} from '../parse/token';
+import {dayOfYearFromWeeks, weekOfYear, weeksInYear} from './week-calendar-utils';
 import toInt from '../utils/to-int';
-import { hooks } from '../utils/hooks';
-import { createLocal } from '../create/local';
-import { createUTCDate } from '../create/date-from-array';
+import {hooks} from '../utils/hooks';
+import {createUTCDate} from '../create/date-from-array';
 
 // FORMATTING
 

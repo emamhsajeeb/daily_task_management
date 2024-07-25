@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Attendance;
-use App\Models\NCR;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class AttendanceController extends Controller
@@ -201,7 +198,7 @@ class AttendanceController extends Controller
     {
         $today = Carbon::today();
 
-        $userLocations = Attendance::with('user:id,user_name,first_name')  // Include user data, specifically the first_name
+        $userLocations = Attendance::with('user:id,user_name,position,first_name')  // Include user data, specifically the first_name
         ->whereNotNull('clockin')
             ->whereDate('date', $today)
             ->get()
@@ -209,9 +206,12 @@ class AttendanceController extends Controller
                 return [
                     'user_id' => $location->user_id,
                     'user_name' => $location->user->user_name,
+                    'position' => $location->user->position,
                     'first_name' => $location->user->first_name,
                     'clockin_location' => $location->clockin_location,
                     'clockout_location' => $location->clockout_location,
+                    'clockin_time' => $location->clockin,
+                    'clockout_time' => $location->clockout,
                 ];
             });
 

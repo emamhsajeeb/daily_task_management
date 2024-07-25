@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { Choice } from '../interfaces/choice';
-import choices, { defaultState } from './choices';
+import {expect} from 'chai';
+import {Choice} from '../interfaces/choice';
+import choices, {defaultState} from './choices';
 
 describe('reducers/choices', () => {
   it('should return same state when no action matches', () => {

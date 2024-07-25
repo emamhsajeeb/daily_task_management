@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TasksImported;
-use App\Http\Controllers\PushNotificationController;
-use App\Imports\TaskImport; // Class for handling Task import from Excel/CSV
-use App\Models\Author;
+use App\Imports\TaskImport;
 use App\Models\DailySummary;
 use App\Models\NCR;
 use App\Models\Objection;
-use App\Models\Tasks; // Model representing the tasks table
-use App\Models\User; // Model representing the users table (assuming team authentication)
+use App\Models\Tasks;
+use App\Models\User;
 use App\Models\WorkLocation;
 use App\Notifications\PushNotification;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Database\Eloquent\ModelNotFoundException; // Exception for not found models
-use Illuminate\Http\Request; // Represents the incoming HTTP request
-use Illuminate\Support\Facades\Auth; // Facade for team authentication
-use Illuminate\Support\Facades\DB; // Facade for interacting with the database
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
-use Throwable;
+
+// Class for handling Task import from Excel/CSV
+// Model representing the tasks table
+// Model representing the users table (assuming team authentication)
+// Exception for not found models
+// Represents the incoming HTTP request
+// Facade for team authentication
+// Facade for interacting with the database
 
 // Facade for working with Excel files
 

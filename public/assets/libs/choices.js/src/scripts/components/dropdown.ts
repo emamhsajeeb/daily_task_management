@@ -1,5 +1,5 @@
-import { ClassNames } from '../interfaces/class-names';
-import { PassedElementType } from '../interfaces/passed-element-type';
+import {ClassNames} from '../interfaces/class-names';
+import {PassedElementType} from '../interfaces/passed-element-type';
 
 export default class Dropdown {
   element: HTMLElement;

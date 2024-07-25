@@ -1,9 +1,9 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import items from './items';
 import groups from './groups';
 import choices from './choices';
 import loading from './loading';
-import { cloneObject } from '../lib/utils';
+import {cloneObject} from '../lib/utils';
 
 export const defaultState = {
   groups: [],

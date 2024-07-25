@@ -1,4 +1,5 @@
-import type { ChartMeta, PointElement } from '../types/index.js';
+import type {ChartMeta, PointElement} from '../types/index.js';
+
 export declare function fontString(pixelSize: number, fontStyle: string, fontFamily: string): string;
 /**
 * Request animation polyfill

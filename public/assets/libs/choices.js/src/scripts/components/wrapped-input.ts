@@ -1,4 +1,4 @@
-import { ClassNames } from '../interfaces/class-names';
+import {ClassNames} from '../interfaces/class-names';
 import WrappedElement from './wrapped-element';
 
 export default class WrappedInput extends WrappedElement {

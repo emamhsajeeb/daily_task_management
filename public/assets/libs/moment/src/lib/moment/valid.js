@@ -1,4 +1,4 @@
-import { isValid as _isValid } from '../create/valid';
+import {isValid as _isValid} from '../create/valid';
 import extend from '../utils/extend';
 import getParsingFlags from '../create/parsing-flags';
 

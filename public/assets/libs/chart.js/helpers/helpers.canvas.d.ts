@@ -1,5 +1,6 @@
-import type { Chart, Point, FontSpec, CanvasFontSpec, PointStyle, RenderTextOpts } from '../types/index.js';
-import type { TRBL, SplinePoint, RoundedRect, TRBLCorners } from '../types/geometric.js';
+import type {CanvasFontSpec, Chart, FontSpec, Point, PointStyle, RenderTextOpts} from '../types/index.js';
+import type {RoundedRect, SplinePoint, TRBL, TRBLCorners} from '../types/geometric.js';
+
 /**
  * Converts the given font object into a CSS font string.
  * @param font - A font object.

@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { State } from '../interfaces/state';
+import {expect} from 'chai';
+import {State} from '../interfaces/state';
 import * as actions from './misc';
 
 describe('actions/misc', () => {

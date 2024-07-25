@@ -1,4 +1,5 @@
 import SimpleBarCore from 'simplebar-core';
+
 export default class SimpleBar extends SimpleBarCore {
     static globalObserver: MutationObserver;
     static instances: WeakMap<object, any>;

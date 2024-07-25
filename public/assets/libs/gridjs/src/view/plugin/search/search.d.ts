@@ -1,5 +1,6 @@
-import { h } from 'preact';
-import { TCell } from '../../../types';
+import {h} from 'preact';
+import {TCell} from '../../../types';
+
 export interface SearchConfig {
     keyword?: string;
     ignoreHiddenColumns?: boolean;

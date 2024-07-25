@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createStore, Store as IStore, AnyAction } from 'redux';
-import { Choice } from '../interfaces/choice';
-import { Group } from '../interfaces/group';
-import { Item } from '../interfaces/item';
-import { State } from '../interfaces/state';
+import {AnyAction, createStore, Store as IStore} from 'redux';
+import {Choice} from '../interfaces/choice';
+import {Group} from '../interfaces/group';
+import {Item} from '../interfaces/item';
+import {State} from '../interfaces/state';
 import rootReducer from '../reducers/index';
 
 export default class Store {

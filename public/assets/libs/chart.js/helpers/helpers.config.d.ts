@@ -1,6 +1,14 @@
-import type { AnyObject } from '../types/basic.js';
-import type { ChartMeta } from '../types/index.js';
-import type { ResolverObjectKey, ResolverCache, ResolverProxy, DescriptorDefaults, Descriptor, ContextProxy } from './helpers.config.types.js';
+import type {AnyObject} from '../types/basic.js';
+import type {ChartMeta} from '../types/index.js';
+import type {
+    ContextProxy,
+    Descriptor,
+    DescriptorDefaults,
+    ResolverCache,
+    ResolverObjectKey,
+    ResolverProxy
+} from './helpers.config.types.js';
+
 export * from './helpers.config.types.js';
 /**
  * Creates a Proxy for resolving raw values for options.

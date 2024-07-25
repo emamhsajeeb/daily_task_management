@@ -1,5 +1,4 @@
-import { hooks } from '../utils/hooks';
-import hasOwnProp from '../utils/has-own-prop';
+import {hooks} from '../utils/hooks';
 import isUndefined from '../utils/is-undefined';
 import getParsingFlags from '../create/parsing-flags';
 

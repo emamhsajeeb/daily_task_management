@@ -1,5 +1,6 @@
-import type { ChartArea, FontSpec, Point } from '../types/index.js';
-import type { TRBL, TRBLCorners } from '../types/geometric.js';
+import type {ChartArea, FontSpec, Point} from '../types/index.js';
+import type {TRBL, TRBLCorners} from '../types/geometric.js';
+
 /**
  * @alias Chart.helpers.options
  * @namespace

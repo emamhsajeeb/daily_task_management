@@ -1,5 +1,6 @@
-import type { ChartArea } from '../types/index.js';
-import type { SplinePoint } from '../types/geometric.js';
+import type {ChartArea} from '../types/index.js';
+import type {SplinePoint} from '../types/geometric.js';
+
 export declare function splineCurve(firstPoint: SplinePoint, middlePoint: SplinePoint, afterPoint: SplinePoint, t: number): {
     previous: SplinePoint;
     next: SplinePoint;

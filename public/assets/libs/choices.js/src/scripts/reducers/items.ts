@@ -1,10 +1,6 @@
-import {
-  AddItemAction,
-  RemoveItemAction,
-  HighlightItemAction,
-} from '../actions/items';
-import { Item } from '../interfaces/item';
-import { State } from '../interfaces/state';
+import {AddItemAction, HighlightItemAction, RemoveItemAction,} from '../actions/items';
+import {Item} from '../interfaces/item';
+import {State} from '../interfaces/state';
 
 export const defaultState = [];
 

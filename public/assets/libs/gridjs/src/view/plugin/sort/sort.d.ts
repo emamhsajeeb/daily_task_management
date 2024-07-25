@@ -1,5 +1,6 @@
-import { h } from 'preact';
-import { Comparator, TCell, TColumnSort } from '../../../types';
+import {h} from 'preact';
+import {Comparator, TCell, TColumnSort} from '../../../types';
+
 export interface SortConfig {
     compare?: Comparator<TCell>;
 }

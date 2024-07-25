@@ -1,10 +1,10 @@
-import { makeGetSet } from '../moment/get-set';
-import { addFormatToken } from '../format/format';
-import { addUnitAlias } from './aliases';
-import { addUnitPriority } from './priorities';
-import { addRegexToken, match1to2, match2, match3to4, match5to6 } from '../parse/regex';
-import { addParseToken } from '../parse/token';
-import { HOUR, MINUTE, SECOND } from './constants';
+import {makeGetSet} from '../moment/get-set';
+import {addFormatToken} from '../format/format';
+import {addUnitAlias} from './aliases';
+import {addUnitPriority} from './priorities';
+import {addRegexToken, match1to2, match2, match3to4, match5to6} from '../parse/regex';
+import {addParseToken} from '../parse/token';
+import {HOUR, MINUTE, SECOND} from './constants';
 import toInt from '../utils/to-int';
 import zeroFill from '../utils/zero-fill';
 import getParsingFlags from '../create/parsing-flags';

@@ -1,5 +1,5 @@
-import { SetIsLoadingAction } from '../actions/misc';
-import { State } from '../interfaces/state';
+import {SetIsLoadingAction} from '../actions/misc';
+import {State} from '../interfaces/state';
 
 export const defaultState = false;
 

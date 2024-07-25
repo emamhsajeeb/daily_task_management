@@ -1,4 +1,4 @@
-import { createDuration } from './create';
+import {createDuration} from './create';
 
 export function clone () {
     return createDuration(this);

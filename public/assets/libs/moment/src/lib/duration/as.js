@@ -1,5 +1,5 @@
-import { daysToMonths, monthsToDays } from './bubble';
-import { normalizeUnits } from '../units/aliases';
+import {daysToMonths, monthsToDays} from './bubble';
+import {normalizeUnits} from '../units/aliases';
 import toInt from '../utils/to-int';
 
 export function as (units) {

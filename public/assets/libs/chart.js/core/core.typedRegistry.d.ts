@@ -29,5 +29,3 @@ export type IChartComponent = {
     overrides?: any;
     defaultRoutes: any;
 };
-import defaults from "./core.defaults.js";
-import { overrides } from "./core.defaults.js";

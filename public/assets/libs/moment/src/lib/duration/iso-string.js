@@ -1,4 +1,5 @@
 import absFloor from '../utils/abs-floor';
+
 var abs = Math.abs;
 
 function sign(x) {

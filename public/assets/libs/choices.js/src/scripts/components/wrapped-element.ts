@@ -1,6 +1,6 @@
-import { ClassNames } from '../interfaces/class-names';
-import { EventType } from '../interfaces/event-type';
-import { dispatchEvent } from '../lib/utils';
+import {ClassNames} from '../interfaces/class-names';
+import {EventType} from '../interfaces/event-type';
+import {dispatchEvent} from '../lib/utils';
 
 export default class WrappedElement {
   element: HTMLInputElement | HTMLSelectElement;

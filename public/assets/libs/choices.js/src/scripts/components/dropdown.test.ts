@@ -1,6 +1,6 @@
-import { expect } from 'chai';
+import {expect} from 'chai';
 import sinon from 'sinon';
-import { DEFAULT_CLASSNAMES } from '../defaults';
+import {DEFAULT_CLASSNAMES} from '../defaults';
 import Dropdown from './dropdown';
 
 describe('components/dropdown', () => {

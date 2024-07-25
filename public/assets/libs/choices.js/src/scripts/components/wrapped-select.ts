@@ -1,5 +1,5 @@
-import { ClassNames } from '../interfaces/class-names';
-import { Item } from '../interfaces/item';
+import {ClassNames} from '../interfaces/class-names';
+import {Item} from '../interfaces/item';
 import WrappedElement from './wrapped-element';
 
 export default class WrappedSelect extends WrappedElement {

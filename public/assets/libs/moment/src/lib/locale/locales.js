@@ -1,13 +1,12 @@
 import isArray from '../utils/is-array';
-import hasOwnProp from '../utils/has-own-prop';
 import isUndefined from '../utils/is-undefined';
 import compareArrays from '../utils/compare-arrays';
-import { deprecateSimple } from '../utils/deprecate';
-import { mergeConfigs } from './set';
-import { Locale } from './constructor';
+import {deprecateSimple} from '../utils/deprecate';
+import {mergeConfigs} from './set';
+import {Locale} from './constructor';
 import keys from '../utils/keys';
 
-import { baseConfig } from './base-config';
+import {baseConfig} from './base-config';
 
 // internal storage for locale config files
 var locales = {};

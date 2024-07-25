@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from '../constants';
+import {ACTION_TYPES} from '../constants';
 
 export interface AddGroupAction {
   type: typeof ACTION_TYPES.ADD_GROUP;

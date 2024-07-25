@@ -1,4 +1,4 @@
-import { normalizeUnits } from '../units/aliases';
+import {normalizeUnits} from '../units/aliases';
 import absFloor from '../utils/abs-floor';
 
 export function get (units) {

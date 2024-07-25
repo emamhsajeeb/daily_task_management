@@ -1,11 +1,11 @@
-import { configFromISO, configFromRFC2822 } from './from-string';
-import { configFromArray } from './from-array';
-import { getParseRegexForToken }   from '../parse/regex';
-import { addTimeToArrayFromToken } from '../parse/token';
-import { expandFormat, formatTokenFunctions, formattingTokens } from '../format/format';
+import {configFromISO, configFromRFC2822} from './from-string';
+import {configFromArray} from './from-array';
+import {getParseRegexForToken} from '../parse/regex';
+import {addTimeToArrayFromToken} from '../parse/token';
+import {expandFormat, formattingTokens, formatTokenFunctions} from '../format/format';
 import checkOverflow from './check-overflow';
-import { HOUR } from '../units/constants';
-import { hooks } from '../utils/hooks';
+import {HOUR} from '../units/constants';
+import {hooks} from '../utils/hooks';
 import getParsingFlags from './parsing-flags';
 
 // constant that refers to the ISO standard
