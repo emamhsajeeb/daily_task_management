@@ -924,25 +924,19 @@ class PendingRequest
                             $response->throw($this->throwCallback);
                         }
 
-                        $potentialTries = is_array($this->tries)
-                            ? count($this->tries) + 1
-                            : $this->tries;
-
-                        if ($attempt < $potentialTries && $shouldRetry) {
+                        if ($attempt < $this->tries && $shouldRetry) {
                             $response->throw();
                         }
 
-                        if ($potentialTries > 1 && $this->retryThrow) {
+                        if ($this->tries > 1 && $this->retryThrow) {
                             $response->throw();
                         }
                     }
                 });
             } catch (ConnectException $e) {
-                $exception = new ConnectionException($e->getMessage(), 0, $e);
+                $this->dispatchConnectionFailedEvent(new Request($e->getRequest()));
 
-                $this->dispatchConnectionFailedEvent(new Request($e->getRequest()), $exception);
-
-                throw $exception;
+                throw new ConnectionException($e->getMessage(), 0, $e);
             }
         }, $this->retryDelay ?? 100, function ($exception) use (&$shouldRetry) {
             $result = $shouldRetry ?? ($this->retryWhenCallback ? call_user_func($this->retryWhenCallback, $exception, $this) : true);
@@ -1030,11 +1024,9 @@ class PendingRequest
             })
             ->otherwise(function (OutOfBoundsException|TransferException $e) {
                 if ($e instanceof ConnectException) {
-                    $exception = new ConnectionException($e->getMessage(), 0, $e);
+                    $this->dispatchConnectionFailedEvent(new Request($e->getRequest()));
 
-                    $this->dispatchConnectionFailedEvent(new Request($e->getRequest()), $exception);
-
-                    return $exception;
+                    return new ConnectionException($e->getMessage(), 0, $e);
                 }
 
                 return $e instanceof RequestException && $e->hasResponse() ? $this->populateResponse($this->newResponse($e->getResponse())) : $e;
@@ -1500,13 +1492,12 @@ class PendingRequest
      * Dispatch the ConnectionFailed event if a dispatcher is available.
      *
      * @param  \Illuminate\Http\Client\Request  $request
-     * @param  \Illuminate\Http\Client\ConnectionException  $exception
      * @return void
      */
-    protected function dispatchConnectionFailedEvent(Request $request, ConnectionException $exception)
+    protected function dispatchConnectionFailedEvent(Request $request)
     {
         if ($dispatcher = $this->factory?->getDispatcher()) {
-            $dispatcher->dispatch(new ConnectionFailed($request, $exception));
+            $dispatcher->dispatch(new ConnectionFailed($request));
         }
     }
 

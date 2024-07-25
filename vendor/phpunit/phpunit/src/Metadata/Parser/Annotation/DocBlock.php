@@ -120,8 +120,6 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
-     *
-     * @throws InvalidVersionRequirementException
      */
     public function requirements(): array
     {

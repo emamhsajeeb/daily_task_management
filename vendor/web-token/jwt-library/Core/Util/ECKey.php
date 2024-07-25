@@ -6,11 +6,13 @@ namespace Jose\Component\Core\Util;
 
 use InvalidArgumentException;
 use Jose\Component\Core\JWK;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use RuntimeException;
 use function extension_loaded;
 use function is_array;
 use function is_string;
 use const OPENSSL_KEYTYPE_EC;
+use const PHP_EOL;
 use const STR_PAD_LEFT;
 
 /**
@@ -37,10 +39,10 @@ final class ECKey
             default => throw new InvalidArgumentException('Unsupported curve.'),
         };
         $der .= self::getKey($jwk);
-        $pem = '-----BEGIN PUBLIC KEY-----' . "\n";
-        $pem .= chunk_split(base64_encode($der), 64, "\n");
+        $pem = '-----BEGIN PUBLIC KEY-----' . PHP_EOL;
+        $pem .= chunk_split(base64_encode($der), 64, PHP_EOL);
 
-        return $pem . ('-----END PUBLIC KEY-----' . "\n");
+        return $pem . ('-----END PUBLIC KEY-----' . PHP_EOL);
     }
 
     public static function convertPrivateKeyToPEM(JWK $jwk): string
@@ -53,10 +55,10 @@ final class ECKey
             default => throw new InvalidArgumentException('Unsupported curve.'),
         };
         $der .= self::getKey($jwk);
-        $pem = '-----BEGIN EC PRIVATE KEY-----' . "\n";
-        $pem .= chunk_split(base64_encode($der), 64, "\n");
+        $pem = '-----BEGIN EC PRIVATE KEY-----' . PHP_EOL;
+        $pem .= chunk_split(base64_encode($der), 64, PHP_EOL);
 
-        return $pem . ('-----END EC PRIVATE KEY-----' . "\n");
+        return $pem . ('-----END EC PRIVATE KEY-----' . PHP_EOL);
     }
 
     /**

@@ -139,7 +139,7 @@ trait InteractsWithMedia
         }
 
         $downloader = config('media-library.media_downloader', DefaultDownloader::class);
-        $temporaryFile = (new $downloader)->getTempFile($url);
+        $temporaryFile = (new $downloader())->getTempFile($url);
         $this->guardAgainstInvalidMimeType($temporaryFile, $allowedMimeTypes);
 
         $filename = basename(parse_url($url, PHP_URL_PATH));
@@ -383,7 +383,7 @@ trait InteractsWithMedia
         $this->removeMediaItemsNotPresentInArray($newMediaArray, $collectionName);
 
         $mediaClass = $this->getMediaModel();
-        $mediaInstance = new $mediaClass;
+        $mediaInstance = new $mediaClass();
         $keyName = $mediaInstance->getKeyName();
 
         return collect($newMediaArray)
@@ -530,12 +530,8 @@ trait InteractsWithMedia
 
     public function loadMedia(string $collectionName): Collection
     {
-        if (config('media-library.force_lazy_loading') && $this->exists) {
-            $this->loadMissing('media');
-        }
-
         $collection = $this->exists
-            ? $this->media
+            ? $this->loadMissing('media')->media
             : collect($this->unAttachedMediaLibraryItems)->pluck('media');
 
         $collection = new MediaCollections\Models\Collections\MediaCollection($collection);
@@ -578,9 +574,13 @@ trait InteractsWithMedia
         }
     }
 
-    public function registerMediaConversions(?Media $media = null): void {}
+    public function registerMediaConversions(?Media $media = null): void
+    {
+    }
 
-    public function registerMediaCollections(): void {}
+    public function registerMediaCollections(): void
+    {
+    }
 
     public function registerAllMediaConversions(?Media $media = null): void
     {

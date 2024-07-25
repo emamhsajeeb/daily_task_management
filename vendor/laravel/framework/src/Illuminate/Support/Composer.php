@@ -204,7 +204,7 @@ class Composer
      */
     protected function phpBinary()
     {
-        return (string) (new PhpExecutableFinder)->find(false);
+        return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false));
     }
 
     /**

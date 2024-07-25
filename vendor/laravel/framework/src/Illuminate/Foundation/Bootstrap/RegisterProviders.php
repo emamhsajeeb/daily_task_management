@@ -3,7 +3,6 @@
 namespace Illuminate\Foundation\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
 
 class RegisterProviders
 {
@@ -58,7 +57,7 @@ class RegisterProviders
         $app->make('config')->set(
             'app.providers',
             array_merge(
-                $app->make('config')->get('app.providers') ?? ServiceProvider::defaultProviders()->toArray(),
+                $app->make('config')->get('app.providers'),
                 static::$merge,
                 array_values($packageProviders ?? []),
             ),

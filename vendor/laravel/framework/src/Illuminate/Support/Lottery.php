@@ -253,16 +253,6 @@ class Lottery
      *
      * @return void
      */
-    public static function determineResultsNormally()
-    {
-        return static::determineResultNormally();
-    }
-
-    /**
-     * Indicate that the lottery results should be determined normally.
-     *
-     * @return void
-     */
     public static function determineResultNormally()
     {
         static::$resultFactory = null;

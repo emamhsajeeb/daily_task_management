@@ -23,14 +23,7 @@ class SetCacheHeaders
         }
 
         return collect($options)
-            ->map(function ($value, $key) {
-                if (is_bool($value)) {
-                    return $value ? $key : null;
-                }
-
-                return is_int($key) ? $value : "{$key}={$value}";
-            })
-            ->filter()
+            ->map(fn ($value, $key) => is_int($key) ? $value : "{$key}={$value}")
             ->map(fn ($value) => Str::finish($value, ';'))
             ->pipe(fn ($options) => rtrim(static::class.':'.$options->implode(''), ';'));
     }

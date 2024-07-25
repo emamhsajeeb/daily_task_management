@@ -142,11 +142,7 @@ class ViewMakeCommand extends GeneratorCommand
 
         File::ensureDirectoryExists(dirname($this->getTestPath()), 0755, true);
 
-        $result = File::put($path = $this->getTestPath(), $contents);
-
-        $this->components->info(sprintf('%s [%s] created successfully.', 'Test', $path));
-
-        return $result !== false;
+        return File::put($this->getTestPath(), $contents);
     }
 
     /**

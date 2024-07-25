@@ -16,16 +16,13 @@ use function explode;
 use function method_exists;
 use function preg_replace;
 use function rtrim;
-use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\AnnotationsAreNotSupportedForInternalClassesException;
-use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\ReflectionException;
@@ -150,23 +147,13 @@ final class AnnotationParser implements Parser
             }
         }
 
-        try {
-            $result = array_merge(
-                $result,
-                $this->parseRequirements(
-                    AnnotationRegistry::getInstance()->forClassName($className)->requirements(),
-                    'class',
-                ),
-            );
-        } catch (InvalidVersionRequirementException $e) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
-                sprintf(
-                    'Class %s is annotated using an invalid version requirement: %s',
-                    $className,
-                    $e->getMessage(),
-                ),
-            );
-        }
+        $result = array_merge(
+            $result,
+            $this->parseRequirements(
+                AnnotationRegistry::getInstance()->forClassName($className)->requirements(),
+                'class',
+            ),
+        );
 
         return MetadataCollection::fromArray($result);
     }
@@ -377,24 +364,13 @@ final class AnnotationParser implements Parser
         }
 
         if (method_exists($className, $methodName)) {
-            try {
-                $result = array_merge(
-                    $result,
-                    $this->parseRequirements(
-                        AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements(),
-                        'method',
-                    ),
-                );
-            } catch (InvalidVersionRequirementException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
-                    sprintf(
-                        'Method %s::%s is annotated using an invalid version requirement: %s',
-                        $className,
-                        $methodName,
-                        $e->getMessage(),
-                    ),
-                );
-            }
+            $result = array_merge(
+                $result,
+                $this->parseRequirements(
+                    AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements(),
+                    'method',
+                ),
+            );
         }
 
         return MetadataCollection::fromArray($result);

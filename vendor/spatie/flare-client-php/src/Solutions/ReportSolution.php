@@ -2,21 +2,19 @@
 
 namespace Spatie\FlareClient\Solutions;
 
-use Spatie\ErrorSolutions\Contracts\RunnableSolution;
-use Spatie\ErrorSolutions\Contracts\Solution;
-use Spatie\Ignition\Contracts\RunnableSolution as IgnitionRunnableSolution;
-use Spatie\Ignition\Contracts\Solution as IgnitionSolution;
+use Spatie\Ignition\Contracts\RunnableSolution;
+use Spatie\Ignition\Contracts\Solution as SolutionContract;
 
 class ReportSolution
 {
-    protected Solution|IgnitionSolution $solution;
+    protected SolutionContract $solution;
 
-    public function __construct(Solution|IgnitionSolution $solution)
+    public function __construct(SolutionContract $solution)
     {
         $this->solution = $solution;
     }
 
-    public static function fromSolution(Solution|IgnitionSolution $solution): self
+    public static function fromSolution(SolutionContract $solution): self
     {
         return new self($solution);
     }
@@ -26,7 +24,7 @@ class ReportSolution
      */
     public function toArray(): array
     {
-        $isRunnable = ($this->solution instanceof RunnableSolution || $this->solution instanceof IgnitionRunnableSolution);
+        $isRunnable = ($this->solution instanceof RunnableSolution);
 
         return [
             'class' => get_class($this->solution),

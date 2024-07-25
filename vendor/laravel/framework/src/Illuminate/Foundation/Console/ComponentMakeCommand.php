@@ -43,7 +43,11 @@ class ComponentMakeCommand extends GeneratorCommand
     public function handle()
     {
         if ($this->option('view')) {
-            return $this->writeView();
+            $this->writeView(function () {
+                $this->components->info($this->type.' created successfully.');
+            });
+
+            return;
         }
 
         if (parent::handle() === false && ! $this->option('force')) {
@@ -58,9 +62,10 @@ class ComponentMakeCommand extends GeneratorCommand
     /**
      * Write the view for the component.
      *
+     * @param  callable|null  $onSuccess
      * @return void
      */
-    protected function writeView()
+    protected function writeView($onSuccess = null)
     {
         $path = $this->viewPath(
             str_replace('.', '/', 'components.'.$this->getView()).'.blade.php'
@@ -83,7 +88,9 @@ class ComponentMakeCommand extends GeneratorCommand
 </div>'
         );
 
-        $this->components->info(sprintf('%s [%s] created successfully.', 'View', $path));
+        if ($onSuccess) {
+            $onSuccess();
+        }
     }
 
     /**

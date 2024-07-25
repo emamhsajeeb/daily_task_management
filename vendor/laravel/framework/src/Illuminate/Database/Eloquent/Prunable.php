@@ -34,7 +34,7 @@ trait Prunable
     /**
      * Get the prunable model query.
      *
-     * @return \Illuminate\Database\Eloquent\Builder<static>
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function prunable()
     {

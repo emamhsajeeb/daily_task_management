@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -10,12 +11,16 @@ export default function ConfirmPassword() {
         password: '',
     });
 
+    useEffect(() => {
+        return () => {
+            reset('password');
+        };
+    }, []);
+
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.confirm'), {
-            onFinish: () => reset('password'),
-        });
+        post(route('password.confirm'));
     };
 
     return (

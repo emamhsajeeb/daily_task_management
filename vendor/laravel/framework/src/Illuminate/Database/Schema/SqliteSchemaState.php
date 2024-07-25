@@ -16,18 +16,19 @@ class SqliteSchemaState extends SchemaState
     public function dump(Connection $connection, $path)
     {
         with($process = $this->makeProcess(
-            $this->baseCommand().' ".schema --indent"'
+            $this->baseCommand().' .schema'
         ))->setTimeout(null)->mustRun(null, array_merge($this->baseVariables($this->connection->getConfig()), [
             //
         ]));
 
-        $migrations = preg_replace('/CREATE TABLE sqlite_.+\);[\r\n]+/is', '', $process->getOutput());
+        $migrations = collect(preg_split("/\r\n|\n|\r/", $process->getOutput()))->filter(function ($line) {
+            return stripos($line, 'sqlite_sequence') === false &&
+                   strlen($line) > 0;
+        })->all();
 
-        $this->files->put($path, $migrations.PHP_EOL);
+        $this->files->put($path, implode(PHP_EOL, $migrations).PHP_EOL);
 
-        if ($this->hasMigrationTable()) {
-            $this->appendMigrationData($path);
-        }
+        $this->appendMigrationData($path);
     }
 
     /**
@@ -39,7 +40,7 @@ class SqliteSchemaState extends SchemaState
     protected function appendMigrationData(string $path)
     {
         with($process = $this->makeProcess(
-            $this->baseCommand().' ".dump \''.$this->getMigrationTable().'\'"'
+            $this->baseCommand().' ".dump \''.$this->migrationTable.'\'"'
         ))->mustRun(null, array_merge($this->baseVariables($this->connection->getConfig()), [
             //
         ]));

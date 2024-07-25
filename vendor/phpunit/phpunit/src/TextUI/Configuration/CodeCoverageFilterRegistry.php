@@ -34,9 +34,6 @@ final class CodeCoverageFilterRegistry
         return self::$instance;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function get(): Filter
     {
         assert($this->filter !== null);
@@ -44,9 +41,6 @@ final class CodeCoverageFilterRegistry
         return $this->filter;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function init(Configuration $configuration, bool $force = false): void
     {
         if (!$configuration->hasCoverageReport() && !$force) {
@@ -66,9 +60,6 @@ final class CodeCoverageFilterRegistry
         }
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function configured(): bool
     {
         return $this->configured;

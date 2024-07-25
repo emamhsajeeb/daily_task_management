@@ -73,11 +73,11 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
      */
     private static array $freshCache = [];
 
-    public const VERSION = '7.1.2';
-    public const VERSION_ID = 70102;
+    public const VERSION = '7.1.1';
+    public const VERSION_ID = 70101;
     public const MAJOR_VERSION = 7;
     public const MINOR_VERSION = 1;
-    public const RELEASE_VERSION = 2;
+    public const RELEASE_VERSION = 1;
     public const EXTRA_VERSION = '';
 
     public const END_OF_MAINTENANCE = '01/2025';
@@ -528,17 +528,10 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
             touch($oldContainerDir.'.legacy');
         }
 
-        $cacheDir = $this->container->getParameter('kernel.cache_dir');
-        $preload = $this instanceof WarmableInterface ? (array) $this->warmUp($cacheDir, $buildDir) : [];
+        $preload = $this instanceof WarmableInterface ? (array) $this->warmUp($this->container->getParameter('kernel.cache_dir'), $buildDir) : [];
 
         if ($this->container->has('cache_warmer')) {
-            $cacheWarmer = $this->container->get('cache_warmer');
-
-            if ($cacheDir !== $buildDir) {
-                $cacheWarmer->enableOptionalWarmers();
-            }
-
-            $preload = array_merge($preload, (array) $cacheWarmer->warmUp($cacheDir, $buildDir));
+            $preload = array_merge($preload, (array) $this->container->get('cache_warmer')->warmUp($this->container->getParameter('kernel.cache_dir'), $buildDir));
         }
 
         if ($preload && file_exists($preloadFile = $buildDir.'/'.$class.'.preload.php')) {

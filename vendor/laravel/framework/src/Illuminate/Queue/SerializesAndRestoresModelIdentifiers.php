@@ -112,11 +112,9 @@ trait SerializesAndRestoresModelIdentifiers
     /**
      * Get the query for model restoration.
      *
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     *
-     * @param  TModel  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array|int  $ids
-     * @return \Illuminate\Database\Eloquent\Builder<TModel>
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function getQueryForModelRestoration($model, $ids)
     {

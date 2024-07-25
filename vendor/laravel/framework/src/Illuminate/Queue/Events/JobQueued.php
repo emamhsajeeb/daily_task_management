@@ -14,7 +14,7 @@ class JobQueued
     /**
      * The queue name.
      *
-     * @var string|null
+     * @var string
      */
     public $queue;
 

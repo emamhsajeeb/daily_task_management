@@ -98,7 +98,9 @@ class ExternalAccountCredentials implements
             );
         }
 
-        $this->serviceAccountImpersonationUrl = $jsonKey['service_account_impersonation_url'] ?? null;
+        if (array_key_exists('service_account_impersonation_url', $jsonKey)) {
+            $this->serviceAccountImpersonationUrl = $jsonKey['service_account_impersonation_url'];
+        }
 
         $this->quotaProject = $jsonKey['quota_project_id'] ?? null;
         $this->workforcePoolUserProject = $jsonKey['workforce_pool_user_project'] ?? null;
@@ -274,27 +276,9 @@ class ExternalAccountCredentials implements
         return $stsToken;
     }
 
-    /**
-     * Get the cache token key for the credentials.
-     * The cache token key format depends on the type of source
-     * The format for the cache key one of the following:
-     * FetcherCacheKey.Scope.[ServiceAccount].[TokenType].[WorkforcePoolUserProject]
-     * FetcherCacheKey.Audience.[ServiceAccount].[TokenType].[WorkforcePoolUserProject]
-     *
-     * @return ?string;
-     */
-    public function getCacheKey(): ?string
+    public function getCacheKey()
     {
-        $scopeOrAudience = $this->auth->getAudience();
-        if (!$scopeOrAudience) {
-            $scopeOrAudience = $this->auth->getScope();
-        }
-
-        return $this->auth->getSubjectTokenFetcher()->getCacheKey() .
-            '.' . $scopeOrAudience .
-            '.' . ($this->serviceAccountImpersonationUrl ?? '') .
-            '.' . ($this->auth->getSubjectTokenType() ?? '') .
-            '.' . ($this->workforcePoolUserProject ?? '');
+        return $this->auth->getCacheKey();
     }
 
     public function getLastReceivedToken()

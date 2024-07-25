@@ -118,7 +118,7 @@ class ExceptionHandlerFake implements ExceptionHandler, Fake
         }
 
         throw new ExpectationFailedException(sprintf(
-            'The expected [%s] exception was reported.',
+            'The expected [%s] exception was not reported.',
             is_string($exception) ? $exception : $this->firstClosureParameterType($exception)
         ));
     }

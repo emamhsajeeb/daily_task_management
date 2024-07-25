@@ -229,7 +229,9 @@ trait EnumeratesValues
      */
     public function dd(...$args)
     {
-        dd($this->all(), ...$args);
+        $this->dump(...$args);
+
+        dd();
     }
 
     /**
@@ -364,10 +366,6 @@ trait EnumeratesValues
 
     /**
      * Determine if the collection is not empty.
-     *
-     * @phpstan-assert-if-true TValue $this->first()
-     *
-     * @phpstan-assert-if-false null $this->first()
      *
      * @return bool
      */

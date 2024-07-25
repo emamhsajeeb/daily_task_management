@@ -64,6 +64,13 @@ trait MakesHttpRequests
     protected $withCredentials = false;
 
     /**
+     * The latest test response (if any).
+     *
+     * @var \Illuminate\Testing\TestResponse|null
+     */
+    public static $latestResponse;
+
+    /**
      * Define additional headers to be sent with the request.
      *
      * @param  array  $headers
@@ -585,7 +592,7 @@ trait MakesHttpRequests
             $response = $this->followRedirects($response);
         }
 
-        return $this->createTestResponse($response, $request);
+        return static::$latestResponse = $this->createTestResponse($response, $request);
     }
 
     /**

@@ -47,8 +47,6 @@ final class Builder
         'coverage-html=',
         'coverage-php=',
         'coverage-text==',
-        'only-summary-for-coverage-text',
-        'show-uncovered-for-coverage-text',
         'coverage-xml=',
         'path-coverage',
         'disallow-test-output',
@@ -341,17 +339,9 @@ final class Builder
                         $option[1] = 'php://stdout';
                     }
 
-                    $coverageText = $option[1];
-
-                    break;
-
-                case '--only-summary-for-coverage-text':
-                    $coverageTextShowOnlySummary = true;
-
-                    break;
-
-                case '--show-uncovered-for-coverage-text':
-                    $coverageTextShowUncoveredFiles = true;
+                    $coverageText                   = $option[1];
+                    $coverageTextShowUncoveredFiles = false;
+                    $coverageTextShowOnlySummary    = false;
 
                     break;
 
@@ -797,8 +787,6 @@ final class Builder
                     }
 
                     $coverageFilter[] = $option[1];
-
-                    $optionAllowedMultipleTimes = true;
 
                     break;
 

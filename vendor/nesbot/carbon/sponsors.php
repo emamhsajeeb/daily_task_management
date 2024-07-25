@@ -63,13 +63,18 @@ function getOpenCollectiveSponsors(): string
         'website' => 'https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=docs',
     ];
 
-    $list = array_filter($members, static fn (array $member): bool => $member['totalAmountDonated'] > 3 && $member['role'] !== 'HOST' && (
-        $member['totalAmountDonated'] > 100 ||
-        $member['lastTransactionAt'] > CarbonImmutable::now()
-            ->subMonthsNoOverflow(getMaxHistoryMonthsByAmount($member['lastTransactionAmount']))
-            ->format('Y-m-d h:i') ||
-        $member['isActive'] && $member['lastTransactionAmount'] >= 30
-    ));
+    $list = array_filter($members, static function ($member): bool {
+        return ($member['lastTransactionAmount'] > 3 || $member['isActive']) &&
+            $member['role'] === 'BACKER' &&
+            $member['type'] !== 'USER' &&
+            (
+                $member['totalAmountDonated'] > 100 ||
+                $member['lastTransactionAt'] > CarbonImmutable::now()
+                    ->subMonthsNoOverflow(getMaxHistoryMonthsByAmount($member['lastTransactionAmount']))
+                    ->format('Y-m-d h:i') ||
+                $member['isActive'] && $member['lastTransactionAmount'] >= 30
+            );
+    });
 
     $list = array_map(static function (array $member): array {
         $createdAt = CarbonImmutable::parse($member['createdAt']);
@@ -129,18 +134,8 @@ function getOpenCollectiveSponsors(): string
             ?: ($b['totalAmountDonated'] <=> $a['totalAmountDonated']);
     });
 
-    $membersByUrl = [];
-    $output = '';
-
-    foreach ($list as $member) {
-        $url = $member['website'] ?? $member['profile'];
-
-        if (isset($membersByUrl[$url]) || !\in_array($member['status'], ['sponsor', 'backerPlus'], true)) {
-            continue;
-        }
-
-        $membersByUrl[$url] = $member;
-        $href = htmlspecialchars($url);
+    return implode('', array_map(static function (array $member) use ($customSponsorImages): string {
+        $href = htmlspecialchars($member['website'] ?? $member['profile']);
         $src = $customSponsorImages[$member['MemberId'] ?? ''] ?? $member['image'] ?? (strtr($member['profile'], ['https://opencollective.com/' => 'https://images.opencollective.com/']).'/avatar/256.png');
         [$x, $y] = @getimagesize($src) ?: [0, 0];
         $validImage = ($x && $y);
@@ -157,11 +152,7 @@ function getOpenCollectiveSponsors(): string
         };
 
         $width = min($height * 2, $validImage ? round($x * $height / $y) : $height);
-
-        if (!str_contains($href, 'utm_source') && !preg_match('/^https?:\/\/onlinekasyno-polis\.pl(\/.*)?$/', $href)) {
-            $href .= (!str_contains($href, '?') ? '?' : '&amp;').'utm_source=opencollective&amp;utm_medium=github&amp;utm_campaign=Carbon';
-        }
-
+        $href .= (strpos($href, '?') === false ? '?' : '&amp;').'utm_source=opencollective&amp;utm_medium=github&amp;utm_campaign=Carbon';
         $title = getHtmlAttribute(($member['description'] ?? null) ?: $member['name']);
         $alt = getHtmlAttribute($member['name']);
 
@@ -170,12 +161,10 @@ function getOpenCollectiveSponsors(): string
             $height *= 1.5;
         }
 
-        $output .= "\n".'<a title="'.$title.'" href="'.$href.'" target="_blank"'.$rel.'>'.
+        return "\n".'<a title="'.$title.'" href="'.$href.'" target="_blank"'.$rel.'>'.
             '<img alt="'.$alt.'" src="'.$src.'" width="'.$width.'" height="'.$height.'">'.
             '</a>';
-    }
-
-    return $output;
+    }, $list))."\n";
 }
 
 file_put_contents('readme.md', preg_replace_callback(
@@ -183,5 +172,5 @@ file_put_contents('readme.md', preg_replace_callback(
     static function (array $match): string {
         return $match[1].getOpenCollectiveSponsors().$match[2];
     },
-    file_get_contents('readme.md'),
+    file_get_contents('readme.md')
 ));

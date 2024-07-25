@@ -12,17 +12,8 @@ final class TimeoutExecutor implements ExecutorInterface
     private $loop;
     private $timeout;
 
-    /**
-     * @param ExecutorInterface $executor
-     * @param float $timeout
-     * @param ?LoopInterface $loop
-     */
-    public function __construct(ExecutorInterface $executor, $timeout, $loop = null)
+    public function __construct(ExecutorInterface $executor, $timeout, LoopInterface $loop = null)
     {
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #3 ($loop) expected null|React\EventLoop\LoopInterface');
-        }
-
         $this->executor = $executor;
         $this->loop = $loop ?: Loop::get();
         $this->timeout = $timeout;

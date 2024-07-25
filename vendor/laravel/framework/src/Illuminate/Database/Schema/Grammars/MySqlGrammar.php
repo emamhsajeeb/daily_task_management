@@ -290,10 +290,9 @@ class MySqlGrammar extends Grammar
      */
     public function compileAdd(Blueprint $blueprint, Fluent $command)
     {
-        return sprintf('alter table %s add %s',
-            $this->wrapTable($blueprint),
-            $this->getColumn($blueprint, $command->column)
-        );
+        $columns = $this->prefixArray('add', $this->getColumns($blueprint));
+
+        return 'alter table '.$this->wrapTable($blueprint).' '.implode(', ', $columns);
     }
 
     /**
@@ -387,17 +386,20 @@ class MySqlGrammar extends Grammar
      */
     public function compileChange(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
-        $column = $command->column;
+        $columns = [];
 
-        $sql = sprintf('alter table %s %s %s%s %s',
-            $this->wrapTable($blueprint),
-            is_null($column->renameTo) ? 'modify' : 'change',
-            $this->wrap($column),
-            is_null($column->renameTo) ? '' : ' '.$this->wrap($column->renameTo),
-            $this->getType($column)
-        );
+        foreach ($blueprint->getChangedColumns() as $column) {
+            $sql = sprintf('%s %s%s %s',
+                is_null($column->renameTo) ? 'modify' : 'change',
+                $this->wrap($column),
+                is_null($column->renameTo) ? '' : ' '.$this->wrap($column->renameTo),
+                $this->getType($column)
+            );
 
-        return $this->addModifiers($sql, $blueprint, $column);
+            $columns[] = $this->addModifiers($sql, $blueprint, $column);
+        }
+
+        return 'alter table '.$this->wrapTable($blueprint).' '.implode(', ', $columns);
     }
 
     /**

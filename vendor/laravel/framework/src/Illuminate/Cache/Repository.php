@@ -8,15 +8,8 @@ use Closure;
 use DateTimeInterface;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
-use Illuminate\Cache\Events\ForgettingKey;
-use Illuminate\Cache\Events\KeyForgetFailed;
 use Illuminate\Cache\Events\KeyForgotten;
-use Illuminate\Cache\Events\KeyWriteFailed;
 use Illuminate\Cache\Events\KeyWritten;
-use Illuminate\Cache\Events\RetrievingKey;
-use Illuminate\Cache\Events\RetrievingManyKeys;
-use Illuminate\Cache\Events\WritingKey;
-use Illuminate\Cache\Events\WritingManyKeys;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -43,7 +36,7 @@ class Repository implements ArrayAccess, CacheContract
     /**
      * The event dispatcher implementation.
      *
-     * @var \Illuminate\Contracts\Events\Dispatcher|null
+     * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected $events;
 
@@ -111,8 +104,6 @@ class Repository implements ArrayAccess, CacheContract
             return $this->many($key);
         }
 
-        $this->event(new RetrievingKey($this->getName(), $key));
-
         $value = $this->store->get($this->itemKey($key));
 
         // If we could not find the cache value, we will fire the missed event and get
@@ -139,8 +130,6 @@ class Repository implements ArrayAccess, CacheContract
      */
     public function many(array $keys)
     {
-        $this->event(new RetrievingManyKeys($this->getName(), $keys));
-
         $values = $this->store->many(collect($keys)->map(function ($value, $key) {
             return is_string($key) ? $key : $value;
         })->values()->all());
@@ -233,14 +222,10 @@ class Repository implements ArrayAccess, CacheContract
             return $this->forget($key);
         }
 
-        $this->event(new WritingKey($this->getName(), $key, $value, $seconds));
-
         $result = $this->store->put($this->itemKey($key), $value, $seconds);
 
         if ($result) {
             $this->event(new KeyWritten($this->getName(), $key, $value, $seconds));
-        } else {
-            $this->event(new KeyWriteFailed($this->getName(), $key, $value, $seconds));
         }
 
         return $result;
@@ -275,15 +260,11 @@ class Repository implements ArrayAccess, CacheContract
             return $this->deleteMultiple(array_keys($values));
         }
 
-        $this->event(new WritingManyKeys($this->getName(), array_keys($values), array_values($values), $seconds));
-
         $result = $this->store->putMany($values, $seconds);
 
-        foreach ($values as $key => $value) {
-            if ($result) {
+        if ($result) {
+            foreach ($values as $key => $value) {
                 $this->event(new KeyWritten($this->getName(), $key, $value, $seconds));
-            } else {
-                $this->event(new KeyWriteFailed($this->getName(), $key, $value, $seconds));
             }
         }
 
@@ -391,14 +372,10 @@ class Repository implements ArrayAccess, CacheContract
      */
     public function forever($key, $value)
     {
-        $this->event(new WritingKey($this->getName(), $key, $value));
-
         $result = $this->store->forever($this->itemKey($key), $value);
 
         if ($result) {
             $this->event(new KeyWritten($this->getName(), $key, $value));
-        } else {
-            $this->event(new KeyWriteFailed($this->getName(), $key, $value));
         }
 
         return $result;
@@ -479,13 +456,9 @@ class Repository implements ArrayAccess, CacheContract
      */
     public function forget($key)
     {
-        $this->event(new ForgettingKey($this->getName(), $key));
-
         return tap($this->store->forget($this->itemKey($key)), function ($result) use ($key) {
             if ($result) {
                 $this->event(new KeyForgotten($this->getName(), $key));
-            } else {
-                $this->event(new KeyForgetFailed($this->getName(), $key));
             }
         });
     }
@@ -661,7 +634,7 @@ class Repository implements ArrayAccess, CacheContract
     /**
      * Get the event dispatcher instance.
      *
-     * @return \Illuminate\Contracts\Events\Dispatcher|null
+     * @return \Illuminate\Contracts\Events\Dispatcher
      */
     public function getEventDispatcher()
     {

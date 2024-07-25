@@ -13,7 +13,8 @@ class File implements \Stringable
         public string $name,
         public int $size,
         public string $mimeType
-    ) {}
+    ) {
+    }
 
     public function __toString(): string
     {

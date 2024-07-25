@@ -21,7 +21,8 @@ class Filesystem
 
     public function __construct(
         protected Factory $filesystem
-    ) {}
+    ) {
+    }
 
     public function add(string $file, Media $media, ?string $targetFileName = null): bool
     {
@@ -242,7 +243,6 @@ class Filesystem
         $responsiveImagePaths = array_filter(
             $allFilePaths,
             fn (string $path) => Str::contains($path, $media->name.'___'.$conversionName)
-
         );
 
         $this->filesystem->disk($media->disk)->delete($responsiveImagePaths);
@@ -261,26 +261,12 @@ class Filesystem
 
         $oldMedia = (clone $media)->fill($media->getOriginal());
 
-        $oldPath = $factory->getPath($oldMedia);
-        $newPath = $factory->getPath($media);
-
-        if ($oldPath === $newPath) {
+        if ($factory->getPath($oldMedia) === $factory->getPath($media)) {
             return;
         }
 
-        // If the media is stored on S3, we need to move all files in the directory
-        if ($media->getDiskDriverName() === 's3') {
-            $allFiles = $this->filesystem->disk($media->disk)->allFiles($oldPath);
-
-            foreach ($allFiles as $file) {
-                $newFilePath = str_replace($oldPath, $newPath, $file);
-                $this->filesystem->disk($media->disk)->move($file, $newFilePath);
-            }
-
-            return;
-        }
-
-        $this->filesystem->disk($media->disk)->move($oldPath, $newPath);
+        $this->filesystem->disk($media->disk)
+            ->move($factory->getPath($oldMedia), $factory->getPath($media));
     }
 
     protected function renameMediaFile(Media $media): void

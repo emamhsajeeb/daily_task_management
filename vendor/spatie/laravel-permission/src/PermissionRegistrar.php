@@ -36,7 +36,8 @@ class PermissionRegistrar
 
     public string $teamsKey;
 
-    protected string|int|null $teamId = null;
+    /** @var int|string */
+    protected $teamId = null;
 
     public string $cacheKey;
 

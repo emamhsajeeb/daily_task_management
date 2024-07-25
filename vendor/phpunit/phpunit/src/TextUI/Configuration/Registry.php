@@ -41,17 +41,13 @@ final class Registry
             return true;
         }
 
-        // @codeCoverageIgnoreStart
         return false;
-        // @codeCoverageIgnoreEnd
     }
 
     /**
      * This method is used by the "run test(s) in separate process" templates.
      *
      * @noinspection PhpUnused
-     *
-     * @codeCoverageIgnore
      */
     public static function loadFrom(string $path): void
     {

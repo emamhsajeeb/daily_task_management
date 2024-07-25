@@ -54,12 +54,6 @@ final class TestResult
 
     public float $duration;
 
-    public array $notes;
-
-    public array $issues;
-
-    public array $prs;
-
     public ?Throwable $throwable;
 
     public string $warning = '';
@@ -69,7 +63,7 @@ final class TestResult
     /**
      * Creates a new TestResult instance.
      */
-    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, array $notes, array $issues, array $prs, ?Throwable $throwable = null)
+    private function __construct(string $id, string $testCaseName, string $description, string $type, string $icon, string $compactIcon, string $color, string $compactColor, ?Throwable $throwable = null)
     {
         $this->id = $id;
         $this->testCaseName = $testCaseName;
@@ -79,19 +73,16 @@ final class TestResult
         $this->compactIcon = $compactIcon;
         $this->color = $color;
         $this->compactColor = $compactColor;
-        $this->notes = $notes;
-        $this->issues = $issues;
-        $this->prs = $prs;
         $this->throwable = $throwable;
 
         $this->duration = 0.0;
 
         $asWarning = $this->type === TestResult::WARN
-            || $this->type === TestResult::RISKY
-            || $this->type === TestResult::SKIPPED
-            || $this->type === TestResult::DEPRECATED
-            || $this->type === TestResult::NOTICE
-            || $this->type === TestResult::INCOMPLETE;
+             || $this->type === TestResult::RISKY
+             || $this->type === TestResult::SKIPPED
+             || $this->type === TestResult::DEPRECATED
+             || $this->type === TestResult::NOTICE
+             || $this->type === TestResult::INCOMPLETE;
 
         if ($throwable instanceof Throwable && $asWarning) {
             if (in_array($this->type, [TestResult::DEPRECATED, TestResult::NOTICE])) {
@@ -145,11 +136,7 @@ final class TestResult
 
         $compactColor = self::makeCompactColor($type);
 
-        $notes = method_exists($test->className(), 'getPrintableTestCaseMethodNotes') ? $test->className()::getPrintableTestCaseMethodNotes() : [];
-        $issues = method_exists($test->className(), 'getPrintableTestCaseMethodIssues') ? $test->className()::getPrintableTestCaseMethodIssues() : [];
-        $prs = method_exists($test->className(), 'getPrintableTestCaseMethodPrs') ? $test->className()::getPrintableTestCaseMethodPrs() : [];
-
-        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $notes, $issues, $prs, $throwable);
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $throwable);
     }
 
     /**
@@ -181,7 +168,7 @@ final class TestResult
 
         $compactColor = self::makeCompactColor($type);
 
-        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, [], [], [], $throwable);
+        return new self($test->id(), $testCaseName, $description, $type, $icon, $compactIcon, $color, $compactColor, $throwable);
     }
 
     /**
@@ -205,7 +192,7 @@ final class TestResult
 
         $compactColor = self::makeCompactColor(self::FAIL);
 
-        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, [], [], [], $event->throwable());
+        return new self($testCaseName, $testCaseName, $description, self::FAIL, $icon, $compactIcon, $color, $compactColor, $event->throwable());
     }
 
     /**

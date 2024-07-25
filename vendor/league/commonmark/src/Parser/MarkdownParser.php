@@ -158,13 +158,12 @@ final class MarkdownParser implements MarkdownParserInterface
                 $unmatchedBlocks = 0;
             }
 
-            $oldBlockLineStart = null;
             if ($blockStart->isReplaceActiveBlockParser()) {
-                $oldBlockLineStart = $this->prepareActiveBlockParserForReplacement();
+                $this->prepareActiveBlockParserForReplacement();
             }
 
             foreach ($blockStart->getBlockParsers() as $newBlockParser) {
-                $blockParser    = $this->addChild($newBlockParser, $oldBlockLineStart);
+                $blockParser    = $this->addChild($newBlockParser);
                 $tryBlockStarts = $newBlockParser->isContainer();
             }
         }
@@ -177,7 +176,7 @@ final class MarkdownParser implements MarkdownParserInterface
         } else {
             // finalize any blocks not matched
             if ($unmatchedBlocks > 0) {
-                $this->closeBlockParsers($unmatchedBlocks, $this->lineNumber - 1);
+                $this->closeBlockParsers($unmatchedBlocks, $this->lineNumber);
             }
 
             if (! $blockParser->isContainer()) {
@@ -276,12 +275,12 @@ final class MarkdownParser implements MarkdownParserInterface
      * Add block of type tag as a child of the tip. If the tip can't accept children, close and finalize it and try
      * its parent, and so on til we find a block that can accept children.
      */
-    private function addChild(BlockContinueParserInterface $blockParser, ?int $startLineNumber = null): BlockContinueParserInterface
+    private function addChild(BlockContinueParserInterface $blockParser): BlockContinueParserInterface
     {
-        $blockParser->getBlock()->setStartLine($startLineNumber ?? $this->lineNumber);
+        $blockParser->getBlock()->setStartLine($this->lineNumber);
 
         while (! $this->getActiveBlockParser()->canContain($blockParser->getBlock())) {
-            $this->closeBlockParsers(1, ($startLineNumber ?? $this->lineNumber) - 1);
+            $this->closeBlockParsers(1, $this->lineNumber - 1);
         }
 
         $this->getActiveBlockParser()->getBlock()->appendChild($blockParser->getBlock());
@@ -308,10 +307,7 @@ final class MarkdownParser implements MarkdownParserInterface
         return $popped;
     }
 
-    /**
-     * @return int|null The line number where the old block started
-     */
-    private function prepareActiveBlockParserForReplacement(): ?int
+    private function prepareActiveBlockParserForReplacement(): void
     {
         // Note that we don't want to parse inlines or finalize this block, as it's getting replaced.
         $old = $this->deactivateBlockParser();
@@ -321,8 +317,6 @@ final class MarkdownParser implements MarkdownParserInterface
         }
 
         $old->getBlock()->detach();
-
-        return $old->getBlock()->getStartLine();
     }
 
     /**

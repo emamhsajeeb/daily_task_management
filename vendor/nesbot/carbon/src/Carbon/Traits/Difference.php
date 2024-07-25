@@ -143,19 +143,20 @@ trait Difference
 
         $yearsDiff = (int) $start->diff($end, $absolute)->format('%r%y');
         /** @var Carbon|CarbonImmutable $floorEnd */
-        $floorEnd = $start->avoidMutation()->addYears($yearsDiff);
+        $floorEnd = $start->copy()->addYears($yearsDiff);
 
         if ($floorEnd >= $end) {
             return $sign * $yearsDiff;
         }
 
-        /** @var Carbon|CarbonImmutable $ceilEnd */
-        $ceilEnd = $start->avoidMutation()->addYears($yearsDiff + 1);
+        /** @var Carbon|CarbonImmutable $startOfYearAfterFloorEnd */
+        $startOfYearAfterFloorEnd = $floorEnd->copy()->addYear()->startOfYear();
 
-        $daysToFloor = $floorEnd->diffInDays($end);
-        $daysToCeil = $end->diffInDays($ceilEnd);
+        if ($startOfYearAfterFloorEnd > $end) {
+            return $sign * ($yearsDiff + $floorEnd->diffInDays($end) / $floorEnd->daysInYear);
+        }
 
-        return $sign * ($yearsDiff + $daysToFloor / ($daysToCeil + $daysToFloor));
+        return $sign * ($yearsDiff + $floorEnd->diffInDays($startOfYearAfterFloorEnd) / $floorEnd->daysInYear + $startOfYearAfterFloorEnd->diffInDays($end) / $end->daysInYear);
     }
 
     /**
@@ -219,13 +220,14 @@ trait Difference
             return $sign * $monthsDiff;
         }
 
-        /** @var Carbon|CarbonImmutable $ceilEnd */
-        $ceilEnd = $start->avoidMutation()->addMonths($monthsDiff + 1);
+        /** @var Carbon|CarbonImmutable $startOfMonthAfterFloorEnd */
+        $startOfMonthAfterFloorEnd = $floorEnd->avoidMutation()->addMonthNoOverflow()->startOfMonth();
 
-        $daysToFloor = $floorEnd->diffInDays($end);
-        $daysToCeil = $end->diffInDays($ceilEnd);
+        if ($startOfMonthAfterFloorEnd > $end) {
+            return $sign * ($monthsDiff + $floorEnd->diffInDays($end) / $floorEnd->daysInMonth);
+        }
 
-        return $sign * ($monthsDiff + $daysToFloor / ($daysToCeil + $daysToFloor));
+        return $sign * ($monthsDiff + $floorEnd->diffInDays($startOfMonthAfterFloorEnd) / $floorEnd->daysInMonth + $startOfMonthAfterFloorEnd->diffInDays($end) / $end->daysInMonth);
     }
 
     /**

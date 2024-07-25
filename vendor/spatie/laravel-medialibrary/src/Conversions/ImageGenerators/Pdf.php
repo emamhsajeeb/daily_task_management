@@ -2,8 +2,6 @@
 
 namespace Spatie\MediaLibrary\Conversions\ImageGenerators;
 
-use Composer\InstalledVersions;
-use Composer\Semver\VersionParser;
 use Illuminate\Support\Collection;
 use Imagick;
 use Spatie\MediaLibrary\Conversions\Conversion;
@@ -16,18 +14,9 @@ class Pdf extends ImageGenerator
 
         $pageNumber = $conversion ? $conversion->getPdfPageNumber() : 1;
 
-        if ($this->usesPdfToImageV3()) {
-            (new \Spatie\PdfToImage\Pdf($file))->selectPage($pageNumber)->save($imageFile);
-        } else {
-            (new \Spatie\PdfToImage\Pdf($file))->setPage($pageNumber)->saveImage($imageFile);
-        }
+        (new \Spatie\PdfToImage\Pdf($file))->setPage($pageNumber)->saveImage($imageFile);
 
         return $imageFile;
-    }
-
-    private function usesPdfToImageV3(): bool
-    {
-        return InstalledVersions::satisfies(new VersionParser, 'spatie/pdf-to-image', '^3.0');
     }
 
     public function requirementsAreInstalled(): bool

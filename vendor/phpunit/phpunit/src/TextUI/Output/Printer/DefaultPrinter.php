@@ -17,10 +17,10 @@ use function fclose;
 use function fopen;
 use function fsockopen;
 use function fwrite;
+use function sprintf;
 use function str_replace;
 use function str_starts_with;
-use PHPUnit\Runner\DirectoryDoesNotExistException;
-use PHPUnit\TextUI\CannotOpenSocketException;
+use PHPUnit\TextUI\DirectoryDoesNotExistException;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\Util\Filesystem;
 
@@ -37,7 +37,6 @@ final class DefaultPrinter implements Printer
     private bool $isOpen;
 
     /**
-     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */
@@ -47,7 +46,6 @@ final class DefaultPrinter implements Printer
     }
 
     /**
-     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */
@@ -57,7 +55,6 @@ final class DefaultPrinter implements Printer
     }
 
     /**
-     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */
@@ -67,7 +64,6 @@ final class DefaultPrinter implements Printer
     }
 
     /**
-     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */
@@ -79,16 +75,15 @@ final class DefaultPrinter implements Printer
             $tmp = explode(':', str_replace('socket://', '', $out));
 
             if (count($tmp) !== 2) {
-                throw new InvalidSocketException($out);
+                throw new InvalidSocketException(
+                    sprintf(
+                        '"%s" does not match "socket://hostname:port" format',
+                        $out,
+                    ),
+                );
             }
 
-            $stream = @fsockopen($tmp[0], (int) $tmp[1]);
-
-            if ($stream === false) {
-                throw new CannotOpenSocketException($tmp[0], (int) $tmp[1]);
-            }
-
-            $this->stream = $stream;
+            $this->stream = fsockopen($tmp[0], (int) $tmp[1]);
             $this->isOpen = true;
 
             return;

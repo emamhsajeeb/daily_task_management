@@ -15,7 +15,7 @@ trait Prohibitable
      * Indicate whether the command should be prohibited from running.
      *
      * @param  bool  $prohibit
-     * @return void
+     * @return bool
      */
     public static function prohibit($prohibit = true)
     {

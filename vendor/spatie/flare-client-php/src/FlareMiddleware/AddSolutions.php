@@ -3,15 +3,14 @@
 namespace Spatie\FlareClient\FlareMiddleware;
 
 use Closure;
-use Spatie\ErrorSolutions\Contracts\SolutionProviderRepository;
 use Spatie\FlareClient\Report;
-use Spatie\Ignition\Contracts\SolutionProviderRepository as IgnitionSolutionProviderRepository;
+use Spatie\Ignition\Contracts\SolutionProviderRepository;
 
 class AddSolutions implements FlareMiddleware
 {
-    protected SolutionProviderRepository|IgnitionSolutionProviderRepository $solutionProviderRepository;
+    protected SolutionProviderRepository $solutionProviderRepository;
 
-    public function __construct(SolutionProviderRepository|IgnitionSolutionProviderRepository $solutionProviderRepository)
+    public function __construct(SolutionProviderRepository $solutionProviderRepository)
     {
         $this->solutionProviderRepository = $solutionProviderRepository;
     }

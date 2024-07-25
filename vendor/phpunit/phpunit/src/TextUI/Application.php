@@ -33,7 +33,6 @@ use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
@@ -212,36 +211,16 @@ final class Application
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxHtml()) {
-                try {
-                    OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
-                        (new TestDoxHtmlRenderer)->render($testDoxResult),
-                    );
-                } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
-                        sprintf(
-                            'Cannot log test results in TestDox HTML format to "%s": %s',
-                            $configuration->logfileTestdoxHtml(),
-                            $e->getMessage(),
-                        ),
-                    );
-                }
+                OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
+                    (new TestDoxHtmlRenderer)->render($testDoxResult),
+                );
             }
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxText()) {
-                try {
-                    OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
-                        (new TestDoxTextRenderer)->render($testDoxResult),
-                    );
-                } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredWarning(
-                        sprintf(
-                            'Cannot log test results in TestDox plain text format to "%s": %s',
-                            $configuration->logfileTestdoxText(),
-                            $e->getMessage(),
-                        ),
-                    );
-                }
+                OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
+                    (new TestDoxTextRenderer)->render($testDoxResult),
+                );
             }
 
             $result = TestResultFacade::result();
@@ -566,39 +545,19 @@ final class Application
         }
 
         if ($configuration->hasLogfileJunit()) {
-            try {
-                new JunitXmlLogger(
-                    OutputFacade::printerFor($configuration->logfileJunit()),
-                    EventFacade::instance(),
-                );
-            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
-                    sprintf(
-                        'Cannot log test results in JUnit XML format to "%s": %s',
-                        $configuration->logfileJunit(),
-                        $e->getMessage(),
-                    ),
-                );
-            }
+            new JunitXmlLogger(
+                OutputFacade::printerFor($configuration->logfileJunit()),
+                EventFacade::instance(),
+            );
         }
 
         if ($configuration->hasLogfileTeamcity()) {
-            try {
-                new TeamCityLogger(
-                    DefaultPrinter::from(
-                        $configuration->logfileTeamcity(),
-                    ),
-                    EventFacade::instance(),
-                );
-            } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredWarning(
-                    sprintf(
-                        'Cannot log test results in TeamCity format to "%s": %s',
-                        $configuration->logfileTeamcity(),
-                        $e->getMessage(),
-                    ),
-                );
-            }
+            new TeamCityLogger(
+                DefaultPrinter::from(
+                    $configuration->logfileTeamcity(),
+                ),
+                EventFacade::instance(),
+            );
         }
     }
 

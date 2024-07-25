@@ -65,8 +65,6 @@ class NotificationMakeCommand extends GeneratorCommand
         }
 
         $this->files->put($path, file_get_contents(__DIR__.'/stubs/markdown.stub'));
-
-        $this->components->info(sprintf('%s [%s] created successfully.', 'Markdown', $path));
     }
 
     /**

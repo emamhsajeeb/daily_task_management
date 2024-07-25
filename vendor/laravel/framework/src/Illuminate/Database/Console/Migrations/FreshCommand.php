@@ -59,7 +59,7 @@ class FreshCommand extends Command
     {
         if ($this->isProhibited() ||
             ! $this->confirmToProceed()) {
-            return Command::FAILURE;
+            return 1;
         }
 
         $database = $this->input->getOption('database');

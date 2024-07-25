@@ -18,12 +18,6 @@ use Illuminate\Support\Traits\Conditionable;
 use InvalidArgumentException;
 use RuntimeException;
 
-/**
- * @template TValue
- *
- * @mixin \Illuminate\Database\Eloquent\Builder
- * @mixin \Illuminate\Database\Query\Builder
- */
 trait BuildsQueries
 {
     use Conditionable;
@@ -32,7 +26,7 @@ trait BuildsQueries
      * Chunk the results of the query.
      *
      * @param  int  $count
-     * @param  callable(\Illuminate\Support\Collection<int, TValue>, int): mixed  $callback
+     * @param  callable  $callback
      * @return bool
      */
     public function chunk($count, callable $callback)
@@ -71,11 +65,9 @@ trait BuildsQueries
     /**
      * Run a map over each item while chunking.
      *
-     * @template TReturn
-     *
-     * @param  callable(TValue): TReturn  $callback
+     * @param  callable  $callback
      * @param  int  $count
-     * @return \Illuminate\Support\Collection<int, TReturn>
+     * @return \Illuminate\Support\Collection
      */
     public function chunkMap(callable $callback, $count = 1000)
     {
@@ -93,7 +85,7 @@ trait BuildsQueries
     /**
      * Execute a callback over each item while chunking.
      *
-     * @param  callable(TValue, int): mixed  $callback
+     * @param  callable  $callback
      * @param  int  $count
      * @return bool
      *
@@ -114,7 +106,7 @@ trait BuildsQueries
      * Chunk the results of a query by comparing IDs.
      *
      * @param  int  $count
-     * @param  callable(\Illuminate\Support\Collection<int, TValue>, int): mixed  $callback
+     * @param  callable  $callback
      * @param  string|null  $column
      * @param  string|null  $alias
      * @return bool
@@ -128,7 +120,7 @@ trait BuildsQueries
      * Chunk the results of a query by comparing IDs in descending order.
      *
      * @param  int  $count
-     * @param  callable(\Illuminate\Support\Collection<int, TValue>, int): mixed  $callback
+     * @param  callable  $callback
      * @param  string|null  $column
      * @param  string|null  $alias
      * @return bool
@@ -142,7 +134,7 @@ trait BuildsQueries
      * Chunk the results of a query by comparing IDs in a given order.
      *
      * @param  int  $count
-     * @param  callable(\Illuminate\Support\Collection<int, TValue>, int): mixed  $callback
+     * @param  callable  $callback
      * @param  string|null  $column
      * @param  string|null  $alias
      * @param  bool  $descending
@@ -202,7 +194,7 @@ trait BuildsQueries
     /**
      * Execute a callback over each item while chunking by ID.
      *
-     * @param  callable(TValue, int): mixed  $callback
+     * @param  callable  $callback
      * @param  int  $count
      * @param  string|null  $column
      * @param  string|null  $alias
@@ -336,7 +328,7 @@ trait BuildsQueries
      * Execute the query and get the first result.
      *
      * @param  array|string  $columns
-     * @return TValue|null
+     * @return \Illuminate\Database\Eloquent\Model|object|static|null
      */
     public function first($columns = ['*'])
     {
@@ -347,7 +339,7 @@ trait BuildsQueries
      * Execute the query and get the first result if it's the sole matching record.
      *
      * @param  array|string  $columns
-     * @return TValue
+     * @return \Illuminate\Database\Eloquent\Model|object|static|null
      *
      * @throws \Illuminate\Database\RecordsNotFoundException
      * @throws \Illuminate\Database\MultipleRecordsFoundException
@@ -471,7 +463,7 @@ trait BuildsQueries
     /**
      * Get the original column name of the given column, without any aliasing.
      *
-     * @param  \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder<*>  $builder
+     * @param  \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder  $builder
      * @param  string  $parameter
      * @return string
      */
@@ -548,7 +540,7 @@ trait BuildsQueries
     /**
      * Pass the query to a given callback.
      *
-     * @param  callable($this): mixed  $callback
+     * @param  callable  $callback
      * @return $this
      */
     public function tap($callback)

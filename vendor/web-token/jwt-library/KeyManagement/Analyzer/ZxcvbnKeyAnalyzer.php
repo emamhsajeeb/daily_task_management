@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jose\Component\KeyManagement\Analyzer;
 
 use Jose\Component\Core\JWK;
-use Jose\Component\Core\Util\Base64UrlSafe;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use Throwable;
 use ZxcvbnPhp\Zxcvbn;
 use function is_string;

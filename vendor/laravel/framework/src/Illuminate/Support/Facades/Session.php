@@ -50,7 +50,6 @@ namespace Illuminate\Support\Facades;
  * @method static bool isStarted()
  * @method static string getName()
  * @method static void setName(string $name)
- * @method static string id()
  * @method static string getId()
  * @method static void setId(string|null $id)
  * @method static bool isValidId(string|null $id)

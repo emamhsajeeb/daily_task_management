@@ -25,8 +25,8 @@ use DateInterval;
  *
  * Depends on the following methods:
  *
- * @method static copy()
- * @method static startOfWeek(int $weekStartsAt = null)
+ * @method CarbonInterface copy()
+ * @method CarbonInterface startOfWeek(int $weekStartsAt = null)
  */
 trait Rounding
 {

@@ -89,10 +89,7 @@ trait HasPermissions
             return $relation;
         }
 
-        $teamsKey = app(PermissionRegistrar::class)->teamsKey;
-        $relation->withPivot($teamsKey);
-
-        return $relation->wherePivot($teamsKey, getPermissionsTeamId());
+        return $relation->wherePivot(app(PermissionRegistrar::class)->teamsKey, getPermissionsTeamId());
     }
 
     /**
@@ -404,16 +401,14 @@ trait HasPermissions
             $model->unsetRelation('permissions');
         } else {
             $class = \get_class($model);
-            $saved = false;
 
             $class::saved(
-                function ($object) use ($permissions, $model, $teamPivot, &$saved) {
-                    if ($saved || $model->getKey() != $object->getKey()) {
+                function ($object) use ($permissions, $model, $teamPivot) {
+                    if ($model->getKey() != $object->getKey()) {
                         return;
                     }
                     $model->permissions()->attach($permissions, $teamPivot);
                     $model->unsetRelation('permissions');
-                    $saved = true;
                 }
             );
         }

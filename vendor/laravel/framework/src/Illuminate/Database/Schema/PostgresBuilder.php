@@ -254,7 +254,7 @@ class PostgresBuilder extends Builder
      * @param  string  $reference
      * @return array
      */
-    public function parseSchemaAndTable($reference)
+    protected function parseSchemaAndTable($reference)
     {
         $parts = explode('.', $reference);
 

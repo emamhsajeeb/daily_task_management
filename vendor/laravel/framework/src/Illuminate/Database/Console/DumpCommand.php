@@ -74,7 +74,7 @@ class DumpCommand extends Command
         $migrationTable = is_array($migrations) ? ($migrations['table'] ?? 'migrations') : $migrations;
 
         return $connection->getSchemaState()
-                ->withMigrationTable($migrationTable)
+                ->withMigrationTable($connection->getTablePrefix().$migrationTable)
                 ->handleOutputUsing(function ($type, $buffer) {
                     $this->output->write($buffer);
                 });

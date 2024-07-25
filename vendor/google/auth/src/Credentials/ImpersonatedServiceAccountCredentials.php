@@ -131,9 +131,6 @@ class ImpersonatedServiceAccountCredentials extends CredentialsLoader implements
     }
 
     /**
-     * Returns the Cache Key for the credentials
-     * The cache key is the same as the UserRefreshCredentials class
-     *
      * @return string
      */
     public function getCacheKey()

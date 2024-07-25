@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use Spatie\ErrorSolutions\Contracts\RunnableSolution;
+use Spatie\Ignition\Contracts\RunnableSolution;
 
 class DummyClass implements RunnableSolution
 {
