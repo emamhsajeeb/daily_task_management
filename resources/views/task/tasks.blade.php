@@ -203,7 +203,7 @@
                         </div>
                         <!--end col-->
                         <div class="col-lg-12">
-                            <label for="inspection_details" class="form-label">Comments</label>
+                            <label for="inspection_details" class="form-label">Results</label>
                             <textarea class="form-control" name="inspection_details" id="inspection_details" rows="3" placeholder="Write comments..."></textarea>
                         </div>
                         <!--end col-->
