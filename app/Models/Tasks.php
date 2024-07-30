@@ -31,15 +31,6 @@ class Tasks extends Model
     ];
 
 
-    public function authors()
-    {
-        return $this->belongsToMany(Author::class, 'task_has_author', 'task_id', 'author_id');
-    }
-
-    public function ncrs()
-    {
-        return $this->belongsToMany(NCR::class, 'task_has_ncr', 'task_id','ncr_id');
-    }
 
     public function objections()
     {
