@@ -144,6 +144,7 @@ class AttendanceController extends Controller
             );
 
             // Update clockin and clockin_location in case they were not set during creation
+            $attendance->clockin = $clockin;
             $attendance->clockin_location = $request->location;
             $attendance->save();
 
