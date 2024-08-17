@@ -138,7 +138,7 @@ class AttendanceController extends Controller
             $clockin = Carbon::now();
             $location = $request->location;
 
-            dd([
+            dump([
                 'clockin' => $clockin,
                 'location' => $location
             ]);
