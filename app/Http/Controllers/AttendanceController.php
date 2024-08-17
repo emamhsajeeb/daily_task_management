@@ -135,13 +135,8 @@ class AttendanceController extends Controller
                 'location' => 'required',
             ]);
 
-            $clockin = Carbon::now();
+            $clockin = Carbon::now()->toTimeString();
             $location = $request->location;
-
-            dump([
-                'clockin' => $clockin,
-                'location' => $location
-            ]);
 
             $attendance = Attendance::updateOrCreate(
                 ['user_id' => $request->user_id, 'date' => Carbon::today()],
