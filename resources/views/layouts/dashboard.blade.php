@@ -416,6 +416,7 @@
         try {
             const response = await fetch(endpoint);
             const attendance = await response.json();
+            console.log(attendance);
             const clockin_latitude = attendance.clockin_location?.split(',')[0];
             const clockin_longitude = attendance.clockin_location?.split(',')[1];
             const clockout_latitude = attendance.clockout_location?.split(',')[0];
