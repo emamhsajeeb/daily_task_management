@@ -500,6 +500,7 @@
                 location: latitude.toFixed(4) + ', ' + longitude.toFixed(4)
             },
             success: async function (response) {
+                console.log(response);
                 document.getElementById(elementId).style.display = '';
                 document.getElementById(elementId + '-time').style.display = '';
                 document.getElementById(elementId + '-time').textContent = time;
