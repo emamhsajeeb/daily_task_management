@@ -12,10 +12,10 @@ class Attendance extends Model
     protected $fillable = [
         'user_id',
         'date',
-        'punchin',
-        'punchout',
-        'punchin_location',
-        'punchout_location',
+        'clockin',
+        'clockout',
+        'clockin_location',
+        'clockout_location',
         'symbol'
     ];
 
