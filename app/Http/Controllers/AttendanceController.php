@@ -135,10 +135,17 @@ class AttendanceController extends Controller
                 'location' => 'required',
             ]);
 
-            // Attempt to create or update the attendance record
+            $clockin = Carbon::now();
+            $location = $request->location;
+
+            dd([
+                'clockin' => $clockin,
+                'location' => $location
+            ]);
+
             $attendance = Attendance::updateOrCreate(
                 ['user_id' => $request->user_id, 'date' => Carbon::today()],
-                ['clockin' => Carbon::now(), 'clockin_location' => $request->location, 'symbol' => '√']
+                ['clockin' => $clockin, 'clockin_location' => $location, 'symbol' => '√']
             );
 
             // Update clockin and clockin_location in case they were not set during creation
